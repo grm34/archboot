@@ -1,0 +1,321 @@
+#!/bin/bash
+__appname__="archboot"
+__version__="v.1.0"
+__author__="@grm34"
+__date__="January 2016"
+__license__="Apache v2.0 License"
+
+##################
+## GLOBAL STYLE ##
+##################
+red="\e[1;31m"
+green="\e[1;32m"
+yellow="\e[1;33m"
+blue="\e[1;34m"
+pink="\e[1;35m"
+cyan="\e[1;36m"
+nc="\e[0m"
+
+_banner() {
+    echo -e "\n" >&2
+    echo -e "$red        ...ArchLinux XFCE...   $nc" >&2
+    echo -e "$red      _________________________ $nc" >&2
+}
+
+_prompt() {
+   echo -e "\n$yellow==> $green$1 $nc" >&2
+   echo -e "$yellow==> ------------------------------------ $nc" >&2
+   echo -ne "$yellow==> $nc" >&2
+}
+
+_warning() {
+    echo -e "\n$green==> $red$1 $cyan[ENTER]$nc" >&2
+    echo -ne "$green==> $nc" >&2
+    read -s WARNING
+}
+
+#########################
+## PROCESSOR DETECTiON ##
+#########################
+_processor_detect() {
+    uname -m | grep "x86_64" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        processor="multicore"
+        sys_name="Arch Linux x86_64"
+    else
+        processor="singlecore"
+        sys_name="Arch Linux i686"
+    fi
+}
+
+#######################
+## GRAPHiC DETECTiON ##
+#######################
+_graphic_detect() {
+    VGA_driver="xf86-video-vesa"
+    lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then VGA_driver=" xf86-video-intel"; fi
+    lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then VGA_driver=" xf86-video-ati"; fi
+    lspci | grep "VGA" | grep "nVidia" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then VGA_driver="xf86-video-nouveau nouveau-dri"; fi
+}
+
+###################
+## USER SETTiNGS ##
+###################
+_user_settings() {
+
+    # USERNAME
+    until [[ ${#USER_name} -ge 3 \
+    && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    _prompt "Enter Username (ex: johnny):"
+    read USER_name
+    done
+
+    # USER PASSWORD
+    until [[ ${#i} -ge 6 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
+    echo -e "$cyan\n  WARNiNG: user password should be at least 6 $nc"
+    echo -e "$cyan  characters long with one letter and one digit $nc"
+    _prompt "User password (must be secure):"
+    read -s i
+    done
+    _prompt "Confirm user password:"
+    read -s USER_passwd
+    if [[ ${USER_passwd} != ${i} ]]; then
+        echo -e "$red \n==> Password does not match ! Exiting... $nc"
+        exit
+    fi
+
+    # SETTING USER
+    echo -e "\n$cyan==> Setting user... $nc" && sleep 2s
+    useradd -g users -m -s /bin/bash $USER_name
+    echo "${USER_name}:${USER_passwd}" | chpasswd
+    echo "${USER_name} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+}
+
+##############################
+## iNSTALL XFCE ENViRONMENT ##
+##############################
+_install_yaourt() {
+    echo -e "\n$cyan==> Setting timezone... $nc" && sleep 2s
+    timedatectl set-local-rtc 1
+    echo -e "$cyan==> Setting pacman... $nc" && sleep 2s
+    echo "## CUSTOM PACMAN.CONF ##" > /etc/pacman.conf
+    echo "[options]" >> /etc/pacman.conf
+    echo "HoldPkg     = pacman glibc" >> /etc/pacman.conf
+    echo "Architecture = auto" >> /etc/pacman.conf
+    echo "ILoveCandy" >> /etc/pacman.conf
+    echo "CheckSpace" >> /etc/pacman.conf
+    echo "SigLevel    = Required DatabaseOptional" >> /etc/pacman.conf
+    echo "LocalFileSigLevel = Optional" >> /etc/pacman.conf
+    echo "[archlinuxfr]" >> /etc/pacman.conf
+    echo "SigLevel = Never" >> /etc/pacman.conf
+    echo "Server = http://repo.archlinux.fr/\$arch" >> /etc/pacman.conf
+    echo "[core]" >> /etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+    echo "[extra]">> /etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+    echo "[community]" >> /etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+    if [[ $processor == "multicore" ]]; then
+        echo "[multilib]" >> /etc/pacman.conf
+        echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+    fi
+    echo -e "$cyan==> Setting mirrorlist... $nc" && sleep 2s
+    reflector -c FR --sort score --save /etc/pacman.d/mirrorlist
+    echo -e "$cyan==> Installing yaourt... $nc" && sleep 2s
+    pacman --noconfirm -Syu yaourt
+}
+
+_install_packages() {
+    _install="sudo -u $USER_name yaourt --noconfirm -S"
+
+    # VGA Driver
+    echo -e "$cyan==> Installing VGA Driver... $nc" && sleep 2s
+    $_install $VGA_driver arandr
+
+    # Desktop Environment
+    echo -e "$cyan==> Installing Desktop Environment... $nc" && sleep 2s
+    $_install ntp htop hardinfo xfce4 xfce4-goodies lxdm lxdm-themes \
+    xorg-server xorg-xinit xorg-server-utils grub2-theme-archlinux
+
+    # File System
+    echo -e "$cyan==> Installing File System... $nc" && sleep 2s
+    $_install gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
+    dosfstools exfat-utils file-roller ifuse usbmuxd fuseiso gcdemu rar
+
+    # Fonts
+    echo -e "$cyan==> Installing Fonts... $nc" && sleep 2s
+    $_install artwiz-fonts font-bh-ttf font-bitstream-speedo \
+    ttf-bitstream-vera ttf-liberation ttf-freefont ttf-dejavu \
+    gsfonts sdl_ttf ttf-cheapskate ttf-arphic-uming ttf-baekmuk \
+    ttf-inconsolata ttf-ms-fonts xorg-fonts-type1
+
+     # Multimedia
+    echo -e "$cyan==> Installing Multimedia... $nc" && sleep 2s
+    $_install pulseaudio pulseaudio-alsa gstreamer0.10-good pavucontrol \
+    gecko-mediaplayer vlc guvcview gtk-recordmydesktop gtkpod mediainfo
+
+    # Printer - Scanner
+    echo -e "$cyan==> Installing Printer & Scanner... $nc" && sleep 2s
+    $_install cups cups-pdf ghostscript gutenprint sane simple-scan
+
+    # Desktop Tools
+    echo -e "$cyan==> Installing Desktop Tools... $nc" && sleep 2s
+    $_install galculator ffmpegthumbnailer xscreensaver fbreader \
+    epdfview masterpdfeditor pinta gimp libreoffice libreoffice-fr
+
+    # Network
+    echo -e "$cyan==> Installing Network... $nc" && sleep 2s
+    $_install network-manager-applet networkmanager-openvpn wireless_tools
+
+    # Bluetooth
+    _bluetooth="off" && lspci | grep "Bluetooth"
+    if [[ $? -eq 0 ]]; then
+        echo -e "$cyan==> Installing Bluetooth... $nc" && sleep 2s
+        $_install bluez bluez-utils gnome-bluetooth
+        _bluetooth="on"
+    fi
+
+    # Web Navigator
+    echo -e "$cyan==> Installing Web Navigator... $nc" && sleep 2s
+    $_install firefox firefox-i18n-fr flashplugin jre8-openjdk icedtea-web
+    ram=`grep MemTotal /proc/meminfo | awk '{print $2}'`
+    if [[ ${ram} < 1572864 ]]; then
+        sudo -u $USER_name yaourt --tmp /home/$USER_name \
+        --noconfirm -S jdk
+    else
+        $_install jdk
+    fi
+    archlinux-java set java-8-jdk
+
+    # Network Tools
+    echo -e "$cyan==> Installing Network Tools... $nc" && sleep 2s
+    $_install skype transmission-gtk google-earth teamviewer10
+
+    # Games
+    echo -e "$cyan==> Installing some games... $nc" && sleep 2s
+    $_install playonlinux gnome-chess gnuchess
+
+    # G33k Tools
+    until [[ ${g33k,,} == "y" || ${g33k,,} == "n" ]]; do
+    _prompt "Do you wish install Geek Tools? $red[Y/n]$green"
+    read g33k
+    done
+    if [[ ${g33k,,} == "y" ]]; then
+        echo -e "$cyan==> Installing Geek Tools... $nc" && sleep 2s
+        $_install sshfs sublime-text-dev filezilla hexchat giteye \
+        virtualbox virtualbox-guest-iso virtualbox-ext-oracle
+        echo "vboxdrv" > /etc/modules-load.d/virtualbox.conf
+    fi
+}
+
+_xfce_settings() {
+
+    # LXDM
+    echo -e "$cyan==> Setting LXDM Loader... $nc" && sleep 2s
+    echo "## CUSTOM LXDM LOADER ##" > /etc/lxdm/lxdm.conf
+    echo "[base]" >> /etc/lxdm/lxdm.conf
+    echo "# autologin=dgod" >> /etc/lxdm/lxdm.conf
+    echo "# timeout=10" >> /etc/lxdm/lxdm.conf
+    echo "session=/usr/bin/startxfce4" >> /etc/lxdm/lxdm.conf
+    echo "numlock=1" >> /etc/lxdm/lxdm.conf
+    echo "# xauth_path=/tmp" >> /etc/lxdm/lxdm.conf
+    echo "# skip_password=1" >> /etc/lxdm/lxdm.conf
+    echo "greeter=/usr/lib/lxdm/lxdm-greeter-gtk" >> /etc/lxdm/lxdm.conf
+    echo "[server]" >> /etc/lxdm/lxdm.conf
+    echo "arg=/usr/bin/X -background vt1" >> /etc/lxdm/lxdm.conf
+    echo "# tcp_listen=1" >> /etc/lxdm/lxdm.conf
+    echo "# reset=1" >> /etc/lxdm/lxdm.conf
+    echo "[display]" >> /etc/lxdm/lxdm.conf
+    echo "gtk_theme=Clearlooks" >> /etc/lxdm/lxdm.conf
+    echo "# bg=/usr/share/backgrounds/default.png" >> /etc/lxdm/lxdm.conf
+    echo "bottom_pane=1" >> /etc/lxdm/lxdm.conf
+    echo "lang=1" >> /etc/lxdm/lxdm.conf
+    echo "keyboard=1" >> /etc/lxdm/lxdm.conf
+    echo "theme=Arch-Dark" >> /etc/lxdm/lxdm.conf
+    echo "[userlist]" >> /etc/lxdm/lxdm.conf
+    echo "disable=0" >> /etc/lxdm/lxdm.conf
+    echo "white=$USER_name" >> /etc/lxdm/lxdm.conf
+    echo "black=root" >> /etc/lxdm/lxdm.conf
+    wget https://drones-technologies.com/arch/login.png
+    rm /usr/share/lxdm/themes/Arch-Dark/login.png
+    mv login.png /usr/share/lxdm/themes/Arch-Dark/
+
+    # GRUB Theme
+    echo -e "$cyan==> Setting GRUB2 Theme... $nc" && sleep 2s
+    sed -i -e 's/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g' /etc/default/grub
+    echo 'GRUB_THEME="/boot/grub/themes/Archlinux/theme.txt"' \
+    >> /etc/default/grub
+    echo 'desktop-image: "background.png"' \
+    >> /boot/grub/themes/Archlinux/theme.txt
+    grub-mkconfig -o /boot/grub/grub.cfg
+    sed -i -e "s/menuentry 'Arch Linux'/menuentry '$sys_name'/g" \
+    /boot/grub/grub.cfg
+    sed -i -e \
+    "s/'Options avancées pour Arch Linux'/'Arch Linux Settings' --class x/g" \
+    /boot/grub/grub.cfg
+    wget https://drones-technologies.com/arch/background.png
+    wget https://drones-technologies.com/arch/x.png
+    mv background.png /boot/grub/themes/Archlinux/
+    mv x.png /boot/grub/themes/Archlinux/icons/
+
+    # SERViCES
+    echo -e "$cyan==> Enabling Services... $nc" && sleep 2s
+    systemctl enable lxdm.service
+    systemctl enable ntpd.service
+    systemctl enable org.cups.cupsd.service
+    systemctl enable teamviewerd.service
+    if [[ $_bluetooth == "on" ]]; then systemctl enable bluetooth.service; fi
+
+    # GROUPS
+    echo -e "$cyan==> Adding ${USER_name} to all groups... $nc" && sleep 2s
+    usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
+    usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name
+    usermod -aG http,games,lock,uuidd,dbus,network,video,audio $USER_name
+    usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
+    usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
+    usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
+    usermod -aG systemd-resolve,systemd-journal-upload $USER_name
+    usermod -aG systemd-journal-remote,polkitd,avahi,colord $USER_name
+    usermod -aG rtkit,ntp,git,lxdm,cdemu,usbmux,nm-openvpn $USER_name
+    if [[ ${g33k,,} == "y" ]]; then
+        usermod -aG vboxusers $USER_name
+    fi
+
+    # PURGE & UPDATE
+    echo -e "$cyan==> Purge installation... $nc" && sleep 2s
+    echo 'o' | sudo -u $USER_name yaourt -Qdt
+    sudo -u $USER_name yaourt --noconfirm -Sc
+    echo -e "$cyan==> Update all packages... $nc" && sleep 2s
+    sudo -u $USER_name yaourt --noconfirm -Syua
+
+    # RESTORE USER SECURITY
+    echo -e "$cyan==> Restore User Security... $nc" && sleep 2s
+    sed -i -e \
+    "s/${USER_name} ALL=(ALL) NOPASSWD:ALL/${USER_name} ALL=(ALL) ALL/g" \
+    /etc/sudoers
+}
+
+#######################
+## RUN XFCE iNSTALL ##
+#######################
+datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
+LOGFILE="/var/log/install_xfce_$datetime.log"
+_banner
+_user_settings
+_processor_detect
+_graphic_detect
+echo && _warning "System ready! Do you wish to install XFCE?"
+(_install_yaourt && _install_packages && _xfce_settings) 2>&1 \
+| tee -a $LOGFILE
+echo -e "$green==>$red XFCE installation report: $nc"
+cat $LOGFILE | grep "erreur" >/dev/null 2>&1
+if [[ $? -eq 0 ]]; then
+    cat $LOGFILE | grep "erreur"
+else
+    echo "Installation finished. No error reported."
+fi
+_warning "Done! $__appname__ $__version__ by $__author__ - $__license__"
+reboot

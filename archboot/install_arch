@@ -1,0 +1,256 @@
+#!/bin/bash
+__appname__="archboot"
+__version__="v.1.0"
+__author__="@grm34"
+__date__="January 2016"
+__license__="Apache v2.0 License"
+
+##################
+## GLOBAL STYLE ##
+##################
+red="\e[1;31m"
+green="\e[1;32m"
+yellow="\e[1;33m"
+blue="\e[1;34m"
+pink="\e[1;35m"
+cyan="\e[1;36m"
+nc="\e[0m"
+
+_banner() {
+    echo -e "\n" >&2
+    echo -e "$red        ...ArchLinux install...   $nc" >&2
+    echo -e "$red      ___________________________ $nc" >&2
+}
+
+_prompt() {
+   echo -e "\n$yellow==> $green$1 $red$2$nc" >&2
+   echo -e "$yellow==> ------------------------------------ $nc" >&2
+   echo -ne "$yellow==> $nc" >&2
+}
+
+_warning() {
+    echo -e "\n$green==> $red$1 $cyan[ENTER]$nc" >&2
+    echo -ne "$green==> $nc" >&2
+    read -s WARNING
+}
+
+########################
+## FiRMWARE DETECTiON ##
+########################
+_firmware() {
+    efivar -l >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        FIRMWARE="UEFI"
+        part_table="GPT"
+        part_code="g"
+        part_type=""
+        boot_filesystem="fat -F 32"
+    else
+        FIRMWARE="BIOS"
+        part_table="MBR"
+        part_code="o"
+        part_type="p\n"
+        boot_filesystem="ext2"
+    fi
+    part_order=(0 1 2 3 4)
+}
+
+######################
+## iNSTALL SETTiNGS ##
+######################
+_settings() {
+
+    # HOSTNAME
+    until [[ ${#HOST_name} -ge 3 \
+    && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    _prompt "Enter Hostname (ex: my-computer):"
+    read HOST_name
+    done
+
+    # ROOT PASSWORD
+    until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
+    echo -e "$cyan\n  WARNiNG: root password should be at least 8 $nc"
+    echo -e "$cyan  characters long with one letter and one digit $nc"
+    _prompt "Root password (must be secure):"
+    read -s i
+    done
+    _prompt "Confirm root password:"
+    read -s ROOT_passwd
+    if [[ ${ROOT_passwd} != ${i} ]]; then
+        echo -e "$red \n==> Password does not match! Exiting... $nc"
+        exit
+    fi
+}
+
+#######################
+## DiSK PARTiTiONiNG ##
+#######################
+_disk_part() {
+    part_error="$red \n==> Partitionning error! Exiting... $nc"
+
+    # MBR or GPT
+    echo && _warning "$FIRMWARE detected! Listing disk..."
+    until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]; do
+    echo && fdisk -l
+    _prompt "Enter disk to use (ex: sda):"
+    read _disk
+    done
+    fdisk -l /dev/$_disk
+    echo -e "$red \n  WARNiNG: This will erase the entire drive! $nc"
+    _warning "Creating $part_table partition table on /dev/$_disk..."
+    printf "$part_code\nw" | fdisk /dev/$_disk
+
+    # BOOT on /dev/xxx1
+    until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1} \
+    || ${boot_size,,} == "y" ]]; do
+    echo -e "\n$cyan==> Partition size {M,G} => default: 512M $nc"
+    _prompt "Boot partition size => default: $red[y]"
+    read boot_size
+    done
+    if [[ ${boot_size,,} == "y" ]]; then boot_size="512M"; fi
+    _warning "Creating boot /dev/$_disk${part_order[1]} [$boot_size]..."
+    printf "n\n$part_type\n\n+$boot_size\nw" | fdisk /dev/$_disk
+    yes | mkfs.$boot_filesystem /dev/$_disk${part_order[1]}
+
+    # SWAP on /dev/xxx2
+    until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1} \
+    || ${swap_size,,} == "y" ]]; do
+    echo -e "\n$cyan==> Partition size {M,G} => default: 2G $nc"
+    _prompt "Swap partition size => default: $red[y]"
+    read swap_size
+    done
+    if [[ ${swap_size,,} == "y" ]]; then swap_size="2G"; fi
+    _warning "Creating Swap /dev/$_disk${part_order[2]} [$swap_size]..."
+    printf "n\n$part_type\n\n+$swap_size\nw" | fdisk /dev/$_disk
+    yes | mkswap /dev/$_disk${part_order[2]}
+
+    # SYSTEM on /dev/xxx3
+    until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1} \
+    || ${sys_size,,} == "y" ]]; do
+    echo -e "\n$cyan==> Partition size {G,T,P} => default: 25G $nc"
+    _prompt "System partition size => default: $red[y]"
+    read sys_size
+    done
+    if [[ ${sys_size,,} == "y" ]]; then sys_size="25G"; fi
+    _warning "Creating System /dev/$_disk${part_order[3]} [$sys_size]..."
+    printf "n\n$part_type\n\n+$sys_size\nw" | fdisk /dev/$_disk
+    yes | mkfs.ext4 /dev/$_disk${part_order[3]}
+
+    # HOME on /dev/xxx4
+    if [[ "$FIRMWARE" == "UEFI" ]]; then
+        until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1} \
+        || ${home_size,,} == "y" ]]; do
+        echo -e "\n$cyan==> Partition size {G,T,P} => default: free space $nc"
+        _prompt "Home partition size => default: $red[y]"
+        read home_size
+        done
+        if [[ ${home_size,,} == "y" ]]; then
+            home_size=""
+            part_size="free space"
+        else
+            home_size="+$home_size"
+            part_size="$home_size"
+        fi
+        _warning "Creating Home /dev/$_disk${part_order[4]} [$part_size]..."
+        printf "n\n\n\n$home_size\nw" | fdisk /dev/$_disk
+    else
+        echo -e "\n$cyan==> Home partition will use all free space $nc"
+        _warning "Creating Home partition /dev/$_disk${part_order[4]}..."
+        printf "n\n$part_type\n\nw" | fdisk /dev/$_disk
+    fi
+    yes | mkfs.ext4 /dev/$_disk${part_order[4]}
+}
+
+########################
+## MOUNTiNG PARTiTiON ##
+########################
+_mount_part() {
+    _warning "Mounting partitions & activate swap..."
+    mount /dev/$_disk${part_order[3]} /mnt
+    mkdir /mnt/{boot,home}
+    if [[ "$FIRMWARE" == "UEFI" ]]; then
+        mkdir -p /mnt/boot/efi/EFI
+        mount -t vfat /dev/$_disk${part_order[1} /boot/efi
+    else
+        mount /dev/$_disk${part_order[1]} /mnt/boot
+    fi
+    swapon /dev/$_disk${part_order[2]}
+    mount /dev/$_disk${part_order[4]} /mnt/home
+}
+
+#########################
+## iNSTALL BASE SYSTEM ##
+#########################
+_install_arch() {
+    echo -e "\n$cyan==> Installing base system... $nc" && sleep 2s
+    yes '' | pacstrap /mnt base base-devel grub os-prober
+    genfstab -U -p /mnt >> /mnt/etc/fstab
+    arch-chroot /mnt /bin/bash <<EOF
+    echo -e "$cyan==> Setting root password... $nc" && sleep 2s
+    echo "root:${ROOT_passwd}" | chpasswd
+    echo -e "$cyan==> Setting hostname... $nc" && sleep 2s
+    echo $HOST_name > /etc/hostname
+    echo -e "$cyan==> Setting and generating locale... $nc" && sleep 2s
+    echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
+    export LANG=fr_FR.UTF-8
+    echo "LANG=fr_FR.UTF-8" > /etc/locale.conf
+    echo -e "$cyan==> Setting keyboard... $nc" && sleep 2s
+    echo "KEYMAP=fr-pc" > /etc/vconsole.conf
+    echo -e "$cyan==> Setting timezone... $nc" && sleep 2s
+    ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
+    echo -e "$cyan==> Setting Linux environment... $nc" && sleep 2s
+    mkinitcpio -p linux
+    echo -e "$cyan==> Installing network... $nc" && sleep 2s
+    pacman --noconfirm -S networkmanager wget git reflector
+    systemctl enable NetworkManager.service
+EOF
+}
+
+########################
+## iNSTALL BOOTLOADER ##
+########################
+_bootloader() {
+    _warning "Base system ok! Creating $FIRMWARE Boot Loader?"
+    if [[ "$FIRMWARE" == "UEFI" ]]; then
+        arch-chroot /mnt /bin/bash <<EOF
+        pacman --noconfirm -S gptfdisk efibootmgr
+        grub-install --target=x86_64-efi --efi-directory=/boot/efi \
+        --bootloader-id=arch_grub --recheck
+        grub-mkconfig -o /boot/grub/grub.cfg
+EOF
+    else
+        arch-chroot /mnt /bin/bash <<EOF
+        grub-install --no-floppy --recheck /dev/$_disk
+        grub-mkconfig -o /boot/grub/grub.cfg
+EOF
+    fi
+}
+
+###########################
+## RUN ARCHLiNUX iNSTALL ##
+###########################
+timedatectl set-timezone Europe/Paris
+datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
+LOGFILE="install_arch_$datetime.log"
+_banner
+_firmware
+_settings
+_disk_part
+_mount_part
+if [ $? -eq 0 ]; then
+    echo && _warning "System ready! Do you wish to install ArchLinux?"
+    (_install_arch && _bootloader) 2>&1 | tee -a $LOGFILE
+    cp $LOGFILE /mnt/var/log/
+    echo -e "$green==>$red ArchLinux installation report: $nc"
+    cat $LOGFILE | grep "erreur" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        cat $LOGFILE | grep "erreur"
+    else
+        echo "Installation finished. No error reported."
+    fi
+else
+    echo -e $part_error
+    exit
+fi
+_warning "Done! $__appname__ $__version__ by $__author__ - $__license__"
+umount -R /mnt && reboot
