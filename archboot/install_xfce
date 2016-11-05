@@ -1,8 +1,8 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v.1.0"
+__version__="v1.2"
 __author__="@grm34"
-__date__="January 2016"
+__date__="July 2016"
 __license__="Apache v2.0 License"
 
 ##################
@@ -92,6 +92,19 @@ _user_settings() {
     useradd -g users -m -s /bin/bash $USER_name
     echo "${USER_name}:${USER_passwd}" | chpasswd
     echo "${USER_name} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+    # SETTING ALIASES
+    echo -e "$cyan==> Setting aliases... $nc" && sleep 2s
+    echo "alias _system='inxi -F -M'" >> /home/$USER_name/.bashrc
+    echo "alias _install='yaourt -S'" >> /home/$USER_name/.bashrc
+    echo "alias _delete='yaourt -Rcsn'" >> /home/$USER_name/.bashrc
+    echo "alias _update='yaourt -Syyua'" >> /home/$USER_name/.bashrc
+    echo "alias _clean='yaourt -Scc'" >> /home/$USER_name/.bashrc
+    echo "alias _verif='yaourt -Qdt'" >> /home/$USER_name/.bashrc
+    echo "alias _pacnew='yaourt -C'" >> /home/$USER_name/.bashrc
+    echo "alias _search='yaourt -s'" >> /home/$USER_name/.bashrc
+    echo "alias _reflector='sudo reflector -c FR --sort rate --save " \
+    "/etc/pacman.d/mirrorlist'" >> /home/$USER_name/.bashrc
 }
 
 ##############################
@@ -123,9 +136,9 @@ _install_yaourt() {
         echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
     fi
     echo -e "$cyan==> Setting mirrorlist... $nc" && sleep 2s
-    reflector -c FR --sort score --save /etc/pacman.d/mirrorlist
+    reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist
     echo -e "$cyan==> Installing yaourt... $nc" && sleep 2s
-    pacman --noconfirm -Syu yaourt
+    pacman --noconfirm -Syu yaourt customizepkg
 }
 
 _install_packages() {
@@ -163,7 +176,7 @@ _install_packages() {
 
     # Desktop Tools
     echo -e "$cyan==> Installing Desktop Tools... $nc" && sleep 2s
-    $_install galculator ffmpegthumbnailer xscreensaver fbreader \
+    $_install vim galculator ffmpegthumbnailer xscreensaver fbreader \
     epdfview masterpdfeditor pinta gimp libreoffice libreoffice-fr
 
     # Network
@@ -178,9 +191,13 @@ _install_packages() {
         _bluetooth="on"
     fi
 
-    # Web Navigator
-    echo -e "$cyan==> Installing Web Navigator... $nc" && sleep 2s
-    $_install firefox firefox-i18n-fr flashplugin jre8-openjdk icedtea-web
+    # Web Navigators & plugins
+    echo -e "$cyan==> Installing Web Navigators... $nc" && sleep 2s
+    $_install firefox firefox-i18n-fr pipelight \
+    jre8-openjdk icedtea-web devilspie
+    if [[ $processor == "multicore" ]]; then
+        $_install chromium chromium-pepper-flash
+    fi
     ram=`grep MemTotal /proc/meminfo | awk '{print $2}'`
     if [[ ${ram} < 1572864 ]]; then
         sudo -u $USER_name yaourt --tmp /home/$USER_name \
@@ -192,26 +209,68 @@ _install_packages() {
 
     # Network Tools
     echo -e "$cyan==> Installing Network Tools... $nc" && sleep 2s
-    $_install skype transmission-gtk google-earth teamviewer10
+    $_install skype transmission-gtk google-earth filezilla \
+    lib32-libjpeg-turbo lib32-libpng teamviewer10 hexchat sshfs
 
     # Games
     echo -e "$cyan==> Installing some games... $nc" && sleep 2s
     $_install playonlinux gnome-chess gnuchess
 
-    # G33k Tools
-    until [[ ${g33k,,} == "y" || ${g33k,,} == "n" ]]; do
-    _prompt "Do you wish install Geek Tools? $red[Y/n]$green"
-    read g33k
+    # VirtuaBox
+    until [[ ${virtual,,} == "y" || ${virtual,,} == "n" ]]; do
+    _prompt "Do you wish install VirtualBox? $red[Y/n]$green"
+    read virtual
     done
-    if [[ ${g33k,,} == "y" ]]; then
-        echo -e "$cyan==> Installing Geek Tools... $nc" && sleep 2s
-        $_install sshfs sublime-text-dev filezilla hexchat giteye \
-        virtualbox virtualbox-guest-iso virtualbox-ext-oracle
+    if [[ ${virtual,,} == "y" ]]; then
+        echo -e "$cyan==> Installing VirtuaBox... $nc" && sleep 2s
+        $_install virtualbox virtualbox-guest-iso \
+        virtualbox-host-modules-arch virtualbox-ext-oracle
         echo "vboxdrv" > /etc/modules-load.d/virtualbox.conf
     fi
 }
 
 _xfce_settings() {
+
+    # KEYBOARD
+    echo -e "$cyan==> Setting keyboard Layout... $nc" && sleep 2s
+    echo 'Section "InputClass"' > \
+    /etc/X11/xorg.conf.d/10-keyboard-layout.conf
+    echo '    Identifier         "Keyboard Layout"' >> \
+    /etc/X11/xorg.conf.d/10-keyboard-layout.conf
+    echo '    MatchIsKeyboard    "yes"' >> \
+    /etc/X11/xorg.conf.d/10-keyboard-layout.conf
+    echo '    Option             "XkbLayout"  "fr"' >> \
+    /etc/X11/xorg.conf.d/10-keyboard-layout.conf
+    echo '    Option             "XkbVariant" "latin9"' >> \
+    /etc/X11/xorg.conf.d/10-keyboard-layout.conf
+    echo 'EndSection' >> /etc/X11/xorg.conf.d/10-keyboard-layout.conf
+
+    # FIREFOX DRM SUPPORT
+    echo 'overwriteArg = enableGPUAcceleration=true' >> \
+    /usr/share/pipelight/configs/pipelight-silverlight5.1
+    mkdir ~/.devilspie
+    echo '(if' > ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '    (and' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '        (is (window_class) "Wine")' >> \
+    ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '        (or' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '            (is (application_name) "Adobe Flash Player")' >> \
+    ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '            (is (application_name) "Microsoft Silverlight")' >> \
+    ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '        )' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '    )' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '    (begin' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '        (focus)' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '    )' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo ')' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
+    echo '[Desktop Entry]' > ~/.config/autostart/devilspie.desktop
+    echo 'Name=devilspie' >> ~/.config/autostart/devilspie.desktop
+    echo 'Exec=devilspie' >> ~/.config/autostart/devilspie.desktop
+    echo 'Hidden=false' >> ~/.config/autostart/devilspie.desktop
+    echo 'NoDisplay=false' >> ~/.config/autostart/devilspie.desktop
+    echo 'X-GNOME-Autostart-enabled=true' >> \
+    ~/.config/autostart/devilspie.desktop
 
     # LXDM
     echo -e "$cyan==> Setting LXDM Loader... $nc" && sleep 2s
@@ -246,10 +305,10 @@ _xfce_settings() {
     # GRUB Theme
     echo -e "$cyan==> Setting GRUB2 Theme... $nc" && sleep 2s
     sed -i -e 's/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g' /etc/default/grub
-    echo 'GRUB_THEME="/boot/grub/themes/Archlinux/theme.txt"' \
-    >> /etc/default/grub
-    echo 'desktop-image: "background.png"' \
-    >> /boot/grub/themes/Archlinux/theme.txt
+    echo 'GRUB_THEME="/boot/grub/themes/Archlinux/theme.txt"' >> \
+    /etc/default/grub
+    echo 'desktop-image: "background.png"' >> \
+    /boot/grub/themes/Archlinux/theme.txt
     grub-mkconfig -o /boot/grub/grub.cfg
     sed -i -e "s/menuentry 'Arch Linux'/menuentry '$sys_name'/g" \
     /boot/grub/grub.cfg
@@ -280,8 +339,8 @@ _xfce_settings() {
     usermod -aG systemd-resolve,systemd-journal-upload $USER_name
     usermod -aG systemd-journal-remote,polkitd,avahi,colord $USER_name
     usermod -aG rtkit,ntp,git,lxdm,cdemu,usbmux,nm-openvpn $USER_name
-    if [[ ${g33k,,} == "y" ]]; then
-        usermod -aG vboxusers $USER_name
+    if [[ ${virtual,,} == "y" ]]; then
+        usermod -aG vboxusers,vboxsf $USER_name
     fi
 
     # PURGE & UPDATE
@@ -302,7 +361,7 @@ _xfce_settings() {
 ## RUN XFCE iNSTALL ##
 #######################
 datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
-LOGFILE="/var/log/install_xfce_$datetime.log"
+LOGFILE="/var/log/archboot/install_xfce_$datetime.log"
 _banner
 _user_settings
 _processor_detect
@@ -311,9 +370,11 @@ echo && _warning "System ready! Do you wish to install XFCE?"
 (_install_yaourt && _install_packages && _xfce_settings) 2>&1 \
 | tee -a $LOGFILE
 echo -e "$green==>$red XFCE installation report: $nc"
-cat $LOGFILE | grep "erreur" >/dev/null 2>&1
+ERROR=" erreur \| error \| critical \|failed to install"
+cat $LOGFILE | grep $ERROR >/dev/null 2>&1
 if [[ $? -eq 0 ]]; then
-    cat $LOGFILE | grep "erreur"
+    cat $LOGFILE | grep -i $ERROR
+    echo "Full logfile: /var/log/archboot/"
 else
     echo "Installation finished. No error reported."
 fi

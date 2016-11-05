@@ -1,8 +1,8 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v.1.0"
+__version__="v1.2"
 __author__="@grm34"
-__date__="January 2016"
+__date__="July 2016"
 __license__="Apache v2.0 License"
 
 ##################
@@ -190,18 +190,18 @@ _install_arch() {
     echo "root:${ROOT_passwd}" | chpasswd
     echo -e "$cyan==> Setting hostname... $nc" && sleep 2s
     echo $HOST_name > /etc/hostname
+    echo -e "$cyan==> Setting timezone... $nc" && sleep 2s
+    ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
     echo -e "$cyan==> Setting and generating locale... $nc" && sleep 2s
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
     export LANG=fr_FR.UTF-8
     echo "LANG=fr_FR.UTF-8" > /etc/locale.conf
     echo -e "$cyan==> Setting keyboard... $nc" && sleep 2s
     echo "KEYMAP=fr-pc" > /etc/vconsole.conf
-    echo -e "$cyan==> Setting timezone... $nc" && sleep 2s
-    ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
     echo -e "$cyan==> Setting Linux environment... $nc" && sleep 2s
     mkinitcpio -p linux
     echo -e "$cyan==> Installing network... $nc" && sleep 2s
-    pacman --noconfirm -S networkmanager wget git reflector
+    pacman --noconfirm -S networkmanager wget git inxi reflector
     systemctl enable NetworkManager.service
 EOF
 }
@@ -240,11 +240,13 @@ _mount_part
 if [ $? -eq 0 ]; then
     echo && _warning "System ready! Do you wish to install ArchLinux?"
     (_install_arch && _bootloader) 2>&1 | tee -a $LOGFILE
-    cp $LOGFILE /mnt/var/log/
+    mkdir /mnt/var/log/archboot && cp $LOGFILE /mnt/var/log/archboot/
     echo -e "$green==>$red ArchLinux installation report: $nc"
-    cat $LOGFILE | grep "erreur" >/dev/null 2>&1
+    ERROR=" erreur \| error \| critical \|failed to install"
+    cat $LOGFILE | grep $ERROR >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
-        cat $LOGFILE | grep "erreur"
+        cat $LOGFILE | grep -i $ERROR
+        echo "Full logfile: /var/log/archboot/"
     else
         echo "Installation finished. No error reported."
     fi
