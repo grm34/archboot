@@ -53,12 +53,44 @@ _processor_detect() {
 #######################
 _graphic_detect() {
     VGA_driver="xf86-video-vesa"
+
+    # INTEL
     lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then VGA_driver=" xf86-video-intel"; fi
+    if [[ $? -eq 0 ]]; then VGA_driver=" xf86-video-intel "; fi
+
+    # ATI
     lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then VGA_driver=" xf86-video-ati"; fi
+    if [[ $? -eq 0 ]]; then
+        until [[ $vga == "1" || $vga == "2" ]]; do
+        _prompt "ATI Proprietary Driver [${red}1${green}] | " \
+        "ATI Free Driver = [${red}2${green}]:"
+        read vga
+        done
+        if [[ $vga == "1" ]]; then
+            lspci | grep "VGA" | grep "Radeon HD"
+            if [[ $? -eq 0 ]]; then
+                VGA_driver=" catalyst catalyst-total-hd234k"
+            else
+                VGA_driver=" catalyst catalyst-total"
+        else
+            VGA_driver=" xf86-video-ati"
+        fi
+    fi
+
+    # NVIDIA
     lspci | grep "VGA" | grep "nVidia" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then VGA_driver="xf86-video-nouveau nouveau-dri"; fi
+    if [[ $? -eq 0 ]]; then
+        until [[ $vga == "1" || $vga == "2" ]]; do
+        _prompt "NVIDIA Proprietary Driver [${red}1${green}] | " \
+        "NVIDIA Free Driver = [${red}2${green}]:"
+        read vga
+        done
+        if [[ $vga == "1" ]]; then
+           VGA_driver=" nvidia nvidia-utils nvidia-libgl"
+        else
+            VGA_driver=" xf86-video-nouveau nouveau-dri"
+        fi
+    fi
 }
 
 ###################
