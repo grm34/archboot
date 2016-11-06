@@ -34,6 +34,14 @@ _warning() {
     read -s WARNING
 }
 
+_logs() {
+    datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
+    LOGFILE="/var/log/archboot/install_xfce_$datetime.log"
+    if [ ! -d "/var/log/archboot" ]; then
+        mkdir /var/log/archboot
+    fi
+}
+
 #########################
 ## PROCESSOR DETECTiON ##
 #########################
@@ -225,8 +233,7 @@ _install_packages() {
 
     # Web Navigators & plugins
     echo -e "$cyan==> Installing Web Navigators... $nc" && sleep 2s
-    $_install firefox firefox-i18n-fr pipelight \
-    jre8-openjdk icedtea-web devilspie
+    $_install firefox firefox-i18n-fr flashplayer jre8-openjdk icedtea-web
     if [[ $processor == "multicore" ]]; then
         $_install chromium chromium-pepper-flash
     fi
@@ -276,33 +283,6 @@ _xfce_settings() {
     echo '    Option             "XkbVariant" "latin9"' >> \
     /etc/X11/xorg.conf.d/10-keyboard-layout.conf
     echo 'EndSection' >> /etc/X11/xorg.conf.d/10-keyboard-layout.conf
-
-    # FIREFOX DRM SUPPORT
-    echo 'overwriteArg = enableGPUAcceleration=true' >> \
-    /usr/share/pipelight/configs/pipelight-silverlight5.1
-    mkdir ~/.devilspie
-    echo '(if' > ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '    (and' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '        (is (window_class) "Wine")' >> \
-    ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '        (or' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '            (is (application_name) "Adobe Flash Player")' >> \
-    ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '            (is (application_name) "Microsoft Silverlight")' >> \
-    ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '        )' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '    )' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '    (begin' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '        (focus)' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '    )' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo ')' >> ~/.devilspie/pipelight-fullscreen-firefox.ds
-    echo '[Desktop Entry]' > ~/.config/autostart/devilspie.desktop
-    echo 'Name=devilspie' >> ~/.config/autostart/devilspie.desktop
-    echo 'Exec=devilspie' >> ~/.config/autostart/devilspie.desktop
-    echo 'Hidden=false' >> ~/.config/autostart/devilspie.desktop
-    echo 'NoDisplay=false' >> ~/.config/autostart/devilspie.desktop
-    echo 'X-GNOME-Autostart-enabled=true' >> \
-    ~/.config/autostart/devilspie.desktop
 
     # LXDM
     echo -e "$cyan==> Setting LXDM Loader... $nc" && sleep 2s
@@ -392,23 +372,11 @@ _xfce_settings() {
 #######################
 ## RUN XFCE iNSTALL ##
 #######################
-datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
-LOGFILE="/var/log/archboot/install_xfce_$datetime.log"
-_banner
-_user_settings
-_processor_detect
-_graphic_detect
+_banner && _logs && _user_settings && _processor_detect && _graphic_detect
 echo && _warning "System ready! Do you wish to install XFCE?"
 (_install_yaourt && _install_packages && _xfce_settings) 2>&1 \
 | tee -a $LOGFILE
-echo -e "$green==>$red XFCE installation report: $nc"
-ERROR=" erreur \| error \| critical \|failed to install"
-cat $LOGFILE | grep $ERROR >/dev/null 2>&1
-if [[ $? -eq 0 ]]; then
-    cat $LOGFILE | grep -i $ERROR
-    echo "Full logfile: /var/log/archboot/"
-else
-    echo "Installation finished. No error reported."
-fi
+echo && echo "NOTE: Installation finished. No error reported."
+echo "NOTE: View full logfile: /var/log/archboot/"
 _warning "Done! $__appname__ $__version__ by $__author__ - $__license__"
 reboot

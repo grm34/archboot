@@ -34,6 +34,15 @@ _warning() {
     read -s WARNING
 }
 
+_logs() {
+    timedatectl set-timezone Europe/Paris
+    datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
+    LOGFILE="/mnt/var/log/archboot/install_arch_$datetime.log"
+    if [ ! -d "/mnt/var/log/archboot" ]; then
+        mkdir /mnt/var/log/archboot
+    fi
+}
+
 ########################
 ## FiRMWARE DETECTiON ##
 ########################
@@ -229,27 +238,12 @@ EOF
 ###########################
 ## RUN ARCHLiNUX iNSTALL ##
 ###########################
-timedatectl set-timezone Europe/Paris
-datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
-LOGFILE="install_arch_$datetime.log"
-_banner
-_firmware
-_settings
-_disk_part
-_mount_part
+_banner && _logs && _firmware && _settings && _disk_part && _mount_part
 if [ $? -eq 0 ]; then
     echo && _warning "System ready! Do you wish to install ArchLinux?"
     (_install_arch && _bootloader) 2>&1 | tee -a $LOGFILE
-    mkdir /mnt/var/log/archboot && cp $LOGFILE /mnt/var/log/archboot/
-    echo -e "$green==>$red ArchLinux installation report: $nc"
-    ERROR=" erreur \| error \| critical \|failed to install"
-    cat $LOGFILE | grep $ERROR >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
-        cat $LOGFILE | grep -i $ERROR
-        echo "Full logfile: /var/log/archboot/"
-    else
-        echo "Installation finished. No error reported."
-    fi
+    echo && echo "NOTE: Installation finished. No error reported."
+    echo "NOTE: View full logfile: /mnt/var/log/archboot/"
 else
     echo -e $part_error
     exit
