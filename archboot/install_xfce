@@ -70,8 +70,7 @@ _graphic_detect() {
     lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         until [[ $vga == "1" || $vga == "2" ]]; do
-        _prompt "ATI Proprietary Driver [${red}1${green}] | " \
-        "ATI Free Driver = [${red}2${green}]:"
+        _prompt "ATI Proprietary Driver [${red}1${green}] | ATI Free Driver = [${red}2${green}]:"
         read vga
         done
         if [[ $vga == "1" ]]; then
@@ -90,8 +89,7 @@ _graphic_detect() {
     lspci | grep "VGA" | grep "nVidia" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         until [[ $vga == "1" || $vga == "2" ]]; do
-        _prompt "NVIDIA Proprietary Driver [${red}1${green}] | " \
-        "NVIDIA Free Driver = [${red}2${green}]:"
+        _prompt "NVIDIA Proprietary Driver [${red}1${green}] | NVIDIA Free Driver = [${red}2${green}]:"
         read vga
         done
         if [[ $vga == "1" ]]; then
