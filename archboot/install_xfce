@@ -74,7 +74,7 @@ _graphic_detect() {
         read vga
         done
         if [[ $vga == "1" ]]; then
-            lspci | grep "VGA" | grep "Radeon HD"
+            lspci | grep "VGA" | grep "Radeon HD" >/dev/null 2>&1
             if [[ $? -eq 0 ]]; then
                 VGA_driver=" catalyst catalyst-total-hd234k"
             else
