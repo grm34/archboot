@@ -38,9 +38,6 @@ _logs() {
     timedatectl set-timezone Europe/Paris
     datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
     LOGFILE="/mnt/var/log/archboot/install_arch_$datetime.log"
-    if [ ! -d "/mnt/var/log/archboot" ]; then
-        mkdir /mnt/var/log/archboot
-    fi
 }
 
 ########################
@@ -241,6 +238,9 @@ EOF
 _banner && _logs && _firmware && _settings && _disk_part && _mount_part
 if [ $? -eq 0 ]; then
     echo && _warning "System ready! Do you wish to install ArchLinux?"
+    if [ ! -d "/mnt/var/log/archboot" ]; then
+        mkdir /mnt/var/log/archboot
+    fi
     (_install_arch && _bootloader) 2>&1 | tee -a $LOGFILE
     echo && echo "NOTE: Installation finished. No error reported."
     echo "NOTE: View full logfile: /mnt/var/log/archboot/"
