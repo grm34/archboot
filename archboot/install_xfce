@@ -80,6 +80,7 @@ _graphic_detect() {
                 VGA_driver=" catalyst catalyst-total-hd234k"
             else
                 VGA_driver=" catalyst catalyst-total"
+            fi
         else
             VGA_driver=" xf86-video-ati"
         fi
