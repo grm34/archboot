@@ -22,3 +22,6 @@
 
 **install_arch** install ArchLinux base system with grub2, you are not
 forced to use **install_xfce** which install full desktop environment.
+
+## Logs
+Logfiles availables in: /var/log/archboot/
