@@ -24,4 +24,4 @@
 forced to use **install_xfce** which install full desktop environment.
 
 ## Logs
-Logfiles availables in: /var/log/archboot/
+Take a look at: **/var/log/archboot/**
