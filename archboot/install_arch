@@ -1,8 +1,8 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v1.2"
+__version__="v1.5"
 __author__="@grm34"
-__date__="July 2016"
+__date__="December 2016"
 __license__="Apache v2.0 License"
 
 ##################
@@ -31,19 +31,49 @@ _prompt() {
 _warning() {
     echo -e "\n$green==> $red$1 $cyan[ENTER]$nc" >&2
     echo -ne "$green==> $nc" >&2
-    read -s WARNING
+    read -s warning
 }
 
+##############
+## SETTiNGS ##
+##############
+_settings() {
+
+    # Hostname
+    until [[ ${#HOST_name} -ge 3 \
+    && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    _prompt "Enter Hostname (ex: my-computer):"
+    read HOST_name
+    done
+
+    # Password
+    until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
+    echo -e "$cyan\n NOTE: password should be at least 8 chars $nc"
+    echo -e "$cyan NOTE: long with one letter and one digit! $nc"
+    _prompt "Root password (must be secure):"
+    read -s i
+    done
+    until [[ ${ROOT_passwd} != ${i} ]]; do
+    _prompt "Confirm root password:"
+    read -s ROOT_passwd
+    done
+}
+
+##################
+## ARCHBOOT LOG ##
+##################
 _logs() {
+    echo -e "$cyan==> Setting archboot log... $nc" && sleep 2s
     timedatectl set-timezone Europe/Paris
     datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
-    LOGFILE="install_arch_$datetime.log"
+    logfile="install_arch_$datetime.log"
 }
 
 ########################
 ## FiRMWARE DETECTiON ##
 ########################
 _firmware() {
+    echo -e "$cyan==> Firmware detection... $nc" && sleep 2s
     efivar -l >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         FIRMWARE="UEFI"
@@ -51,41 +81,16 @@ _firmware() {
         part_code="g"
         part_type=""
         boot_filesystem="fat -F 32"
+        echo "INFO: found UEFI firmware."
     else
         FIRMWARE="BIOS"
         part_table="MBR"
         part_code="o"
         part_type="p\n"
         boot_filesystem="ext2"
+        echo "INFO: found BIOS firmware."
     fi
     part_order=(0 1 2 3 4)
-}
-
-######################
-## iNSTALL SETTiNGS ##
-######################
-_settings() {
-
-    # HOSTNAME
-    until [[ ${#HOST_name} -ge 3 \
-    && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
-    _prompt "Enter Hostname (ex: my-computer):"
-    read HOST_name
-    done
-
-    # ROOT PASSWORD
-    until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
-    echo -e "$cyan\n  WARNiNG: root password should be at least 8 $nc"
-    echo -e "$cyan  characters long with one letter and one digit $nc"
-    _prompt "Root password (must be secure):"
-    read -s i
-    done
-    _prompt "Confirm root password:"
-    read -s ROOT_passwd
-    if [[ ${ROOT_passwd} != ${i} ]]; then
-        echo -e "$red \n==> Password does not match! Exiting... $nc"
-        exit
-    fi
 }
 
 #######################
@@ -102,7 +107,7 @@ _disk_part() {
     read _disk
     done
     fdisk -l /dev/$_disk
-    echo -e "$red \n  WARNiNG: This will erase the entire drive! $nc"
+    echo -e "$red\n WARNiNG: This will erase the entire drive! $nc"
     _warning "Creating $part_table partition table on /dev/$_disk..."
     printf "$part_code\nw" | fdisk /dev/$_disk
 
@@ -167,11 +172,11 @@ _disk_part() {
     yes | mkfs.ext4 /dev/$_disk${part_order[4]}
 }
 
-########################
-## MOUNTiNG PARTiTiON ##
-########################
+#########################
+## MOUNTiNG PARTiTiONS ##
+#########################
 _mount_part() {
-    _warning "Mounting partitions & activate swap..."
+    _warning "Mounting partitions & activating swap..."
     mount /dev/$_disk${part_order[3]} /mnt
     mkdir /mnt/{boot,home}
     if [[ "$FIRMWARE" == "UEFI" ]]; then
@@ -184,9 +189,9 @@ _mount_part() {
     mount /dev/$_disk${part_order[4]} /mnt/home
 }
 
-#########################
-## iNSTALL BASE SYSTEM ##
-#########################
+#################
+## BASE SYSTEM ##
+#################
 _install_arch() {
     echo -e "\n$cyan==> Installing base system... $nc" && sleep 2s
     yes '' | pacstrap /mnt base base-devel grub os-prober
@@ -212,9 +217,9 @@ _install_arch() {
 EOF
 }
 
-########################
-## iNSTALL BOOTLOADER ##
-########################
+################
+## BOOTLOADER ##
+################
 _bootloader() {
     _warning "Base system ok! Creating $FIRMWARE Boot Loader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
@@ -232,14 +237,14 @@ EOF
     fi
 }
 
-###########################
-## RUN ARCHLiNUX iNSTALL ##
-###########################
-_banner && _logs && _firmware && _settings && _disk_part && _mount_part
+#######################
+## ARCHLiNUX iNSTALL ##
+#######################
+_banner && _settings && _logs && _firmware && _disk_part && _mount_part
 if [ $? -eq 0 ]; then
     echo && _warning "System ready! Do you wish to install ArchLinux?"
-    (_install_arch && _bootloader) 2>&1 | tee -a $LOGFILE
-    mkdir /mnt/var/log/archboot && cp $LOGFILE /mnt/var/log/archboot/
+    (_install_arch && _bootloader) 2>&1 | tee -a $logfile
+    mkdir /mnt/var/log/archboot && cp $logfile /mnt/var/log/archboot/
     echo && echo "NOTE: Installation finished. No error reported."
     echo "NOTE: View full logfile: /mnt/var/log/archboot/"
 else
