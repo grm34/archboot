@@ -1,8 +1,8 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v1.2"
+__version__="v1.5"
 __author__="@grm34"
-__date__="July 2016"
+__date__="December 2016"
 __license__="Apache v2.0 License"
 
 ##################
@@ -31,124 +31,137 @@ _prompt() {
 _warning() {
     echo -e "\n$green==> $red$1 $cyan[ENTER]$nc" >&2
     echo -ne "$green==> $nc" >&2
-    read -s WARNING
+    read -s warning
 }
 
-_logs() {
-    datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
-    LOGFILE="/var/log/archboot/install_xfce_$datetime.log"
-    if [ ! -d "/var/log/archboot" ]; then
-        mkdir /var/log/archboot
-    fi
-}
+##############
+## SETTiNGS ##
+##############
+_settings() {
 
-#########################
-## PROCESSOR DETECTiON ##
-#########################
-_processor_detect() {
-    uname -m | grep "x86_64" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
-        processor="multicore"
-        sys_name="Arch Linux x86_64"
-    else
-        processor="singlecore"
-        sys_name="Arch Linux i686"
-    fi
-}
-
-#######################
-## GRAPHiC DETECTiON ##
-#######################
-_graphic_detect() {
-    VGA_driver="xf86-video-vesa"
-
-    # INTEL
-    lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then VGA_driver=" xf86-video-intel "; fi
-
-    # ATI
-    lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
-        until [[ $vga == "1" || $vga == "2" ]]; do
-        _prompt "ATI Proprietary Driver [${red}1${green}] | ATI Free Driver = [${red}2${green}]:"
-        read vga
-        done
-        if [[ $vga == "1" ]]; then
-            lspci | grep "VGA" | grep "Radeon HD" >/dev/null 2>&1
-            if [[ $? -eq 0 ]]; then
-                VGA_driver=" catalyst catalyst-total-hd234k"
-            else
-                VGA_driver=" catalyst catalyst-total"
-            fi
-        else
-            VGA_driver=" xf86-video-ati"
-        fi
-    fi
-
-    # NVIDIA
-    lspci | grep "VGA" | grep "nVidia" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
-        until [[ $vga == "1" || $vga == "2" ]]; do
-        _prompt "NVIDIA Proprietary Driver [${red}1${green}] | NVIDIA Free Driver = [${red}2${green}]:"
-        read vga
-        done
-        if [[ $vga == "1" ]]; then
-           VGA_driver=" nvidia nvidia-utils nvidia-libgl"
-        else
-            VGA_driver=" xf86-video-nouveau nouveau-dri"
-        fi
-    fi
-}
-
-###################
-## USER SETTiNGS ##
-###################
-_user_settings() {
-
-    # USERNAME
+    # Username
     until [[ ${#USER_name} -ge 3 \
     && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
     _prompt "Enter Username (ex: johnny):"
     read USER_name
     done
 
-    # USER PASSWORD
-    until [[ ${#i} -ge 6 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
-    echo -e "$cyan\n  WARNiNG: user password should be at least 6 $nc"
-    echo -e "$cyan  characters long with one letter and one digit $nc"
+    # Password
+    until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
+    echo -e "$cyan\n NOTE: password should be at least 8 chars $nc"
+    echo -e "$cyan NOTE: long with one letter and one digit! $nc"
     _prompt "User password (must be secure):"
     read -s i
     done
+    until [[ ${USER_passwd} != ${i} ]]; do
     _prompt "Confirm user password:"
     read -s USER_passwd
-    if [[ ${USER_passwd} != ${i} ]]; then
-        echo -e "$red \n==> Password does not match ! Exiting... $nc"
-        exit
-    fi
+    done
 
-    # SETTING USER
+    # Settings
     echo -e "\n$cyan==> Setting user... $nc" && sleep 2s
     useradd -g users -m -s /bin/bash $USER_name
     echo "${USER_name}:${USER_passwd}" | chpasswd
     echo "${USER_name} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-    # SETTING ALIASES
+    # Aliases
     echo -e "$cyan==> Setting aliases... $nc" && sleep 2s
+    echo 'export VISUAL="nano"' >> /home/$USER_name/.bashrc
     echo "alias _system='inxi -F -M'" >> /home/$USER_name/.bashrc
     echo "alias _install='yaourt -S'" >> /home/$USER_name/.bashrc
     echo "alias _delete='yaourt -Rcsn'" >> /home/$USER_name/.bashrc
     echo "alias _update='yaourt -Syyua'" >> /home/$USER_name/.bashrc
     echo "alias _clean='yaourt -Scc'" >> /home/$USER_name/.bashrc
-    echo "alias _verif='yaourt -Qdt'" >> /home/$USER_name/.bashrc
+    echo "alias _purge='yaourt -Qdt'" >> /home/$USER_name/.bashrc
+    echo "alias _verif='yaourt -Qqk'" >> /home/$USER_name/.bashrc
     echo "alias _pacnew='yaourt -C'" >> /home/$USER_name/.bashrc
     echo "alias _search='yaourt -s'" >> /home/$USER_name/.bashrc
-    echo "alias _reflector='sudo reflector -c FR --sort rate --save " \
+    echo "alias _mirrorlist='sudo reflector -c FR --sort rate --save " \
     "/etc/pacman.d/mirrorlist'" >> /home/$USER_name/.bashrc
 }
 
-##############################
-## iNSTALL XFCE ENViRONMENT ##
-##############################
+##################
+## ARCHBOOT LOG ##
+##################
+_logs() {
+    echo -e "$cyan==> Setting archboot log... $nc" && sleep 2s
+    datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
+    logfile="/var/log/archboot/install_xfce_$datetime.log"
+    if [ ! -d "/var/log/archboot" ]; then
+        mkdir /var/log/archboot
+    fi
+}
+
+######################
+## REQUIRED CONTENT ##
+######################
+_get_required_content() {
+    echo -e "$cyan==> Downloading required content... $nc" && sleep 2s
+    wget https://raw.githubusercontent.com/grm34/archboot/master/archboot/img/login.png
+    wget https://raw.githubusercontent.com/grm34/archboot/master/archboot/img/background.png
+    wget https://raw.githubusercontent.com/grm34/archboot/master/archboot/img/x.png
+}
+
+###################
+## CPU DETECTiON ##
+###################
+_cpu_detect() {
+    echo -e "$cyan==> CPU detection... $nc" && sleep 2s
+    uname -m | grep "x86_64" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        cpu="multicore"
+        sys_name="Arch Linux x86_64"
+        echo "NOTE: found 64bits CPU."
+    else
+        cpu="singlecore"
+        sys_name="Arch Linux i686"
+        echo "NOTE: found 32bits CPU."
+    fi
+}
+
+################
+## GPU DRIVER ##
+################
+_gpu_driver() {
+    echo -e "$cyan==> GPU detection... $nc" && sleep 2s
+    GPU_driver="xf86-video-vesa"
+
+    # Intel GPU
+    lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        echo "NOTE: found INTEL GPU."
+        if [[ $cpu == "singlecore" ]]; then
+            GPU_driver=" xf86-video-intel vulkan-intel mesa-libgl"
+        else
+            GPU_driver=\
+            " xf86-video-intel vulkan-intel mesa-libgl lib32-mesa-libgl"
+        fi
+    fi
+
+    # ATI GPU
+    lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        echo "NOTE: found ATI GPU."
+        if [[ $cpu == "singlecore" ]]; then
+            GPU_driver=" xf86-video-ati mesa-libgl mesa-vdpau"
+        else
+            GPU_driver=\
+            " xf86-video-ati mesa-libgl lib32-mesa-libgl \
+            mesa-vdpau lib32-mesa-vdpau"
+        fi
+    fi
+
+    # nVidia GPU
+    lspci | grep "VGA" | grep "nVidia" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        echo "NOTE: found nVidia GPU."
+        GPU_driver=" xf86-video-nouveau nouveau-dri libva-vdpau-driver"
+    fi
+}
+
+######################
+## XFCE ENViRONMENT ##
+######################
 _install_yaourt() {
     echo -e "\n$cyan==> Setting timezone... $nc" && sleep 2s
     timedatectl set-local-rtc 1
@@ -170,7 +183,7 @@ _install_yaourt() {
     echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
     echo "[community]" >> /etc/pacman.conf
     echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
-    if [[ $processor == "multicore" ]]; then
+    if [[ $cpu == "multicore" ]]; then
         echo "[multilib]" >> /etc/pacman.conf
         echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
     fi
@@ -183,9 +196,9 @@ _install_yaourt() {
 _install_packages() {
     _install="sudo -u $USER_name yaourt --noconfirm -S"
 
-    # VGA Driver
+    # GPU Driver
     echo -e "$cyan==> Installing VGA Driver... $nc" && sleep 2s
-    $_install $VGA_driver arandr
+    $_install $GPU_driver arandr
 
     # Desktop Environment
     echo -e "$cyan==> Installing Desktop Environment... $nc" && sleep 2s
@@ -230,10 +243,10 @@ _install_packages() {
         _bluetooth="on"
     fi
 
-    # Web Navigators & plugins
+    # Web Navigator & plugins
     echo -e "$cyan==> Installing Web Navigators... $nc" && sleep 2s
     $_install firefox firefox-i18n-fr flashplayer jre8-openjdk icedtea-web
-    if [[ $processor == "multicore" ]]; then
+    if [[ $cpu == "multicore" ]]; then
         $_install chromium chromium-pepper-flash
     fi
     ram=`grep MemTotal /proc/meminfo | awk '{print $2}'`
@@ -248,11 +261,18 @@ _install_packages() {
     # Network Tools
     echo -e "$cyan==> Installing Network Tools... $nc" && sleep 2s
     $_install skype transmission-gtk google-earth filezilla \
-    lib32-libjpeg-turbo lib32-libpng teamviewer10 hexchat sshfs
+    teamviewer10 hexchat sshfs
+    if [[ $cpu == "multicore" ]]; then
+        $_install lib32-libjpeg-turbo lib32-libpng
+    fi
 
     # Games
     echo -e "$cyan==> Installing some games... $nc" && sleep 2s
-    $_install playonlinux gnome-chess gnuchess
+    $_install playonlinux gnome-chess gnuchess zenity weston
+    if [[ $cpu == "multicore" ]]; then
+        $_install lib32-openal lib32-mpg123 lib32-wayland \
+        lib32-pango lib32-glu lib32-libxinerama lib32-libwrap lib32-ncurses
+    fi
 
     # VirtuaBox
     until [[ ${virtual,,} == "y" || ${virtual,,} == "n" ]]; do
@@ -269,7 +289,7 @@ _install_packages() {
 
 _xfce_settings() {
 
-    # KEYBOARD
+    # Keyboard Layout
     echo -e "$cyan==> Setting keyboard Layout... $nc" && sleep 2s
     echo 'Section "InputClass"' > \
     /etc/X11/xorg.conf.d/10-keyboard-layout.conf
@@ -309,7 +329,6 @@ _xfce_settings() {
     echo "disable=0" >> /etc/lxdm/lxdm.conf
     echo "white=$USER_name" >> /etc/lxdm/lxdm.conf
     echo "black=root" >> /etc/lxdm/lxdm.conf
-    wget https://drones-technologies.com/arch/login.png
     rm /usr/share/lxdm/themes/Arch-Dark/login.png
     mv login.png /usr/share/lxdm/themes/Arch-Dark/
 
@@ -326,12 +345,10 @@ _xfce_settings() {
     sed -i -e \
     "s/'Options avancées pour Arch Linux'/'Arch Linux Settings' --class x/g" \
     /boot/grub/grub.cfg
-    wget https://drones-technologies.com/arch/background.png
-    wget https://drones-technologies.com/arch/x.png
     mv background.png /boot/grub/themes/Archlinux/
     mv x.png /boot/grub/themes/Archlinux/icons/
 
-    # SERViCES
+    # Services
     echo -e "$cyan==> Enabling Services... $nc" && sleep 2s
     systemctl enable lxdm.service
     systemctl enable ntpd.service
@@ -339,7 +356,7 @@ _xfce_settings() {
     systemctl enable teamviewerd.service
     if [[ $_bluetooth == "on" ]]; then systemctl enable bluetooth.service; fi
 
-    # GROUPS
+    # Groups
     echo -e "$cyan==> Adding ${USER_name} to all groups... $nc" && sleep 2s
     usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
     usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name
@@ -354,27 +371,28 @@ _xfce_settings() {
         usermod -aG vboxusers,vboxsf $USER_name
     fi
 
-    # PURGE & UPDATE
+    # Purge & Update
     echo -e "$cyan==> Purge installation... $nc" && sleep 2s
     echo 'o' | sudo -u $USER_name yaourt -Qdt
     sudo -u $USER_name yaourt --noconfirm -Sc
     echo -e "$cyan==> Update all packages... $nc" && sleep 2s
     sudo -u $USER_name yaourt --noconfirm -Syua
 
-    # RESTORE USER SECURITY
+    # Restore User Security
     echo -e "$cyan==> Restore User Security... $nc" && sleep 2s
     sed -i -e \
     "s/${USER_name} ALL=(ALL) NOPASSWD:ALL/${USER_name} ALL=(ALL) ALL/g" \
     /etc/sudoers
 }
 
-#######################
-## RUN XFCE iNSTALL ##
-#######################
-_banner && _logs && _user_settings && _processor_detect && _graphic_detect
+##################
+## XFCE iNSTALL ##
+##################
+_banner && _settings && _logs && _cpu_detect && \
+_gpu_driver && _get_required_content
 echo && _warning "System ready! Do you wish to install XFCE?"
 (_install_yaourt && _install_packages && _xfce_settings) 2>&1 \
-| tee -a $LOGFILE
+| tee -a $logfile
 echo && echo "NOTE: Installation finished. No error reported."
 echo "NOTE: View full logfile: /var/log/archboot/"
 _warning "Done! $__appname__ $__version__ by $__author__ - $__license__"
