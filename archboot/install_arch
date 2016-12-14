@@ -81,14 +81,14 @@ _firmware() {
         part_code="g"
         part_type=""
         boot_filesystem="fat -F 32"
-        echo "INFO: found UEFI firmware."
+        echo "NOTE: found UEFI firmware."
     else
         FIRMWARE="BIOS"
         part_table="MBR"
         part_code="o"
         part_type="p\n"
         boot_filesystem="ext2"
-        echo "INFO: found BIOS firmware."
+        echo "NOTE: found BIOS firmware."
     fi
     part_order=(0 1 2 3 4)
 }
