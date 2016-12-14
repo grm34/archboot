@@ -1,6 +1,6 @@
 ![](http://i.imgur.com/z4nv4Kj.png)
 
-**Install ArchLinux the way i like! [FR]**
+**Install ArchLinux the way i like [FR]**
 
 ## Usage :
 
