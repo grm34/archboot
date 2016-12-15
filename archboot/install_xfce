@@ -269,7 +269,7 @@ _install_packages() {
     # Games
     echo -e "$cyan==> Installing some games... $nc" && sleep 2s
     $_install playonlinux winetricks zenity gnome-chess gnuchess
-        if [[ $cpu == "multicore" ]]; then
+    if [[ $cpu == "multicore" ]]; then
         $_install lib32-openal lib32-mpg123 lib32-wayland \
         lib32-pango lib32-glu lib32-libxinerama lib32-libwrap lib32-ncurses
     fi
