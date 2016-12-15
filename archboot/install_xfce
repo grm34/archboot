@@ -48,7 +48,7 @@ _settings() {
 
     # Password
     until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
-    echo && echo && echo -e "NOTE: password should be at least 8 chars $nc"
+    echo && echo -e "NOTE: password should be at least 8 chars $nc"
     echo -e "NOTE: long with one letter and one digit! $nc"
     _prompt "User password (must be secure):"
     read -s i
@@ -84,7 +84,7 @@ _settings() {
 ## ARCHBOOT LOG ##
 ##################
 _logs() {
-    echo && echo -e "$cyan==> Setting archboot log... $nc" && sleep 2s
+    echo && echo && echo -e "$cyan==> Setting archboot log... $nc" && sleep 2s
     datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
     logfile="/var/log/archboot/install_xfce_$datetime.log"
     if [ ! -d "/var/log/archboot" ]; then
