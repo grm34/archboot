@@ -48,8 +48,8 @@ _settings() {
 
     # Password
     until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
-    echo -e "$cyan\n NOTE: password should be at least 8 chars $nc"
-    echo -e "$cyan NOTE: long with one letter and one digit! $nc"
+    echo && echo && echo -e "NOTE: password should be at least 8 chars $nc"
+    echo -e "NOTE: long with one letter and one digit! $nc"
     _prompt "Root password (must be secure):"
     read -s i
     done
@@ -63,7 +63,7 @@ _settings() {
 ## ARCHBOOT LOG ##
 ##################
 _logs() {
-    echo -e "$cyan==> Setting archboot log... $nc" && sleep 2s
+    echo && echo -e "$cyan==> Setting archboot log... $nc" && sleep 2s
     timedatectl set-timezone Europe/Paris
     datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
     logfile="install_arch_$datetime.log"
