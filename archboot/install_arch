@@ -2,7 +2,7 @@
 __appname__="archboot"
 __version__="v1.5"
 __author__="@grm34"
-__date__="December 2016"
+__date__="Christmas 2016"
 __license__="Apache v2.0 License"
 
 ##################
@@ -17,21 +17,39 @@ cyan="\e[1;36m"
 nc="\e[0m"
 
 _banner() {
-    echo -e "\n" >&2
-    echo -e "$red        ...ArchLinux install...   $nc" >&2
-    echo -e "$red      ___________________________ $nc" >&2
+    echo -e "$red\n\n       █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█" >&2
+    echo -e "       █$yellow     Archboot $__version__     $red█" >&2
+    echo -e "       █$yellow ArchLinux Base System $red█" >&2
+    echo -e "       █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█\n"$nc >&2
 }
 
 _prompt() {
-   echo -e "\n$yellow==> $green$1 $red$2$nc" >&2
-   echo -e "$yellow==> ------------------------------------ $nc" >&2
-   echo -ne "$yellow==> $nc" >&2
+   echo -e $yellow"\n==> $green$1 $red$2"$nc >&2
+   echo -e $yellow"==> ------------------------------------"$nc >&2
+   echo -ne $yellow"==> "$nc >&2
+}
+
+_confirm() {
+    echo -e $green"\n==> $red$1 $cyan[ENTER]"$nc >&2
+    echo -ne $green"==> "$nc >&2
+    read -s confirm
+}
+
+_info() {
+    echo -e $cyan"\n==> $1..."$nc && sleep 2s
+}
+
+_note() {
+    echo -e $red"\nNOTE:$nc $1" >&2
+}
+
+_error() {
+    echo -e $red"\nERROR:$nc $1" >&2
+    exit
 }
 
 _warning() {
-    echo -e "\n$green==> $red$1 $cyan[ENTER]$nc" >&2
-    echo -ne "$green==> $nc" >&2
-    read -s warning
+    echo -e $red"\nWARNiNG:$nc $1" >&2
 }
 
 ##############
@@ -48,23 +66,23 @@ _settings() {
 
     # Password
     until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
-    echo && echo -e "NOTE: password should be at least 8 chars $nc"
-    echo -e "NOTE: long with one letter and one digit! $nc"
-    _prompt "Root password (must be secure):"
+    _note "password should be at least 8 chars"
+    _note "long with one letter and one digit"
+    _prompt "Enter password for root:"
     read -s i
     done
-    _prompt "Confirm root password:"
-    until [[ ${ROOT_passwd} != ${i} ]]; do
-    _prompt "Confirm root password:"
+    _prompt "Confirm password for root:"
     read -s ROOT_passwd
-    done
+    if [[ ${ROOT_passwd} != ${i} ]]; then
+        _error "passwords does not match!"
+    fi
 }
 
 ##################
 ## ARCHBOOT LOG ##
 ##################
 _logs() {
-    echo && echo && echo -e "$cyan==> Setting archboot log... $nc" && sleep 2s
+    _info "Setting archboot log"
     timedatectl set-timezone Europe/Paris
     datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
     logfile="install_arch_$datetime.log"
@@ -74,7 +92,7 @@ _logs() {
 ## FiRMWARE DETECTiON ##
 ########################
 _firmware() {
-    echo -e "$cyan==> Firmware detection... $nc" && sleep 2s
+    _info "Firmware detection"
     efivar -l >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         FIRMWARE="UEFI"
@@ -82,14 +100,14 @@ _firmware() {
         part_code="g"
         part_type=""
         boot_filesystem="fat -F 32"
-        echo "NOTE: found UEFI firmware."
+        _note "found UEFI firmware."
     else
         FIRMWARE="BIOS"
         part_table="MBR"
         part_code="o"
         part_type="p\n"
         boot_filesystem="ext2"
-        echo "NOTE: found BIOS firmware."
+        _note "found BIOS firmware."
     fi
     part_order=(0 1 2 3 4)
 }
@@ -98,53 +116,52 @@ _firmware() {
 ## DiSK PARTiTiONiNG ##
 #######################
 _disk_part() {
-    part_error="$red \n==> Partitionning error! Exiting... $nc"
 
     # MBR or GPT
-    echo && _warning "$FIRMWARE detected! Listing disk..."
+    _confirm "$FIRMWARE detected! Listing disk\n"
     until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]; do
-    echo && fdisk -l
+    fdisk -l
     _prompt "Enter disk to use (ex: sda):"
     read _disk
     done
     fdisk -l /dev/$_disk
-    echo -e "$red\n WARNiNG: This will erase the entire drive! $nc"
-    _warning "Creating $part_table partition table on /dev/$_disk..."
+    _warning "this will erase the entire drive!"
+    _confirm "Creating $part_table partition table on /dev/$_disk"
     printf "$part_code\nw" | fdisk /dev/$_disk
 
     # BOOT on /dev/xxx1
     until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1} \
     || ${boot_size,,} == "y" ]]; do
-    echo -e "\n$cyan==> Partition size {M,G} => default: 512M $nc"
+    _info "Partition size {M,G} => default: 512M"
     _prompt "Boot partition size => default: $red[y]"
     read boot_size
     done
     if [[ ${boot_size,,} == "y" ]]; then boot_size="512M"; fi
-    _warning "Creating boot /dev/$_disk${part_order[1]} [$boot_size]..."
+    _confirm "Creating boot /dev/$_disk${part_order[1]} [$boot_size]"
     printf "n\n$part_type\n\n+$boot_size\nw" | fdisk /dev/$_disk
     yes | mkfs.$boot_filesystem /dev/$_disk${part_order[1]}
 
     # SWAP on /dev/xxx2
     until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1} \
     || ${swap_size,,} == "y" ]]; do
-    echo -e "\n$cyan==> Partition size {M,G} => default: 2G $nc"
+    _info "Partition size {M,G} => default: 2G"
     _prompt "Swap partition size => default: $red[y]"
     read swap_size
     done
     if [[ ${swap_size,,} == "y" ]]; then swap_size="2G"; fi
-    _warning "Creating Swap /dev/$_disk${part_order[2]} [$swap_size]..."
+    _confirm "Creating Swap /dev/$_disk${part_order[2]} [$swap_size]"
     printf "n\n$part_type\n\n+$swap_size\nw" | fdisk /dev/$_disk
     yes | mkswap /dev/$_disk${part_order[2]}
 
     # SYSTEM on /dev/xxx3
     until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1} \
     || ${sys_size,,} == "y" ]]; do
-    echo -e "\n$cyan==> Partition size {G,T,P} => default: 25G $nc"
+    _info "Partition size {G,T,P} => default: 25G"
     _prompt "System partition size => default: $red[y]"
     read sys_size
     done
     if [[ ${sys_size,,} == "y" ]]; then sys_size="25G"; fi
-    _warning "Creating System /dev/$_disk${part_order[3]} [$sys_size]..."
+    _confirm "Creating System /dev/$_disk${part_order[3]} [$sys_size]"
     printf "n\n$part_type\n\n+$sys_size\nw" | fdisk /dev/$_disk
     yes | mkfs.ext4 /dev/$_disk${part_order[3]}
 
@@ -152,7 +169,7 @@ _disk_part() {
     if [[ "$FIRMWARE" == "UEFI" ]]; then
         until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1} \
         || ${home_size,,} == "y" ]]; do
-        echo -e "\n$cyan==> Partition size {G,T,P} => default: free space $nc"
+        _info "Partition size {G,T,P} => default: free space"
         _prompt "Home partition size => default: $red[y]"
         read home_size
         done
@@ -163,11 +180,11 @@ _disk_part() {
             home_size="+$home_size"
             part_size="$home_size"
         fi
-        _warning "Creating Home /dev/$_disk${part_order[4]} [$part_size]..."
+        _confirm "Creating Home /dev/$_disk${part_order[4]} [$part_size]"
         printf "n\n\n\n$home_size\nw" | fdisk /dev/$_disk
     else
-        echo -e "\n$cyan==> Home partition will use all free space $nc"
-        _warning "Creating Home partition /dev/$_disk${part_order[4]}..."
+        _info "Home partition will use all free space"
+        _confirm "Creating Home partition /dev/$_disk${part_order[4]}"
         printf "n\n$part_type\n\nw" | fdisk /dev/$_disk
     fi
     yes | mkfs.ext4 /dev/$_disk${part_order[4]}
@@ -177,7 +194,7 @@ _disk_part() {
 ## MOUNTiNG PARTiTiONS ##
 #########################
 _mount_part() {
-    _warning "Mounting partitions & activating swap..."
+    _confirm "Mounting partitions & activating swap"
     mount /dev/$_disk${part_order[3]} /mnt
     mkdir /mnt/{boot,home}
     if [[ "$FIRMWARE" == "UEFI" ]]; then
@@ -194,25 +211,25 @@ _mount_part() {
 ## BASE SYSTEM ##
 #################
 _install_arch() {
-    echo -e "\n$cyan==> Installing base system... $nc" && sleep 2s
+    _info "Installing base system"
     yes '' | pacstrap /mnt base base-devel grub os-prober
     genfstab -U -p /mnt >> /mnt/etc/fstab
     arch-chroot /mnt /bin/bash <<EOF
-    echo -e "$cyan==> Setting root password... $nc" && sleep 2s
+    _info "Setting root password"
     echo "root:${ROOT_passwd}" | chpasswd
-    echo -e "$cyan==> Setting hostname... $nc" && sleep 2s
+    _info "Setting hostname"
     echo $HOST_name > /etc/hostname
-    echo -e "$cyan==> Setting timezone... $nc" && sleep 2s
+    _info "Setting timezone"
     ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
-    echo -e "$cyan==> Setting and generating locale... $nc" && sleep 2s
+    _info "Setting and generating locale"
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
     export LANG=fr_FR.UTF-8
     echo "LANG=fr_FR.UTF-8" > /etc/locale.conf
-    echo -e "$cyan==> Setting keyboard... $nc" && sleep 2s
+    _info "Setting keyboard"
     echo "KEYMAP=fr-pc" > /etc/vconsole.conf
-    echo -e "$cyan==> Setting Linux environment... $nc" && sleep 2s
+    _info "Setting Linux environment"
     mkinitcpio -p linux
-    echo -e "$cyan==> Installing network... $nc" && sleep 2s
+    _info "Installing network"
     pacman --noconfirm -S networkmanager wget git inxi reflector
     systemctl enable NetworkManager.service
 EOF
@@ -222,7 +239,7 @@ EOF
 ## BOOTLOADER ##
 ################
 _bootloader() {
-    _warning "Base system ok! Creating $FIRMWARE Boot Loader?"
+    _confirm "Base system ok! Creating $FIRMWARE Boot Loader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
         arch-chroot /mnt /bin/bash <<EOF
         pacman --noconfirm -S gptfdisk efibootmgr
@@ -243,14 +260,13 @@ EOF
 #######################
 _banner && _settings && _logs && _firmware && _disk_part && _mount_part
 if [ $? -eq 0 ]; then
-    echo && _warning "System ready! Do you wish to install ArchLinux?"
+    _confirm "System ready! Do you wish to install ArchLinux?"
     (_install_arch && _bootloader) 2>&1 | tee -a $logfile
     mkdir /mnt/var/log/archboot && cp $logfile /mnt/var/log/archboot/
-    echo && echo "NOTE: Installation finished. No error reported."
-    echo "NOTE: View full logfile: /mnt/var/log/archboot/"
+    _note "Installation finished. No error reported."
+    _note "View full logfile: /mnt/var/log/archboot/"
 else
-    echo -e $part_error
-    exit
+    _error "partitionning error!"
 fi
-_warning "Done! $__appname__ $__version__ by $__author__ - $__license__"
+_confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"
 umount -R /mnt && reboot
