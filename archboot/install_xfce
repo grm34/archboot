@@ -2,7 +2,7 @@
 __appname__="archboot"
 __version__="v1.5"
 __author__="@grm34"
-__date__="December 2016"
+__date__="Christmas 2016"
 __license__="Apache v2.0 License"
 
 ##################
@@ -17,9 +17,10 @@ cyan="\e[1;36m"
 nc="\e[0m"
 
 _banner() {
-    echo -e "\n" >&2
-    echo -e "$red        ...ArchLinux XFCE...   $nc" >&2
-    echo -e "$red      _________________________ $nc" >&2
+    echo -e "$red\n\n       █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█" >&2
+    echo -e "       █$yellow     Archboot $__version__     $red█" >&2
+    echo -e "       █$yellow  Desktop Environment  $red█" >&2
+    echo -e "       █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█\n"$nc >&2
 }
 
 _prompt() {
@@ -28,10 +29,22 @@ _prompt() {
    echo -ne "$yellow==> $nc" >&2
 }
 
-_warning() {
+_confirm() {
     echo -e "\n$green==> $red$1 $cyan[ENTER]$nc" >&2
     echo -ne "$green==> $nc" >&2
-    read -s warning
+    read -s confirm
+}
+
+_note() {
+    echo -e $red"NOTE:$nc $1" >&2
+}
+
+_error() {
+    echo -e $red"ERROR:$nc $1" >&2
+}
+
+_warning() {
+    echo -e $red"WARNiNG:$nc $1" >&2
 }
 
 ##############
@@ -50,13 +63,15 @@ _settings() {
     until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
     echo && echo -e "NOTE: password should be at least 8 chars $nc"
     echo -e "NOTE: long with one letter and one digit! $nc"
-    _prompt "User password (must be secure):"
+    _prompt "Enter password for $USER_name:"
     read -s i
     done
-    until [[ ${USER_passwd} != ${i} ]]; do
-    _prompt "Confirm user password:"
+    _prompt "Confirm password for $USER_name:"
     read -s USER_passwd
-    done
+    if [[ ${USER_passwd} != ${i} ]]; then
+        echo && _error "passwords does not match!"
+        exit
+    fi
 
     # Settings
     echo -e "\n$cyan==> Setting user... $nc" && sleep 2s
@@ -390,10 +405,10 @@ _xfce_settings() {
 ##################
 _banner && _settings && _logs && _cpu_detect && \
 _gpu_driver && _get_required_content
-echo && _warning "System ready! Do you wish to install XFCE?"
+echo && _confirm "System ready! Do you wish to install XFCE?"
 (_install_yaourt && _install_packages && _xfce_settings) 2>&1 \
 | tee -a $logfile
 echo && echo "NOTE: Installation finished. No error reported."
 echo "NOTE: View full logfile: /var/log/archboot/"
-_warning "Done! $__appname__ $__version__ by $__author__ - $__license__"
+_confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"
 reboot
