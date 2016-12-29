@@ -40,7 +40,7 @@ _info() {
 }
 
 _note() {
-    echo -e $red"\nNOTE:$nc $1" >&2
+    echo -e $cyan"\nNOTE:$nc $1" >&2
 }
 
 _error() {
@@ -49,7 +49,7 @@ _error() {
 }
 
 _warning() {
-    echo -e $red"\nWARNiNG:$nc $1" >&2
+    echo -e $yellow"\nWARNiNG:$nc $1" >&2
 }
 
 ##############
