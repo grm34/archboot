@@ -66,8 +66,8 @@ _settings() {
 
     # Password
     until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
-    _note "password should be at least 8 chars" \
-          "long with one letter and one digit."
+    _note "password should be at least 8 chars \
+           long with one letter and one digit."
     _prompt "Enter password for root:"
     read -s i
     done
@@ -263,8 +263,8 @@ if [ $? -eq 0 ]; then
     _confirm "System ready! Do you wish to install ArchLinux?"
     (_install_arch && _bootloader) 2>&1 | tee -a $logfile
     mkdir /mnt/var/log/archboot && cp $logfile /mnt/var/log/archboot/
-    _note "Installation finished. No error reported." \
-          "View full logfile: /mnt/var/log/archboot/"
+    _note "Installation finished. No error reported. \
+           View full logfile: /mnt/var/log/archboot/"
 else
     _error "partitionning error!"
 fi
