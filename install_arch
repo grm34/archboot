@@ -2,7 +2,7 @@
 __appname__="archboot"
 __version__="v1.5"
 __author__="@grm34"
-__date__="Christmas 2016"
+__date__="2017"
 __license__="Apache v2.0 License"
 
 ##################
@@ -209,9 +209,9 @@ _mount_part() {
 #################
 ## BASE SYSTEM ##
 #################
-_install_arch() {
+_install_base() {
     _info "Installing base system"
-    yes '' | pacstrap /mnt base base-devel grub os-prober
+    yes '' | pacstrap /mnt base base-devel syslinux
     genfstab -U -p /mnt >> /mnt/etc/fstab
     arch-chroot /mnt /bin/bash <<EOF
     _info "Setting root password"
@@ -229,8 +229,13 @@ _install_arch() {
     _info "Setting Linux environment"
     mkinitcpio -p linux
     _info "Installing network"
-    pacman --noconfirm -S networkmanager wget git inxi reflector
+    pacman --noconfirm -S ntp networkmanager \
+    wget git reflector wireless_tools wpa_supplicant
     systemctl enable NetworkManager.service
+    if [[ "$part_table" == "GPT" ]]; then
+        _info "Installing GPT compatibility"
+        pacman --noconfirm -S gptfdisk
+    fi
 EOF
 }
 
@@ -241,26 +246,29 @@ _bootloader() {
     _confirm "Base system ok! Creating $FIRMWARE Boot Loader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
         arch-chroot /mnt /bin/bash <<EOF
-        pacman --noconfirm -S gptfdisk efibootmgr
-        grub-install --target=x86_64-efi --efi-directory=/boot/efi \
-        --bootloader-id=arch_grub --recheck
-        grub-mkconfig -o /boot/grub/grub.cfg
+        pacman --noconfirm -S dosfstools efibootmgr
+        mkdir -p /boot/efi/EFI/syslinux
+        cp -r /usr/lib/syslinux/efi64/* /boot/efi/EFI/syslinux
+        mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+        efibootmgr -c -d /dev/$_disk${part_order[1]} -p Y -l \
+        /boot/efi/EFI/syslinux/syslinux.efi -L "Syslinux"
+        cp /usr/lib/syslinux/bios/vesamenu.c32 /boot/efi/EFI/syslinux/
 EOF
     else
         arch-chroot /mnt /bin/bash <<EOF
-        grub-install --no-floppy --recheck /dev/$_disk
-        grub-mkconfig -o /boot/grub/grub.cfg
+        syslinux-install_update -iam
+        cp /usr/lib/syslinux/bios/vesamenu.c32 /boot/syslinux/
 EOF
     fi
 }
 
-#######################
-## ARCHLiNUX iNSTALL ##
-#######################
+#############
+## iNSTALL ##
+#############
 _banner && _settings && _logs && _firmware && _disk_part && _mount_part
 if [ $? -eq 0 ]; then
     _confirm "System ready! Do you wish to install ArchLinux?"
-    (_install_arch && _bootloader) 2>&1 | tee -a $logfile
+    (_install_base && _bootloader) 2>&1 | tee -a $logfile
     mkdir /mnt/var/log/archboot && cp $logfile /mnt/var/log/archboot/
     _note "Installation finished. No error reported, see logfile: /var/log/archboot/"
 else
