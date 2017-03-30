@@ -17,6 +17,7 @@
 ## Notes
 
 **install_arch** install ArchLinux base system with syslinux.
+
 **install_kde** install full KDE desktop environment.
 
 ## Logs
