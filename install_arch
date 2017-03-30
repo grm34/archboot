@@ -117,7 +117,7 @@ _firmware() {
 _disk_part() {
 
     # MBR or GPT
-    _confirm "$FIRMWARE detected! Listing disk\n"
+    _confirm "$FIRMWARE detected! Listing disk"
     until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]; do
     fdisk -l
     _prompt "Enter disk to use (ex: sda):"
