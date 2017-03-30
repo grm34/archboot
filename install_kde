@@ -194,7 +194,7 @@ _install_packages() {
     # File System
     _info "Installing File System"
     $_install gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
-    dosfstools exfat-utils file-roller ifuse usbmuxd fuseiso gcdemu rar
+    dosfstools exfat-utils file-roller ifuse usbmuxd fuseiso gcdemu
 
     # Desktop Tools
     _info "Installing Desktop Tools"
@@ -203,28 +203,13 @@ _install_packages() {
     # Firefox
     _info "Installing Firefox"
     $_install firefox firefox-i18n-fr gtk3-print-backends
-
-    # Network Tools
-    _info "Installing Network Tools"
-    $_install teamviewer skype transmission-gtk filezilla hexchat sshfs
-
-    # Playonlinux
-    _prompt "Do you wish install Playonlinux?"
-    _info "Installing Playonlinux"
-    $_install playonlinux winetricks zenity lib32-openal \
-    lib32-mpg123 lib32-wayland lib32-pango lib32-glu \
-    lib32-libxinerama lib32-libwrap lib32-ncurses
 }
 
 _install_settings() {
 
-    # Services
-    _info "Enabling Services"
-    systemctl enable ntpd
+    # Services & Groups
+    _info "Enabling services"
     systemctl enable sddm
-    systemctl enable teamviewerd
-
-    # Groups
     _info "Adding ${USER_name} to all groups"
     usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
     usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name

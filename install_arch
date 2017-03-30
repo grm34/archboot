@@ -36,7 +36,7 @@ _confirm() {
 }
 
 _info() {
-    echo -e $yellow"\n==> $1..."$nc && sleep 2s
+    echo -e $cyan"\n==> $1..."$nc && sleep 2s
 }
 
 _note() {
@@ -232,6 +232,7 @@ _install_base() {
     pacman --noconfirm -S ntp networkmanager \
     wget git reflector wireless_tools wpa_supplicant
     systemctl enable NetworkManager.service
+    systemctl enable ntpd.service
     if [[ "$part_table" == "GPT" ]]; then
         _info "Installing GPT compatibility"
         pacman --noconfirm -S gptfdisk
