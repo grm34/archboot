@@ -36,7 +36,7 @@ _confirm() {
 }
 
 _info() {
-    echo -e $cyan"\n==> $1..."$nc && sleep 2s
+    echo -e $yellow"\n==> $1..."$nc && sleep 2s
 }
 
 _note() {

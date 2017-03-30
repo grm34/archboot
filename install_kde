@@ -35,16 +35,21 @@ _confirm() {
     read -s confirm
 }
 
+_info() {
+    echo -e $yellow"\n==> $1..."$nc && sleep 2s
+}
+
 _note() {
-    echo -e $red"NOTE:$nc $1" >&2
+    echo -e $cyan"\nNOTE:$nc $1" >&2
 }
 
 _error() {
-    echo -e $red"ERROR:$nc $1" >&2
+    echo -e $red"\nERROR:$nc $1" >&2
+    exit
 }
 
 _warning() {
-    echo -e $red"WARNiNG:$nc $1" >&2
+    echo -e $yellow"\nWARNiNG:$nc $1" >&2
 }
 
 ##############
@@ -177,7 +182,7 @@ _install_packages() {
 
     # Xorg
     _info "Installing Xorg"
-    $_install xorg-server xorg-xinit xorg-server-utils    
+    $_install xorg-server xorg-xinit xorg-server-utils
 
     # KDE
     _info "Installing KDE"
