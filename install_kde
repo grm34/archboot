@@ -71,8 +71,8 @@ _settings() {
     read -s i
     done
     _prompt "Confirm password for ${USER_name}:"
-    read -s ROOT_passwd
-    if [[ ${ROOT_passwd} != ${i} ]]; then
+    read -s USER_passwd
+    if [[ ${USER_passwd} != ${i} ]]; then
         _error "passwords does not match!"
     fi
 
