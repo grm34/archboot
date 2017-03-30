@@ -1,0 +1,260 @@
+#!/bin/bash
+__appname__="archboot"
+__version__="v1.5"
+__author__="@grm34"
+__date__="2017"
+__license__="Apache v2.0 License"
+
+##################
+## GLOBAL STYLE ##
+##################
+red="\e[1;31m"
+green="\e[1;32m"
+yellow="\e[1;33m"
+blue="\e[1;34m"
+pink="\e[1;35m"
+cyan="\e[1;36m"
+nc="\e[0m"
+
+_banner() {
+    echo -e "$red\n\n       █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█" >&2
+    echo -e "       █$yellow     Archboot $__version__     $red█" >&2
+    echo -e "       █$yellow  Desktop Environment  $red█" >&2
+    echo -e "       █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█\n"$nc >&2
+}
+
+_prompt() {
+   echo -e "\n$yellow==> $green$1 $nc" >&2
+   echo -e "$yellow==> ------------------------------------ $nc" >&2
+   echo -ne "$yellow==> $nc" >&2
+}
+
+_confirm() {
+    echo -e "\n$green==> $red$1 $cyan[ENTER]$nc" >&2
+    echo -ne "$green==> $nc" >&2
+    read -s confirm
+}
+
+_note() {
+    echo -e $red"NOTE:$nc $1" >&2
+}
+
+_error() {
+    echo -e $red"ERROR:$nc $1" >&2
+}
+
+_warning() {
+    echo -e $red"WARNiNG:$nc $1" >&2
+}
+
+##############
+## SETTiNGS ##
+##############
+_settings() {
+
+    # Username
+    until [[ ${#USER_name} -ge 3 \
+    && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    _prompt "Enter Username (ex: johnny):"
+    read USER_name
+    done
+
+    # Password
+    until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
+    _note "password should be at least 8 chars long with one letter and one digit."
+    _prompt "Enter password for ${USER_name}:"
+    read -s i
+    done
+    _prompt "Confirm password for ${USER_name}:"
+    read -s ROOT_passwd
+    if [[ ${ROOT_passwd} != ${i} ]]; then
+        _error "passwords does not match!"
+    fi
+
+    # Settings
+    _info "Setting user"
+    useradd -g users -m -s /bin/bash $USER_name
+    echo "${USER_name}:${USER_passwd}" | chpasswd
+    echo "${USER_name} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+    # Aliases
+    _info "Setting aliases"
+    echo 'export VISUAL="nano"' >> /home/$USER_name/.bashrc
+    echo "alias _system='inxi -F -M'" >> /home/$USER_name/.bashrc
+    echo "alias _install='yaourt -S'" >> /home/$USER_name/.bashrc
+    echo "alias _delete='yaourt -Rcsn'" >> /home/$USER_name/.bashrc
+    echo "alias _update='yaourt -Syyua'" >> /home/$USER_name/.bashrc
+    echo "alias _clean='yaourt -Scc'" >> /home/$USER_name/.bashrc
+    echo "alias _purge='yaourt -Qdt'" >> /home/$USER_name/.bashrc
+    echo "alias _verif='yaourt -Qqk'" >> /home/$USER_name/.bashrc
+    echo "alias _pacnew='yaourt -C'" >> /home/$USER_name/.bashrc
+    echo "alias _search='yaourt -s'" >> /home/$USER_name/.bashrc
+    echo "alias _mirrorlist='sudo reflector -c FR --sort rate --save " \
+    "/etc/pacman.d/mirrorlist'" >> /home/$USER_name/.bashrc
+}
+
+##################
+## ARCHBOOT LOG ##
+##################
+_logs() {
+    _info "Setting archboot log"
+    datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
+    logfile="/var/log/archboot/install_xfce_$datetime.log"
+    if [ ! -d "/var/log/archboot" ]; then
+        mkdir /var/log/archboot
+    fi
+}
+
+################
+## GPU DRIVER ##
+################
+_gpu_driver() {
+    _info "GPU detection"
+    GPU_driver="xf86-video-vesa"
+
+    # Intel GPU
+    lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        _note "found INTEL GPU"
+        GPU_driver=" xf86-video-intel vulkan-intel mesa-libgl lib32-mesa-libgl"
+    fi
+
+    # ATI GPU
+    lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        _note "found ATI GPU"
+        GPU_driver=\
+        " xf86-video-ati mesa-libgl lib32-mesa-libgl \
+        mesa-vdpau lib32-mesa-vdpau"
+    fi
+
+    # nVidia GPU
+    lspci | grep "VGA" | grep "nVidia" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        _note "found nVidia GPU"
+        GPU_driver=" xf86-video-nouveau nouveau-dri libva-vdpau-driver"
+    fi
+}
+
+#####################
+## KDE ENViRONMENT ##
+#####################
+_install_yaourt() {
+    _info "Setting timezone"
+    timedatectl set-local-rtc 1
+    _info "Setting pacman"
+    echo "## CUSTOM PACMAN.CONF ##" > /etc/pacman.conf
+    echo "[options]" >> /etc/pacman.conf
+    echo "HoldPkg     = pacman glibc" >> /etc/pacman.conf
+    echo "Architecture = auto" >> /etc/pacman.conf
+    echo "ILoveCandy" >> /etc/pacman.conf
+    echo "CheckSpace" >> /etc/pacman.conf
+    echo "SigLevel    = Required DatabaseOptional" >> /etc/pacman.conf
+    echo "LocalFileSigLevel = Optional" >> /etc/pacman.conf
+    echo "[archlinuxfr]" >> /etc/pacman.conf
+    echo "SigLevel = Never" >> /etc/pacman.conf
+    echo "Server = http://repo.archlinux.fr/\$arch" >> /etc/pacman.conf
+    echo "[core]" >> /etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+    echo "[extra]">> /etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+    echo "[community]" >> /etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+    echo "[multilib]" >> /etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+    _info "Setting mirrorlist"
+    reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist
+    _info "Installing yaourt"
+    pacman --noconfirm -Syu yaourt customizepkg
+}
+
+_install_packages() {
+    _install="sudo -u $USER_name yaourt --noconfirm -S"
+
+    # GPU Driver
+    _info "Installing VGA Driver"
+    $_install $GPU_driver
+
+    # Xorg
+    _info "Installing Xorg"
+    $_install xorg-server xorg-xinit xorg-server-utils    
+
+    # KDE
+    _info "Installing KDE"
+    $_install plasma kde-applications kde-l10n-fr hunspell-fr \
+    libappindicator-gtk2 libappindicator-gtk3 sni-qt \
+    lib32-libappindicator-gtk2 lib32-libappindicator-gtk2 \
+    lib32-sni-qt sddm sddm-kcm kde-gtk-config oxygen-gtk2 \
+    oxygen-gtk3 oxygen-kde4 qtcurve-gtk2 qtcurve-gtk4 \
+    qtcurve-qt5 phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc
+
+    # File System
+    _info "Installing File System"
+    $_install gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
+    dosfstools exfat-utils file-roller ifuse usbmuxd fuseiso gcdemu rar
+
+    # Desktop Tools
+    _info "Installing Desktop Tools"
+    $_install gimp libreoffice libreoffice-fr
+
+    # Firefox
+    _info "Installing Firefox"
+    $_install firefox firefox-i18n-fr gtk3-print-backends
+
+    # Network Tools
+    _info "Installing Network Tools"
+    $_install teamviewer skype transmission-gtk filezilla hexchat sshfs
+
+    # Playonlinux
+    _prompt "Do you wish install Playonlinux?"
+    _info "Installing Playonlinux"
+    $_install playonlinux winetricks zenity lib32-openal \
+    lib32-mpg123 lib32-wayland lib32-pango lib32-glu \
+    lib32-libxinerama lib32-libwrap lib32-ncurses
+}
+
+_install_settings() {
+
+    # Services
+    _info "Enabling Services"
+    systemctl enable ntpd
+    systemctl enable sddm
+    systemctl enable teamviewerd
+
+    # Groups
+    _info "Adding ${USER_name} to all groups"
+    usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
+    usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name
+    usermod -aG http,games,lock,uuidd,dbus,network,video,audio $USER_name
+    usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
+    usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
+    usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
+    usermod -aG systemd-resolve,systemd-coredump,cdemu,ntp $USER_name
+    usermod -aG systemd-journal-uploadsystemd-journal-remote $USER_name
+    usermod -aG polkitd,git,avahi,usbmux,rtkit,sddm,mysql,colord $USER_name
+
+    # Purge & Update
+    _info "Purge installation"
+    echo 'o' | sudo -u $USER_name yaourt -Qdt
+    sudo -u $USER_name yaourt --noconfirm -Sc
+    _info "Update all packages"
+    sudo -u $USER_name yaourt --noconfirm -Syua
+
+    # Restore User Security
+    _info "Restore User Security"
+    sed -i -e \
+    "s/${USER_name} ALL=(ALL) NOPASSWD:ALL/${USER_name} ALL=(ALL) ALL/g" \
+    /etc/sudoers
+}
+
+#############
+## iNSTALL ##
+#############
+_banner && _settings && _logs && _gpu_driver
+_confirm "System ready! Do you wish to install KDE?"
+(_install_yaourt && _install_packages && _install_settings) 2>&1 \
+| tee -a $logfile
+_note "Installation finished. No error reported."
+_note "View full logfile: /var/log/archboot/"
+_confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"
+reboot
