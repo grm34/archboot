@@ -36,7 +36,7 @@ _confirm() {
 }
 
 _info() {
-    echo -e $yellow"\n==> $1..."$nc && sleep 2s
+    echo -e $cyan"\n==> $1..."$nc && sleep 2s
 }
 
 _note() {
@@ -128,9 +128,7 @@ _gpu_driver() {
     lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _note "found ATI GPU"
-        GPU_driver=\
-        " xf86-video-ati mesa-libgl lib32-mesa-libgl \
-        mesa-vdpau lib32-mesa-vdpau"
+        GPU_driver=" xf86-video-ati mesa-libgl lib32-mesa-libgl mesa-vdpau lib32-mesa-vdpau"
     fi
 
     # nVidia GPU
