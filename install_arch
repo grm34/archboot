@@ -214,21 +214,21 @@ _install_base(_info) {
     yes '' | pacstrap /mnt base base-devel syslinux dosfstools gptfdisk
     genfstab -U -p /mnt >> /mnt/etc/fstab
     arch-chroot /mnt /bin/bash <<EOF
-    _info "Setting root password"
+    echo "==> Setting root password"
     echo "root:${ROOT_passwd}" | chpasswd
-    _info "Setting hostname"
+    echo "==> Setting hostname"
     echo $HOST_name > /etc/hostname
-    _info "Setting timezone"
+    echo "==> Setting timezone"
     ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
-    _info "Setting and generating locale"
+    echo "==> Setting and generating locale"
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
     export LANG=fr_FR.UTF-8
     echo "LANG=fr_FR.UTF-8" > /etc/locale.conf
-    _info "Setting keyboard"
+    echo "==> Setting keyboard"
     echo "KEYMAP=fr-pc" > /etc/vconsole.conf
-    _info "Setting Linux environment"
+    echo "==> Setting Linux environment"
     mkinitcpio -p linux
-    _info "Installing network"
+    echo "==> Installing network"
     pacman --noconfirm -S ntp networkmanager \
     wget git reflector wireless_tools wpa_supplicant
     systemctl enable ntpd.service
