@@ -209,7 +209,7 @@ _mount_part() {
 #################
 ## BASE SYSTEM ##
 #################
-_install_base(_info) {
+_install_base() {
     _info "Installing base system"
     yes '' | pacstrap /mnt base base-devel syslinux dosfstools gptfdisk
     genfstab -U -p /mnt >> /mnt/etc/fstab
