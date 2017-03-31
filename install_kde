@@ -66,7 +66,7 @@ _settings() {
 
     # Password
     until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
-    _note "password should be at least 8 chars long with one letter and one digit."
+    _note "password should be at least 8 chars long with 1 letter and 1 digit"
     _prompt "Enter password for ${USER_name}:"
     read -s i
     done
@@ -104,7 +104,7 @@ _settings() {
 _logs() {
     _info "Setting archboot log"
     datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
-    logfile="/var/log/archboot/install_xfce_$datetime.log"
+    logfile="/var/log/archboot/install_kde_$datetime.log"
     if [ ! -d "/var/log/archboot" ]; then
         mkdir /var/log/archboot
     fi
@@ -188,13 +188,13 @@ _install_packages() {
     libappindicator-gtk2 libappindicator-gtk3 sni-qt \
     lib32-libappindicator-gtk2 lib32-libappindicator-gtk2 \
     lib32-sni-qt sddm sddm-kcm kde-gtk-config oxygen-gtk2 \
-    oxygen-gtk3 oxygen-kde4 qtcurve-gtk2 qtcurve-gtk4 \
-    qtcurve-qt5 phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc
+    oxygen-kde4 qtcurve-gtk2 qtcurve-qt5 phonon-qt4 \
+    phonon-qt4-gstreamer phonon-qt4-vlc
 
     # File System
     _info "Installing File System"
     $_install gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
-    dosfstools exfat-utils file-roller ifuse usbmuxd fuseiso gcdemu
+    exfat-utils file-roller ifuse usbmuxd fuseiso
 
     # Desktop Tools
     _info "Installing Desktop Tools"
