@@ -117,7 +117,7 @@ _firmware() {
 _disk_part() {
 
     # MBR or GPT
-    _confirm "$FIRMWARE detected! Listing disk"
+    _confirm "$FIRMWARE detected. Listing disk"
     until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]; do
     fdisk -l
     _prompt "Enter disk to use (ex: sda):"
@@ -211,24 +211,29 @@ _mount_part() {
 #################
 _install_base() {
     _info "Installing base system"
-    yes '' | pacstrap /mnt base base-devel syslinux dosfstools gptfdisk
+    yes '' | pacstrap /mnt base base-devel
+    _info "Creating fstab"
     genfstab -U -p /mnt >> /mnt/etc/fstab
+    _info "Chrooting to fresh system"
     arch-chroot /mnt /bin/bash <<EOF
-    echo "==> Setting root password"
+    echo -e "==> Installing bootloader..."
+    pacman --noconfirm -S syslinux dosfstools gptfdisk
+    echo -e "==> Setting root password..."
     echo "root:${ROOT_passwd}" | chpasswd
-    echo "==> Setting hostname"
+    echo -e "==> Setting hostname..."
     echo $HOST_name > /etc/hostname
-    echo "==> Setting timezone"
+    echo -e "==> Setting timezone..."
+    if [ -f /etc/locatime ]; then rm /etc/localtime; fi
     ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
-    echo "==> Setting and generating locale"
+    echo -e "==> Setting and generating locale..."
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
     export LANG=fr_FR.UTF-8
     echo "LANG=fr_FR.UTF-8" > /etc/locale.conf
-    echo "==> Setting keyboard"
+    echo -e "==> Setting keyboard..."
     echo "KEYMAP=fr-pc" > /etc/vconsole.conf
-    echo "==> Setting Linux environment"
+    echo -e "==> Setting Linux environment..."
     mkinitcpio -p linux
-    echo "==> Installing network"
+    echo -e "==> Installing network..."
     pacman --noconfirm -S ntp networkmanager \
     wget git reflector wireless_tools wpa_supplicant
     systemctl enable ntpd.service
@@ -240,7 +245,7 @@ EOF
 ## BOOTLOADER ##
 ################
 _bootloader() {
-    _confirm "Base system ok! Creating $FIRMWARE Boot Loader?"
+    _confirm "Base system ok. Creating $FIRMWARE Bootloader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
         arch-chroot /mnt /bin/bash <<EOF
         pacman --noconfirm -S efibootmgr
@@ -264,12 +269,12 @@ EOF
 #############
 _banner && _settings && _logs && _firmware && _disk_part && _mount_part
 if [ $? -eq 0 ]; then
-    _confirm "System ready! Do you wish to install ArchLinux?"
+    _confirm "System ready. Do you wish to install ArchLinux?"
     (_install_base && _bootloader) 2>&1 | tee -a $logfile
     mkdir /mnt/var/log/archboot && cp $logfile /mnt/var/log/archboot/
     _note "Installation finished. Logfile: /var/log/archboot/"
 else
-    _error "partitionning error!"
+    _error "partitionning error, run 'sh install_arch' to try again."
 fi
 _confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"
 umount -R /mnt && reboot
