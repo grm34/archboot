@@ -143,8 +143,6 @@ _gpu_driver() {
 ## KDE ENViRONMENT ##
 #####################
 _install_yaourt() {
-    _info "Setting timezone"
-    timedatectl set-local-rtc 1
     _info "Setting pacman"
     echo "## CUSTOM PACMAN.CONF ##" > /etc/pacman.conf
     echo "[options]" >> /etc/pacman.conf
