@@ -187,9 +187,8 @@ _install_packages() {
     $_install plasma kde-applications kde-l10n-fr aspell-fr \
     libappindicator-gtk2 libappindicator-gtk3 sni-qt \
     lib32-libappindicator-gtk2 lib32-libappindicator-gtk2 \
-    lib32-sni-qt sddm sddm-kcm kde-gtk-config oxygen-gtk2 \
-    oxygen-kde4 qtcurve-gtk2 qtcurve-qt5 phonon-qt4 \
-    phonon-qt4-gstreamer phonon-qt4-vlc
+    sddm sddm-kcm kde-gtk-config oxygen-gtk2 oxygen-kde4 \
+    qtcurve-gtk2 qtcurve-qt5 phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc
 
     # File System
     _info "Installing File System"
@@ -239,10 +238,9 @@ _install_settings() {
 ## iNSTALL ##
 #############
 _banner && _settings && _logs && _gpu_driver
-_confirm "System ready! Do you wish to install KDE?"
+_confirm "System ready. Do you wish to install KDE?"
 (_install_yaourt && _install_packages && _install_settings) 2>&1 \
 | tee -a $logfile
-_note "Installation finished. No error reported."
-_note "View full logfile: /var/log/archboot/"
+_note "Installation finished. Logfile: /var/log/archboot/"
 _confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"
 reboot
