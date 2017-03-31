@@ -66,7 +66,7 @@ _settings() {
 
     # Password
     until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
-    _note "password should be at least 8 chars long with one letter and one digit."
+    _note "password should be at least 8 chars long with 1 letter and 1 digit"
     _prompt "Enter password for root:"
     read -s i
     done
@@ -209,9 +209,9 @@ _mount_part() {
 #################
 ## BASE SYSTEM ##
 #################
-_install_base() {
+_install_base(_info) {
     _info "Installing base system"
-    yes '' | pacstrap /mnt base base-devel syslinux
+    yes '' | pacstrap /mnt base base-devel syslinux dosfstools gptfdisk
     genfstab -U -p /mnt >> /mnt/etc/fstab
     arch-chroot /mnt /bin/bash <<EOF
     _info "Setting root password"
@@ -231,12 +231,8 @@ _install_base() {
     _info "Installing network"
     pacman --noconfirm -S ntp networkmanager \
     wget git reflector wireless_tools wpa_supplicant
-    systemctl enable NetworkManager.service
     systemctl enable ntpd.service
-    if [[ "$part_table" == "GPT" ]]; then
-        _info "Installing GPT compatibility"
-        pacman --noconfirm -S gptfdisk
-    fi
+    systemctl enable NetworkManager.service
 EOF
 }
 
@@ -247,7 +243,7 @@ _bootloader() {
     _confirm "Base system ok! Creating $FIRMWARE Boot Loader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
         arch-chroot /mnt /bin/bash <<EOF
-        pacman --noconfirm -S dosfstools efibootmgr
+        pacman --noconfirm -S efibootmgr
         mkdir -p /boot/efi/EFI/syslinux
         cp -r /usr/lib/syslinux/efi64/* /boot/efi/EFI/syslinux
         mount -t efivarfs efivarfs /sys/firmware/efi/efivars
@@ -271,7 +267,7 @@ if [ $? -eq 0 ]; then
     _confirm "System ready! Do you wish to install ArchLinux?"
     (_install_base && _bootloader) 2>&1 | tee -a $logfile
     mkdir /mnt/var/log/archboot && cp $logfile /mnt/var/log/archboot/
-    _note "Installation finished. No error reported, see logfile: /var/log/archboot/"
+    _note "Installation finished. Logfile: /var/log/archboot/"
 else
     _error "partitionning error!"
 fi
