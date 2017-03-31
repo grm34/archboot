@@ -218,7 +218,7 @@ _install_settings() {
     usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
     usermod -aG systemd-resolve,systemd-coredump,cdemu,ntp $USER_name
-    usermod -aG systemd-journal-uploadsystemd-journal-remote $USER_name
+    usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
     usermod -aG polkitd,git,avahi,usbmux,rtkit,sddm,mysql,colord $USER_name
 
     # Purge & Update
