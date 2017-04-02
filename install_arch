@@ -221,8 +221,6 @@ _install_base() {
     echo "root:${ROOT_passwd}" | chpasswd
     echo -e "==> Setting hostname..."
     echo $HOST_name > /etc/hostname
-    echo -e "==> Setting timezone..."
-    ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
     echo -e "==> Setting and generating locale..."
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
     export LANG=fr_FR.UTF-8
@@ -265,7 +263,7 @@ EOF
     fi
     arch-chroot /mnt /bin/bash <<EOF
     wget https://projects.archlinux.org/archiso.git/plain/configs/releng/syslinux/splash.png
-    cp splash.png $boot_folder
+    mv splash.png $boot_folder
     sed -i -e 's/UI menu.c32/UI vesamenu.c32/g' ${boot_folder}/syslinux.cfg
     echo "MENU BACKGROUND splash.png" >> ${boot_folder}/syslinux.cfg
     echo "MENU VSHIFT 10" >> ${boot_folder}/syslinux.cfg
