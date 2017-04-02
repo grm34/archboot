@@ -197,7 +197,7 @@ _mount_part() {
     mkdir /mnt/{boot,home}
     if [[ "$FIRMWARE" == "UEFI" ]]; then
         mkdir -p /mnt/boot/efi/EFI
-        mount -t vfat /dev/$_disk${part_order[1} /boot/efi
+        mount -t vfat /dev/$_disk${part_order[1]} /mnt/boot/efi
     else
         mount /dev/$_disk${part_order[1]} /mnt/boot
     fi
