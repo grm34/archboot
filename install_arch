@@ -124,7 +124,7 @@ _disk_part() {
     done
     fdisk -l /dev/$_disk
     _warning "this will erase the entire drive!"
-    _confirm "Creating $part_table partition table on /dev/$_disk"
+    _confirm "Setting $part_table partition table on /dev/$_disk"
     printf "$part_code\nw" | fdisk /dev/$_disk
 
     # BOOT on /dev/xxx1
@@ -135,7 +135,7 @@ _disk_part() {
     read boot_size
     done
     if [[ ${boot_size,,} == "y" ]]; then boot_size="512M"; fi
-    _confirm "Creating boot /dev/$_disk${part_order[1]} [$boot_size]"
+    _confirm "Setting boot /dev/$_disk${part_order[1]} [$boot_size]"
     printf "n\n$part_type\n\n+$boot_size\nw" | fdisk /dev/$_disk
     yes | mkfs.$boot_filesystem /dev/$_disk${part_order[1]}
 
@@ -147,7 +147,7 @@ _disk_part() {
     read swap_size
     done
     if [[ ${swap_size,,} == "y" ]]; then swap_size="2G"; fi
-    _confirm "Creating Swap /dev/$_disk${part_order[2]} [$swap_size]"
+    _confirm "Setting Swap /dev/$_disk${part_order[2]} [$swap_size]"
     printf "n\n$part_type\n\n+$swap_size\nw" | fdisk /dev/$_disk
     yes | mkswap /dev/$_disk${part_order[2]}
 
@@ -159,7 +159,7 @@ _disk_part() {
     read sys_size
     done
     if [[ ${sys_size,,} == "y" ]]; then sys_size="25G"; fi
-    _confirm "Creating System /dev/$_disk${part_order[3]} [$sys_size]"
+    _confirm "Setting System /dev/$_disk${part_order[3]} [$sys_size]"
     printf "n\n$part_type\n\n+$sys_size\nw" | fdisk /dev/$_disk
     yes | mkfs.ext4 /dev/$_disk${part_order[3]}
 
@@ -178,11 +178,11 @@ _disk_part() {
             home_size="+$home_size"
             part_size="$home_size"
         fi
-        _confirm "Creating Home /dev/$_disk${part_order[4]} [$part_size]"
+        _confirm "Setting Home /dev/$_disk${part_order[4]} [$part_size]"
         printf "n\n\n\n$home_size\nw" | fdisk /dev/$_disk
     else
         _info "Home partition will use all free space"
-        _confirm "Creating Home partition /dev/$_disk${part_order[4]}"
+        _confirm "Setting Home partition /dev/$_disk${part_order[4]}"
         printf "n\n$part_type\n\nw" | fdisk /dev/$_disk
     fi
     yes | mkfs.ext4 /dev/$_disk${part_order[4]}
@@ -192,7 +192,7 @@ _disk_part() {
 ## MOUNTiNG PARTiTiONS ##
 #########################
 _mount_part() {
-    _confirm "Mounting partitions & activating swap"
+    _confirm "Mount partitions & activate swap"
     mount /dev/$_disk${part_order[3]} /mnt
     mkdir /mnt/{boot,home}
     if [[ "$FIRMWARE" == "UEFI" ]]; then
@@ -211,7 +211,7 @@ _mount_part() {
 _install_base() {
     _info "Installing base system"
     yes '' | pacstrap /mnt base base-devel
-    _info "Creating fstab"
+    _info "Setting fstab"
     genfstab -U -p /mnt >> /mnt/etc/fstab
     _info "Chrooting to fresh system"
     arch-chroot /mnt /bin/bash <<EOF
@@ -240,7 +240,7 @@ EOF
 ## BOOTLOADER ##
 ################
 _bootloader() {
-    _confirm "Base system ok. Creating $FIRMWARE Bootloader?"
+    _confirm "Base system ok. Setting $FIRMWARE Bootloader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
         boot_folder="/boot/efi/EFI/syslinux"
         arch-chroot /mnt /bin/bash <<EOF
