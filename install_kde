@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v1.5"
+__version__="v1.6"
 __author__="@grm34"
 __date__="2017"
 __license__="Apache v2.0 License"
@@ -76,11 +76,10 @@ _settings() {
         _error "passwords does not match!"
     fi
 
-    # Settings
-    _info "Setting user"
+    # Add user
+    _info "Creating user"
     useradd -g users -m -s /bin/bash $USER_name
     echo "${USER_name}:${USER_passwd}" | chpasswd
-    echo "${USER_name} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
     # Aliases
     _info "Setting aliases"
@@ -170,39 +169,39 @@ _install_yaourt() {
 }
 
 _install_packages() {
-    _install="sudo -u $USER_name yaourt --noconfirm -S"
 
     # GPU Driver
     _info "Installing VGA Driver"
-    $_install $GPU_driver
+    pacman --noconfirm -S $GPU_driver
 
     # Xorg
     _info "Installing Xorg"
-    $_install xorg-server xorg-xinit xorg-server-utils
+    pacman --noconfirm -S xorg-server xorg-xinit xorg-server-utils
 
     # KDE
     _info "Installing KDE"
-    $_install plasma kde-applications kde-l10n-fr aspell-fr \
+    pacman --noconfirm -S plasma kde-applications kde-l10n-fr aspell-fr \
     libappindicator-gtk2 libappindicator-gtk3 sni-qt \
     lib32-libappindicator-gtk2 lib32-libappindicator-gtk2 \
     sddm sddm-kcm kde-gtk-config oxygen-gtk2 oxygen-kde4 \
     qtcurve-gtk2 qtcurve-qt5 phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc
 
-    # File System
-    _info "Installing File System"
-    $_install gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
-    exfat-utils file-roller ifuse usbmuxd fuseiso
-
-    # Desktop Tools
-    _info "Installing Desktop Tools"
-    $_install gimp libreoffice libreoffice-fr
-
     # Firefox
     _info "Installing Firefox"
-    $_install firefox firefox-i18n-fr gtk3-print-backends hunspell-fr
+    pacman --noconfirm -S firefox firefox-i18n-fr gtk3-print-backends \
+    hunspell-fr flashplayer
 }
 
 _install_settings() {
+
+    # Keyboard layout
+    _info "Configuring keyboard layout"
+    localectl --no-convert set-x11-keymap fr
+
+    # SDDM settings
+    sed -i -e 's/Numlock=none/Numlock=on/g' /etc/sddm.conf
+    setfacl -m u:sddm:x /home/${USER_name}
+    setfacl -m u:sddm:r /home/${USER_name}/.face.icon
 
     # Services & Groups
     _info "Enabling services"

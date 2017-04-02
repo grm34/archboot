@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v1.5"
+__version__="v1.6"
 __author__="@grm34"
 __date__="2017"
 __license__="Apache v2.0 License"
@@ -82,7 +82,6 @@ _settings() {
 ##################
 _logs() {
     _info "Setting archboot log"
-    timedatectl set-timezone Europe/Paris
     datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
     logfile="install_arch_$datetime.log"
 }
@@ -223,7 +222,6 @@ _install_base() {
     echo -e "==> Setting hostname..."
     echo $HOST_name > /etc/hostname
     echo -e "==> Setting timezone..."
-    if [ -f /etc/locatime ]; then rm /etc/localtime; fi
     ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
     echo -e "==> Setting and generating locale..."
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
@@ -234,9 +232,8 @@ _install_base() {
     echo -e "==> Setting Linux environment..."
     mkinitcpio -p linux
     echo -e "==> Installing network..."
-    pacman --noconfirm -S ntp networkmanager \
-    wget git reflector wireless_tools wpa_supplicant
-    systemctl enable ntpd.service
+    pacman --noconfirm -S networkmanager wget reflector \
+    wireless_tools wpa_supplicant git
     systemctl enable NetworkManager.service
 EOF
 }
@@ -247,6 +244,7 @@ EOF
 _bootloader() {
     _confirm "Base system ok. Creating $FIRMWARE Bootloader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
+        boot_folder="/boot/efi/EFI/syslinux"
         arch-chroot /mnt /bin/bash <<EOF
         pacman --noconfirm -S efibootmgr
         mkdir -p /boot/efi/EFI/syslinux
@@ -254,14 +252,25 @@ _bootloader() {
         mount -t efivarfs efivarfs /sys/firmware/efi/efivars
         efibootmgr -c -d /dev/$_disk${part_order[1]} -p Y -l \
         /boot/efi/EFI/syslinux/syslinux.efi -L "Syslinux"
-        cp /usr/lib/syslinux/bios/vesamenu.c32 /boot/efi/EFI/syslinux/
+        cp /usr/lib/syslinux/efi64/vesamenu.c32 $boot_folder
+        cp /usr/lib/syslinux/efi64/lib*.c32 $boot_folder
 EOF
     else
+        boot_folder="/boot/syslinux"
         arch-chroot /mnt /bin/bash <<EOF
         syslinux-install_update -iam
-        cp /usr/lib/syslinux/bios/vesamenu.c32 /boot/syslinux/
+        cp /usr/lib/syslinux/bios/vesamenu.c32 $boot_folder
+        cp /usr/lib/syslinux/bios/lib*.c32 $boot_folder
 EOF
     fi
+    arch-chroot /mnt /bin/bash <<EOF
+    wget https://projects.archlinux.org/archiso.git/plain/configs/releng/syslinux/splash.png
+    cp splash.png $boot_folder
+    sed -i -e 's/UI menu.c32/UI vesamenu.c32/g' ${boot_folder}/syslinux.cfg
+    echo "MENU BACKGROUND splash.png" >> ${boot_folder}/syslinux.cfg
+    echo "MENU VSHIFT 10" >> ${boot_folder}/syslinux.cfg
+EOF
+
 }
 
 #############
