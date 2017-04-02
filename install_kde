@@ -77,7 +77,7 @@ _settings() {
     fi
 
     # Add user
-    _info "Creating user"
+    _info "Setting user"
     useradd -g users -m -s /bin/bash $USER_name
     echo "${USER_name}:${USER_passwd}" | chpasswd
     echo "${USER_name} ALL=(ALL) ALL" >> /etc/sudoers
@@ -199,25 +199,24 @@ _install_packages() {
 _install_settings() {
 
     # Keyboard layout
-    _info "Configuring keyboard layout"
+    _info "Setting keyboard layout"
     localectl --no-convert set-x11-keymap fr
 
     # SDDM settings
     sed -i -e 's/Numlock=none/Numlock=on/g' /etc/sddm.conf
     setfacl -m u:sddm:x /home/${USER_name}
-    setfacl -m u:sddm:r /home/${USER_name}/.face.icon
 
     # Services & Groups
     _info "Enabling services"
     systemctl enable sddm
-    _info "Adding ${USER_name} to all groups"
+    _info "Add ${USER_name} to all groups"
     usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
     usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name
     usermod -aG http,games,lock,uuidd,dbus,network,video,audio $USER_name
     usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
     usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
-    usermod -aG systemd-resolve,systemd-coredump,ntp $USER_name
+    usermod -aG systemd-resolve,systemd-coredump $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
     usermod -aG polkitd,git,avahi,usbmux,rtkit,sddm,mysql,colord $USER_name
 }
