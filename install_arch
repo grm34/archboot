@@ -215,21 +215,21 @@ _install_base() {
     genfstab -U -p /mnt >> /mnt/etc/fstab
     _info "Chrooting to fresh system"
     arch-chroot /mnt /bin/bash <<EOF
-    echo -e "==> Installing bootloader..."
+    echo -e "==> Installing bootloader..." && sleep 2s
     pacman --noconfirm -S syslinux dosfstools gptfdisk
-    echo -e "==> Setting root password..."
+    echo -e "==> Setting root password..." && sleep 2s
     echo "root:${ROOT_passwd}" | chpasswd
-    echo -e "==> Setting hostname..."
+    echo -e "==> Setting hostname..." && sleep 2s
     echo $HOST_name > /etc/hostname
-    echo -e "==> Setting and generating locale..."
+    echo -e "==> Setting and generating locale..." && sleep 2s
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
     export LANG=fr_FR.UTF-8
     echo "LANG=fr_FR.UTF-8" > /etc/locale.conf
-    echo -e "==> Setting keyboard..."
+    echo -e "==> Setting keyboard..." && sleep 2s
     echo "KEYMAP=fr-pc" > /etc/vconsole.conf
-    echo -e "==> Setting Linux environment..."
+    echo -e "==> Setting Linux environment..." && sleep 2s
     mkinitcpio -p linux
-    echo -e "==> Installing network..."
+    echo -e "==> Installing network..." && sleep 2s
     pacman --noconfirm -S networkmanager wget reflector \
     wireless_tools wpa_supplicant git
     systemctl enable NetworkManager.service
