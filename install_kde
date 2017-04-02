@@ -80,6 +80,7 @@ _settings() {
     _info "Creating user"
     useradd -g users -m -s /bin/bash $USER_name
     echo "${USER_name}:${USER_passwd}" | chpasswd
+    echo "${USER_name} ALL=(ALL) ALL" >> /etc/sudoers
 
     # Aliases
     _info "Setting aliases"
@@ -138,9 +139,9 @@ _gpu_driver() {
     fi
 }
 
-#####################
-## KDE ENViRONMENT ##
-#####################
+############
+## YAOURT ##
+############
 _install_yaourt() {
     _info "Setting pacman"
     echo "## CUSTOM PACMAN.CONF ##" > /etc/pacman.conf
@@ -168,6 +169,9 @@ _install_yaourt() {
     pacman --noconfirm -Syu yaourt customizepkg
 }
 
+#####################
+## KDE ENViRONMENT ##
+#####################
 _install_packages() {
 
     # GPU Driver
@@ -216,19 +220,6 @@ _install_settings() {
     usermod -aG systemd-resolve,systemd-coredump,ntp $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
     usermod -aG polkitd,git,avahi,usbmux,rtkit,sddm,mysql,colord $USER_name
-
-    # Purge & Update
-    _info "Purge installation"
-    echo 'o' | sudo -u $USER_name yaourt -Qdt
-    sudo -u $USER_name yaourt --noconfirm -Sc
-    _info "Update all packages"
-    sudo -u $USER_name yaourt --noconfirm -Syua
-
-    # Restore User Security
-    _info "Restore User Security"
-    sed -i -e \
-    "s/${USER_name} ALL=(ALL) NOPASSWD:ALL/${USER_name} ALL=(ALL) ALL/g" \
-    /etc/sudoers
 }
 
 #############
