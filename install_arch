@@ -196,8 +196,7 @@ _mount_part() {
     mount /dev/$_disk${part_order[3]} /mnt
     mkdir /mnt/{boot,home}
     if [[ "$FIRMWARE" == "UEFI" ]]; then
-        mkdir -p /mnt/boot/efi/EFI
-        mount -t vfat /dev/$_disk${part_order[1]} /mnt/boot/efi
+        mount -t vfat /dev/$_disk${part_order[1]} /mnt/boot
     else
         mount /dev/$_disk${part_order[1]} /mnt/boot
     fi
@@ -245,10 +244,10 @@ _bootloader() {
         boot_folder="/boot/EFI/syslinux"
         arch-chroot /mnt /bin/bash <<EOF
         pacman --noconfirm -S efibootmgr
-        mkdir -p /boot/EFI/syslinux
+        mkdir -p $boot_folder
         cp -r /usr/lib/syslinux/efi64/* $boot_folder
         efibootmgr -c -d /dev/$_disk${part_order[1]} -p Y -l \
-        /EFI/syslinux/syslinux.efi -L "Syslinux"
+        ${boot_folder}/syslinux.efi -L "Syslinux"
         cp /usr/lib/syslinux/efi64/vesamenu.c32 $boot_folder
         cp /usr/lib/syslinux/efi64/lib*.c32 $boot_folder
 EOF
