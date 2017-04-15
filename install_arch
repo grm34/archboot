@@ -216,7 +216,7 @@ _install_base() {
     _info "Chrooting to fresh system"
     arch-chroot /mnt /bin/bash <<EOF
     echo -e "==> Installing bootloader..." && sleep 2s
-    pacman --noconfirm -S syslinux dosfstools gptfdisk
+    pacman --noconfirm -S syslinux dosfstools gptfdisk mtools
     echo -e "==> Setting root password..." && sleep 2s
     echo "root:${ROOT_passwd}" | chpasswd
     echo -e "==> Setting hostname..." && sleep 2s
@@ -231,7 +231,7 @@ _install_base() {
     mkinitcpio -p linux
     echo -e "==> Installing network..." && sleep 2s
     pacman --noconfirm -S networkmanager wget reflector \
-    wireless_tools wpa_supplicant git
+    wireless_tools wpa_supplicant git inxi
     systemctl enable NetworkManager.service
 EOF
 }
@@ -242,14 +242,13 @@ EOF
 _bootloader() {
     _confirm "Base system ok. Setting $FIRMWARE Bootloader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
-        boot_folder="/boot/efi/EFI/syslinux"
+        boot_folder="/boot/EFI/syslinux"
         arch-chroot /mnt /bin/bash <<EOF
         pacman --noconfirm -S efibootmgr
-        mkdir -p /boot/efi/EFI/syslinux
-        cp -r /usr/lib/syslinux/efi64/* /boot/efi/EFI/syslinux
-        mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+        mkdir -p /boot/EFI/syslinux
+        cp -r /usr/lib/syslinux/efi64/* $boot_folder
         efibootmgr -c -d /dev/$_disk${part_order[1]} -p Y -l \
-        /boot/efi/EFI/syslinux/syslinux.efi -L "Syslinux"
+        /EFI/syslinux/syslinux.efi -L "Syslinux"
         cp /usr/lib/syslinux/efi64/vesamenu.c32 $boot_folder
         cp /usr/lib/syslinux/efi64/lib*.c32 $boot_folder
 EOF
@@ -268,7 +267,6 @@ EOF
     echo "MENU BACKGROUND splash.png" >> ${boot_folder}/syslinux.cfg
     echo "MENU VSHIFT 10" >> ${boot_folder}/syslinux.cfg
 EOF
-
 }
 
 #############
