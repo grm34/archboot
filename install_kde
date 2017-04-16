@@ -184,7 +184,8 @@ _install_packages() {
 
     # File System
     _info "Installing File System"
-    pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso
+    pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso \
+    cups android-udev
 
     # KDE
     _info "Installing KDE"
@@ -213,6 +214,7 @@ _install_settings() {
     # Services & Groups
     _info "Enabling services"
     systemctl enable sddm
+    systemctl enable org.cups.cupsd
     _info "Add ${USER_name} to all groups"
     usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
     usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name
