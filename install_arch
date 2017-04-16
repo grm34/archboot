@@ -254,6 +254,7 @@ EOF
     fi
     _info "Installing Grub Theme"
     arch-chroot /mnt /bin/bash <<EOF
+    grub-mkconfig -o /boot/grub/grub.cfg
     git clone git://github.com/Generator/Grub2-themes.git
     cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/
     rm -r Grub2-themes
@@ -261,13 +262,8 @@ EOF
     echo 'GRUB_THEME="/boot/grub/themes/Archlinux/theme.txt"' >> /etc/default/grub
     echo 'desktop-image: "background.png"' >> /boot/grub/themes/Archlinux/theme.txt
     grub-mkconfig -o /boot/grub/grub.cfg
-    sed -i -e "s/menuentry 'Arch Linux'/menuentry '$sys_name'/g" /boot/grub/grub.cfg
-    sed -i -e "s/'Options avancées pour Arch Linux'/'Arch Linux Advanced' --class settings/g" \
-    /boot/grub/grub.cfg
     wget https://raw.githubusercontent.com/grm34/archboot/master/img/background.png
-    wget https://raw.githubusercontent.com/grm34/archboot/master/img/settings.png
     mv background.png /boot/grub/themes/Archlinux/
-    mv settings.png /boot/grub/themes/Archlinux/icons/
 EOF
 }
 
