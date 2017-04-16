@@ -182,6 +182,11 @@ _install_packages() {
     _info "Installing Xorg"
     pacman --noconfirm -S xorg-server xorg-xinit xorg-server-utils
 
+    # File System
+    _info "Installing File System"
+    pacman --noconfirm -S gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
+    dosfstools exfat-utils file-roller ifuse fuseiso
+
     # KDE
     _info "Installing KDE"
     pacman --noconfirm -S plasma kde-applications kde-l10n-fr aspell-fr \
