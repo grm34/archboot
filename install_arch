@@ -196,9 +196,10 @@ _mount_part() {
     mount /dev/$_disk${part_order[3]} /mnt
     mkdir /mnt/{boot,home}
     if [[ "$FIRMWARE" == "UEFI" ]]; then
+        mkdir -p /mnt/boot/efi/EFI
         mount -t vfat /dev/$_disk${part_order[1]} /mnt/boot
     else
-        mount /dev/$_disk${part_order[1]} /mnt/boot
+        mount /dev/$_disk${part_order[1]} /mnt/boot/efi/EFI
     fi
     swapon /dev/$_disk${part_order[2]}
     mount /dev/$_disk${part_order[4]} /mnt/home
@@ -241,7 +242,7 @@ EOF
 _bootloader() {
     _confirm "Base system ok. Setting $FIRMWARE Bootloader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
-        boot_folder="/boot/EFI/syslinux"
+        boot_folder="/boot/efi/EFI/syslinux"
         arch-chroot /mnt /bin/bash <<EOF
         pacman --noconfirm -S efibootmgr
         mkdir -p $boot_folder
