@@ -185,7 +185,7 @@ _install_packages() {
     # File System
     _info "Installing File System"
     pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso \
-    cups android-udev
+    cups skanlite android-udev
 
     # KDE
     _info "Installing KDE"
