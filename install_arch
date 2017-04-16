@@ -252,7 +252,7 @@ EOF
         grub-install --no-floppy --recheck /dev/$_disk
 EOF
     fi
-    _info "Setting GRUB2 Theme"
+    _info "Setting Grub Theme"
     arch-chroot /mnt /bin/bash <<EOF
     sed -i -e 's/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g' /etc/default/grub
     echo 'GRUB_THEME="/boot/grub/themes/Archlinux/theme.txt"' >> /etc/default/grub
