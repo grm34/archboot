@@ -196,7 +196,8 @@ _mount_part() {
     mount /dev/$_disk${part_order[3]} /mnt
     mkdir /mnt/{boot,home}
     if [[ "$FIRMWARE" == "UEFI" ]]; then
-        mount -t vfat /dev/$_disk${part_order[1]} /mnt/boot
+        mkdir -p /mnt/boot/efi/EFI
+        mount -t vfat /dev/$_disk${part_order[1]} /mnt/boot/efi
     else
         mount /dev/$_disk${part_order[1]} /mnt/boot
     fi
@@ -214,8 +215,6 @@ _install_base() {
     genfstab -U -p /mnt >> /mnt/etc/fstab
     _info "Chrooting to fresh system"
     arch-chroot /mnt /bin/bash <<EOF
-    echo -e "==> Installing bootloader..." && sleep 2s
-    pacman --noconfirm -S syslinux dosfstools efibootmgr gptfdisk mtools
     echo -e "==> Setting root password..." && sleep 2s
     echo "root:${ROOT_passwd}" | chpasswd
     echo -e "==> Setting hostname..." && sleep 2s
@@ -239,30 +238,36 @@ EOF
 ## BOOTLOADER ##
 ################
 _bootloader() {
-    _confirm "Base system ok. Setting $FIRMWARE Bootloader?"
+    _confirm "Base system ok. Installing $FIRMWARE Bootloader?"
+    arch-chroot /mnt /bin/bash <<EOF
+    pacman --noconfirm -S grub os-prober gptfdisk efibootmgr
+EOF
     if [[ "$FIRMWARE" == "UEFI" ]]; then
-        boot_folder="/boot/EFI/syslinux"
+        boot_folder="/boot/efi/EFI/syslinux"
         arch-chroot /mnt /bin/bash <<EOF
         mkdir -p $boot_folder
-        cp -r /usr/lib/syslinux/efi64/* $boot_folder
-        efibootmgr -c -d /dev/$_disk -p ${part_order[1]} -l /EFI/syslinux.efi -L "Syslinux"
-        cp /usr/lib/syslinux/efi64/vesamenu.c32 $boot_folder
-        cp /usr/lib/syslinux/efi64/lib*.c32 $boot_folder
+        grub-install --target=x86_64-efi --efi-directory=/boot/efi \
+        --bootloader-id=arch_grub --recheck
 EOF
     else
         boot_folder="/boot/syslinux"
         arch-chroot /mnt /bin/bash <<EOF
-        syslinux-install_update -iam
-        cp /usr/lib/syslinux/bios/vesamenu.c32 $boot_folder
-        cp /usr/lib/syslinux/bios/lib*.c32 $boot_folder
+        grub-install --no-floppy --recheck /dev/$_disk
 EOF
     fi
+    _info "Setting GRUB2 Theme"
     arch-chroot /mnt /bin/bash <<EOF
-    wget https://projects.archlinux.org/archiso.git/plain/configs/releng/syslinux/splash.png
-    mv splash.png $boot_folder
-    sed -i -e 's/UI menu.c32/UI vesamenu.c32/g' ${boot_folder}/syslinux.cfg
-    echo "MENU BACKGROUND splash.png" >> ${boot_folder}/syslinux.cfg
-    echo "MENU VSHIFT 10" >> ${boot_folder}/syslinux.cfg
+    sed -i -e 's/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g' /etc/default/grub
+    echo 'GRUB_THEME="/boot/grub/themes/Archlinux/theme.txt"' >> /etc/default/grub
+    echo 'desktop-image: "background.png"' >> /boot/grub/themes/Archlinux/theme.txt
+    grub-mkconfig -o /boot/grub/grub.cfg
+    sed -i -e "s/menuentry 'Arch Linux'/menuentry '$sys_name'/g" /boot/grub/grub.cfg
+    sed -i -e "s/'Options avancées pour Arch Linux'/'Arch Linux Advanced' --class settings/g" \
+    /boot/grub/grub.cfg
+    wget https://raw.githubusercontent.com/grm34/archboot/master/img/background.png
+    wget https://raw.githubusercontent.com/grm34/archboot/master/img/settings.png
+    mv background.png /boot/grub/themes/Archlinux/
+    mv settings.png /boot/grub/themes/Archlinux/icons/
 EOF
 }
 
