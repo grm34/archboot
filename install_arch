@@ -196,10 +196,9 @@ _mount_part() {
     mount /dev/$_disk${part_order[3]} /mnt
     mkdir /mnt/{boot,home}
     if [[ "$FIRMWARE" == "UEFI" ]]; then
-        mkdir -p /mnt/boot/efi/EFI
         mount -t vfat /dev/$_disk${part_order[1]} /mnt/boot
     else
-        mount /dev/$_disk${part_order[1]} /mnt/boot/efi/EFI
+        mount /dev/$_disk${part_order[1]} /mnt/boot
     fi
     swapon /dev/$_disk${part_order[2]}
     mount /dev/$_disk${part_order[4]} /mnt/home
@@ -216,7 +215,7 @@ _install_base() {
     _info "Chrooting to fresh system"
     arch-chroot /mnt /bin/bash <<EOF
     echo -e "==> Installing bootloader..." && sleep 2s
-    pacman --noconfirm -S syslinux dosfstools gptfdisk mtools
+    pacman --noconfirm -S syslinux dosfstools efibootmgr gptfdisk mtools
     echo -e "==> Setting root password..." && sleep 2s
     echo "root:${ROOT_passwd}" | chpasswd
     echo -e "==> Setting hostname..." && sleep 2s
@@ -242,13 +241,11 @@ EOF
 _bootloader() {
     _confirm "Base system ok. Setting $FIRMWARE Bootloader?"
     if [[ "$FIRMWARE" == "UEFI" ]]; then
-        boot_folder="/boot/efi/EFI/syslinux"
+        boot_folder="/boot/EFI/syslinux"
         arch-chroot /mnt /bin/bash <<EOF
-        pacman --noconfirm -S efibootmgr
         mkdir -p $boot_folder
         cp -r /usr/lib/syslinux/efi64/* $boot_folder
-        efibootmgr -c -d /dev/$_disk${part_order[1]} -p Y -l \
-        ${boot_folder}/syslinux.efi -L "Syslinux"
+        efibootmgr -c -d /dev/$_disk -p ${part_order[1]} -l /EFI/syslinux.efi -L "Syslinux"
         cp /usr/lib/syslinux/efi64/vesamenu.c32 $boot_folder
         cp /usr/lib/syslinux/efi64/lib*.c32 $boot_folder
 EOF
