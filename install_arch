@@ -172,11 +172,11 @@ _disk_part() {
         read home_size
         done
         if [[ ${home_size,,} == "y" ]]; then
-            home_size=""
             part_size="free space"
+            home_size=""
         else
-            home_size="+$home_size"
             part_size="$home_size"
+            home_size="+$home_size"
         fi
         _confirm "Setting Home /dev/$_disk${part_order[4]} [$part_size]"
         printf "n\n\n\n$home_size\nw" | fdisk /dev/$_disk
