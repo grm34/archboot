@@ -184,8 +184,7 @@ _install_packages() {
 
     # File System
     _info "Installing File System"
-    pacman --noconfirm -S gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
-    dosfstools exfat-utils file-roller ifuse fuseiso
+    pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso
 
     # KDE
     _info "Installing KDE"
