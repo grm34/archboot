@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v1.6"
+__version__="v1.7"
 __author__="@grm34"
 __date__="2017"
 __license__="Apache v2.0 License"
@@ -185,7 +185,10 @@ _install_packages() {
     # File System
     _info "Installing File System"
     pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso \
-    cups cups-pdf skanlite android-udev
+
+    # Cups & scan
+    _info "Installing Cups & scan support"
+    pacman --noconfirm -S cups cups-pdf skanlite
 
     # KDE
     _info "Installing KDE"
@@ -236,4 +239,4 @@ _confirm "System ready. Do you wish to install KDE?"
 | tee -a $logfile
 _note "Installation finished. Logfile: /var/log/archboot/"
 _confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"
-reboot
+sleep 2s && reboot

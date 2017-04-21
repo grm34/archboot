@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v1.6"
+__version__="v1.7"
 __author__="@grm34"
 __date__="2017"
 __license__="Apache v2.0 License"
@@ -228,9 +228,10 @@ _install_base() {
     echo -e "==> Setting Linux environment..." && sleep 2s
     mkinitcpio -p linux
     echo -e "==> Installing network..." && sleep 2s
-    pacman --noconfirm -S networkmanager wget reflector \
-    wireless_tools wpa_supplicant git inxi
+    pacman --noconfirm -S networkmanager wireless_tools wpa_supplicant
     systemctl enable NetworkManager.service
+    echo -e "==> Installing required packages..." && sleep 2s
+    pacman --noconfirm -S wget reflector git inxi
 EOF
 }
 
@@ -256,8 +257,7 @@ EOF
     arch-chroot /mnt /bin/bash <<EOF
     grub-mkconfig -o /boot/grub/grub.cfg
     git clone git://github.com/Generator/Grub2-themes.git
-    cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/
-    rm -r Grub2-themes
+    cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/ && rm -r Grub2-themes
     sed -i -e 's/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g' /etc/default/grub
     echo 'GRUB_THEME="/boot/grub/themes/Archlinux/theme.txt"' >> /etc/default/grub
     echo 'desktop-image: "background.png"' >> /boot/grub/themes/Archlinux/theme.txt
@@ -280,4 +280,4 @@ else
     _error "partitionning error, run 'sh install_arch' to try again."
 fi
 _confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"
-umount -R /mnt && reboot
+umount -R /mnt && sleep 2s && reboot
