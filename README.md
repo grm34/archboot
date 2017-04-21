@@ -12,8 +12,6 @@
 
 `wget https://raw.githubusercontent.com/grm34/archboot/master/install_kde && sh install_kde`
 
-**N'JOY !**
-
 ## Notes
 
 **install_arch** install ArchLinux base system with Grub.
