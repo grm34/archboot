@@ -184,7 +184,7 @@ _install_packages() {
 
     # File System
     _info "Installing File System"
-    pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso \
+    pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso
 
     # Cups & scan
     _info "Installing Cups & scan support"
@@ -193,7 +193,7 @@ _install_packages() {
     # KDE
     _info "Installing KDE"
     pacman --noconfirm -S plasma kde-applications kde-l10n-fr aspell-fr \
-    libappindicator-gtk2 libappindicator-gtk3 sni-qt \
+    libappindicator-gtk2 libappindicator-gtk3 sni-qt guvcview \
     lib32-libappindicator-gtk2 lib32-libappindicator-gtk2 \
     sddm sddm-kcm kde-gtk-config oxygen-gtk2 oxygen-kde4 \
     qtcurve-gtk2 qtcurve-qt5 phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc
