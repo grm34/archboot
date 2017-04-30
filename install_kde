@@ -194,7 +194,7 @@ _install_packages() {
     _info "Installing KDE"
     pacman --noconfirm -S plasma kde-applications kde-l10n-fr aspell-fr \
     libappindicator-gtk2 libappindicator-gtk3 sni-qt kamoso \
-    lib32-libappindicator-gtk2 lib32-libappindicator-gtk2 \
+    lib32-libappindicator-gtk2 lib32-libappindicator-gtk3 \
     sddm sddm-kcm kde-gtk-config oxygen-gtk2 oxygen-kde4 \
     qtcurve-gtk2 qtcurve-qt5 phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc
 
