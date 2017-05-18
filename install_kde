@@ -180,7 +180,7 @@ _install_packages() {
 
     # Xorg
     _info "Installing Xorg"
-    pacman --noconfirm -S xorg-server xorg-xinit xorg-server-utils
+    pacman --noconfirm -S xorg-server xorg-xinit xorg-apps
 
     # File System
     _info "Installing File System"
