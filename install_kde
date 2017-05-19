@@ -190,13 +190,24 @@ _install_packages() {
     _info "Installing Cups & scan support"
     pacman --noconfirm -S cups cups-pdf skanlite
 
-    # KDE
-    _info "Installing KDE"
-    pacman --noconfirm -S plasma kde-applications kde-l10n-fr aspell-fr \
-    libappindicator-gtk2 libappindicator-gtk3 sni-qt kamoso \
-    lib32-libappindicator-gtk2 lib32-libappindicator-gtk3 \
-    sddm sddm-kcm kde-gtk-config oxygen-gtk2 oxygen-kde4 \
-    qtcurve-gtk2 qtcurve-qt5 phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc
+    # KDE Plasma
+    _info "Installing KDE Plasma"
+    pacman --noconfirm -S plasma kde-applications kde-l10n-fr
+
+    # Desktop Themes
+    _info "Installing Desktop Themes"
+    pacman --noconfirm -S kde-gtk-config oxygen-gtk2 oxygen-kde4 \
+    qtcurve-gtk2 qtcurve-qt5 libappindicator-gtk2 libappindicator-gtk3 \
+    lib32-libappindicator-gtk2 lib32-libappindicator-gtk3 sni-qt
+
+    # SDDM
+    _info "Installing SDDM"
+    pacman --noconfirm -S sddm sddm-kcm
+
+    # Multimedia
+    _info "Installing Multimedia"
+    pacman --noconfirm -S phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc \
+    kamoso
 
     # Firefox
     _info "Installing Firefox"
