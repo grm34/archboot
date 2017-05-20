@@ -202,7 +202,9 @@ _install_packages() {
 
     # Desktop Polices
     _info "Installing Desktop Polices"
-    pacman --noconfirm -S ttf-dejavu ttf-liberation
+    pacman --noconfirm -S xorg-fonts-type1 ttf-dejavu artwiz-fonts \
+    font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
+    ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 
     # Multimedia
     _info "Installing Multimedia"
