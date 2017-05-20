@@ -186,13 +186,13 @@ _install_packages() {
     _info "Installing File System"
     pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso
 
-    # Cups & scan
-    _info "Installing Cups & scan support"
-    pacman --noconfirm -S cups cups-pdf skanlite
-
     # KDE Plasma
     _info "Installing KDE Plasma"
     pacman --noconfirm -S plasma kde-applications kde-l10n-fr
+
+    # SDDM
+    _info "Installing SDDM"
+    pacman --noconfirm -S sddm sddm-kcm
 
     # Desktop Themes
     _info "Installing Desktop Themes"
@@ -200,9 +200,9 @@ _install_packages() {
     qtcurve-gtk2 qtcurve-qt5 libappindicator-gtk2 libappindicator-gtk3 \
     lib32-libappindicator-gtk2 lib32-libappindicator-gtk3 sni-qt
 
-    # SDDM
-    _info "Installing SDDM"
-    pacman --noconfirm -S sddm sddm-kcm
+    # Desktop Polices
+    _info "Installing Desktop Polices"
+    pacman --noconfirm -S ttf-dejavu ttf-liberation
 
     # Multimedia
     _info "Installing Multimedia"
@@ -213,6 +213,10 @@ _install_packages() {
     _info "Installing Firefox"
     pacman --noconfirm -S firefox firefox-i18n-fr gtk3-print-backends \
     hunspell-fr flashplayer
+
+    # Cups & scan
+    _info "Installing Cups & scan support"
+    pacman --noconfirm -S cups cups-pdf skanlite
 }
 
 _install_settings() {
@@ -245,7 +249,7 @@ _install_settings() {
 ## iNSTALL ##
 #############
 _banner && _settings && _logs && _gpu_driver
-_confirm "System ready. Do you wish to install KDE?"
+_confirm "System ready. Do you wish to install KDE Plasma?"
 (_install_yaourt && _install_packages && _install_settings) 2>&1 \
 | tee -a $logfile
 _note "Installation finished. Logfile: /var/log/archboot/"
