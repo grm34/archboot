@@ -18,15 +18,15 @@ The only thing you need is an USB bootable device of ArchLinux, you can create i
 
 `wget https://raw.githubusercontent.com/grm34/archboot/master/install_arch && sh install_arch`
 
-**2. After reboot, for full desktop environment (KDE Plasma), login and run :**
+**2. After reboot, for full desktop environment (GNOME), login and run :**
 
-`wget https://raw.githubusercontent.com/grm34/archboot/master/install_kde && sh install_kde`
+`wget https://raw.githubusercontent.com/grm34/archboot/master/install_kde && sh install_desktop`
 
 ## Notes
 
 **install_arch** install ArchLinux base system with Grub.
 
-**install_kde** install full KDE Plasma desktop environment.
+**install_desktop** install GNOME desktop environment.
 
 ## Logs
 Take a look in **/var/log/archboot/**

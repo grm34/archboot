@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v1.7"
+__version__="v2.0"
 __author__="@grm34"
 __date__="2017"
 __license__="Apache v2.0 License"
@@ -169,9 +169,9 @@ _install_yaourt() {
     pacman --noconfirm -Syu yaourt customizepkg
 }
 
-#####################
-## KDE ENViRONMENT ##
-#####################
+###################
+## GNOME DESKTOP ##
+###################
 _install_packages() {
 
     # GPU Driver
@@ -186,39 +186,17 @@ _install_packages() {
     _info "Installing File System"
     pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso
 
-    # KDE Plasma
-    _info "Installing KDE Plasma"
-    pacman --noconfirm -S plasma kde-applications kde-l10n-fr
-
-    # SDDM
-    _info "Installing SDDM"
-    pacman --noconfirm -S sddm sddm-kcm
-
-    # Desktop Themes
-    _info "Installing Desktop Themes"
-    pacman --noconfirm -S kde-gtk-config oxygen-gtk2 oxygen-kde4 \
-    qtcurve-gtk2 qtcurve-qt5 libappindicator-gtk2 libappindicator-gtk3 \
-    lib32-libappindicator-gtk2 lib32-libappindicator-gtk3 sni-qt
-
-    # Desktop Polices
-    _info "Installing Desktop Polices"
-    pacman --noconfirm -S xorg-fonts-type1 ttf-dejavu artwiz-fonts \
-    font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
-    ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
-
-    # Multimedia
-    _info "Installing Multimedia"
-    pacman --noconfirm -S phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc \
-    kamoso
+    # Gnome
+    _info "Installing Gnome"
+    pacman --noconfirm -S gnome gnome-extra
 
     # Firefox
     _info "Installing Firefox"
-    pacman --noconfirm -S firefox firefox-i18n-fr gtk3-print-backends \
-    hunspell-fr flashplayer
+    pacman --noconfirm -S firefox firefox-i18n-fr hunspell-fr flashplayer
 
     # Cups & scan
     _info "Installing Cups & scan support"
-    pacman --noconfirm -S cups cups-pdf skanlite
+    pacman --noconfirm -S cups cups-pdf simple-scan
 }
 
 _install_settings() {
@@ -227,13 +205,9 @@ _install_settings() {
     _info "Setting keyboard layout"
     localectl --no-convert set-x11-keymap fr
 
-    # SDDM settings
-    sed -i -e 's/Numlock=none/Numlock=on/g' /etc/sddm.conf
-    setfacl -m u:sddm:x /home/${USER_name}
-
     # Services & Groups
     _info "Enabling services"
-    systemctl enable sddm
+    systemctl enable gdm
     systemctl enable org.cups.cupsd
     _info "Add ${USER_name} to all groups"
     usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
@@ -244,7 +218,7 @@ _install_settings() {
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
     usermod -aG systemd-resolve,systemd-coredump $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
-    usermod -aG polkitd,git,avahi,usbmux,rtkit,sddm,mysql,colord $USER_name
+    usermod -aG polkitd,git,avahi,usbmux,rtkit,gdm,colord $USER_name
 }
 
 #############
