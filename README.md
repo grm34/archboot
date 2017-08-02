@@ -14,13 +14,13 @@ The only thing you need is an USB bootable device of ArchLinux, you can create i
 
 ## Usage
 
-**1. Boot your computer with the USB bootable device and run :**
+**1. Boot your computer on the USB bootable device and run :**
 
 `wget https://raw.githubusercontent.com/grm34/archboot/master/install_arch && sh install_arch`
 
 **2. After reboot, for full desktop environment (GNOME), login and run :**
 
-`wget https://raw.githubusercontent.com/grm34/archboot/master/install_kde && sh install_desktop`
+`wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_desktop`
 
 ## Notes
 
