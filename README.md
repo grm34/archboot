@@ -10,7 +10,7 @@ The only thing you need is an USB bootable device of ArchLinux, you can create i
 
 2. Download rufus : *https://rufus.akeo.ie/downloads/*
 
-3. Open rufus and select the archlinux iso like here : *https://rufus.akeo.ie/?locale=fr_FR*
+3. Open rufus, select the USB Drive and the iso : *https://rufus.akeo.ie/pics/rufus_fr.png*
 
 ## Usage
 
