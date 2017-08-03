@@ -104,7 +104,7 @@ _settings() {
 _logs() {
     _info "Setting archboot log"
     datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
-    logfile="/var/log/archboot/install_kde_$datetime.log"
+    logfile="/var/log/archboot/install_desktop_$datetime.log"
     if [ ! -d "/var/log/archboot" ]; then
         mkdir /var/log/archboot
     fi
@@ -184,7 +184,7 @@ _install_packages() {
 
     # File System
     _info "Installing File System"
-    pacman --noconfirm -S gparted ntfs-3g dosfstools ifuse fuseiso
+    pacman --noconfirm -S ntfs-3g dosfstools ifuse fuseiso
 
     # Gnome
     _info "Installing Gnome"
@@ -192,7 +192,11 @@ _install_packages() {
 
     # Firefox
     _info "Installing Firefox"
-    pacman --noconfirm -S firefox firefox-i18n-fr hunspell-fr flashplayer
+    pacman --noconfirm -S firefox firefox-i18n-fr hunspell-fr flashplugin
+
+    # Libreoffice
+    _info "Installing Libreoffice"
+    pacman --noconfirm -S libreoffice libreoffice-fr
 
     # Cups & scan
     _info "Installing Cups & scan support"
@@ -216,7 +220,7 @@ _install_settings() {
     usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
     usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
-    usermod -aG systemd-resolve,systemd-coredump $USER_name
+    usermod -aG systemd-resolve,systemd-coredump,kvm,brlapi $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
     usermod -aG polkitd,git,avahi,usbmux,rtkit,gdm,colord $USER_name
 }
@@ -225,7 +229,7 @@ _install_settings() {
 ## iNSTALL ##
 #############
 _banner && _settings && _logs && _gpu_driver
-_confirm "System ready. Do you wish to install KDE Plasma?"
+_confirm "System ready. Do you wish to install GNOME?"
 (_install_yaourt && _install_packages && _install_settings) 2>&1 \
 | tee -a $logfile
 _note "Installation finished. Logfile: /var/log/archboot/"
