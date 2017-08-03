@@ -178,10 +178,6 @@ _install_packages() {
     _info "Installing VGA Driver"
     pacman --noconfirm -S $GPU_driver
 
-    # Xorg
-    _info "Installing Xorg"
-    pacman --noconfirm -S xorg-server xorg-xinit xorg-apps
-
     # File System
     _info "Installing File System"
     pacman --noconfirm -S ntfs-3g dosfstools ifuse fuseiso
