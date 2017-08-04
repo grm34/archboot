@@ -2,7 +2,7 @@
 
 ## Requirements
 
-The only thing you need is an USB bootable device of ArchLinux, you can create it like this :
+The only thing you need is an **USB bootable device** of ArchLinux, you can create it like this :
 
 1. Download the latest archlinux iso : *http://mir.archlinux.fr/iso/latest*
 
