@@ -1,7 +1,5 @@
 ![](http://i.imgur.com/z4nv4Kj.png)
 
-**Install ArchLinux the way i like [FR]**
-
 ## Requirements
 
 The only thing you need is an USB bootable device of ArchLinux, you can create it like this :
