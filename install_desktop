@@ -194,6 +194,10 @@ _install_packages() {
     _info "Installing Libreoffice"
     pacman --noconfirm -S libreoffice libreoffice-fr
 
+    # Gimp
+    _info "Installing Gimp"
+    pacman --noconfirm -S gimp
+
     # Cups & scan
     _info "Installing Cups & scan support"
     pacman --noconfirm -S cups cups-pdf simple-scan
