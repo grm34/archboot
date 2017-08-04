@@ -209,6 +209,8 @@ _mount_part() {
 ## BASE SYSTEM ##
 #################
 _install_base() {
+    _info "Update system clock"
+    timedatectl set-ntp true
     _info "Installing base system"
     yes '' | pacstrap /mnt base base-devel
     _info "Setting fstab"
@@ -217,6 +219,8 @@ _install_base() {
     arch-chroot /mnt /bin/bash <<EOF
     echo -e "==> Setting root password..." && sleep 2s
     echo "root:${ROOT_passwd}" | chpasswd
+    echo -e "==> Setting time zone..." && sleep 2s
+    ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
     echo -e "==> Setting and generating locale..." && sleep 2s
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
     export LANG=fr_FR.UTF-8
