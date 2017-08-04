@@ -234,6 +234,21 @@ _install_base() {
     systemctl enable NetworkManager.service
     echo -e "==> Installing required packages..." && sleep 2s
     pacman --noconfirm -S wget reflector git inxi htop
+    echo -e "==> Enabling NumLock on boot..." && sleep 2s
+    echo '#!/bin/bash' > /usr/bin/numlock
+    echo 'for tty in /dev/tty{1..6}' >> /usr/bin/numlock
+    echo 'do' >> /usr/bin/numlock
+    echo '    /usr/bin/setleds -D +num < "$tty";' >> /usr/bin/numlock
+    echo 'done' >> /usr/bin/numlock
+    echo "[Unit]" > /etc/systemd/system/numlock.service
+    echo "Description=numlock" >> /etc/systemd/system/numlock.service
+    echo "[Service]" >> /etc/systemd/system/numlock.service
+    echo "ExecStart=/usr/bin/numlock" >> /etc/systemd/system/numlock.service
+    echo "StandardInput=tty" >> /etc/systemd/system/numlock.service
+    echo "RemainAfterExit=yes" >> /etc/systemd/system/numlock.service
+    echo "[Install]" >> /etc/systemd/system/numlock.service
+    echo "WantedBy=multi-user.target" >> /etc/systemd/system/numlock.service
+    systemctl enable numlock.service
 EOF
 }
 
