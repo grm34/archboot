@@ -20,7 +20,9 @@ The only thing you need is an USB bootable device of ArchLinux, you can create i
 
 3. Then run : `wget https://raw.githubusercontent.com/grm34/archboot/master/install_arch && sh install_arch`
 
-4. After reboot, for full desktop environment, login and run : `wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_desktop`
+4. After reboot, for full desktop environment, login and run :
+
+`wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_desktop`
 
 ## Notes
 
