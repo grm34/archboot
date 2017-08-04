@@ -20,7 +20,7 @@ The only thing you need is an USB bootable device of ArchLinux, you can create i
 
 4. After reboot, for full desktop environment, login and run :
 
-`wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_desktop`
+    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_desktop`
 
 ## Notes
 
