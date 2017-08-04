@@ -234,7 +234,7 @@ _install_base() {
     systemctl enable NetworkManager.service
     echo -e "==> Installing required packages..." && sleep 2s
     pacman --noconfirm -S wget reflector git inxi htop
-    echo -e "==> Enabling NumLock on boot..." && sleep 2s
+    echo -e "==> Creating NumLock service..." && sleep 2s
     echo '#!/bin/bash' > /usr/bin/numlock
     echo 'for tty in /dev/tty{1..6}' >> /usr/bin/numlock
     echo 'do' >> /usr/bin/numlock
