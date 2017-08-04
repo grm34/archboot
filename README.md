@@ -14,11 +14,17 @@ The only thing you need is an USB bootable device of ArchLinux, you can create i
 
 ## Usage
 
-**1. Boot your computer on the USB bootable device and run :**
+**1. Reboot your computer, open Boot Menu and select the USB bootable device.**
+
+**2. Select Boot Arch Linux (x86_64) :**
+
+`https://raw.githubusercontent.com/grm34/archboot/master/img/archlinux.png `
+
+**3. Then run :**
 
 `wget https://raw.githubusercontent.com/grm34/archboot/master/install_arch && sh install_arch`
 
-**2. After reboot, for full desktop environment (GNOME), login and run :**
+**4. After reboot, for full desktop environment (GNOME), login and run :**
 
 `wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_desktop`
 
