@@ -217,8 +217,8 @@ _install_base() {
     arch-chroot /mnt /bin/bash <<EOF
     echo -e "==> Setting root password..." && sleep 2s
     echo "root:${ROOT_passwd}" | chpasswd
-    echo -e "Setting Time zone..."
-    ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
+    echo -e "Setting TimeZone..."
+    ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
     hwclock --systohc
     echo -e "==> Setting and generating locale..." && sleep 2s
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
