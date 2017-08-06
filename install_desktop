@@ -178,7 +178,7 @@ _install_packages() {
     inxi -C | grep "Intel" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _info "Installing Intel CPU Microcode"
-        pacman -S $CPU
+        pacman -S intel-ucode
     fi
 
     # GPU Driver
