@@ -91,8 +91,7 @@ _logs() {
 ########################
 _firmware() {
     _info "Firmware detection"
-    efivar -l >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
+    if [ -d /sys/firmware/efi/ ]; then
         FIRMWARE="UEFI"
         part_table="GPT"
         part_code="g"
