@@ -232,7 +232,7 @@ _install_base() {
     pacman --noconfirm -S networkmanager wireless_tools wpa_supplicant
     systemctl enable NetworkManager.service
     echo -e "==> Installing required packages..." && sleep 2s
-    pacman --noconfirm -S wget reflector git inxi htop
+    pacman --noconfirm -S wget reflector git inxi htop nmap
 EOF
 }
 
