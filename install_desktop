@@ -116,26 +116,27 @@ _logs() {
 _gpu_driver() {
     _info "GPU detection"
     GPU_driver="xf86-video-vesa"
+    3D_driver="mesa lib32-mesa mesa-vdpau lib32-mesa-vdpau mesa-libgl lib32-mesa-libgl"
 
     # ATI GPU
     lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _note "found ATI GPU"
-        GPU_driver="xf86-video-ati mesa-libgl lib32-mesa-libgl mesa-vdpau lib32-mesa-vdpau"
+        GPU_driver="xf86-video-ati xf86-video-amd ${3D_driver}"
     fi
 
     # nVidia GPU
     lspci | grep "VGA" | grep "nVidia" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _note "found nVidia GPU"
-        GPU_driver="xf86-video-nouveau nouveau-dri libva-vdpau-driver"
+        GPU_driver="xf86-video-nouveau nouveau-dri ${3D_driver}"
     fi
 
     # Intel GPU
     lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _note "found INTEL GPU"
-        GPU_driver="xf86-video-intel vulkan-intel mesa-libgl lib32-mesa-libgl"
+        GPU_driver="xf86-video-intel vulkan-intel libva-intel-driver ${3D_driver}"
     fi
 }
 
@@ -216,6 +217,11 @@ _install_settings() {
     _info "Setting keyboard layout"
     localectl --no-convert set-x11-keymap fr
 
+    # Gtk Themes
+    _info "Installing Themes"
+    wget https://raw.githubusercontent.com/grm34/archboot/master/data/gtk.tar.xz
+    tar xf gtk.tar.xz -C /home/$USER_name/
+
     # Services & Groups
     _info "Enabling services"
     systemctl enable gdm
@@ -237,8 +243,7 @@ _install_settings() {
 #############
 _banner && _settings && _logs && _gpu_driver
 _confirm "System ready. Do you wish to install Gnome Desktop?"
-(_install_yaourt && _install_packages && _install_settings) 2>&1 \
-| tee -a $logfile
+(_install_yaourt && _install_packages && _install_settings) 2>&1 | tee -a $logfile
 _note "Installation finished. Logfile: /var/log/archboot/"
 _confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"
 sleep 2s && reboot
