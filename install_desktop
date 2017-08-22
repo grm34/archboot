@@ -118,6 +118,13 @@ _gpu_driver() {
     GPU_driver="xf86-video-vesa"
     3D_driver="mesa lib32-mesa mesa-vdpau lib32-mesa-vdpau mesa-libgl lib32-mesa-libgl"
 
+    # Intel GPU
+    lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        _note "found INTEL GPU"
+        GPU_driver="xf86-video-intel vulkan-intel libva-intel-driver $3D_driver"
+    fi
+
     # ATI GPU
     lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
@@ -130,13 +137,6 @@ _gpu_driver() {
     if [[ $? -eq 0 ]]; then
         _note "found nVidia GPU"
         GPU_driver="xf86-video-nouveau nouveau-dri $3D_driver"
-    fi
-
-    # Intel GPU
-    lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
-        _note "found INTEL GPU"
-        GPU_driver="xf86-video-intel vulkan-intel libva-intel-driver $3D_driver"
     fi
 }
 
