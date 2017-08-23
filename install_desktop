@@ -206,6 +206,10 @@ _install_packages() {
     _info "Installing Gimp"
     pacman --noconfirm -S gimp
 
+    # Deluge
+    _info "Installing Gimp"
+    pacman --noconfirm -S deluge
+
     # Cups & scan
     _info "Installing Cups & scan support"
     pacman --noconfirm -S cups cups-pdf simple-scan
@@ -235,7 +239,7 @@ _install_settings() {
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
     usermod -aG systemd-resolve,systemd-coredump,kvm,brlapi $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
-    usermod -aG polkitd,git,avahi,usbmux,rtkit,gdm,colord $USER_name
+    usermod -aG polkitd,git,avahi,usbmux,rtkit,gdm,colord,ntp,deluge $USER_name
 }
 
 #############
