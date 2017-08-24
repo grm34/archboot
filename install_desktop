@@ -188,7 +188,7 @@ _install_packages() {
 
     # File System
     _info "Installing File System"
-    pacman --noconfirm -S ntfs-3g dosfstools ifuse fuseiso mediainfo mediainfo-gui
+    pacman --noconfirm -S ntfs-3g dosfstools ifuse fuseiso
 
     # Gnome
     _info "Installing Gnome"
@@ -207,11 +207,11 @@ _install_packages() {
     pacman --noconfirm -S gimp
 
     # Deluge
-    _info "Installing Gimp"
+    _info "Installing Deluge"
     pacman --noconfirm -S deluge
 
-    # Cups & scan
-    _info "Installing Cups & scan support"
+    # Cups
+    _info "Installing Cups"
     pacman --noconfirm -S cups cups-pdf simple-scan
 }
 
@@ -221,8 +221,8 @@ _install_settings() {
     _info "Setting keyboard layout"
     localectl --no-convert set-x11-keymap fr
 
-    # Gtk Themes
-    _info "Installing Themes"
+    # Gtk+ Themes
+    _info "Adding some themes"
     wget https://raw.githubusercontent.com/grm34/archboot/master/data/gtk.tar.xz
     tar xf gtk.tar.xz -C /home/$USER_name/
 
