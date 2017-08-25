@@ -129,7 +129,7 @@ _gpu_driver() {
     lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _note "found ATI GPU"
-        GPU_driver="xf86-video-ati xf86-video-amd $driver_3D"
+        GPU_driver="xf86-video-ati xf86-video-amdgpu $driver_3D"
     fi
 
     # nVidia GPU
