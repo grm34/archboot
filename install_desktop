@@ -188,7 +188,7 @@ _install_packages() {
 
     # File System
     _info "Installing File System"
-    pacman --noconfirm -S ntfs-3g dosfstools ifuse fuseiso
+    pacman --noconfirm -S ntfs-3g dosfstools ifuse fuseiso unrar
 
     # Gnome
     _info "Installing Gnome"
@@ -197,6 +197,10 @@ _install_packages() {
     # Firefox
     _info "Installing Firefox"
     pacman --noconfirm -S firefox firefox-i18n-fr hunspell-fr flashplugin
+
+    # Java
+    _info "Installing Java"
+    pacman --noconfirm -S jre8-openjdk
 
     # Libreoffice
     _info "Installing Libreoffice"
