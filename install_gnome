@@ -250,7 +250,7 @@ _install_settings() {
 ## iNSTALL ##
 #############
 _banner && _settings && _logs && _gpu_driver
-_confirm "System ready. Do you wish to install Gnome Desktop?"
+_confirm "System ready. Do you wish to install Desktop Environment?"
 (_install_yaourt && _install_packages && _install_settings) 2>&1 | tee -a $logfile
 _note "Installation finished. Logfile: /var/log/archboot/"
 _confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"
