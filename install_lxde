@@ -192,7 +192,7 @@ _install_packages() {
 
     # LXDE
     _info "Installing LXDE"
-    pacman --noconfirm -S lxde lxde-common lxsession openbox
+    pacman --noconfirm -S lxde
 
     # Firefox
     _info "Installing Firefox"
@@ -237,14 +237,14 @@ _install_settings() {
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
     usermod -aG systemd-resolve,systemd-coredump $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
-    usermod -aG polkitd,git,avahi,usbmux,rtkit,lxde,colord,ntp,deluge $USER_name
+    usermod -aG polkitd,git,avahi,usbmux,colord,ntp,deluge $USER_name
 }
 
 #############
 ## iNSTALL ##
 #############
 _banner && _settings && _logs && _gpu_driver
-_confirm "System ready. Do you wish to install Gnome Desktop?"
+_confirm "System ready. Do you wish to install Desktop Environment?"
 (_install_yaourt && _install_packages && _install_settings) 2>&1 | tee -a $logfile
 _note "Installation finished. Logfile: /var/log/archboot/"
 _confirm "Done! $__appname__ $__version__ by $__author__ - $__license__"

@@ -10,7 +10,7 @@ The only thing you need is an **USB bootable device** of ArchLinux, you can crea
 
 3. Open rufus, select the USB Drive and the iso : *https://raw.githubusercontent.com/grm34/archboot/master/img/rufus.png*
 
-## Usage
+## Install Archlinux
 
 1. Reboot your computer, open Boot Selection Menu and select the USB bootable device.
 
@@ -20,15 +20,15 @@ The only thing you need is an **USB bootable device** of ArchLinux, you can crea
 
     `wget https://raw.githubusercontent.com/grm34/archboot/master/install_arch && sh install_arch`
 
-4. Install Desktop Environment
+## Desktop Environment
 
-If you want to install GNOME desktop environment, login and run :
+1. If you want to install GNOME desktop, login and run :
 
-    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_gnome`
+    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_gnome && sh install_gnome`
 
-If you want to install LXDE desktop environment, login and run :
+2. If you want to install LXDE desktop, login and run :
 
-    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_lxde`
+    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_lxde && sh install_lxde`
 
 ## Notes
 
