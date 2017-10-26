@@ -20,15 +20,23 @@ The only thing you need is an **USB bootable device** of ArchLinux, you can crea
 
     `wget https://raw.githubusercontent.com/grm34/archboot/master/install_arch && sh install_arch`
 
-4. If you want to install desktop environment, login and run :
+4. Install Desktop Environment
 
-    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_desktop`
+If you want to install GNOME desktop environment, login and run :
+
+    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_gnome`
+
+If you want to install LXDE desktop environment, login and run :
+
+    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_desktop && sh install_lxde`
 
 ## Notes
 
 **install_arch** install ArchLinux base system with Grub.
 
-**install_desktop** install GNOME desktop environment.
+**install_gnome** install GNOME desktop environment.
+
+**install_lxde** install LXDE desktop environment.
 
 ## Logs
 Take a look in **/var/log/archboot/**
