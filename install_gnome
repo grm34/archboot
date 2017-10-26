@@ -228,7 +228,7 @@ _install_settings() {
     # Gtk+ Themes
     _info "Adding some themes"
     wget https://raw.githubusercontent.com/grm34/archboot/master/data/gtk.tar.xz
-    tar xf gtk.tar.xz -C /home/$USER_name/
+    tar xf gtk.tar.xz -C /home/$USER_name/ && rm gtk.tar.xz
 
     # Services & Groups
     _info "Enabling services"
