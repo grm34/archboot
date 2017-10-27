@@ -193,7 +193,11 @@ _install_packages() {
 
     # XFCE
     _info "Installing XFCE"
-    pacman --noconfirm -S xfce4 xfce4-goodies lxdm
+    pacman --noconfirm -S xfce4 xfce4-goodies
+    
+    # SDDM
+    _info "Installing SDDM"
+    pacman --noconfirm -S sddm
 
     # Firefox
     _info "Installing Firefox"
@@ -222,9 +226,10 @@ _install_settings() {
     _info "Setting keyboard layout"
     localectl --no-convert set-x11-keymap fr
 
-    # LXDM
-    _info "Setting LXDM"
-    echo "session=/usr/bin/startxfce4" >> /etc/lxdm/lxdm.conf
+    # Setting SDDM
+    _info "Setting SDDM"
+    sed -i -e "s|Session=|Session=/usr/bin/startxfce4|g" /etc/sddm.conf
+    sed -i -e "s|Numlock=none|Numlock=on|g" /etc/sddm.conf
 
     # Services & Groups
     _info "Enabling services"
@@ -237,7 +242,7 @@ _install_settings() {
     usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
     usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
-    usermod -aG systemd-resolve,systemd-coredump,lxdm,kvm $USER_name
+    usermod -aG systemd-resolve,systemd-coredump,sddm,kvm $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
     usermod -aG polkitd,git,avahi,usbmux,colord,ntp $USER_name
 }
