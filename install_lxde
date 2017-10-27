@@ -211,10 +211,6 @@ _install_packages() {
     _info "Installing Gimp"
     pacman --noconfirm -S gimp
 
-    # Deluge
-    _info "Installing Deluge"
-    pacman --noconfirm -S deluge
-
     # Cups
     _info "Installing Cups"
     pacman --noconfirm -S cups cups-pdf simple-scan
@@ -241,9 +237,9 @@ _install_settings() {
     usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
     usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
-    usermod -aG systemd-resolve,systemd-coredump,lxdm $USER_name
+    usermod -aG systemd-resolve,systemd-coredump,lxdm,kvm $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
-    usermod -aG polkitd,git,avahi,usbmux,colord,ntp,deluge $USER_name
+    usermod -aG polkitd,git,avahi,usbmux,colord,ntp $USER_name
 }
 
 #############
