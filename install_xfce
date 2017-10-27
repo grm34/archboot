@@ -250,7 +250,6 @@ _install_settings() {
     _info "Setting LXDM"
     wget https://raw.githubusercontent.com/grm34/archboot/master/conf/lxdm_xfce.conf
     rm /etc/lxdm/lxdm.conf && cp lxdm_xfce.conf /etc/lxdm/lxdm.conf
-    cp /boot/grub/themes/Archlinux/background.png /usr/share/backgrounds/arch.png
 
     # Themes & icons
     _info "Adding some themes & icons"
