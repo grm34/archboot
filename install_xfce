@@ -224,7 +224,7 @@ _install_settings() {
 
     # LXDM
     _info "Setting LXDM"
-    echo "session=/usr/bin/startlxde" >> /etc/lxdm/lxdm.conf
+    echo "session=/usr/bin/startxfce4" >> /etc/lxdm/lxdm.conf
 
     # Services & Groups
     _info "Enabling services"
@@ -239,7 +239,7 @@ _install_settings() {
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
     usermod -aG systemd-resolve,systemd-coredump,lxdm,kvm $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
-    usermod -aG polkitd,git,avahi,usbmux,colord,ntp,deluge $USER_name
+    usermod -aG polkitd,git,avahi,usbmux,colord,ntp $USER_name
 }
 
 #############
