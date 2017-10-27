@@ -28,7 +28,7 @@ The only thing you need is an **USB bootable device** of ArchLinux, you can crea
 
 2. If you want to install XFCE4 desktop, login and run :
 
-    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_lxde && sh install_lxde`
+    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_xfce && sh install_xfce`
 
 3. If you want to install LXDE desktop, login and run :
 
@@ -36,13 +36,13 @@ The only thing you need is an **USB bootable device** of ArchLinux, you can crea
 
 ## Notes
 
-**install_arch** install ArchLinux base system with Grub.
+**install_arch**   >  ArchLinux base system with Grub.
 
-**install_gnome** install GNOME desktop environment.
+**install_gnome**  >  GNOME desktop environment.
 
-**install_xfce** install XFCE4 desktop environment.
+**install_xfce**   >  XFCE4 desktop environment.
 
-**install_lxde** install LXDE desktop environment.
+**install_lxde**   >  LXDE desktop environment.
 
 ## Logs
 Take a look in **/var/log/archboot/**
