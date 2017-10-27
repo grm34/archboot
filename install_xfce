@@ -191,9 +191,9 @@ _install_packages() {
     pacman --noconfirm -S gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted \
     ntfs-3g dosfstools exfat-utils file-roller ifuse fuseiso unrar
 
-    # LXDE
-    _info "Installing LXDE"
-    pacman --noconfirm -S lxde
+    # XFCE
+    _info "Installing XFCE"
+    pacman --noconfirm -S xfce4 xfce4-goodies
 
     # Firefox
     _info "Installing Firefox"
