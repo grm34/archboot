@@ -193,7 +193,7 @@ _install_packages() {
 
     # XFCE
     _info "Installing XFCE"
-    pacman --noconfirm -S xfce4 xfce4-goodies
+    pacman --noconfirm -S xfce4 xfce4-goodies lxdm
 
     # Firefox
     _info "Installing Firefox"
@@ -210,10 +210,6 @@ _install_packages() {
     # Gimp
     _info "Installing Gimp"
     pacman --noconfirm -S gimp
-
-    # Deluge
-    _info "Installing Deluge"
-    pacman --noconfirm -S deluge
 
     # Cups
     _info "Installing Cups"
@@ -241,7 +237,7 @@ _install_settings() {
     usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
     usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
-    usermod -aG systemd-resolve,systemd-coredump,lxdm $USER_name
+    usermod -aG systemd-resolve,systemd-coredump,lxdm,kvm $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
     usermod -aG polkitd,git,avahi,usbmux,colord,ntp,deluge $USER_name
 }
