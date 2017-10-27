@@ -36,13 +36,13 @@ The only thing you need is an **USB bootable device** of ArchLinux, you can crea
 
 ## Notes
 
-**install_arch**   >  ArchLinux base system with Grub.
+**install_arch** > ArchLinux base system with Grub.
 
-**install_gnome**  >  GNOME desktop environment.
+**install_gnome** > GNOME desktop environment.
 
-**install_xfce**   >  XFCE4 desktop environment.
+**install_xfce** > XFCE4 desktop environment.
 
-**install_lxde**   >  LXDE desktop environment.
+**install_lxde** > LXDE desktop environment.
 
 ## Logs
 Take a look in **/var/log/archboot/**
