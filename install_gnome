@@ -210,13 +210,9 @@ _install_packages() {
     _info "Installing Gimp"
     pacman --noconfirm -S gimp
 
-    # Deluge
-    _info "Installing Deluge"
-    pacman --noconfirm -S deluge
-
     # Cups
     _info "Installing Cups"
-    pacman --noconfirm -S cups cups-pdf simple-scan
+    pacman --noconfirm -S cups cups-pdf ghostscript gutenprint sane simple-scan
 }
 
 _install_settings() {
