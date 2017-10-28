@@ -26,11 +26,11 @@ The only thing you need is an **USB bootable device** of ArchLinux, you can crea
 
     `wget https://raw.githubusercontent.com/grm34/archboot/master/install_gnome && sh install_gnome`
 
-2. If you want to install XFCE4 desktop, login and run :
+2. Or if you want to install XFCE4 desktop, login and run :
 
     `wget https://raw.githubusercontent.com/grm34/archboot/master/install_xfce && sh install_xfce`
 
-3. If you want to install LXDE desktop, login and run :
+3. Or if you want to install LXDE desktop, login and run :
 
     `wget https://raw.githubusercontent.com/grm34/archboot/master/install_lxde && sh install_lxde`
 
