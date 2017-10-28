@@ -191,8 +191,8 @@ _install_packages() {
     pacman --noconfirm -S gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted \
         ntfs-3g dosfstools exfat-utils file-roller ifuse fuseiso unrar
 
-    # XFCE
-    _info "Installing XFCE"
+    # XFCE4
+    _info "Installing XFCE4"
     pacman --noconfirm -S xfce4 xfce4-goodies
 
     # LXDM
@@ -269,7 +269,7 @@ _install_settings() {
     usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
     usermod -aG systemd-resolve,systemd-coredump,lxdm,kvm $USER_name
     usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
-    usermod -aG polkitd,git,avahi,usbmux,colord,ntp $USER_name
+    usermod -aG polkitd,git,avahi,usbmux,colord,ntp,nm-openvpn $USER_name
 }
 
 #############
