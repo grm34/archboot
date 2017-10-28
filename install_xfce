@@ -233,7 +233,7 @@ _install_packages() {
 
     # Desktop Tools
     _info "Installing Desktop Tools"
-    $_install gnome-calculator fbreader mupdf
+    $_install docky gnome-calculator fbreader mupdf
 
     # Network Apps
     _info "Installing Network Apps"
