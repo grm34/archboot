@@ -213,7 +213,7 @@ _install_packages() {
 
     # Cups
     _info "Installing Cups"
-    pacman --noconfirm -S cups cups-pdf simple-scan
+    pacman --noconfirm -S cups cups-pdf ghostscript gutenprint sane simple-scan
 }
 
 _install_settings() {
