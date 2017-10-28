@@ -233,7 +233,7 @@ _install_packages() {
 
     # Desktop Tools
     _info "Installing Desktop Tools"
-    $_install docky gnome-calculator fbreader mupdf
+    pacman --noconfirm -S docky gnome-calculator fbreader mupdf
 
     # Network Apps
     _info "Installing Network Apps"
