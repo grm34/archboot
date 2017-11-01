@@ -2,14 +2,11 @@
 
 ## Requirements
 
-The only thing you need is an **USB bootable device** of ArchLinux, if you are
-on windows you can create it like this :
+The only thing you need is an **USB bootable device** of ArchLinux and a HDD dedicated for the installation.
 
-1. Download the latest archlinux iso : *http://mir.archlinux.fr/iso/latest*
+- Instructions for Windows: *https://rufus.akeo.ie/*
 
-2. Download rufus : *https://rufus.akeo.ie/downloads/*
-
-3. Open rufus, select the USB Drive and the iso : *https://raw.githubusercontent.com/grm34/archboot/master/img/rufus.png*
+- Instruction for Linux : *https://wiki.archlinux.fr/Cr%C3%A9er_une_clef_USB_avec_l%27ISO_Arch_Linux*
 
 ## Usage
 
@@ -17,13 +14,17 @@ on windows you can create it like this :
 
 2. Select **Boot Arch Linux (x86_64)** : *https://raw.githubusercontent.com/grm34/archboot/master/img/archlinux.png*
 
-3. Then run this command and follow the instructions :
+3. Set AZERTY keyboard by running this command :
+
+    `loqdkeys fr`
+
+4. Download Archboot and follow the instructions :
 
     `wget https://raw.githubusercontent.com/grm34/archboot/master/archboot && sh archboot`
 
 ## Desktop Environment
 
-You can choose during the installation if you want to install a desktop environment.
+During the installation, you can choose if you want or not to install a desktop environment.
 For now only this ones are availables: Gnome, Xfce4, Lxde (coming soon for KDE)
 
 ## Logs
