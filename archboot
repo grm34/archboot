@@ -65,9 +65,13 @@ _chroot() {
 EOF
 }
 
+# Start Archboot
+_banner
+
 # Download sources
-_sources() {
-    _info "Downloading required scripts"
+_confirm "Start downloading sources?"
+if [[ ${confirm} == "y" ]]; then
+    _info "Downloading sourcess"
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/base
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/bootloader
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/firmware
@@ -75,17 +79,19 @@ _sources() {
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/partition
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/user
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/yaourt
-}
+else
+    exit
+fi
 
 # Prepare the system
-source user; source firmware; source mount; source partition
-_banner; _user-infos; _logs; _firmware; _partition; _mount
+_source ./user; source ./firmware; source ./mount; source ./partition
+_user-infos; _logs; _firmware; _partition; _mount
 
 # Install Archboot
 if [ $? -eq 0 ]; then
     _confirm "System ready. Do you wish to install ArchLinux?"
     if [[ ${confirm} == "y" ]]; then
-        source base; source bootloader; source user-settings; source yaourt
+        source ./base; source ./bootloader; source ./user-settings; source ./yaourt
         (_base && _bootloader && _user-settings && yaourt) 2>&1 | tee -a $logfile
     else
         exit
@@ -98,7 +104,7 @@ fi
 if [[ -z ${desktop+x} ]]; then
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/gpu
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/$desktop
-    source gpu; source $desktop
+    source ./gpu; source ./$desktop
     (_gpu && _install-desktop && _desktop-settings) 2>&1 | tee -a $logfile
 fi
 
