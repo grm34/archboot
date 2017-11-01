@@ -78,7 +78,7 @@ _sources() {
 }
 
 # Prepare the system
-source user,firmware,mount,partition
+source user; source firmware; source mount; source partition
 _banner; _user-infos; _logs; _firmware; _partition; _mount
 
 # Install Archboot
