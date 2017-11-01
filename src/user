@@ -43,7 +43,7 @@ _user-infos() {
     # Destop Environment
     _confirm "Do you wish to install a Desktop Environment?"
     if [[ ${confirm} == "y" ]]; then
-        until [[ ${i} == "1" || ${i} == "2" || ${i} == "3"]]; do
+        until [[ ${i} == "1" || ${i} == "2" || ${i} == "3" ]]; do
         _prompt "Gnome $red[1]$green - Xfce4 $red[2]$green - Lxde $red[3]"
         read i
         done
