@@ -12,7 +12,7 @@ The only thing you need is an **USB bootable device** of ArchLinux and one **HDD
 
 **1.** Reboot your computer, open Boot Selection Menu and select the USB bootable device.
 
-**2.** Select [**Boot Arch Linux (x86_64)**](https://raw.githubusercontent.com/grm34/archboot/master/img/archlinux.png)
+**2.** Select **Boot Arch Linux (x86_64)** ([screenshot](https://raw.githubusercontent.com/grm34/archboot/master/img/archlinux.png))
 
 **3.** Set AZERTY keyboard by running this command:
 
