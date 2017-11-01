@@ -1,0 +1,34 @@
+#!/bin/bash
+
+_yaourt() {
+
+    # Setting pacman.conf
+    _info "Setting pacman.conf"
+    _chroot 'echo "## CUSTOM PACMAN.CONF ##" > /etc/pacman.conf'
+    _chroot 'echo "[options]" >> /etc/pacman.conf'
+    _chroot 'echo "HoldPkg     = pacman glibc" >> /etc/pacman.conf'
+    _chroot 'echo "Architecture = auto" >> /etc/pacman.conf'
+    _chroot 'echo "ILoveCandy" >> /etc/pacman.conf'
+    _chroot 'echo "CheckSpace" >> /etc/pacman.conf'
+    _chroot 'echo "SigLevel    = Required DatabaseOptional" >> /etc/pacman.conf'
+    _chroot 'echo "LocalFileSigLevel = Optional" >> /etc/pacman.conf'
+    _chroot 'echo "[archlinuxfr]" >> /etc/pacman.conf'
+    _chroot 'echo "SigLevel = Never" >> /etc/pacman.conf'
+    _chroot 'echo "Server = http://repo.archlinux.fr/\$arch" >> /etc/pacman.conf'
+    _chroot 'echo "[core]" >> /etc/pacman.conf'
+    _chroot 'echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf'
+    _chroot 'echo "[extra]">> /etc/pacman.conf'
+    _chroot 'echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf'
+    _chroot 'echo "[community]" >> /etc/pacman.conf'
+    _chroot 'echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf'
+    _chroot 'echo "[multilib]" >> /etc/pacman.conf'
+    _chroot 'echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf'
+
+    # Settings Mirrors
+    _info "Setting mirrorlist"
+    _chroot 'reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist'
+
+    # Install yaourt
+    _info "Installing yaourt"
+    _chroot 'pacman --noconfirm -Syu yaourt customizepkg'
+}

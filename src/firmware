@@ -1,0 +1,26 @@
+#!/bin/bash
+
+_firmware() {
+
+    # Firmaware Detection
+    _info "Firmware detection"
+    efivar -l >/dev/null 2>&1
+
+    # Setting partitions
+    if [[ $? -eq 0 ]]; then
+        FIRMWARE="UEFI"
+        part_table="GPT"
+        part_code="g"
+        part_type=""
+        boot_filesystem="fat -F 32"
+        _note "found UEFI firmware."
+    else
+        FIRMWARE="BIOS"
+        part_table="MBR"
+        part_code="o"
+        part_type="p\n"
+        boot_filesystem="ext2"
+        _note "found BIOS firmware."
+    fi
+    part_order=(0 1 2 3 4)
+}

@@ -2,7 +2,8 @@
 
 ## Requirements
 
-The only thing you need is an **USB bootable device** of ArchLinux, you can create it like this :
+The only thing you need is an **USB bootable device** of ArchLinux, if you are
+on windows you can create it like this :
 
 1. Download the latest archlinux iso : *http://mir.archlinux.fr/iso/latest*
 
@@ -10,7 +11,7 @@ The only thing you need is an **USB bootable device** of ArchLinux, you can crea
 
 3. Open rufus, select the USB Drive and the iso : *https://raw.githubusercontent.com/grm34/archboot/master/img/rufus.png*
 
-## Install Archlinux
+## Usage
 
 1. Reboot your computer, open Boot Selection Menu and select the USB bootable device.
 
@@ -18,31 +19,12 @@ The only thing you need is an **USB bootable device** of ArchLinux, you can crea
 
 3. Then run this command and follow the instructions :
 
-    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_arch && sh install_arch`
+    `wget https://raw.githubusercontent.com/grm34/archboot/master/archboot && sh archboot`
 
 ## Desktop Environment
 
-1. If you want to install GNOME desktop, login and run :
-
-    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_gnome && sh install_gnome`
-
-2. Or if you want to install XFCE4 desktop, login and run :
-
-    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_xfce && sh install_xfce`
-
-3. Or if you want to install LXDE desktop, login and run :
-
-    `wget https://raw.githubusercontent.com/grm34/archboot/master/install_lxde && sh install_lxde`
-
-## Notes
-
-**install_arch** > ArchLinux base system with Grub.
-
-**install_gnome** > GNOME desktop environment.
-
-**install_xfce** > XFCE4 desktop environment.
-
-**install_lxde** > LXDE desktop environment.
+You can choose during the installation if you want to install a desktop environment.
+For now only this ones are availables: Gnome, Xfce4, Lxde (coming soon for KDE)
 
 ## Logs
 Take a look in **/var/log/archboot/**
