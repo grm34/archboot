@@ -81,7 +81,7 @@ if [[ ${confirm} == "y" ]]; then
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/yaourt
 else
     exit
-fi
+fi; unset confirm
 
 # Prepare the system
 source ./user; source ./firmware; source ./mount; source ./partition
@@ -95,7 +95,7 @@ if [ $? -eq 0 ]; then
         (_base && _bootloader && _user_settings && yaourt) 2>&1 | tee -a $logfile
     else
         exit
-    fi
+    fi; unset confirm
 else
     _error "partitionning error, please try again."
 fi
@@ -121,4 +121,4 @@ if [[ ${confirm} == "y" ]]; then
     umount -R /mnt; reboot
 else
     exit
-fi
+fi; unset confirm

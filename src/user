@@ -48,7 +48,7 @@ _user_infos() {
         read c
         done
         choice=[none,gnome,xfce,lxde]; desktop=$choice[${c}]
-    fi
+    fi; unset confirm
 }
 
 _user_settings() {
