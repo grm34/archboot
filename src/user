@@ -1,0 +1,75 @@
+#!/bin/bash
+
+_user-infos() {
+
+    # Hostname
+    until [[ ${#HOST_name} -ge 3 \
+    && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    _prompt "Enter Hostname (ex: my-computer):"
+    read HOST_name
+    done
+
+    # Password
+    until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
+    _note "password should be at least 8 chars long with 1 letter and 1 digit"
+    _prompt "Enter password for root:"
+    read -s i
+    done
+    _prompt "Confirm password for root:"
+    read -s ROOT_passwd
+    if [[ ${ROOT_passwd} != ${i} ]]; then
+        _error "passwords does not match!"
+    fi
+
+    # Username
+    until [[ ${#USER_name} -ge 3 \
+    && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    _prompt "Enter Username (ex: johnny):"
+    read USER_name
+    done
+
+    # Password
+    until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
+    _note "password should be at least 8 chars long with 1 letter and 1 digit"
+    _prompt "Enter password for ${USER_name}:"
+    read -s i
+    done
+    _prompt "Confirm password for ${USER_name}:"
+    read -s USER_passwd
+    if [[ ${USER_passwd} != ${i} ]]; then
+        _error "passwords does not match!"
+    fi
+
+    # Destop Environment
+    _confirm "Do you wish to install a Desktop Environment?"
+    if [[ ${confirm} == "y" ]]; then
+        until [[ ${i} == "1" || ${i} == "2" || ${i} == "3"]]; do
+        _prompt "Gnome $red[1]$green - Xfce4 $red[2]$green - Lxde $red[3]"
+        read i
+        done
+        choice=[none,gnome,xfce,lxde]; desktop=$choice[${i}]
+    fi
+}
+
+_user-settings() {
+
+    # Adding user
+    _info "Setting user"
+    _chroot 'useradd -g users -m -s /bin/bash $USER_name'
+    _chroot 'echo "${USER_name}:${USER_passwd}" | chpasswd'
+    _chroot 'echo "${USER_name} ALL=(ALL) ALL" >> /etc/sudoers'
+
+    # Setting Aliases
+    _info "Setting aliases"
+    _chroot 'echo "export VISUAL=\"nano\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _system=\"inxi -F -M\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _install=\"yaourt -S\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _delete=\"yaourt -Rcsn\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _update=\"yaourt -Syyua\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _clean=\"yaourt -Scc\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _purge=\"yaourt -Qdt\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _verif=\"yaourt -Qqk\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _pacnew=\"yaourt -C\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _search=\"yaourt -s\"" >> /home/$USER_name/.bashrc'
+    _chroot 'echo "alias _mirrorlist=\"sudo reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist\"" >> /home/$USER_name/.bashrc'
+}

@@ -1,0 +1,114 @@
+#!/bin/bash
+
+# Infos
+__appname__="archboot"
+__version__="v2.5"
+__author__="@grm34"
+__date__="2017"
+__license__="Apache v2.0 License"
+
+# Colors
+red="\e[1;31m"
+green="\e[1;32m"
+yellow="\e[1;33m"
+blue="\e[1;34m"
+pink="\e[1;35m"
+cyan="\e[1;36m"
+nc="\e[0m"
+
+# Banner
+_banner() {
+    echo -e "$red\n\n" >&2
+    echo -e "       █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█" >&2
+    echo -e "       █$yellow     Archboot $__version__     $red█" >&2
+    echo -e "       █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█\n"$nc >&2
+}
+
+# Install Logs
+_logs() {
+    _info "Setting archboot log"
+    datetime=`date '+%d-%m-%Y_%Hh%Mm%Ss'`
+    logfile="archboot_$datetime.log"
+}
+
+
+# Basic Functions
+_prompt() {
+   echo -e $yellow"\n==> $green$1 $red$2"$nc >&2
+   echo -e $yellow"==> ------------------------------------"$nc >&2
+   echo -ne $yellow"==> "$nc >&2
+}
+
+_confirm() {
+    until [[ ${confirm} == "y" || ${confirm} == "n" ]]; do
+    echo -e $yellow"\n==> green$1 $red[y/n]"$nc >&2
+    echo -ne $yellow"==> "$nc >&2
+    read confirm
+    done
+}
+
+_info() {
+    echo -e $cyan"\n==> $1..."$nc && sleep 2s
+}
+
+_note() {
+    echo -e $cyan"\nNote:$nc $1" >&2
+}
+
+_error() {
+    echo -e $red"\nError:$nc $1" >&2
+    exit
+}
+
+_chroot() {
+    arch-chroot /mnt /bin/bash <<EOF $1
+EOF
+}
+
+# Download required scripts
+wget https://raw.githubusercontent.com/grm34/archboot/master/src/base
+wget https://raw.githubusercontent.com/grm34/archboot/master/src/bootloader
+wget https://raw.githubusercontent.com/grm34/archboot/master/src/firmware
+wget https://raw.githubusercontent.com/grm34/archboot/master/src/mount
+wget https://raw.githubusercontent.com/grm34/archboot/master/src/partition
+wget https://raw.githubusercontent.com/grm34/archboot/master/src/user
+wget https://raw.githubusercontent.com/grm34/archboot/master/src/yaourt
+
+# Prepare the system
+source user,firmware,mount,partition
+_banner; _user-infos; _logs; _firmware; _partition; _mount
+
+# Install Archboot
+if [ $? -eq 0 ]; then
+    _confirm "System ready. Do you wish to install ArchLinux?"
+    if [[ ${confirm} == "y" ]]; then
+        source base,bootloader,user-settings,yaourt
+        (_base && _bootloader && _user-settings && yaourt) 2>&1 | tee -a $logfile
+    else
+        exit
+    fi
+else
+    _error "partitionning error, please try again."
+fi
+
+# Install Desktop Environment
+if [[ -z ${desktop+x} ]]; then
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/$desktop
+    source $desktop
+    (_gpu && _install-desktop && _desktop-settings) 2>&1 | tee -a $logfile
+fi
+
+# Setting logfile
+mkdir /mnt/var/log/archboot; cp $logfile /mnt/var/log/archboot/
+
+# Notes
+_note "Installation finished! Logfile: /var/log/archboot/"
+_note "$__appname__ $__version__ by $__author__ - $__license__"
+
+# Reboot
+_confirm "Do you want to reboot now?"
+if [[ ${confirm} == "y" ]]; then
+    umount -R /mnt; reboot
+else
+    exit
+fi
