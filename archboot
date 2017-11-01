@@ -48,15 +48,15 @@ _confirm() {
 }
 
 _info() {
-    echo -e $cyan"\n==> $1..."$nc && sleep 2s
+    echo -e $yellow"\n==> $cyan$1..."$nc && sleep 2s
 }
 
 _note() {
-    echo -e $cyan"\nNote:$nc $1" >&2
+    echo -e $red"\nNote: $yellow$1"$nc >&2
 }
 
 _error() {
-    echo -e $red"\nError:$nc $1" >&2
+    echo -e $red"\nError: $green$1"$nc >&2
     exit
 }
 
@@ -71,7 +71,7 @@ _banner
 # Download sources
 _confirm "Start downloading sources?"
 if [[ ${confirm} == "y" ]]; then
-    _info "Downloading sourcess"
+    _info "Downloading sources"
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/base
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/bootloader
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/firmware
@@ -84,7 +84,7 @@ else
 fi
 
 # Prepare the system
-_source ./user; source ./firmware; source ./mount; source ./partition
+source ./user; source ./firmware; source ./mount; source ./partition
 _user-infos; _logs; _firmware; _partition; _mount
 
 # Install Archboot
