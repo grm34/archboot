@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_user-infos() {
+_user_infos() {
 
     # Hostname
     until [[ ${#HOST_name} -ge 3 \
@@ -51,7 +51,7 @@ _user-infos() {
     fi
 }
 
-_user-settings() {
+_user_settings() {
 
     # Adding user
     _info "Setting user"
