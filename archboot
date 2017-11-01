@@ -65,14 +65,17 @@ _chroot() {
 EOF
 }
 
-# Download required scripts
-wget https://raw.githubusercontent.com/grm34/archboot/master/src/base
-wget https://raw.githubusercontent.com/grm34/archboot/master/src/bootloader
-wget https://raw.githubusercontent.com/grm34/archboot/master/src/firmware
-wget https://raw.githubusercontent.com/grm34/archboot/master/src/mount
-wget https://raw.githubusercontent.com/grm34/archboot/master/src/partition
-wget https://raw.githubusercontent.com/grm34/archboot/master/src/user
-wget https://raw.githubusercontent.com/grm34/archboot/master/src/yaourt
+# Download sources
+_sources() {
+    _info "Downloading required scripts"
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/base
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/bootloader
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/firmware
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/mount
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/partition
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/user
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/yaourt
+}
 
 # Prepare the system
 source user,firmware,mount,partition
@@ -82,7 +85,7 @@ _banner; _user-infos; _logs; _firmware; _partition; _mount
 if [ $? -eq 0 ]; then
     _confirm "System ready. Do you wish to install ArchLinux?"
     if [[ ${confirm} == "y" ]]; then
-        source base,bootloader,user-settings,yaourt
+        source base; source bootloader; source user-settings; source yaourt
         (_base && _bootloader && _user-settings && yaourt) 2>&1 | tee -a $logfile
     else
         exit
@@ -93,8 +96,9 @@ fi
 
 # Install Desktop Environment
 if [[ -z ${desktop+x} ]]; then
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/gpu
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/$desktop
-    source $desktop
+    source gpu; source $desktop
     (_gpu && _install-desktop && _desktop-settings) 2>&1 | tee -a $logfile
 fi
 
