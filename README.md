@@ -4,7 +4,7 @@
 
 The only thing you need is an **USB bootable device** of ArchLinux and one **HDD dedicated** for the installation.
 
-- USB Boot Instructions for [**Windows**](https://rufus.akeo.ie/)
+- USB Boot Instructions for [**Windows**](https://rufus.akeo.ie/?locale=fr_FR)
 
 - USB Boot Instructions for [**Linux**](https://debian-facile.org/doc:install:usb-boot)
 
