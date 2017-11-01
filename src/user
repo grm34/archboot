@@ -10,16 +10,16 @@ _user_infos() {
     done
 
     # Password
-    until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
+    until [[ ${#a} -ge 8 && "$a" == *[a-z]* && "$a" == *[0-9]* ]]; do
     _note "password should be at least 8 chars long with 1 letter and 1 digit"
     _prompt "Enter password for root:"
-    read -s i
-    done
+    read -s a
+    done; echo
     _prompt "Confirm password for root:"
     read -s ROOT_passwd
-    if [[ ${ROOT_passwd} != ${i} ]]; then
+    if [[ ${ROOT_passwd} != ${a} ]]; then
         _error "passwords does not match!"
-    fi
+    fi; echo
 
     # Username
     until [[ ${#USER_name} -ge 3 \
@@ -29,25 +29,25 @@ _user_infos() {
     done
 
     # Password
-    until [[ ${#i} -ge 8 && "$i" == *[a-z]* && "$i" == *[0-9]* ]]; do
+    until [[ ${#b} -ge 8 && "$b" == *[a-z]* && "$b" == *[0-9]* ]]; do
     _note "password should be at least 8 chars long with 1 letter and 1 digit"
     _prompt "Enter password for ${USER_name}:"
-    read -s i
-    done
+    read -s b
+    done; echo
     _prompt "Confirm password for ${USER_name}:"
     read -s USER_passwd
-    if [[ ${USER_passwd} != ${i} ]]; then
+    if [[ ${USER_passwd} != ${b} ]]; then
         _error "passwords does not match!"
-    fi
+    fi; echo
 
-    # Destop Environment
+    # Desktop Environment
     _confirm "Do you wish to install a Desktop Environment?"
     if [[ ${confirm} == "y" ]]; then
-        until [[ ${i} == "1" || ${i} == "2" || ${i} == "3" ]]; do
+        until [[ ${c} == "1" || ${c} == "2" || ${c} == "3" ]]; do
         _prompt "Gnome $red[1]$green - Xfce4 $red[2]$green - Lxde $red[3]"
-        read i
+        read c
         done
-        choice=[none,gnome,xfce,lxde]; desktop=$choice[${i}]
+        choice=[none,gnome,xfce,lxde]; desktop=$choice[${c}]
     fi
 }
 
