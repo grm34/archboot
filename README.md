@@ -16,11 +16,11 @@ The only thing you need is an **USB bootable device** of ArchLinux and one **HDD
 
 **3.** Set AZERTY keyboard by running this command:
 
-    `loqdkeys fr`
+`loqdkeys fr`
 
 **4.** Download Archboot and follow the instructions:
 
-    `wget https://raw.githubusercontent.com/grm34/archboot/master/archboot && sh archboot`
+`wget https://raw.githubusercontent.com/grm34/archboot/master/archboot && sh archboot`
 
 ## Desktop Environment
 
