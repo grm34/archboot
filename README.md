@@ -2,7 +2,7 @@
 
 ## Requirements
 
-The only thing you need is an **USB bootable device** of ArchLinux and one **HDD dedicated** for the installation.
+The only thing you need is one **USB bootable device** of ArchLinux and one **HDD dedicated** for the installation.
 
 - USB Boot Instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR)
 
