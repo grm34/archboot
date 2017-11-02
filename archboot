@@ -53,11 +53,11 @@ _info() {
 }
 
 _note() {
-    echo -e $red"\nNote: $yellow$1"$nc >&2
+    echo -e $red"\nNote: $blue$1"$nc >&2
 }
 
 _error() {
-    echo -e $red"\nError: $green$1"$nc >&2
+    echo -e $red"\nError: $yellow$1"$nc >&2
     exit
 }
 
