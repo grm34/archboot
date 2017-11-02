@@ -1,6 +1,7 @@
 #!/bin/bash
+source ./archboot
 
-_mount() {
+_mounting() {
 
     # Mount partitions & swap
     _info "Mounting partitions & swap"

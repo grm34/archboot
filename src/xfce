@@ -1,6 +1,7 @@
 #!/bin/bash
+source ./archboot
 
-_install-desktop() {
+_install_desktop() {
 
     # Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
@@ -71,7 +72,7 @@ _install-desktop() {
         networkmanager-openvpn'
 }
 
-_desktop-settings() {
+_desktop_settings() {
 
     # Keyboard layout
     _info "Setting keyboard layout"

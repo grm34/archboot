@@ -1,6 +1,7 @@
 #!/bin/bash
+source ./archboot
 
-_install-desktop() {
+_install_desktop() {
 
     # Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
@@ -57,7 +58,7 @@ _install-desktop() {
     _chroot 'pacman --noconfirm -S phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc'
 }
 
-_desktop-settings() {
+_desktop_settings() {
 
     # Keyboard layout
     _info "Setting keyboard layout"
