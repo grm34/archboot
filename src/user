@@ -5,7 +5,7 @@ _user_infos() {
     # Hostname
     until [[ ${#HOST_name} -ge 3 \
     && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
-    _prompt "Enter Hostname (ex: my-computer):"
+    _prompt "Enter Hostname (ex: my-favorite-computer):"
     read HOST_name
     done
 
