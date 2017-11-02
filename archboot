@@ -77,7 +77,7 @@ if [[ ${confirm} == "y" ]]; then
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/base
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/bootloader
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/firmware
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/mount
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/mounting
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/partition
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/user
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/yaourt
@@ -85,15 +85,18 @@ else
     exit
 fi; unset confirm
 
+# Import sources
+_info "Importing sources"
+source ./base; source ./bootloader; source ./firmware; source ./mounting
+source ./partition; source ./user; source ./yaourt
+
 # Prepare the system
-source ./user; source ./firmware; source ./mount; source ./partition
-_user_infos; _logs; _firmware; _partition; _mount
+_user_infos; _logs; _firmware; _partition; _mounting
 
 # Install Archboot
 if [ $? -eq 0 ]; then
     _confirm "Do you wish to install ArchLinux now?"
     if [[ ${confirm} == "y" ]]; then
-        source ./base; source ./bootloader; source ./yaourt
         (_base && _bootloader && _user_settings && yaourt) 2>&1 | tee -a $logfile
     else
         exit
@@ -102,15 +105,24 @@ else
     _error "partitionning error, please try again."
 fi
 
-# Install Desktop Environment
-if [[ -z ${desktop+x} ]]; then
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/gpu
+# Desktop Environment
+if [[ ! -z ${desktop+x} ]]; then
+
+    # Download desktop sources
+    _info "Downloading desktop sources"
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/_gpu
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/$desktop
-    source ./gpu; source ./$desktop
-    (_gpu && _install-desktop && _desktop-settings) 2>&1 | tee -a $logfile
+
+    # Import desktop sources
+    _info "Importing sources"
+    source ./gpu; source ./${desktop}; source ./firmware; source ./mounting
+
+    # Install desktop environment
+    (_gpu && _install_desktop && _desktop_settings) 2>&1 | tee -a $logfile
 fi
 
 # Setting logfile
+sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"  $logfile
 mkdir /mnt/var/log/archboot; cp $logfile /mnt/var/log/archboot/
 
 # Notes
