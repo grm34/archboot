@@ -10,13 +10,13 @@ _partition() {
     read _disk
     done
     fdisk -l /dev/$_disk
-    _note "WARNING! This will erase the entire drive!"
+    _note "WARNING! This will erase the entire drive."
     _confirm "Setting $part_table partition table on /dev/$_disk"
     if [[ ${confirm} == "y" ]]; then
         printf "$part_code\nw" | fdisk /dev/$_disk
     else
         exit
-    fi
+    fi; unset confirm
 
     # BOOT on /dev/xxx1
     until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1} \
