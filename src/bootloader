@@ -4,12 +4,13 @@ _bootloader() {
 
     # Install Bootloader
     _info "Installing $FIRMWARE Bootloader"
-    _chroot 'pacman --noconfirm -S grub os-prober gptfdisk efibootmgr'
-    if [[ "$FIRMWARE" == "UEFI" ]]; then
-        _chroot 'grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck'
-    else
-        _chroot 'grub-install --no-floppy --recheck /dev/$_disk'
-    fi
+    _chroot \
+        'pacman --noconfirm -S grub os-prober gptfdisk efibootmgr
+        if [[ "$FIRMWARE" == "UEFI" ]]; then
+            _chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck"
+        else
+            _chroot "grub-install --no-floppy --recheck /dev/$_disk"
+        fi'
 
     # Install Grub Themes
     _info "Installing Grub Themes"

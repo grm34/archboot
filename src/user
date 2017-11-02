@@ -55,13 +55,15 @@ _user_settings() {
 
     # Adding user
     _info "Setting user"
-    _chroot 'useradd -g users -m -s /bin/bash $USER_name'
-    _chroot 'echo "${USER_name}:${USER_passwd}" | chpasswd \
+    _chroot \
+        'useradd -g users -m -s /bin/bash $USER_name
+        echo "${USER_name}:${USER_passwd}" | chpasswd
         echo "${USER_name} ALL=(ALL) ALL" >> /etc/sudoers'
 
     # Setting Aliases
     _info "Setting aliases"
-    _chroot 'echo "export VISUAL=\"nano\"" >> /home/$USER_name/.bashrc \
+    _chroot \
+        'echo "export VISUAL=\"nano\"" >> /home/$USER_name/.bashrc \
         echo "alias _system=\"inxi -F -M\"" >> /home/$USER_name/.bashrc \
         echo "alias _install=\"yaourt -S\"" >> /home/$USER_name/.bashrc \
         echo "alias _delete=\"yaourt -Rcsn\"" >> /home/$USER_name/.bashrc \
