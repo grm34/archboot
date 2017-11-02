@@ -1,5 +1,4 @@
 #!/bin/bash
-source ./archboot
 
 _install_desktop() {
 
