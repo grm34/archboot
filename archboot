@@ -110,7 +110,7 @@ if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/_gpu
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/gpu
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/$desktop
 
     # Import desktop sources
