@@ -19,9 +19,9 @@ nc="\e[0m"
 # Banner
 _banner() {
     echo -e "$red\n" >&2
-    echo -e "       █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█" >&2
-    echo -e "       █$yellow     Archboot $__version__     $red█" >&2
-    echo -e "       █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█\n"$nc >&2
+    echo -e "           █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█" >&2
+    echo -e "           █$yellow     Archboot $__version__     $red█" >&2
+    echo -e "           █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█\n"$nc >&2
 }
 
 # Install Logs
@@ -35,14 +35,14 @@ _logs() {
 # Basic Functions
 _prompt() {
    echo -e $yellow"\n==> $green$1 $red$2"$nc >&2
-   echo -e $yellow"==> ----------------------------------------------------"$nc >&2
+   echo -e $yellow"==> -------------------------------------------------------"$nc >&2
    echo -ne $yellow"==> "$nc >&2
 }
 
 _confirm() {
     until [[ ${confirm} == "y" || ${confirm} == "n" ]]; do
     echo -e $yellow"\n==> $green$1 $red[y/n]"$nc >&2
-    echo -e $yellow"==> ---------------------------------------------------"$nc >&2
+    echo -e $yellow"==> ------------------------------------------------------"$nc >&2
     echo -ne $yellow"==> "$nc >&2
     read confirm
     done
@@ -70,7 +70,7 @@ EOF
 _banner
 
 # Download sources
-_confirm "Start downloading sources?"
+_confirm "Start downloading sources from github?"
 if [[ ${confirm} == "y" ]]; then
     _info "Downloading sources"
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/base
@@ -90,7 +90,7 @@ _user_infos; _logs; _firmware; _partition; _mount
 
 # Install Archboot
 if [ $? -eq 0 ]; then
-    _confirm "Do you wish to install ArchLinux with $desktop?"
+    _confirm "Do you wish to install ArchLinux now?"
     if [[ ${confirm} == "y" ]]; then
         source ./base; source ./bootloader; source ./yaourt
         (_base && _bootloader && _user_settings && yaourt) 2>&1 | tee -a $logfile
@@ -117,7 +117,7 @@ _note "Installation finished! Logfile: /var/log/archboot/"
 _note "$__appname__ $__version__ by $__author__ - $__license__"
 
 # Reboot
-_confirm "Do you want to reboot now?"
+_confirm "Do you want to reboot your computer now?"
 if [[ ${confirm} == "y" ]]; then
     umount -R /mnt; reboot
 else
