@@ -88,5 +88,5 @@ _desktop_settings() {
         usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
         usermod -aG systemd-resolve,systemd-coredump,sddm,kvm $USER_name
         usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
-        usermod -aG polkitd,git,avahi,usbmux,colord,ntp $USER_name'
+        usermod -aG polkitd,git,avahi,usbmux,colord,ntp,rtkit $USER_name'
 }
