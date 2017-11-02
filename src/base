@@ -12,7 +12,7 @@ _base() {
 
     # root password
     _info "Setting root password"
-    echo "root:${ROOT_passwd}" | /mnt/chpasswd
+    _chroot 'echo "root:${ROOT_passwd}" | chpasswd'
 
     # Setting TimeZone
     _info "Setting TimeZone"

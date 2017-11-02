@@ -56,7 +56,7 @@ _user_settings() {
     # Adding user
     _info "Setting user"
     _chroot 'useradd -g users -m -s /bin/bash $USER_name'
-    echo "${USER_name}:${USER_passwd}" | /mnt/chpasswd
+    _chroot 'echo "${USER_name}:${USER_passwd}" | chpasswd'
     echo "${USER_name} ALL=(ALL) ALL" >> /mnt/etc/sudoers
 
     # Setting Aliases
