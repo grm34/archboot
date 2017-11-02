@@ -25,7 +25,7 @@ The only thing you need is one **USB bootable device** of ArchLinux and one **HD
 ## Desktop Environment
 
 During the installation, you can choose if you want or not to install a desktop environment.
-For now only this ones are availables: **Gnome**, **Xfce4**, **Lxde** (coming soon for **KDE**)
+For now only this ones are availables: **KDE**, **Gnome**, **Xfce4**, **Lxde**)
 
 ## Logs
 Take a look in **/var/log/archboot/**

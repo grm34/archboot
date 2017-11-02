@@ -43,11 +43,11 @@ _user_infos() {
     # Desktop Environment
     _confirm "Do you wish to install a Desktop Environment?"
     if [[ ${confirm} == "y" ]]; then
-        until [[ ${c} == "1" || ${c} == "2" || ${c} == "3" ]]; do
-        _prompt "Gnome $red[1]$green - Xfce4 $red[2]$green - Lxde $red[3]"
+        until [[ ${c} == "1" || ${c} == "2" || ${c} == "3" || ${c} == "4" ]]; do
+        _prompt "KDE $red[1]$green - Gnome $red[2]$green - Xfce4 $red[3]$green - Lxde $red[4]"
         read c
         done
-        choice=[none,gnome,xfce,lxde]; desktop=$choice[${c}]
+        choice=[none,kde,gnome,xfce,lxde]; desktop=$choice[${c}]
     fi; unset confirm
 }
 
