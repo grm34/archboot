@@ -15,7 +15,8 @@ _install_desktop() {
 
     # File System
     _info "Installing File System"
-    _chroot 'pacman --noconfirm -S gamin gvfs gvfs-mtp gvfs-nfs \
+    _chroot \
+        'pacman --noconfirm -S gamin gvfs gvfs-mtp gvfs-nfs \
         gvfs-afc gparted ntfs-3g dosfstools exfat-utils \
         file-roller ifuse fuseiso unrar'
 
@@ -25,8 +26,8 @@ _install_desktop() {
 
     # Firefox
     _info "Installing Firefox"
-    _chroot 'pacman --noconfirm -S firefox firefox-i18n-fr \
-        hunspell-fr flashplugin'
+    _chroot \
+        'pacman --noconfirm -S firefox firefox-i18n-fr hunspell-fr flashplugin'
 
     # Java
     _info "Installing Java"
@@ -42,19 +43,22 @@ _install_desktop() {
 
     # Cups
     _info "Installing Cups"
-    _chroot 'pacman --noconfirm -S cups cups-pdf ghostscript \
+    _chroot \
+        'pacman --noconfirm -S cups cups-pdf ghostscript \
         gutenprint sane simple-scan'
 
     # Fonts
     _info "Installing Fonts"
-    _chroot 'pacman --noconfirm -S xorg-fonts-type1 ttf-dejavu artwiz-fonts \
+    _chroot \
+        'pacman --noconfirm -S xorg-fonts-type1 ttf-dejavu artwiz-fonts \
         font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf \
         ttf-bitstream-vera ttf-cheapskate ttf-liberation \
         ttf-freefont ttf-arphic-uming ttf-baekmuk'
 
      # Multimedia
     _info "Installing Multimedia"
-    _chroot 'pacman --noconfirm -S pulseaudio pulseaudio-alsa pavucontrol \
+    _chroot \
+        'pacman --noconfirm -S pulseaudio pulseaudio-alsa pavucontrol \
         parole vlc guvcview mediainfo-gui ffmpegthumbnailer'
 
     # Desktop Tools
@@ -63,8 +67,8 @@ _install_desktop() {
 
     # Network Apps
     _info "Installing Network Apps"
-    _chroot 'pacman --noconfirm -S network-manager-applet \
-        networkmanager-openvpn'
+    _chroot \
+        'pacman --noconfirm -S network-manager-applet networkmanager-openvpn'
 }
 
 _desktop_settings() {
@@ -75,8 +79,9 @@ _desktop_settings() {
 
     # Setting LXDM
     _info "Setting LXDM"
-    wget https://raw.githubusercontent.com/grm34/archboot/master/conf/lxdm_xfce.conf
-    rm /mnt/etc/lxdm/lxdm.conf; cp lxdm_xfce.conf /mnt/etc/lxdm/lxdm.conf
+    _chroot \
+    'wget https://raw.githubusercontent.com/grm34/archboot/master/conf/lxdm_xfce.conf
+    rm /etc/lxdm/lxdm.conf; cp lxdm_xfce.conf /etc/lxdm/lxdm.conf'
 
     # Services
     _info "Enabling services"
@@ -84,13 +89,14 @@ _desktop_settings() {
 
     # Groups
     _info "Add ${USER_name} to all groups"
-    _chroot 'usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name; \
-        usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name; \
-        usermod -aG http,games,lock,uuidd,dbus,network,video,audio $USER_name; \
-        usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name; \
-        usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name; \
-        usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name; \
-        usermod -aG systemd-resolve,systemd-coredump,lxdm,kvm $USER_name; \
-        usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name; \
+    _chroot \
+        'usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
+        usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name
+        usermod -aG http,games,lock,uuidd,dbus,network,video,audio $USER_name
+        usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
+        usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
+        usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
+        usermod -aG systemd-resolve,systemd-coredump,lxdm,kvm $USER_name
+        usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
         usermod -aG polkitd,git,avahi,usbmux,colord,ntp,nm-openvpn $USER_name'
 }

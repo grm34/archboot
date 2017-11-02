@@ -127,7 +127,7 @@ mkdir /mnt/var/log/archboot; cp $logfile /mnt/var/log/archboot/
 
 # Notes
 _note "Installation finished! Logfile: /var/log/archboot/"
-_note "$__appname__ $__version__ by $__author__ - $__license__"
+_info "$__appname__ $__version__ by $__author__ - $__license__"
 
 # Reboot
 _confirm "Do you want to reboot your computer now?"

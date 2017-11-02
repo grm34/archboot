@@ -15,13 +15,15 @@ _install_desktop() {
 
     # File System
     _info "Installing File System"
-    _chroot 'pacman --noconfirm -S gamin gvfs gvfs-mtp gvfs-nfs \
+    _chroot \
+        'pacman --noconfirm -S gamin gvfs gvfs-mtp gvfs-nfs \
         gvfs-afc gparted ntfs-3g dosfstools exfat-utils \
         file-roller ifuse fuseiso unrar'
 
     # KDE
     _info "Installing KDE"
-    _chroot 'pacman --noconfirm -S plasma kde-applications kde-l10n-fr \
+    _chroot \
+        'pacman --noconfirm -S plasma kde-applications kde-l10n-fr \
         aspell-fr libappindicator-gtk2 libappindicator-gtk3 sni-qt \
         lib32-libappindicator-gtk2 lib32-libappindicator-gtk2 \
         kde-gtk-config oxygen-gtk2 oxygen-kde4 qtcurve-gtk2 qtcurve-qt5'
@@ -32,8 +34,8 @@ _install_desktop() {
 
     # Firefox
     _info "Installing Firefox"
-    _chroot 'pacman --noconfirm -S firefox firefox-i18n-fr \
-        hunspell-fr flashplugin'
+    _chroot \
+        'pacman --noconfirm -S firefox firefox-i18n-fr hunspell-fr flashplugin'
 
     # Java
     _info "Installing Java"
@@ -49,12 +51,14 @@ _install_desktop() {
 
     # Cups
     _info "Installing Cups"
-    _chroot 'pacman --noconfirm -S cups cups-pdf ghostscript \
+    _chroot \
+        'pacman --noconfirm -S cups cups-pdf ghostscript \
         gutenprint sane simple-scan'
 
      # Multimedia
     _info "Installing Multimedia"
-    _chroot 'pacman --noconfirm -S phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc'
+    _chroot \
+        'pacman --noconfirm -S phonon-qt4 phonon-qt4-gstreamer phonon-qt4-vlc'
 }
 
 _desktop_settings() {
@@ -65,8 +69,9 @@ _desktop_settings() {
 
     # Setting SDDM
     _info "Setting SDDM"
-    sed -i -e 's/Numlock=none/Numlock=on/g' /mnt/etc/sddm.conf
-    _chroot 'setfacl -m u:sddm:x /home/${USER_name}'
+    _chroot \
+        'sed -i -e "s/Numlock=none/Numlock=on/g" /etc/sddm.conf
+        setfacl -m u:sddm:x /home/${USER_name}'
 
     # Services
     _info "Enabling services"
@@ -74,13 +79,14 @@ _desktop_settings() {
 
     # Groups
     _info "Add ${USER_name} to all groups"
-    _chroot 'usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name; \
-        usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name; \
-        usermod -aG http,games,lock,uuidd,dbus,network,video,audio $USER_name; \
-        usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name; \
-        usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name; \
-        usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name; \
-        usermod -aG systemd-resolve,systemd-coredump,sddm,kvm $USER_name; \
-        usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name; \
+    _chroot \
+        'usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
+        usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name
+        usermod -aG http,games,lock,uuidd,dbus,network,video,audio $USER_name
+        usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
+        usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
+        usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
+        usermod -aG systemd-resolve,systemd-coredump,sddm,kvm $USER_name
+        usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
         usermod -aG polkitd,git,avahi,usbmux,colord,ntp $USER_name'
 }
