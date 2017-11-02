@@ -62,7 +62,8 @@ _error() {
 }
 
 _chroot() {
-    arch-chroot /mnt /bin/bash <<EOF $1
+    arch-chroot /mnt /bin/bash <<EOF
+    $1
 EOF
 }
 
