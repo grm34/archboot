@@ -4,27 +4,27 @@ _yaourt() {
 
     # Setting pacman.conf
     _info "Setting pacman.conf"
-    _chroot 'echo "## CUSTOM PACMAN.CONF ##" > /etc/pacman.conf'
-    _chroot 'echo "[options]" >> /etc/pacman.conf'
-    _chroot 'echo "HoldPkg     = pacman glibc" >> /etc/pacman.conf'
-    _chroot 'echo "Architecture = auto" >> /etc/pacman.conf'
-    _chroot 'echo "ILoveCandy" >> /etc/pacman.conf'
-    _chroot 'echo "CheckSpace" >> /etc/pacman.conf'
-    _chroot 'echo "SigLevel    = Required DatabaseOptional" >> /etc/pacman.conf'
-    _chroot 'echo "LocalFileSigLevel = Optional" >> /etc/pacman.conf'
-    _chroot 'echo "[archlinuxfr]" >> /etc/pacman.conf'
-    _chroot 'echo "SigLevel = Never" >> /etc/pacman.conf'
-    _chroot 'echo "Server = http://repo.archlinux.fr/\$arch" >> /etc/pacman.conf'
-    _chroot 'echo "[core]" >> /etc/pacman.conf'
-    _chroot 'echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf'
-    _chroot 'echo "[extra]">> /etc/pacman.conf'
-    _chroot 'echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf'
-    _chroot 'echo "[community]" >> /etc/pacman.conf'
-    _chroot 'echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf'
-    _chroot 'echo "[multilib]" >> /etc/pacman.conf'
-    _chroot 'echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf'
+    echo "## CUSTOM PACMAN.CONF ##" > /mnt/etc/pacman.conf
+    echo "[options]" >> /mnt/etc/pacman.conf
+    echo "HoldPkg     = pacman glibc" >> /mnt/etc/pacman.conf
+    echo "Architecture = auto" >> /mnt/etc/pacman.conf
+    echo "ILoveCandy" >> /mnt/etc/pacman.conf
+    echo "CheckSpace" >> /mnt/etc/pacman.conf
+    echo "SigLevel    = Required DatabaseOptional" >> /mnt/etc/pacman.conf
+    echo "LocalFileSigLevel = Optional" >> /mnt/etc/pacman.conf
+    echo "[archlinuxfr]" >> /mnt/etc/pacman.conf
+    echo "SigLevel = Never" >> /mnt/etc/pacman.conf
+    echo "Server = http://repo.archlinux.fr/\$arch" >> /mnt/etc/pacman.conf
+    echo "[core]" >> /mnt/etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /mnt/etc/pacman.conf
+    echo "[extra]">> /mnt/etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /mnt/etc/pacman.conf
+    echo "[community]" >> /mnt/etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /mnt/etc/pacman.conf
+    echo "[multilib]" >> /mnt/etc/pacman.conf
+    echo "Include = /etc/pacman.d/mirrorlist" >> /mnt/etc/pacman.conf
 
-    # Settings Mirrors
+   # Setting Mirrors
     _info "Setting mirrorlist"
     _chroot 'reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist'
 

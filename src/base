@@ -12,20 +12,21 @@ _base() {
 
     # root password
     _info "Setting root password"
-    _chroot 'echo "root:${ROOT_passwd}" | chpasswd'
+    echo "root:${ROOT_passwd}" | /mnt/chpasswd
 
     # Setting TimeZone
     _info "Setting TimeZone"
-    _chroot 'ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime'
+    ln -sf /mnt/usr/share/zoneinfo/Europe/Paris /mnt/etc/localtime
 
     # Setting locale
     _info "Setting and generating locale"
-    _chroot 'echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen; locale-gen; \
-        export LANG=fr_FR.UTF-8; echo "LANG=fr_FR.UTF-8" > /etc/locale.conf'
+    echo "fr_FR.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+    _chroot 'locale-gen; export LANG=fr_FR.UTF-8'
+    echo "LANG=fr_FR.UTF-8" > /mnt/etc/locale.conf
 
     # Setting keyboard
     _info "Setting keyboard"
-    _chroot 'echo "KEYMAP=fr-pc" > /etc/vconsole.conf'
+    echo "KEYMAP=fr-pc" > /mnt/etc/vconsole.conf
 
     # Setting Linux
     _info "Setting Linux environment"
