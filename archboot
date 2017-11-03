@@ -117,9 +117,8 @@ if [[ ! -z ${desktop+x} ]]; then
     (_gpu && _install_desktop && _desktop_settings) 2>&1 | tee -a $logfile
 fi
 
-# Cleaning logfile
-_info "Cleaning logfile"
-sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" $logfile
+# Saving logfile
+_info "Saving logfile"
 mkdir /mnt/var/log/archboot; cp $logfile /mnt/var/log/archboot/
 
 # Install notes
