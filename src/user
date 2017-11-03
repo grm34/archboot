@@ -24,7 +24,6 @@ _user_infos() {
     # Username
     until [[ ${#USER_name} -ge 3 \
     && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
-    _note "username should be at least 3 chars long without symbol"
     _prompt "Enter Username (ex: johnny):"
     read USER_name
     done
