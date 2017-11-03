@@ -14,7 +14,7 @@ The only thing you need is one **USB bootable device** of [ArchLinux](http://mir
 
 **4.** Download Archboot and follow the instructions:
 
-`wget https://itsssl.com/archboot && sh archboot`
+`wget https://itsssl.com/archboot; sh archboot`
 
 ## Desktop Environment
 
