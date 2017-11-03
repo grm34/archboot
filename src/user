@@ -49,6 +49,10 @@ _user_infos() {
         done
         choice=(none,kde,gnome,xfce,lxde); desktop=${choice[$c]}
     fi; unset confirm
+
+    # Export
+    export HOST_name; export ROOT_passwd; export USER_name
+    export USER_passwd; export desktop
 }
 
 _user_settings() {
