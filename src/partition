@@ -21,7 +21,7 @@ _partition() {
     # BOOT on /dev/xxx1
     until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1} \
     || ${boot_size,,} == "y" ]]; do
-    _info "Partition size {M,G} => default: 512M"
+    _note "Partition size {M,G} => default: 512M"
     _prompt "Boot partition size => default: $red[y]"
     read boot_size
     done
@@ -33,7 +33,7 @@ _partition() {
     # SWAP on /dev/xxx2
     until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1} \
     || ${swap_size,,} == "y" ]]; do
-    _info "Partition size {M,G} => default: 2G"
+    _note "Partition size {M,G} => default: 2G"
     _prompt "Swap partition size => default: $red[y]"
     read swap_size
     done
@@ -45,7 +45,7 @@ _partition() {
     # SYSTEM on /dev/xxx3
     until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1} \
     || ${sys_size,,} == "y" ]]; do
-    _info "Partition size {G,T,P} => default: 25G"
+    _note "Partition size {G,T,P} => default: 25G"
     _prompt "System partition size => default: $red[y]"
     read sys_size
     done
@@ -58,7 +58,7 @@ _partition() {
     if [[ "$FIRMWARE" == "UEFI" ]]; then
         until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1} \
         || ${home_size,,} == "y" ]]; do
-        _info "Partition size {G,T,P} => default: free space"
+        _note "Partition size {G,T,P} => default: free space"
         _prompt "Home partition size => default: $red[y]"
         read home_size
         done
@@ -72,7 +72,7 @@ _partition() {
         _info "Setting Home /dev/$_disk${part_order[4]} [$part_size]"
         printf "n\n\n\n$home_size\nw" | fdisk /dev/$_disk
     else
-        _info "Home partition will use all free space"
+        _note "Home partition will use all free space"
         _info "Setting Home partition /dev/$_disk${part_order[4]}"
         printf "n\n$part_type\n\nw" | fdisk /dev/$_disk
     fi
