@@ -24,14 +24,14 @@ _banner() {
 # General functions
 _prompt() {
    echo -e $yellow"\n==> $green$1 $red$2"$nc >&2
-   echo -e $yellow"==> -------------------------------------------------------"$nc >&2
+   echo -e $yellow"==> ----------------------------------------------------"$nc >&2
    echo -ne $yellow"==> "$nc >&2
 }
 
 _confirm() {
     until [[ ${confirm} == "y" || ${confirm} == "n" ]]; do
     echo -e $yellow"\n==> $green$1 $red[y/n]"$nc >&2
-    echo -e $yellow"==> ------------------------------------------------------"$nc >&2
+    echo -e $yellow"==> ---------------------------------------------------"$nc >&2
     echo -ne $yellow"==> "$nc >&2
     read confirm
     done
