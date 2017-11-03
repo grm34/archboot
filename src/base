@@ -27,7 +27,7 @@ _base() {
 
     # Setting keyboard
     _info "Setting keyboard"
-    _chroot 'echo "KEYMAP=fr-pc" > /etc/vconsole.conf'
+    _chroot 'echo "KEYMAP=fr" > /etc/vconsole.conf'
 
     # Setting Linux
     _info "Setting Linux environment"

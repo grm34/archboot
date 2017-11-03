@@ -65,7 +65,9 @@ _desktop_settings() {
 
     # Keyboard layout
     _info "Setting keyboard layout"
-    _chroot 'localectl --no-convert set-x11-keymap fr'
+    _chroot \
+        'wget https://raw.githubusercontent.com/grm34/archboot/master/conf/00-keyboard.conf
+        mv 00-keyboard.conf /etc/X11/xorg.conf.d/'
 
     # Setting SDDM
     _info "Setting SDDM"

@@ -58,7 +58,7 @@ EOF
 
 # Define logs
 _logs() {
-    _info "Setting archboot log"
+    _info "Setting archboot logs"
     datetime=`date '+%d-%m-%Y'`
     logfile="archboot_$datetime.log"
 }

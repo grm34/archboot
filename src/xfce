@@ -79,19 +79,21 @@ _desktop_settings() {
 
     # Keyboard layout
     _info "Setting keyboard layout"
-    _chroot 'localectl --no-convert set-x11-keymap fr'
+    _chroot \
+        'wget https://raw.githubusercontent.com/grm34/archboot/master/conf/00-keyboard.conf
+        mv 00-keyboard.conf /etc/X11/xorg.conf.d/'
 
     # Setting LXDM
     _info "Setting LXDM"
     _chroot \
         'wget https://raw.githubusercontent.com/grm34/archboot/master/conf/lxdm_xfce.conf
-        rm /etc/lxdm/lxdm.conf; cp lxdm_xfce.conf /etc/lxdm/lxdm.conf'
+        rm /etc/lxdm/lxdm.conf; mv lxdm_xfce.conf /etc/lxdm/lxdm.conf'
 
     # Themes & icons
     _info "Adding some themes & icons"
     _chroot \
-    'wget https://raw.githubusercontent.com/grm34/archboot/master/data/xfce.tar.xz
-    tar xf xfce.tar.xz -C /home/$USER_name/ && rm xfce.tar.xz'
+        'wget https://raw.githubusercontent.com/grm34/archboot/master/data/xfce.tar.xz
+        tar xf xfce.tar.xz -C /home/$USER_name/ && rm xfce.tar.xz'
 
     # Services
     _info "Enabling services"
