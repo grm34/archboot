@@ -118,7 +118,7 @@ if [[ ! -z ${desktop+x} ]]; then
 fi
 
 # Setting & cleaning logfile
-sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"  $logfile
+sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" $logfile
 mkdir /mnt/var/log/archboot; cp $logfile /mnt/var/log/archboot/
 
 # Install notes
