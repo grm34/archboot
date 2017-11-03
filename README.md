@@ -18,7 +18,7 @@ The only thing you need is one **USB bootable device** of ArchLinux and one **HD
 
 **4.** Download Archboot and follow the instructions:
 
-`wget https://raw.githubusercontent.com/grm34/archboot/master/archboot && sh archboot`
+`wget https://itsssl.com/archboot && sh archboot`
 
 ## Desktop Environment
 
