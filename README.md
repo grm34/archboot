@@ -1,4 +1,4 @@
-![](http://i.imgur.com/z4nv4Kj.png)
+![](https://raw.githubusercontent.com/grm34/archboot/master/img/archboot.png)
 
 ## Requirements
 
@@ -23,3 +23,7 @@ For now only this ones are availables: **KDE**, **Gnome**, **Xfce4**, **Lxde**)
 
 ## Logs
 Take a look in **/var/log/archboot/**
+
+## XFCE4 Screenshot
+
+![](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
