@@ -93,7 +93,7 @@ _user_infos; _logs; _firmware; _partition; _mounting
 if [ $? -eq 0 ]; then
     _confirm "Do you wish to install ArchLinux now?"
     if [[ ${confirm} == "y" ]]; then
-        (_base && _bootloader && _user_settings && yaourt) 2>&1 | tee -a $logfile
+        (_base && _bootloader && _user_settings && _yaourt) 2>&1 | tee -a $logfile
     else
         exit
     fi; unset confirm
@@ -111,7 +111,7 @@ if [[ ! -z ${desktop+x} ]]; then
 
     # Import desktop sources
     _info "Importing sources"
-    source ./gpu; source ./${desktop}; source ./firmware; source ./mounting
+    source ./gpu; source ./${desktop}
 
     # Install desktop environment
     (_gpu && _install_desktop && _desktop_settings) 2>&1 | tee -a $logfile
