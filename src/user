@@ -48,11 +48,11 @@ _user_infos() {
         read c
         done
         choice=(none,kde,gnome,xfce,lxde); desktop=${choice[$c]}
+        echo $desktop; export desktop
     fi; unset confirm
 
     # Export
-    export HOST_name; export ROOT_passwd; export USER_name
-    export USER_passwd; export desktop
+    export HOST_name; export ROOT_passwd; export USER_name; export USER_passwd
 }
 
 _user_settings() {

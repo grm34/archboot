@@ -2,7 +2,7 @@
 
 _gpu() {
 
-    # GPU Detection
+    # GPU Drivers
     _info "GPU detection"
     GPU_driver="xf86-video-vesa"
     driver_3D="mesa lib32-mesa mesa-vdpau lib32-mesa-vdpau mesa-libgl lib32-mesa-libgl"

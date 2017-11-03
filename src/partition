@@ -79,5 +79,5 @@ _partition() {
     yes | mkfs.ext4 /dev/$_disk${part_order[4]}
 
     # Export
-    export $_disk
+    export _disk
 }
