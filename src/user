@@ -46,8 +46,9 @@ _user_infos() {
         until [[ ${c} == "1" || ${c} == "2" || ${c} == "3" || ${c} == "4" ]]; do
         _prompt "KDE $red[1]$green - Gnome $red[2]$green - Xfce4 $red[3]$green - Lxde $red[4]"
         read c
-        done; choice=(none,kde,gnome,xfce,lxde); desktop=$choice[${c}]
-        echo $desktop; export desktop
+        done
+        choice=(none kde gnome xfce lxde); desktop=${choice[${c}]}
+        export desktop
     fi; unset confirm
 
     # Export
