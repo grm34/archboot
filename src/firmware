@@ -2,7 +2,7 @@
 
 _firmware() {
 
-    # Firmaware Detection
+    # Firmware Detection
     _info "Firmware detection"
     efivar -l >/dev/null 2>&1
 

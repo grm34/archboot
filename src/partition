@@ -77,4 +77,7 @@ _partition() {
         printf "n\n$part_type\n\nw" | fdisk /dev/$_disk
     fi
     yes | mkfs.ext4 /dev/$_disk${part_order[4]}
+
+    # Export
+    export $_disk
 }
