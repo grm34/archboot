@@ -27,6 +27,6 @@ The only thing you need is one **USB bootable device** of [ArchLinux](http://mir
 ## Logs
 Take a look in **/var/log/archboot/**
 
-## Screenshot (xfce4)
+## Screenshot [xfce4]
 
 ![](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
