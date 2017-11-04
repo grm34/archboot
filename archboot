@@ -117,13 +117,13 @@ if [[ ! -z ${desktop+x} ]]; then
     (_gpu && _install_desktop && _desktop_settings) 2>&1 | tee -a $logfile
 fi
 
-# Saving logfile
-_info "Saving logfile"
+# Logfile path
+_info "Setting logfile path"
 mkdir /mnt/var/log/archboot; cp $logfile /mnt/var/log/archboot/
 
 # Install notes
-_note "Installation finished! Logfile: /var/log/archboot/"
-_info "$__appname__ $__version__ by $__author__ - $__license__"
+_info "Installation finished! Logfile: /var/log/archboot/"
+_note "$__appname__ $__version__ by $__author__ - $__license__"
 
 # Reboot
 _confirm "Do you want to reboot your computer now?"
