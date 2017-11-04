@@ -27,4 +27,7 @@ _gpu() {
         _note "found nVidia GPU"
         GPU_driver="xf86-video-nouveau nouveau-dri $driver_3D"
     fi
+
+    # Export
+    export GPU_driver
 }
