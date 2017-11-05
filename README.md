@@ -2,6 +2,8 @@
 
 ## Archboot [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot)
 
+[![Join the chat at https://gitter.im/grm34/archboot](https://badges.gitter.im/grm34/archboot.svg)](https://gitter.im/grm34/archboot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This script perform an automatic install of Archlinux.
 Pretty simple, it only ask you for hostname, username,
 password, which disk to use, required partitions sizes
