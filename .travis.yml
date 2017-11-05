@@ -5,11 +5,3 @@ addons:
     - debian-sid
     packages:
     - shellcheck
-
-notifications:
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/dd3b418000882c0653a6
-    on_success: change  # options: [always|never|change] default: always
-    on_failure: always  # options: [always|never|change] default: always
-    on_start: never     # options: [always|never|change] default: always
