@@ -1,6 +1,6 @@
 ![](https://raw.githubusercontent.com/grm34/archboot/master/img/archboot.png)
 
-## Archboot [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot)
+## Archboot [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![Gitter](https://badges.gitter.im/grm34/archboot.svg)](https://gitter.im/grm34/archboot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 This script perform an automatic install of Archlinux.
 Pretty simple, it only ask you for hostname, username,
