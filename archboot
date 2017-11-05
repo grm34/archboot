@@ -2,7 +2,6 @@
 __appname__="archboot"
 __version__="v2.5"
 __author__="@grm34"
-__date__="2017"
 __license__="Apache v2.0 License"
 
 # Some colors
@@ -27,30 +26,30 @@ _banner() {
 
 # General functions
 _prompt() {
-   echo -e $yellow"\n==> $green$1 $red$2"$nc >&2
-   echo -e $yellow"==> ---------------------------------------------------"$nc >&2
-   echo -ne $yellow"==> "$nc >&2
+   echo -e "$yellow\n==> $green$1 $red$2$nc" >&2
+   echo -e "$yellow==> ---------------------------------------------------$nc" >&2
+   echo -ne "$yellow==> $nc" >&2
 }
 
 _confirm() {
     until [[ ${confirm} == "y" || ${confirm} == "n" ]]; do
-    echo -e $yellow"\n==> $green$1 $red[y/n]"$nc >&2
-    echo -e $yellow"==> --------------------------------------------------"$nc >&2
-    echo -ne $yellow"==> "$nc >&2
+    echo -e "$yellow\n==> $green$1 $red[y/n]$nc" >&2
+    echo -e "$yellow==> --------------------------------------------------$nc" >&2
+    echo -ne "$yellow==> $nc" >&2
     read confirm
     done
 }
 
 _info() {
-    echo -e $yellow"\n==> $cyan$1..."$nc && sleep 2s
+    echo -e "$yellow\n==> $cyan$1...$nc" && sleep 2s
 }
 
 _note() {
-    echo -e $red"\nNote: $blue$1"$nc >&2
+    echo -e "$red\nNote: $blue$1$nc" >&2
 }
 
 _error() {
-    echo -e $red"\nError: $yellow$1"$nc >&2
+    echo -e "$red\nError: $yellow$1$nc" >&2
     exit
 }
 
