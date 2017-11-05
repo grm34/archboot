@@ -73,13 +73,13 @@ _banner
 _confirm "Start downloading sources from github?"
 if [[ ${confirm} == "y" ]]; then
     _info "Downloading sources"
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/base
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/bootloader
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/firmware
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/mounting
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/partition
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/user
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/yaourt
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/base
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/bootloader
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/firmware
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/mounting
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/partition
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/user
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/yaourt
 else
     exit
 fi; unset confirm
@@ -109,8 +109,8 @@ if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/gpu
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/$desktop
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/desktop/gpu
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/desktop/$desktop
 
     # Import desktop sources
     _info "Importing sources"

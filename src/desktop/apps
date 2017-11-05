@@ -1,0 +1,22 @@
+#!/bin/bash
+
+_intel_="intel-ucode"
+
+_file-system_="gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
+    dosfstools exfat-utils file-roller ifuse fuseiso unrar"
+
+_firefox_="firefox firefox-i18n-fr hunspell-fr flashplugin"
+
+_java_="jre8-openjdk"
+
+_libreoffice_="libreoffice libreoffice-fr"
+
+_gimp_="gimp"
+
+_scan-print_="cups cups-pdf ghostscript gutenprint sane simple-scan"
+
+
+# Gnome
+_gnome_="gnome gnome-extra"
+
+# KDE
