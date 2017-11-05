@@ -1,6 +1,6 @@
 ![](https://raw.githubusercontent.com/grm34/archboot/master/img/archboot.png)
 
-## Archboot ![](https://travis-ci.org/grm34/archboot.svg?branch=master)
+## Archboot v2.5 ![](https://travis-ci.org/grm34/archboot.svg?branch=master)
 
 This script perform an automatic install of Archlinux.
 Pretty simple, it only ask you for hostname, username,
