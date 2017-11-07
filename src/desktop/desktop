@@ -1,0 +1,139 @@
+#!/bin/bash
+
+_install_desktop() {
+
+    # Intel Microcode
+    lscpu | grep "Intel" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]; then
+        _info "Installing Intel CPU Microcode"
+        _chroot "$_pacman $_intel"
+    fi
+
+    # GPU Driver
+    _info "Installing VGA Driver"
+    _chroot "$_pacman $GPU_driver"
+
+    # File System
+    _info "Installing File System"
+    _chroot "$_pacman $_file-system"
+
+    # Desktop Environment
+    _info "Installing $desktop"
+    _chroot "$_pacman $desktop"
+
+    # Display Manager
+    if [[ ${desktop} == "xfce" ]]; then
+        _chroot "$_pacman $_lxdm"
+    elif [[ ${desktop} == "kde" ]]; then
+        _chroot "$_pacman $_sddm"
+    fi
+
+    # Firefox
+    _info "Installing Firefox"
+    _chroot "$_pacman $_firefox"
+
+    # Flash
+    _info "Installing Flash"
+    _chroot "$_pacman $_flash"
+
+    # Java
+    _info "Installing Java"
+    _chroot "$_pacman $_java"
+
+    # Libreoffice
+    _info "Installing Libreoffice"
+    _chroot "$_pacman $_libreoffice"
+
+    # Gimp
+    _info "Installing Gimp"
+    _chroot "$_pacman $_gimp"
+
+    # Cups
+    _info "Installing Cups"
+    _chroot "$_pacman $_cups; systemctl enable org.cups.cupsd"
+
+    # Sane
+    _info "Installing Sane"
+    _chroot "$_pacman $_sane"
+
+    # XFCE apps
+    if [[ ${desktop} == "xfce"]]; then
+
+        # Docky
+         _info "Installing Docky"
+        _chroot "$_pacman $_docky"
+
+        # Fonts
+        _info "Installing Fonts"
+        _chroot "$_pacman $_fonts"
+
+         # Multimedia
+        _info "Installing Multimedia"
+        _chroot "$_pacman $_multimedia"
+
+        # Accessories
+        _info "Installing Accessories"
+        _chroot "$_pacman $_accessories"
+
+        # Network Applet
+        _info "Installing Network Applet"
+        _chroot "$_pacman $_network"
+    fi
+}
+
+_desktop_settings() {
+
+    # Keyboard layout
+    _info "Setting keyboard layout"
+    _chroot "wget \
+        https://raw.githubusercontent.com/grm34/archboot/master/conf/00-keyboard.conf
+        mv 00-keyboard.conf /etc/X11/xorg.conf.d/"
+
+
+    # Display Manager
+    if [[ ${desktop} == "xfce" || ${desktop} == "lxde" ]]; then
+
+        # XFCE or LXDE > LXDM
+        _info "Enabling LXDM"
+        _chroot "wget \
+            https://raw.githubusercontent.com/grm34/archboot/master/conf/lxdm_$desktop.conf
+            rm /etc/lxdm/lxdm.conf; mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
+            systemctl enable lxdm; usermod -aG lxdm $USER_name"
+
+    elif [[ ${desktop} == "gnome" ]]; then
+
+        # GNOME > GDM
+        _info "Enabling GDM"
+        _chroot "systemctl enable gdm; ; usermod -aG gdm $USER_name"
+
+    elif [[ ${desktop} == "kde" ]]; then
+
+        # KDE > SDDM
+        _info "Enabling SDDM"
+        _chroot \
+        "sed -i -e 's/Numlock=none/Numlock=on/g' /etc/sddm.conf
+        setfacl -m u:sddm:x /home/${USER_name}
+        systemctl enable sddm; usermod -aG sddm $USER_name"
+    fi
+
+    # Themes & icons
+    if [[ ${desktop} == "xfce" || ${desktop} == "gnome" ]]; then
+    _info "Adding some themes & icons"
+    _chroot "wget \
+        https://raw.githubusercontent.com/grm34/archboot/master/data/$desktop.tar.xz
+        tar xf $desktop.tar.xz -C /home/$USER_name/ && rm $desktop.tar.xz"
+    fi
+
+    # Groups
+    _info "Add ${USER_name} to all groups"
+    _chroot \
+        "usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
+        usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name
+        usermod -aG http,games,lock,uuidd,dbus,network,video,audio $USER_name
+        usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
+        usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
+        usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
+        usermod -aG systemd-resolve,systemd-coredump,kvm,rtkit,ntp $USER_name
+        usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
+        usermod -aG polkitd,git,avahi,usbmux,colord $USER_name"
+}

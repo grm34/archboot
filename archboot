@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v2.5"
+__version__="v2.6"
 __author__="@grm34"
 __license__="Apache v2.0 License"
 
@@ -62,7 +62,7 @@ EOF
 # Define logs
 _logs() {
     _info "Setting archboot logs"
-    datetime=`date '+%d-%m-%Y'`
+    datetime=$(date '+%d-%m-%Y')
     logfile="archboot_$datetime.log"
 }
 
@@ -110,11 +110,12 @@ if [[ ! -z ${desktop+x} ]]; then
     # Download desktop sources
     _info "Downloading desktop sources"
     wget https://raw.githubusercontent.com/grm34/archboot/master/src/desktop/gpu
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/desktop/$desktop
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/desktop/apps
+    wget https://raw.githubusercontent.com/grm34/archboot/master/src/desktop/desktop
 
     # Import desktop sources
     _info "Importing sources"
-    source ./gpu; source ./${desktop}
+    source ./gpu; source ./apps; source ./desktop
 
     # Install desktop environment
     (_gpu && _install_desktop && _desktop_settings) 2>&1 | tee -a $logfile
