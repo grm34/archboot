@@ -57,7 +57,7 @@ _install_desktop() {
     _chroot "$_pacman $_sane"
 
     # XFCE apps
-    if [[ ${desktop} == "xfce"]]; then
+    if [[ ${desktop} == "xfce" ]]; then
 
         # Docky
          _info "Installing Docky"
