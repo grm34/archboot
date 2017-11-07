@@ -1,22 +1,90 @@
 #!/bin/bash
 
-_intel_="intel-ucode"
+#######################
+### GLOBAL PACKAGES ###
+#######################
 
-_file-system_="gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
+# Intel Microcode
+_intel="intel-ucode"
+
+# File system
+_file-system="gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
     dosfstools exfat-utils file-roller ifuse fuseiso unrar"
 
-_firefox_="firefox firefox-i18n-fr hunspell-fr flashplugin"
+# Firefox
+_firefox="firefox firefox-i18n-fr hunspell-fr"
 
-_java_="jre8-openjdk"
+# Flash
+_flash="flashplugin"
 
-_libreoffice_="libreoffice libreoffice-fr"
+# Java
+_java="jre8-openjdk"
 
-_gimp_="gimp"
+# Libreoffice
+_libreoffice="libreoffice libreoffice-fr"
 
-_scan-print_="cups cups-pdf ghostscript gutenprint sane simple-scan"
+# Gimp
+_gimp="gimp"
 
+# Cups
+_cups="cups cups-pdf ghostscript gutenprint"
 
-# Gnome
-_gnome_="gnome gnome-extra"
+# Sane
+_sane="sane simple-scan"
 
-# KDE
+###########################
+### DESKTOP ENVIRONMENT ###
+###########################
+
+# Gnome Desktop
+gnome="gnome gnome-extra"
+
+# KDE Desktop
+kde="plasma kde-applications kde-l10n-fr aspell-fr libappindicator-gtk2 \
+    libappindicator-gtk3 sni-qt lib32-libappindicator-gtk2 \
+    lib32-libappindicator-gtk2 kde-gtk-config oxygen-gtk2 oxygen-kde4 \
+    qtcurve-gtk2 qtcurve-qt5"
+
+# Lxde Desktop
+lxde="lxde"
+
+# Xfce Desktop
+xfce="xfce4 xfce4-goodies"
+
+#######################
+### DISPLAY MANAGER ###
+#######################
+
+# Sddm Display Manager
+_sddm="sddm sddm-kcm"
+
+# Lxdm Display Manager
+_lxdm="lxdm"
+
+######################
+### XFCE4 PACKAGES ###
+######################
+
+# Fonts
+_fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
+    font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
+    ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
+
+# Multimedia
+_multimedia="pulseaudio pulseaudio-alsa pavucontrol \
+    parole vlc guvcview mediainfo-gui ffmpegthumbnailer"
+
+# Docky
+_docky="docky"
+
+# Accessories
+_accessories="gnome-calculator fbreader mupdf"
+
+# Network Applet
+_network-applet="network-manager-applet"
+
+########################
+### INSTALL & EXPORT ###
+########################
+_pacman="pacman --noconfirm -S"
+export *
