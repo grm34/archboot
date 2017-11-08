@@ -5,7 +5,7 @@ _yaourt() {
     # Setting pacman.conf
     _info "Setting pacman.conf"
     _chroot "wget \
-        https://raw.githubusercontent.com/grm34/archboot/master/conf/pacman.conf
+        https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/pacman.conf
         rm /etc/pacman.conf; mv pacman.conf /etc/pacman.conf"
 
    # Setting Mirrors

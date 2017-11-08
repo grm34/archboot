@@ -86,7 +86,7 @@ _desktop_settings() {
     # Keyboard layout
     _info "Setting keyboard layout"
     _chroot "wget \
-        https://raw.githubusercontent.com/grm34/archboot/master/conf/00-keyboard.conf
+        https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/00-keyboard.conf
         mv 00-keyboard.conf /etc/X11/xorg.conf.d/"
 
 
@@ -96,7 +96,7 @@ _desktop_settings() {
         # XFCE or LXDE > LXDM
         _info "Enabling LXDM"
         _chroot "wget \
-            https://raw.githubusercontent.com/grm34/archboot/master/conf/lxdm_$desktop.conf
+            https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/lxdm_$desktop.conf
             rm /etc/lxdm/lxdm.conf; mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
             systemctl enable lxdm; usermod -aG lxdm $USER_name"
 
