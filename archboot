@@ -23,7 +23,7 @@ _banner() {
     echo -e "Pretty simple, it only ask you for hostname, username," >&2
     echo -e "password, which disk to use, required partitions sizes" >&2
     echo -e "and if you wish or not to install desktop environment." >&2
-    echo -e "KDE | Gnome | Xfce4 | Lxde are available." >&2
+    echo -e "Suported desktop in $__version__: KDE | Gnome | Xfce4 | Lxde" >&2
 }
 
 # General functions
