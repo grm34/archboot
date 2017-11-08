@@ -1,90 +1,87 @@
 #!/bin/bash
 
+# Install
+export _pacman="pacman --noconfirm -S"
+
 #######################
 ### GLOBAL PACKAGES ###
 #######################
 
 # Intel Microcode
-_intel="intel-ucode"
+export _intel="intel-ucode"
 
 # File system
-_file-system="gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
-    dosfstools exfat-utils file-roller ifuse fuseiso unrar"
+export _file-system="gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
+dosfstools exfat-utils file-roller ifuse fuseiso unrar"
 
 # Firefox
-_firefox="firefox firefox-i18n-fr hunspell-fr"
+export _firefox="firefox firefox-i18n-fr hunspell-fr"
 
 # Flash
-_flash="flashplugin"
+export _flash="flashplugin"
 
 # Java
-_java="jre8-openjdk"
+export _java="jre8-openjdk"
 
 # Libreoffice
-_libreoffice="libreoffice libreoffice-fr"
+export _libreoffice="libreoffice libreoffice-fr"
 
 # Gimp
-_gimp="gimp"
+export _gimp="gimp"
 
 # Cups
-_cups="cups cups-pdf ghostscript gutenprint"
+export _cups="cups cups-pdf ghostscript gutenprint"
 
 # Sane
-_sane="sane simple-scan"
+export _sane="sane simple-scan"
 
 ###########################
 ### DESKTOP ENVIRONMENT ###
 ###########################
 
 # Gnome Desktop
-_gnome="gnome gnome-extra"
+export _gnome="gnome gnome-extra"
 
 # KDE Desktop
-_kde="plasma kde-applications kde-l10n-fr aspell-fr libappindicator-gtk2 \
-    libappindicator-gtk3 sni-qt lib32-libappindicator-gtk2 \
-    lib32-libappindicator-gtk2 kde-gtk-config oxygen-gtk2 oxygen-kde4 \
-    qtcurve-gtk2 qtcurve-qt5"
+export _kde="plasma kde-applications kde-l10n-fr aspell-fr libappindicator-gtk2 \
+libappindicator-gtk3 sni-qt lib32-libappindicator-gtk2 \
+lib32-libappindicator-gtk2 kde-gtk-config oxygen-gtk2 oxygen-kde4 \
+qtcurve-gtk2 qtcurve-qt5"
 
 # Lxde Desktop
-_lxde="lxde"
+export _lxde="lxde"
 
 # Xfce Desktop
-_xfce="xfce4 xfce4-goodies"
+export _xfce="xfce4 xfce4-goodies"
 
 #######################
 ### DISPLAY MANAGER ###
 #######################
 
 # Sddm Display Manager
-_sddm="sddm sddm-kcm"
+export _sddm="sddm sddm-kcm"
 
 # Lxdm Display Manager
-_lxdm="lxdm"
+export _lxdm="lxdm"
 
 ######################
 ### XFCE4 PACKAGES ###
 ######################
 
 # Fonts
-_fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
-    font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
-    ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
+export _fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
+font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
+ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
 
 # Multimedia
-_multimedia="pulseaudio pulseaudio-alsa pavucontrol \
-    parole vlc guvcview mediainfo-gui ffmpegthumbnailer"
+export _multimedia="pulseaudio pulseaudio-alsa pavucontrol \
+parole vlc guvcview mediainfo-gui ffmpegthumbnailer"
 
 # Docky
-_docky="docky"
+export _docky="docky"
 
 # Accessories
-_accessories="gnome-calculator fbreader mupdf"
+export _accessories="gnome-calculator fbreader mupdf"
 
 # Network Applet
-_network-applet="network-manager-applet"
-
-########################
-### INSTALL & EXPORT ###
-########################
-_pacman="pacman --noconfirm -S"
-export *
+export _network-applet="network-manager-applet"
