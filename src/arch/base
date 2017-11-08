@@ -45,5 +45,5 @@ _base() {
     # Install required packages
     _info "Installing required packages"
     _chroot \
-        "pacman --noconfirm -S wget reflector git htop nmap numlockx"
+        "pacman --noconfirm -S wget reflector git inxi htop nmap numlockx"
 }

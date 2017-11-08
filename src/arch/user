@@ -76,5 +76,6 @@ _user_settings() {
         echo 'alias _verif=\'yaourt -Qqk\'' >> /home/$USER_name/.bashrc
         echo 'alias _pacnew=\'yaourt -C\'' >> /home/$USER_name/.bashrc
         echo 'alias _search=\'yaourt -s\'' >> /home/$USER_name/.bashrc
+        echo 'alias _system=\'inxi -F -M\'' >> /home/$USER_name/.bashrc
         echo 'alias _mirrorlist=\'sudo reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist\'' >> /home/$USER_name/.bashrc"
 }
