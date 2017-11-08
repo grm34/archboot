@@ -23,8 +23,15 @@ _install_desktop() {
 
     # Display Manager
     if [[ ${desktop} == "xfce" ]]; then
+
+        # LXDM
+        _info "Installing lxdm"
         _chroot "$_pacman $_lxdm"
+
     elif [[ ${desktop} == "kde" ]]; then
+
+        # SDDM
+        _info "Installing sddm"
         _chroot "$_pacman $_sddm"
     fi
 
