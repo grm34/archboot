@@ -77,7 +77,7 @@ _install_desktop() {
 
         # Network Applet
         _info "Installing Network Applet"
-        _chroot "$_pacman $_network"
+        _chroot "$_pacman $_network-applet"
     fi
 }
 
