@@ -19,7 +19,7 @@ _install_desktop() {
 
     # Desktop Environment
     _info "Installing $desktop"
-    _chroot "$_pacman $_${desktop}"
+    _chroot "$_pacman ${_$desktop}"
 
     # Display Manager
     if [[ ${desktop} == "xfce" ]]; then
