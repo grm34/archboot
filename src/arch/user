@@ -6,18 +6,18 @@ _user_infos() {
     until [[ ${#HOST_name} -ge 3 \
     && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
     _prompt "Enter Hostname (ex: my-favorite-computer):"
-    read HOST_name
+    read -r HOST_name
     done
 
     # Password
     until [[ ${#a} -ge 8 && "$a" == *[a-z]* && "$a" == *[0-9]* ]]; do
     _note "password should be at least 8 chars long with 1 letter and 1 digit"
     _prompt "Enter password for root:"
-    read -s a
+    read -rs a
     done; echo
     _prompt "Confirm password for root:"
-    read -s ROOT_passwd
-    if [[ ${ROOT_passwd} != ${a} ]]; then
+    read -rs ROOT_passwd
+    if [[ ${ROOT_passwd} != "${a}" ]]; then
         _error "passwords does not match!"
     fi; echo
 
@@ -25,18 +25,18 @@ _user_infos() {
     until [[ ${#USER_name} -ge 3 \
     && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
     _prompt "Enter Username (ex: johnny):"
-    read USER_name
+    read -r USER_name
     done
 
     # Password
     until [[ ${#b} -ge 8 && "$b" == *[a-z]* && "$b" == *[0-9]* ]]; do
     _note "password should be at least 8 chars long with 1 letter and 1 digit"
     _prompt "Enter password for ${USER_name}:"
-    read -s b
+    read -rs b
     done; echo
     _prompt "Confirm password for ${USER_name}:"
-    read -s USER_passwd
-    if [[ ${USER_passwd} != ${b} ]]; then
+    read -rs USER_passwd
+    if [[ ${USER_passwd} != "${b}" ]]; then
         _error "passwords does not match!"
     fi; echo
 
@@ -45,7 +45,7 @@ _user_infos() {
     if [[ ${confirm} == "y" ]]; then
         until [[ ${c} == "1" || ${c} == "2" || ${c} == "3" || ${c} == "4" ]]; do
         _prompt "KDE $red[1]$green - Gnome $red[2]$green - Xfce4 $red[3]$green - Lxde $red[4]"
-        read c
+        read -r c
         done
         choice=(none kde gnome xfce lxde); desktop=${choice[${c}]}
         export desktop

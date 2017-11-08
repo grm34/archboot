@@ -3,6 +3,7 @@ __appname__="archboot"
 __version__="v2.6"
 __author__="@grm34"
 __license__="Apache v2.0 License"
+__branch__="dev"
 
 # Some colors
 red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
@@ -36,7 +37,7 @@ _confirm() {
     echo -e "$yellow\n==> $green$1 $red[y/n]$nc" >&2
     echo -e "$yellow==> --------------------------------------------------$nc" >&2
     echo -ne "$yellow==> $nc" >&2
-    read confirm
+    read -r confirm
     done
 }
 
@@ -73,13 +74,13 @@ _banner
 _confirm "Start downloading sources from github?"
 if [[ ${confirm} == "y" ]]; then
     _info "Downloading sources"
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/base
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/bootloader
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/firmware
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/mounting
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/partition
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/user
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/arch/yaourt
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/arch/base
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/arch/bootloader
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/arch/firmware
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/arch/mounting
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/arch/partition
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/arch/user
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/arch/yaourt
 else
     exit
 fi; unset confirm
@@ -96,7 +97,7 @@ _user_infos; _logs; _firmware; _partition; _mounting
 if [ $? -eq 0 ]; then
     _confirm "Do you wish to install ArchLinux now?"
     if [[ ${confirm} == "y" ]]; then
-        (_base && _bootloader && _user_settings && _yaourt) 2>&1 | tee -a $logfile
+        (_base && _bootloader && _user_settings && _yaourt) 2>&1 | tee -a "$logfile"
     else
         exit
     fi; unset confirm
@@ -109,21 +110,21 @@ if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/desktop/gpu
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/desktop/apps
-    wget https://raw.githubusercontent.com/grm34/archboot/master/src/desktop/desktop
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/desktop/gpu
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/desktop/apps
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/desktop/desktop
 
     # Import desktop sources
     _info "Importing sources"
     source ./gpu; source ./apps; source ./desktop
 
     # Install desktop environment
-    (_gpu && _install_desktop && _desktop_settings) 2>&1 | tee -a $logfile
+    (_gpu && _install_desktop && _desktop_settings) 2>&1 | tee -a "$logfile"
 fi
 
 # Logfile path
 _info "Setting logfile path"
-mkdir /mnt/var/log/archboot; cp $logfile /mnt/var/log/archboot/
+mkdir /mnt/var/log/archboot; cp "$logfile" /mnt/var/log/archboot/
 
 # Install notes
 _info "Installation finished! Logfile: /var/log/archboot/"
