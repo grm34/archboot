@@ -6,86 +6,86 @@ _install_desktop() {
     lscpu | grep "Intel" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _info "Installing Intel CPU Microcode"
-        _chroot "$_pacman $_intel"
+        _chroot "pacman --noconfirm -S $_intel"
     fi
 
     # GPU Driver
     _info "Installing VGA Driver"
-    _chroot "$_pacman $GPU_driver"
+    _chroot "pacman --noconfirm -S $GPU_driver"
 
     # File System
     _info "Installing File System"
-    _chroot "$_pacman $_file_system"
+    _chroot "pacman --noconfirm -S $_file_system"
 
     # Desktop Environment
     _info "Installing $desktop"
     desk_env="_$desktop"
-    _chroot "$_pacman $desk_env"
+    _chroot "pacman --noconfirm -S $desk_env"
 
     # Display Manager
     if [[ ${desktop} == "xfce" ]]; then
 
         # LXDM
         _info "Installing lxdm"
-        _chroot "$_pacman $_lxdm"
+        _chroot "pacman --noconfirm -S $_lxdm"
 
     elif [[ ${desktop} == "kde" ]]; then
 
         # SDDM
         _info "Installing sddm"
-        _chroot "$_pacman $_sddm"
+        _chroot "pacman --noconfirm -S $_sddm"
     fi
 
     # Firefox
     _info "Installing Firefox"
-    _chroot "$_pacman $_firefox"
+    _chroot "pacman --noconfirm -S $_firefox"
 
     # Flash
     _info "Installing Flash"
-    _chroot "$_pacman $_flash"
+    _chroot "pacman --noconfirm -S $_flash"
 
     # Java
     _info "Installing Java"
-    _chroot "$_pacman $_java"
+    _chroot "pacman --noconfirm -S $_java"
 
     # Libreoffice
     _info "Installing Libreoffice"
-    _chroot "$_pacman $_libreoffice"
+    _chroot "pacman --noconfirm -S $_libreoffice"
 
     # Gimp
     _info "Installing Gimp"
-    _chroot "$_pacman $_gimp"
+    _chroot "pacman --noconfirm -S $_gimp"
 
     # Cups
     _info "Installing Cups"
-    _chroot "$_pacman $_cups; systemctl enable org.cups.cupsd"
+    _chroot "pacman --noconfirm -S $_cups; systemctl enable org.cups.cupsd"
 
     # Sane
     _info "Installing Sane"
-    _chroot "$_pacman $_sane"
+    _chroot "pacman --noconfirm -S $_sane"
 
     # XFCE apps
     if [[ ${desktop} == "xfce" ]]; then
 
         # Docky
          _info "Installing Docky"
-        _chroot "$_pacman $_docky"
+        _chroot "pacman --noconfirm -S $_docky"
 
         # Fonts
         _info "Installing Fonts"
-        _chroot "$_pacman $_fonts"
+        _chroot "pacman --noconfirm -S $_fonts"
 
          # Multimedia
         _info "Installing Multimedia"
-        _chroot "$_pacman $_multimedia"
+        _chroot "pacman --noconfirm -S $_multimedia"
 
         # Accessories
         _info "Installing Accessories"
-        _chroot "$_pacman $_accessories"
+        _chroot "pacman --noconfirm -S $_accessories"
 
         # Network Applet
         _info "Installing Network Applet"
-        _chroot "$_pacman $_network_applet"
+        _chroot "pacman --noconfirm -S $_network_applet"
     fi
 }
 

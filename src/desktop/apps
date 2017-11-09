@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Install
-export _pacman="pacman --noconfirm -S"
-
 #######################
 ### GLOBAL PACKAGES ###
 #######################
