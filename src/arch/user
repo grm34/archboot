@@ -47,8 +47,8 @@ _user_infos() {
         _prompt "KDE $red[1]$green - Gnome $red[2]$green - Xfce4 $red[3]$green - Lxde $red[4]"
         read -r c
         done
-        choice=(none kde gnome xfce lxde); desktop=${choice[${c}]}
-        export desktop
+        choice=(none kde gnome xfce lxde)
+        export desktop=${choice[${c}]}
     fi; unset confirm
 
     # Export
