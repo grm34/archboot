@@ -113,11 +113,12 @@ if [[ ! -z ${desktop+x} ]]; then
     _info "Downloading desktop sources"
     wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/desktop/gpu
     wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/desktop/apps
+    wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/desktop/group
     wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/src/desktop/desktop
 
     # Import desktop sources
     _info "Importing sources"
-    source ./gpu; source ./apps; source ./desktop
+    source ./gpu; source ./apps; source ./group; source ./desktop
 
     # Install desktop environment
     (_gpu; _install_desktop; _desktop_settings) 2>&1 | tee -a "$logfile"
@@ -127,9 +128,8 @@ fi
 _info "Setting logfile path"
 mkdir /mnt/var/log/archboot; cp "$logfile" /mnt/var/log/archboot/
 
-# Install notes
-_info "Installation finished! Logfile: /var/log/archboot/"
-_note "$__appname__ $__version__ by $__author__ - $__license__"
+# Install note
+_note "Installation successful! $__appname__ $__version__ by $__author__ - $__license__"
 
 # Reboot
 _confirm "Do you want to reboot your computer now?"

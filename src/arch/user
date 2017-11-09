@@ -59,23 +59,12 @@ _user_settings() {
 
     # Adding user
     _info "Setting user"
-    _chroot \
-        "useradd -g users -m -s /bin/bash $USER_name
-        echo '${USER_name}:${USER_passwd}' | chpasswd
-        echo '${USER_name} ALL=(ALL) ALL' >> /etc/sudoers"
+    _chroot "useradd -g users -m -s /bin/bash $USER_name
+    echo '${USER_name}:${USER_passwd}' | chpasswd
+    echo '${USER_name} ALL=(ALL) ALL' >> /etc/sudoers"
 
     # Adding some Aliases
     _info "Adding some aliases"
-    _chroot \
-        'echo "export VISUAL=\"nano\"" >> /home/$USER_name/.bashrc
-        echo "alias ²system=\"inxi -F -M\"" >> /home/$USER_name/.bashrc
-        echo "alias ²install=\"yaourt -S\"" >> /home/$USER_name/.bashrc
-        echo "alias ²delete=\"yaourt -Rcsn\"" >> /home/$USER_name/.bashrc
-        echo "alias ²update=\"yaourt -Syyua\"" >> /home/$USER_name/.bashrc
-        echo "alias ²clean=\"yaourt -Scc\"" >> /home/$USER_name/.bashrc
-        echo "alias ²purge=\"yaourt -Qdt\"" >> /home/$USER_name/.bashrc
-        echo "alias ²verif=\"yaourt -Qqk\"" >> /home/$USER_name/.bashrc
-        echo "alias ²pacnew=\"yaourt -C\"" >> /home/$USER_name/.bashrc
-        echo "alias ²search=\"yaourt -s\"" >> /home/$USER_name/.bashrc
-        echo "alias ²mirrorlist=\"sudo reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist\"" >> /home/$USER_name/.bashrc'
+    _chroot "wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/bashrc
+    cat bashrc >> /home/$USER_name/.bashrc"
 }
