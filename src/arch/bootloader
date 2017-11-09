@@ -12,17 +12,27 @@ _bootloader() {
             grub-install --no-floppy --recheck /dev/$_disk
         fi"
 
-    # Install Grub Themes
+    # Setting grub.cfg
+    _info "Setting grub.cfg"
+    _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+
+    # Downloading Grub Themes
+    _info "Downloading Grub Themes"
+    _chroot \
+        "git clone git://github.com/Generator/Grub2-themes.git
+        wget https://raw.githubusercontent.com/grm34/archboot/master/img/background.png"
+
+    # Installing Grub Themes
     _info "Installing Grub Themes"
     _chroot \
-        'grub-mkconfig -o /boot/grub/grub.cfg
-        git clone git://github.com/Generator/Grub2-themes.git
-        cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/
+       'cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/
         rm -r Grub2-themes
+        mv background.png /boot/grub/themes/Archlinux/
         sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" /etc/default/grub
         echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" >> /etc/default/grub
-        echo "desktop-image: \"background.png\"" >> /boot/grub/themes/Archlinux/theme.txt
-        grub-mkconfig -o /boot/grub/grub.cfg
-        wget https://raw.githubusercontent.com/grm34/archboot/master/img/background.png
-        mv background.png /boot/grub/themes/Archlinux/'
+        echo "desktop-image: \"background.png\"" >> /boot/grub/themes/Archlinux/theme.txt'
+
+    # Update grub.cfg
+    _info "Updating grub.cfg"
+    _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 }
