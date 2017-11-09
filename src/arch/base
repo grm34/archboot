@@ -20,18 +20,16 @@ _base() {
 
     # Setting TimeZone
     _info "Setting TimeZone"
-    _chroot \
-        "ln -sf /mnt/usr/share/zoneinfo/Europe/Paris /etc/localtime
-        ntpd -qg
-        hwclock --systohc"
+    _chroot "ln -sf /mnt/usr/share/zoneinfo/Europe/Paris /etc/localtime
+    ntpd -qg
+    hwclock --systohc"
 
     # Setting locale
     _info "Setting and generating locale"
-    _chroot \
-        "echo 'fr_FR.UTF-8 UTF-8' >> /etc/locale.gen
-        locale-gen
-        export LANG=fr_FR.UTF-8
-        echo 'LANG=fr_FR.UTF-8' > /etc/locale.conf"
+    _chroot "echo 'fr_FR.UTF-8 UTF-8' >> /etc/locale.gen
+    locale-gen
+    export LANG=fr_FR.UTF-8
+    echo 'LANG=fr_FR.UTF-8' > /etc/locale.conf"
 
     # Setting keyboard
     _info "Setting keyboard"
@@ -43,12 +41,10 @@ _base() {
 
     # Install Network
     _info "Installing network"
-    _chroot \
-        "pacman --noconfirm -S networkmanager wireless_tools wpa_supplicant
-        systemctl enable NetworkManager"
+    _chroot "pacman --noconfirm -S networkmanager wireless_tools wpa_supplicant
+    systemctl enable NetworkManager"
 
     # Install required packages
     _info "Installing required packages"
-    _chroot \
-        "pacman --noconfirm -S wget reflector git inxi htop nmap numlockx"
+    _chroot "pacman --noconfirm -S wget reflector git inxi htop nmap numlockx"
 }

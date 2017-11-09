@@ -93,9 +93,8 @@ _desktop_settings() {
 
     # Keyboard layout
     _info "Setting keyboard layout"
-    _chroot "wget \
-        https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/00-keyboard.conf
-        mv 00-keyboard.conf /etc/X11/xorg.conf.d/"
+    _chroot "wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/00-keyboard.conf
+    mv 00-keyboard.conf /etc/X11/xorg.conf.d/"
 
 
     # Display Manager
@@ -103,10 +102,9 @@ _desktop_settings() {
 
         # XFCE or LXDE > LXDM
         _info "Enabling LXDM"
-        _chroot "wget \
-            https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/lxdm_$desktop.conf
-            rm /etc/lxdm/lxdm.conf; mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
-            systemctl enable lxdm; usermod -aG lxdm $USER_name"
+        _chroot "wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/lxdm_$desktop.conf
+        rm /etc/lxdm/lxdm.conf; mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
+        systemctl enable lxdm; usermod -aG lxdm $USER_name"
 
     elif [[ ${desktop} == "gnome" ]]; then
 
@@ -118,30 +116,19 @@ _desktop_settings() {
 
         # KDE > SDDM
         _info "Enabling SDDM"
-        _chroot \
-        "sed -i -e 's/Numlock=none/Numlock=on/g' /etc/sddm.conf
+        _chroot "sed -i -e 's/Numlock=none/Numlock=on/g' /etc/sddm.conf
         setfacl -m u:sddm:x /home/${USER_name}
         systemctl enable sddm; usermod -aG sddm $USER_name"
     fi
 
     # Themes & icons
     if [[ ${desktop} == "xfce" || ${desktop} == "gnome" ]]; then
-    _info "Adding some themes & icons"
-    _chroot "wget \
-        https://raw.githubusercontent.com/grm34/archboot/master/data/$desktop.tar.xz
+        _info "Adding some themes & icons"
+        _chroot "wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/data/$desktop.tar.xz
         tar xf $desktop.tar.xz -C /home/$USER_name/ && rm $desktop.tar.xz"
     fi
 
     # Groups
     _info "Add ${USER_name} to all groups"
-    _chroot \
-        "usermod -aG root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel $USER_name
-        usermod -aG ftp,mail,uucp,log,utmp,locate,rfkill,smmsp,proc $USER_name
-        usermod -aG http,games,lock,uuidd,dbus,network,video,audio $USER_name
-        usermod -aG optical,floppy,storage,scanner,input,power,nobody $USER_name
-        usermod -aG users,systemd-journal,systemd-journal-gateway $USER_name
-        usermod -aG systemd-timesync,systemd-network,systemd-bus-proxy $USER_name
-        usermod -aG systemd-resolve,systemd-coredump,kvm,rtkit,ntp $USER_name
-        usermod -aG systemd-journal-upload,systemd-journal-remote $USER_name
-        usermod -aG polkitd,git,avahi,usbmux,colord $USER_name"
+    _chroot "usermod -aG $_groups $USER_name"
 }
