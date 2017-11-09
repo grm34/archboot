@@ -10,22 +10,27 @@ _base() {
     _info "Setting fstab"
     genfstab -U -p /mnt >> /mnt/etc/fstab
 
-    # root password
+    # ROOT password
     _info "Setting root password"
     _chroot "echo 'root:${ROOT_passwd}' | chpasswd"
+
+    # Installing ntp
+    _info "Installing ntp"
+    _chroot "pacman --noconfirm -S ntp"
 
     # Setting TimeZone
     _info "Setting TimeZone"
     _chroot \
-        "pacman --noconfirm -S ntp
-        ln -sf /mnt/usr/share/zoneinfo/Europe/Paris /etc/localtime
-        ntpd -qg; hwclock --systohc"
+        "ln -sf /mnt/usr/share/zoneinfo/Europe/Paris /etc/localtime
+        ntpd -qg
+        hwclock --systohc"
 
     # Setting locale
     _info "Setting and generating locale"
     _chroot \
         "echo 'fr_FR.UTF-8 UTF-8' >> /etc/locale.gen
-        locale-gen; export LANG=fr_FR.UTF-8
+        locale-gen
+        export LANG=fr_FR.UTF-8
         echo 'LANG=fr_FR.UTF-8' > /etc/locale.conf"
 
     # Setting keyboard
