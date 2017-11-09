@@ -15,7 +15,7 @@ _install_desktop() {
 
     # File System
     _info "Installing File System"
-    _chroot "$_pacman $_file-system"
+    _chroot "$_pacman $_file_system"
 
     # Desktop Environment
     _info "Installing $desktop"
@@ -84,7 +84,7 @@ _install_desktop() {
 
         # Network Applet
         _info "Installing Network Applet"
-        _chroot "$_pacman $_network-applet"
+        _chroot "$_pacman $_network_applet"
     fi
 }
 
