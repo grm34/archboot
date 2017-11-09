@@ -11,7 +11,7 @@ export _pacman="pacman --noconfirm -S"
 export _intel="intel-ucode"
 
 # File system
-export _file-system="gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
+export _file_system="gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
 dosfstools exfat-utils file-roller ifuse fuseiso unrar"
 
 # Firefox
@@ -84,4 +84,4 @@ export _docky="docky"
 export _accessories="gnome-calculator fbreader mupdf"
 
 # Network Applet
-export _network-applet="network-manager-applet"
+export _network_applet="network-manager-applet"

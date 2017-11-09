@@ -60,9 +60,9 @@ _user_settings() {
     # Adding user
     _info "Setting user"
     _chroot \
-        "useradd -g users -m -s /bin/bash $USER_name
-        echo '${USER_name}:${USER_passwd}' | chpasswd
-        echo '${USER_name} ALL=(ALL) ALL' >> /etc/sudoers"
+        'useradd -g users -m -s /bin/bash $USER_name
+        echo "${USER_name}:${USER_passwd}" | chpasswd
+        echo "${USER_name} ALL=(ALL) ALL" >> /etc/sudoers'
 
     # Adding some Aliases
     _info "Adding some aliases"
