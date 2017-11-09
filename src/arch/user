@@ -68,14 +68,14 @@ _user_settings() {
     _info "Adding some aliases"
     _chroot \
         'echo "export VISUAL=\"nano\"" >> /home/$USER_name/.bashrc
-        echo "alias _system=\"inxi -F -M\"" >> /home/$USER_name/.bashrc
-        echo "alias _install=\"yaourt -S\"" >> /home/$USER_name/.bashrc
-        echo "alias _delete=\"yaourt -Rcsn\"" >> /home/$USER_name/.bashrc
-        echo "alias _update=\"yaourt -Syyua\"" >> /home/$USER_name/.bashrc
-        echo "alias _clean=\"yaourt -Scc\"" >> /home/$USER_name/.bashrc
-        echo "alias _purge=\"yaourt -Qdt\"" >> /home/$USER_name/.bashrc
-        echo "alias _verif=\"yaourt -Qqk\"" >> /home/$USER_name/.bashrc
-        echo "alias _pacnew=\"yaourt -C\"" >> /home/$USER_name/.bashrc
-        echo "alias _search=\"yaourt -s\"" >> /home/$USER_name/.bashrc
-        echo "alias _mirrorlist=\"sudo reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist\"" >> /home/$USER_name/.bashrc'
+        echo "alias ²system=\"inxi -F -M\"" >> /home/$USER_name/.bashrc
+        echo "alias ²install=\"yaourt -S\"" >> /home/$USER_name/.bashrc
+        echo "alias ²delete=\"yaourt -Rcsn\"" >> /home/$USER_name/.bashrc
+        echo "alias ²update=\"yaourt -Syyua\"" >> /home/$USER_name/.bashrc
+        echo "alias ²clean=\"yaourt -Scc\"" >> /home/$USER_name/.bashrc
+        echo "alias ²purge=\"yaourt -Qdt\"" >> /home/$USER_name/.bashrc
+        echo "alias ²verif=\"yaourt -Qqk\"" >> /home/$USER_name/.bashrc
+        echo "alias ²pacnew=\"yaourt -C\"" >> /home/$USER_name/.bashrc
+        echo "alias ²search=\"yaourt -s\"" >> /home/$USER_name/.bashrc
+        echo "alias ²mirrorlist=\"sudo reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist\"" >> /home/$USER_name/.bashrc'
 }
