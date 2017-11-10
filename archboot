@@ -5,11 +5,11 @@ __branch__="dev"
 __author__="@grm34"
 __license__="Apache v2.0 License"
 
-# Some colors
+# Colors
 red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
 blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
 
-# Archboot banner
+# Banner
 _banner() {
     echo -e "$red" >&2
     echo -e "    _             _     _                 _   " >&2
@@ -26,13 +26,18 @@ _banner() {
     echo -e "Supported ones in v2.6.1 > KDE | Gnome | Xfce4 | Lxde." >&2
 }
 
-# General functions
+#
+# Global functions
+#
+
+# Function to ask some infos
 _prompt() {
    echo -e "$yellow\n==> $green$1 $red$2$nc" >&2
    echo -e "$yellow==> ---------------------------------------------------$nc" >&2
    echo -ne "$yellow==> $nc" >&2
 }
 
+# Function to ask confirmation (Yes/No)
 _confirm() {
     until [[ ${confirm} == "y" || ${confirm} == "n" ]]; do
     echo -e "$yellow\n==> $green$1 $red[y/n]$nc" >&2
@@ -42,26 +47,30 @@ _confirm() {
     done
 }
 
+# Function to display install steps
 _info() {
     echo -e "$yellow\n==> $cyan$1...$nc" && sleep 2s
 }
 
+# Function to display some notes
 _note() {
     echo -e "$red\nNote: $blue$1$nc" >&2
 }
 
+# Function to display errors
 _error() {
     echo -e "$red\nError: $yellow$1$nc" >&2
     exit
 }
 
+# Function to execute actions in chrooted env
 _chroot() {
     arch-chroot /mnt /bin/bash <<EOF
     $1
 EOF
 }
 
-# Define logs
+# Setting logs
 _logs() {
     _info "Setting archboot log"
     datetime=$(date '+%d-%m-%Y')
