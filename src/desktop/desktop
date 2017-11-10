@@ -142,5 +142,5 @@ _desktop_settings() {
 
     # Groups
     _info "Add ${USER_name} to all groups"
-    _chroot "usermod -aG $_groups $USER_name"
+    _chroot "usermod -aG $_group $USER_name"
 }
