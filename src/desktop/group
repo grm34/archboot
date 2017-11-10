@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export _groups="root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel,ftp,mail,\
+export _group="root,bin,daemon,sys,adm,tty,disk,lp,mem,kmem,wheel,ftp,mail,\
 uucp,log,utmp,locate,rfkill,smmsp,proc,http,games,lock,uuidd,dbus,network,\
 video,audio,optical,floppy,storage,scanner,input,power,nobody,users,\
 systemd-journal,systemd-journal-gateway,systemd-timesync,systemd-network,\
