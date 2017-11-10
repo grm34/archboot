@@ -1,0 +1,17 @@
+#!/bin/bash
+
+_yaourt() {
+
+    # Setting pacman.conf
+    _info "Setting pacman.conf"
+    _chroot "wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/pacman.conf
+        rm /etc/pacman.conf; mv pacman.conf /etc/pacman.conf"
+
+   # Setting Mirrors
+    _info "Setting mirrorlist"
+    _chroot "reflector -c FR --sort rate --save /etc/pacman.d/mirrorlist"
+
+    # Install yaourt
+    _info "Installing yaourt"
+    _chroot "pacman --noconfirm -Syu yaourt customizepkg"
+}

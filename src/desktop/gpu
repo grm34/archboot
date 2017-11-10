@@ -11,23 +11,20 @@ _gpu() {
     lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _note "found INTEL GPU"
-        GPU_driver="xf86-video-intel vulkan-intel libva-intel-driver $driver_3D"
+        export GPU_driver="xf86-video-intel vulkan-intel libva-intel-driver $driver_3D"
     fi
 
     # ATI GPU
     lspci | grep "VGA" | grep "ATI" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _note "found ATI GPU"
-        GPU_driver="xf86-video-ati xf86-video-amdgpu $driver_3D"
+        export GPU_driver="xf86-video-ati xf86-video-amdgpu $driver_3D"
     fi
 
     # nVidia GPU
     lspci | grep "VGA" | grep "nVidia" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _note "found nVidia GPU"
-        GPU_driver="xf86-video-nouveau nouveau-dri $driver_3D"
+        export GPU_driver="xf86-video-nouveau nouveau-dri $driver_3D"
     fi
-
-    # Export
-    export GPU_driver
 }

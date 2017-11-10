@@ -25,7 +25,7 @@ The only thing you need is one **USB bootable device** of [ArchLinux](http://mir
 
 ## Logs
 
-Take a look in **/var/log/archboot/**
+Take a look in **/var/log/archboot**
 
 `cat /var/log/archboot/archboot_*.log`
 

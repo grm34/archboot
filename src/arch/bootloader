@@ -1,0 +1,35 @@
+#!/bin/bash
+
+_bootloader() {
+
+    # Install Bootloader
+    _info "Installing $FIRMWARE Bootloader"
+    _chroot "pacman --noconfirm -S grub os-prober gptfdisk efibootmgr
+    if [[ '$FIRMWARE' == 'UEFI' ]]; then
+        grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
+    else
+        grub-install --no-floppy --recheck /dev/$_disk
+    fi"
+
+    # Setting grub.cfg
+    _info "Setting grub.cfg"
+    _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+
+    # Downloading Grub Themes
+    _info "Downloading Grub Themes"
+    _chroot "git clone git://github.com/Generator/Grub2-themes.git
+    wget https://raw.githubusercontent.com/grm34/archboot/master/img/background.png"
+
+    # Installing Grub Themes
+    _info "Installing Grub Themes"
+    _chroot 'cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/
+    rm -r Grub2-themes
+    mv background.png /boot/grub/themes/Archlinux/
+    sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" /etc/default/grub
+    echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" >> /etc/default/grub
+    echo "desktop-image: \"background.png\"" >> /boot/grub/themes/Archlinux/theme.txt'
+
+    # Update grub.cfg
+    _info "Updating grub.cfg"
+    _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+}
