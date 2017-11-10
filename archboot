@@ -77,7 +77,11 @@ _logs() {
     logfile="archboot_$datetime.log"
 }
 
+#
 # Start Archboot
+#
+
+# Display banner
 _banner
 
 # Download base sources
