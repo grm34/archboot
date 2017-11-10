@@ -6,7 +6,7 @@ _firmware() {
     _info "Firmware detection"
     efivar -l >/dev/null 2>&1
 
-    # Setting partitions
+    # Define vars for partition type
     if [[ $? -eq 0 ]]; then
         FIRMWARE="UEFI"
         part_table="GPT"
