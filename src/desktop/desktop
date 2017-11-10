@@ -42,7 +42,7 @@ _install_desktop() {
         # GNOME
         _chroot "pacman --noconfirm -S $_gnome"
 
-    else; then
+    else
 
         # LXDE
         _chroot "pacman --noconfirm -S $_lxde"
