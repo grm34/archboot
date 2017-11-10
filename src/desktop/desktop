@@ -19,11 +19,10 @@ _install_desktop() {
 
     # Desktop Environment
     _info "Installing $desktop"
-    desk_env="_$desktop"
-    _chroot "pacman --noconfirm -S $desk_env"
-
-    # Display Manager
     if [[ ${desktop} == "xfce" ]]; then
+
+        # XFCE
+        _chroot "pacman --noconfirm -S $_xfce"
 
         # LXDM
         _info "Installing lxdm"
@@ -31,9 +30,22 @@ _install_desktop() {
 
     elif [[ ${desktop} == "kde" ]]; then
 
+        # KDE
+        _chroot "pacman --noconfirm -S $_kde"
+
         # SDDM
         _info "Installing sddm"
         _chroot "pacman --noconfirm -S $_sddm"
+
+    elif [[ ${desktop} == "gnome" ]]; then
+
+        # GNOME
+        _chroot "pacman --noconfirm -S $_gnome"
+
+    else; then
+
+        # LXDE
+        _chroot "pacman --noconfirm -S $_lxde"
     fi
 
     # Firefox
