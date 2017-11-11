@@ -48,34 +48,38 @@ _install_desktop() {
         _chroot "pacman --noconfirm -S $_lxde"
     fi
 
-    # Firefox
-    _info "Installing Firefox"
-    _chroot "pacman --noconfirm -S $_firefox"
+    # Additional apps
+    if [[ ! -z ${additional_apps+x} ]]; then
 
-    # Flash
-    _info "Installing Flash"
-    _chroot "pacman --noconfirm -S $_flash"
+        # Firefox
+        _info "Installing Firefox"
+        _chroot "pacman --noconfirm -S $_firefox"
 
-    # Java
-    _info "Installing Java"
-    _chroot "pacman --noconfirm -S $_java"
+        # Flash
+        _info "Installing Flash"
+        _chroot "pacman --noconfirm -S $_flash"
 
-    # Libreoffice
-    _info "Installing Libreoffice"
-    _chroot "pacman --noconfirm -S $_libreoffice"
+        # Java
+        _info "Installing Java"
+        _chroot "pacman --noconfirm -S $_java"
 
-    # Gimp
-    _info "Installing Gimp"
-    _chroot "pacman --noconfirm -S $_gimp"
+        # Libreoffice
+        _info "Installing Libreoffice"
+        _chroot "pacman --noconfirm -S $_libreoffice"
 
-    # Cups
-    _info "Installing Cups"
-    _chroot "pacman --noconfirm -S $_cups
-    systemctl enable org.cups.cupsd"
+        # Gimp
+        _info "Installing Gimp"
+        _chroot "pacman --noconfirm -S $_gimp"
 
-    # Sane
-    _info "Installing Sane"
-    _chroot "pacman --noconfirm -S $_sane"
+        # Cups
+        _info "Installing Cups"
+        _chroot "pacman --noconfirm -S $_cups
+        systemctl enable org.cups.cupsd"
+
+        # Sane
+        _info "Installing Sane"
+        _chroot "pacman --noconfirm -S $_sane"
+    fi
 
     # XFCE Packages
     if [[ ${desktop} == "xfce" ]]; then

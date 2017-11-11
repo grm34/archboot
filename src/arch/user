@@ -51,6 +51,15 @@ _user_infos() {
         export desktop=${choice[${c}]}
     fi; unset confirm
 
+    # Additional apps
+    if [[ ! -z ${desktop+x} ]]; then
+        _note "Additional apps: Firefox, Libreoffice, Gimp, Cups, Sane"
+        _confirm "Do you wish to install additional apps?"
+        if [[ ${confirm} == "y" ]]; then
+            export additional_apps="ok"
+        fi; unset confirm
+    fi
+
     # Export
     export HOST_name; export ROOT_passwd; export USER_name; export USER_passwd
 }
