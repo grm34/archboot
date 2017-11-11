@@ -142,8 +142,8 @@ _desktop_settings() {
 
     # Groups
     _info "Add ${USER_name} to all groups"
-    _chroot "group_list=$(cut -d: -f1 /etc/group)
+    group_list=$(cut -d: -f1 /mnt/etc/group)
     for group in $group_list; do
-        usermod -aG $group $USER_name
-    done"
+        _chroot "usermod -aG $group $USER_name"
+    done
 }
