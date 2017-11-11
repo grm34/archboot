@@ -19,7 +19,7 @@ The only thing you need is one **USB bootable device** of [ArchLinux](http://mir
 
 **3.** Set AZERTY keyboard by running this command: `loqdkeys fr`
 
-**4.** Download ([archboot](https://github.com/grm34/archboot)) and follow the instructions:
+**4.** Download [archboot](https://github.com/grm34/archboot) and follow the instructions:
 
 `wget https://itsssl.com/archboot; sh archboot`
 
