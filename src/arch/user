@@ -53,8 +53,8 @@ _user_infos() {
 
     # Additional apps
     if [[ ! -z ${desktop+x} ]]; then
-        _note "Additional apps: Firefox, Libreoffice, Gimp, Cups, Sane"
-        _confirm "Do you wish to install additional apps?"
+        _note "Additional Apps > Firefox, Libreoffice, Gimp, Cups, Sane"
+        _confirm "Do you wish to install Additional Apps?"
         if [[ ${confirm} == "y" ]]; then
             export additional_apps="ok"
         fi; unset confirm
