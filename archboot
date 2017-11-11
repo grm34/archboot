@@ -59,8 +59,8 @@ _note() {
 
 # Function to display errors
 _error() {
-    echo -e "$red\nError: $yellow$1$nc" >&2
-    exit
+    echo -e "$red\nError: $yellow$1$nc" >&2 && sleep 5s
+    exit && reboot
 }
 
 # Function to execute actions in chrooted env
@@ -116,7 +116,7 @@ if [ $? -eq 0 ]; then
         exit
     fi; unset confirm
 else
-    _error "partitionning error, please try again."
+    _error "partitionning error, system will reboot... Please try again."
 fi
 
 # Desktop Environment
