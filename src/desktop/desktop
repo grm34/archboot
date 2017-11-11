@@ -143,7 +143,7 @@ _desktop_settings() {
     if [[ ${desktop} == "xfce" || ${desktop} == "gnome" ]]; then
         _info "Adding some themes & icons"
         _chroot "wget $_url/data/$desktop.tar.xz
-        tar xf $desktop.tar.xz -C /home/$USER_name/
+        tar xf $desktop.tar.xz -C /home/$USER_name/ > /dev/null 2>&1
         rm $desktop.tar.xz"
     fi
 
