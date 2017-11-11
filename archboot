@@ -65,7 +65,7 @@ _chroot() {
 EOF
 }
 
-# Setting install logs
+# Function to set install logfile
 _logs() {
     _info "Setting archboot log"
     datetime=$(date '+%d-%m-%Y')
