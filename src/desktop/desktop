@@ -70,7 +70,8 @@ _install_desktop() {
 
     # Cups
     _info "Installing Cups"
-    _chroot "pacman --noconfirm -S $_cups; systemctl enable org.cups.cupsd"
+    _chroot "pacman --noconfirm -S $_cups
+    systemctl enable org.cups.cupsd"
 
     # Sane
     _info "Installing Sane"
@@ -115,14 +116,15 @@ _desktop_settings() {
         # XFCE or LXDE > LXDM
         _info "Enabling LXDM"
         _chroot "wget $_url/conf/lxdm_$desktop.conf
-        rm /etc/lxdm/lxdm.conf; mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
-        systemctl enable lxdm; usermod -aG lxdm $USER_name"
+        rm /etc/lxdm/lxdm.conf
+        mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
+        systemctl enable lxdm"
 
     elif [[ ${desktop} == "gnome" ]]; then
 
         # GNOME > GDM
         _info "Enabling GDM"
-        _chroot "systemctl enable gdm; ; usermod -aG gdm $USER_name"
+        _chroot "systemctl enable gdm"
 
     elif [[ ${desktop} == "kde" ]]; then
 
@@ -130,14 +132,15 @@ _desktop_settings() {
         _info "Enabling SDDM"
         _chroot "sed -i -e 's/Numlock=none/Numlock=on/g' /etc/sddm.conf
         setfacl -m u:sddm:x /home/${USER_name}
-        systemctl enable sddm; usermod -aG sddm $USER_name"
+        systemctl enable sddm"
     fi
 
     # Themes & icons
     if [[ ${desktop} == "xfce" || ${desktop} == "gnome" ]]; then
         _info "Adding some themes & icons"
         _chroot "wget $_url/data/$desktop.tar.xz
-        tar xf $desktop.tar.xz -C /home/$USER_name/ && rm $desktop.tar.xz"
+        tar xf $desktop.tar.xz -C /home/$USER_name/
+        rm $desktop.tar.xz"
     fi
 
     # Groups

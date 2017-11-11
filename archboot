@@ -45,7 +45,7 @@ _confirm() {
 
 # Function to display install steps
 _info() {
-    echo -e "$yellow\n==> $cyan$1...$nc" && sleep 2s
+    echo -e "$yellow\n==> $cyan$1...$nc"; sleep 2s
 }
 
 # Function to display some notes
@@ -55,7 +55,7 @@ _note() {
 
 # Function to display errors
 _error() {
-    echo -e "$red\nError: $yellow$1$nc" >&2 && sleep 5s
+    echo -e "$red\nError: $yellow$1$nc" >&2; sleep 5s
     exit && reboot
 }
 
