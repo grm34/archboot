@@ -77,7 +77,7 @@ _logs() {
 # Global variables
 #
 
-# Url
+# Github url
 _url="https://raw.githubusercontent.com/grm34/archboot/$__branch__"
 
 # Colors
