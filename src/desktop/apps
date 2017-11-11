@@ -72,7 +72,7 @@ ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
 
 # Multimedia
 export _multimedia="pulseaudio pulseaudio-alsa pavucontrol \
-parole vlc guvcview mediainfo-gui ffmpegthumbnailer"
+mplayer parole vlc guvcview mediainfo-gui ffmpegthumbnailer"
 
 # Docky
 export _docky="docky"
