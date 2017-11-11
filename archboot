@@ -94,13 +94,13 @@ _banner
 _confirm "Start downloading sources from github?"
 if [[ ${confirm} == "y" ]]; then
     _info "Downloading sources"
-    wget $_url/src/arch/base
-    wget $_url/src/arch/bootloader
-    wget $_url/src/arch/firmware
-    wget $_url/src/arch/mounting
-    wget $_url/src/arch/partition
-    wget $_url/src/arch/user
-    wget $_url/src/arch/yaourt
+    wget $_url/src/arch/base            # to install ArchLinux Base system
+    wget $_url/src/arch/bootloader      # to install Grub2 bootloader
+    wget $_url/src/arch/firmware        # to define partitions options
+    wget $_url/src/arch/mounting        # to mount partitions & swap
+    wget $_url/src/arch/partition       # to create table & partitions
+    wget $_url/src/arch/user            # to ask user infos & create user
+    wget $_url/src/arch/yaourt          # to set pacman.conf & install yaourt
 else
     exit
 fi; unset confirm
@@ -130,9 +130,9 @@ if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
-    wget $_url/src/desktop/gpu
-    wget $_url/src/desktop/apps
-    wget $_url/src/desktop/desktop
+    wget $_url/src/desktop/gpu          # to check GPU & define drivers
+    wget $_url/src/desktop/apps         # to get all Desktop packages
+    wget $_url/src/desktop/desktop      # to install Desktop Environment
 
     # Import desktop sources
     _info "Importing sources"
