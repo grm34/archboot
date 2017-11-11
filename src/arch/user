@@ -65,6 +65,6 @@ _user_settings() {
 
     # Adding some Aliases
     _info "Adding some aliases"
-    _chroot "wget https://raw.githubusercontent.com/grm34/archboot/$__branch__/conf/bashrc
+    _chroot "wget $_url/conf/bashrc
     cat bashrc >> /home/$USER_name/.bashrc"
 }
