@@ -5,7 +5,6 @@ __branch__="master"
 __author__="@grm34"
 __license__="Apache v2.0 License"
 
-# Banner
 _banner() {
     echo -e "$red" >&2
     echo -e "    _             _     _                 _   " >&2
