@@ -20,7 +20,7 @@ _base() {
 
     # Setting TimeZone
     _info "Setting TimeZone"
-    _chroot "ln -sf /mnt/usr/share/zoneinfo/Europe/Paris /etc/localtime
+    _chroot "ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
     hwclock --systohc"
 
     # Setting locale
