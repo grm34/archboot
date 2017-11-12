@@ -79,6 +79,3 @@ export _docky="docky"
 
 # Accessories
 export _accessories="gnome-calculator fbreader mupdf"
-
-# Network Applet
-export _network_applet="network-manager-applet"

@@ -7,7 +7,8 @@ export _archbase="base base-devel"
 export _ntp="ntp"
 
 # network
-export _networkapps="networkmanager wireless_tools iw wpa_supplicant"
+export _networkapps="networkmanager networkmanager-applet dhclient \
+wireless_tools iw wpa_supplicant"
 
 # required
 export _requiredapps="wget reflector git inxi htop nmap numlockx"
