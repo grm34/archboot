@@ -60,7 +60,7 @@ _user_infos() {
     then
         until [[ ${c} == "1" || ${c} == "2" || ${c} == "3" || ${c} == "4" ]]
         do
-            _prompt "KDE" "[1]" "- Gnome" "[2]" "- Xfce4" "[3]" "- Lxde" "[4]"
+            _prompt "Kde" "[1]" "- Gnome" "[2]" "- Xfce" "[3]" "- Lxde" "[4]"
             read -r c
         done
         choice=(none kde gnome xfce lxde)
