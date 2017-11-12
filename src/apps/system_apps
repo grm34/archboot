@@ -4,7 +4,7 @@
 export _ntp="ntp"
 
 # network
-export _networkapps="networkmanager networkmanager-applet dhclient \
+export _networkapps="networkmanager network-manager-applet dhclient \
 wireless_tools iw wpa_supplicant"
 
 # required
