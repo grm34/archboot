@@ -7,7 +7,8 @@ _firmware() {
     efivar -l >/dev/null 2>&1
 
     # Define vars for partition type
-    if [[ $? -eq 0 ]]; then
+    if [[ $? -eq 0 ]]
+    then
         FIRMWARE="UEFI"
         part_table="GPT"
         part_code="g"

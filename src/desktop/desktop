@@ -4,7 +4,8 @@ _install_desktop() {
 
     # Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
+    if [[ $? -eq 0 ]]
+    then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S $_intel"
     fi
@@ -19,7 +20,8 @@ _install_desktop() {
 
     # Desktop Environment
     _info "Installing $desktop"
-    if [[ ${desktop} == "xfce" ]]; then
+    if [[ ${desktop} == "xfce" ]]
+    then
 
         # XFCE
         _chroot "pacman --noconfirm -S $_xfce"
@@ -28,7 +30,8 @@ _install_desktop() {
         _info "Installing lxdm"
         _chroot "pacman --noconfirm -S $_lxdm"
 
-    elif [[ ${desktop} == "kde" ]]; then
+    elif [[ ${desktop} == "kde" ]]
+    then
 
         # KDE
         _chroot "pacman --noconfirm -S $_kde"
@@ -37,7 +40,8 @@ _install_desktop() {
         _info "Installing sddm"
         _chroot "pacman --noconfirm -S $_sddm"
 
-    elif [[ ${desktop} == "gnome" ]]; then
+    elif [[ ${desktop} == "gnome" ]]
+    then
 
         # GNOME
         _chroot "pacman --noconfirm -S $_gnome"
@@ -49,7 +53,8 @@ _install_desktop() {
     fi
 
     # Additional apps
-    if [[ ! -z ${additional_apps+x} ]]; then
+    if [[ ! -z ${additional_apps+x} ]]
+    then
 
         # Firefox
         _info "Installing Firefox"
@@ -82,7 +87,8 @@ _install_desktop() {
     fi
 
     # XFCE Packages
-    if [[ ${desktop} == "xfce" ]]; then
+    if [[ ${desktop} == "xfce" ]]
+    then
 
         # Docky
          _info "Installing Docky"
@@ -115,7 +121,8 @@ _desktop_settings() {
 
 
     # Display Manager
-    if [[ ${desktop} == "xfce" || ${desktop} == "lxde" ]]; then
+    if [[ ${desktop} == "xfce" || ${desktop} == "lxde" ]]
+    then
 
         # XFCE or LXDE > LXDM
         _info "Enabling LXDM"
@@ -124,13 +131,15 @@ _desktop_settings() {
         mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
         systemctl enable lxdm"
 
-    elif [[ ${desktop} == "gnome" ]]; then
+    elif [[ ${desktop} == "gnome" ]]
+    then
 
         # GNOME > GDM
         _info "Enabling GDM"
         _chroot "systemctl enable gdm"
 
-    elif [[ ${desktop} == "kde" ]]; then
+    elif [[ ${desktop} == "kde" ]]
+    then
 
         # KDE > SDDM
         _info "Enabling SDDM"
@@ -140,7 +149,8 @@ _desktop_settings() {
     fi
 
     # Themes & icons
-    if [[ ${desktop} == "xfce" || ${desktop} == "gnome" ]]; then
+    if [[ ${desktop} == "xfce" || ${desktop} == "gnome" ]]
+    then
         _info "Adding some themes & icons"
         _chroot "wget $_url/data/$desktop.tar.xz
         tar xf $desktop.tar.xz -C /home/$USER_name/ > /dev/null 2>&1
@@ -151,6 +161,7 @@ _desktop_settings() {
     _info "Add ${USER_name} to all groups"
     group_list=$(cut -d: -f1 /mnt/etc/group)
     for group in $group_list
-        do _chroot "usermod -aG $group $USER_name"
+    do
+        _chroot "usermod -aG $group $USER_name"
     done
 }
