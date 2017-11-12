@@ -11,6 +11,11 @@ export _intel="intel-ucode"
 export _file_system="gamin gvfs gvfs-mtp gvfs-nfs gvfs-afc gparted ntfs-3g \
 dosfstools exfat-utils file-roller ifuse fuseiso unrar"
 
+# Fonts
+export _fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
+font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
+ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
+
 # Firefox
 export _firefox="firefox firefox-i18n-fr hunspell-fr"
 
@@ -64,11 +69,6 @@ export _lxdm="lxdm"
 #####################
 ### XFCE PACKAGES ###
 #####################
-
-# Fonts
-export _fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
-font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
-ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
 
 # Multimedia
 export _multimedia="pulseaudio pulseaudio-alsa pavucontrol \

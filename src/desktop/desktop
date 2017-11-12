@@ -18,6 +18,10 @@ _install_desktop() {
     _info "Installing File System"
     _chroot "pacman --noconfirm -S $_file_system"
 
+    # Fonts
+    _info "Installing Fonts"
+    _chroot "pacman --noconfirm -S $_fonts"
+
     # Desktop Environment
     _info "Installing $desktop"
     if [[ ${desktop} == "xfce" ]]
@@ -89,10 +93,6 @@ _install_desktop() {
     # XFCE Packages
     if [[ ${desktop} == "xfce" ]]
     then
-
-        # Fonts
-        _info "Installing Fonts"
-        _chroot "pacman --noconfirm -S $_fonts"
 
          # Multimedia
         _info "Installing Multimedia"
