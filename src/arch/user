@@ -13,8 +13,7 @@ _user_infos() {
     # Root Password
     until [[ ${#a} -ge 8 && "$a" == *[a-z]* && "$a" == *[0-9]* ]]
     do
-        _note "password should be at least 8 chars \
-        long with 1 letter and 1 digit"
+        _note "password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for root:"
         read -rs a
     done
@@ -40,8 +39,7 @@ _user_infos() {
     # User Password
     until [[ ${#b} -ge 8 && "$b" == *[a-z]* && "$b" == *[0-9]* ]]
     do
-        _note "password should be at least 8 chars \
-        long with 1 letter and 1 digit"
+        _note "password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for ${USER_name}:"
         read -rs b
     done
