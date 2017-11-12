@@ -2,67 +2,85 @@
 
 _partition() {
 
-    # MBR or GPT
+    # Create MBR or GPT Table
     _info "$FIRMWARE detected. Listing disk"
-    until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]; do
-    fdisk -l
-    _prompt "Enter disk to use:" "(ex: sda)"
-    read -r _disk
+    until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]
+    do
+        fdisk -l
+        _prompt "Enter disk to use:" "(ex: sda)"
+        read -r _disk
     done
     fdisk -l /dev/"$_disk"
     _note "WARNING! This will erase the entire drive."
     _confirm "Setting $part_table partition table on /dev/$_disk"
-    if [[ ${confirm} == "y" ]]; then
+    if [[ ${confirm} == "y" ]]
+    then
         printf "$part_code\nw" | fdisk /dev/"$_disk"
     else
         exit
-    fi; unset confirm
+    fi
+    unset confirm
 
     # BOOT on /dev/xxx1
     until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1} \
-    || ${boot_size,,} == "y" ]]; do
-    _note "Partition size {M,G} => default: 512M"
-    _prompt "Boot partition size => default:" "[y]"
-    read -r boot_size
+    || ${boot_size,,} == "y" ]]
+    do
+        _note "Partition size {M,G} => default: 512M"
+        _prompt "Boot partition size => default:" "[y]"
+        read -r boot_size
     done
-    if [[ ${boot_size,,} == "y" ]]; then boot_size="512M"; fi
+    if [[ ${boot_size,,} == "y" ]]
+    then
+        boot_size="512M"
+    fi
     _info "Setting boot /dev/$_disk${part_order[1]} [$boot_size]"
     printf "n\n$part_type\n\n+$boot_size\nw" | fdisk /dev/"$_disk"
     yes | mkfs."$boot_filesystem" /dev/"$_disk${part_order[1]}"
 
     # SWAP on /dev/xxx2
     until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1} \
-    || ${swap_size,,} == "y" ]]; do
-    _note "Partition size {M,G} => default: 2G"
-    _prompt "Swap partition size => default:" "[y]"
-    read -r swap_size
+    || ${swap_size,,} == "y" ]]
+    do
+        _note "Partition size {M,G} => default: 2G"
+        _prompt "Swap partition size => default:" "[y]"
+        read -r swap_size
     done
-    if [[ ${swap_size,,} == "y" ]]; then swap_size="2G"; fi
+    if [[ ${swap_size,,} == "y" ]]
+    then
+        swap_size="2G"
+    fi
     _info "Setting Swap /dev/$_disk${part_order[2]} [$swap_size]"
     printf "n\n$part_type\n\n+$swap_size\nw" | fdisk /dev/"$_disk"
     yes | mkswap /dev/"$_disk${part_order[2]}"
 
     # SYSTEM on /dev/xxx3
     until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1} \
-    || ${sys_size,,} == "y" ]]; do
-    _note "Partition size {G,T,P} => default: 25G"
-    _prompt "System partition size => default:" "[y]"
-    read -r sys_size
+    || ${sys_size,,} == "y" ]]
+    do
+        _note "Partition size {G,T,P} => default: 25G"
+        _prompt "System partition size => default:" "[y]"
+        read -r sys_size
     done
-    if [[ ${sys_size,,} == "y" ]]; then sys_size="25G"; fi
+    if [[ ${sys_size,,} == "y" ]]
+    then
+        sys_size="25G"
+    fi
     _info "Setting System /dev/$_disk${part_order[3]} [$sys_size]"
     printf "n\n$part_type\n\n+$sys_size\nw" | fdisk /dev/"$_disk"
     yes | mkfs.ext4 /dev/"$_disk${part_order[3]}"
 
     # HOME on /dev/xxx4
-    if [[ "$FIRMWARE" == "UEFI" ]]; then
+    if [[ "$FIRMWARE" == "UEFI" ]]
+    then
         until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1} \
-        || ${home_size,,} == "y" ]]; do
-        _note "Partition size {G,T,P} => default: free space"
-        _prompt "Home partition size => default:" "[y]"
-        read -r home_size
+        || ${home_size,,} == "y" ]]
+        do
+            _note "Partition size {G,T,P} => default: free space"
+            _prompt "Home partition size => default:" "[y]"
+            read -r home_size
         done
-        if [[ ${home_size,,} == "y" ]]; then
+        if [[ ${home_size,,} == "y" ]]
+        then
             part_size="free space"
             home_size=""
         else
