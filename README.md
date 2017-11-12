@@ -30,6 +30,10 @@ Take a look in **/var/log/archboot**
 
 `cat /var/log/archboot/archboot_*.log`
 
+## Notes
+
+If you want to see whose packages are installed by this script, please see [Applications Folder](https://github.com/grm34/archboot/tree/master/src/apps).
+
 ## Screenshot
 
 [![OS](https://img.shields.io/badge/Archlinux-xfce4-blue.svg)](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
@@ -38,7 +42,3 @@ Take a look in **/var/log/archboot**
 ## Official Documentation
 
 Take a look at [ArchLinux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) to view the official documentation.
-
-## Notes
-
-If you want to see whose packages are installed by this script, please see [Applications Folder](https://github.com/grm34/archboot/tree/master/src/apps).
