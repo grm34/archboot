@@ -2,7 +2,7 @@
 
 _partition() {
 
-    # Create MBR or GPT Table
+    # Select disk to use
     _info "$FIRMWARE detected. Listing disk"
     until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]
     do
@@ -10,6 +10,8 @@ _partition() {
         _prompt "Enter disk to use:" "(ex: sda)"
         read -r _disk
     done
+
+    # Create MBR or GPT Table
     fdisk -l /dev/"$_disk"
     _note "WARNING! This will erase the entire drive."
     _confirm "Setting $part_table partition table on /dev/$_disk"
@@ -21,7 +23,7 @@ _partition() {
     fi
     unset confirm
 
-    # BOOT on /dev/xxx1
+    # BOOT partition size
     until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1} \
     || ${boot_size,,} == "y" ]]
     do
@@ -33,11 +35,13 @@ _partition() {
     then
         boot_size="512M"
     fi
+
+    # Create BOOT partition on /dev/xxx1
     _info "Setting boot /dev/$_disk${part_order[1]} [$boot_size]"
     printf "n\n$part_type\n\n+$boot_size\nw" | fdisk /dev/"$_disk"
     yes | mkfs."$boot_filesystem" /dev/"$_disk${part_order[1]}"
 
-    # SWAP on /dev/xxx2
+    # SWAP partition size
     until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1} \
     || ${swap_size,,} == "y" ]]
     do
@@ -49,11 +53,13 @@ _partition() {
     then
         swap_size="2G"
     fi
+
+    # Create SWAP partition on /dev/xxx2
     _info "Setting Swap /dev/$_disk${part_order[2]} [$swap_size]"
     printf "n\n$part_type\n\n+$swap_size\nw" | fdisk /dev/"$_disk"
     yes | mkswap /dev/"$_disk${part_order[2]}"
 
-    # SYSTEM on /dev/xxx3
+    # SYSTEM partiton size
     until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1} \
     || ${sys_size,,} == "y" ]]
     do
@@ -65,13 +71,16 @@ _partition() {
     then
         sys_size="25G"
     fi
+
+    # Create SYSTEM partition on /dev/xxx3
     _info "Setting System /dev/$_disk${part_order[3]} [$sys_size]"
     printf "n\n$part_type\n\n+$sys_size\nw" | fdisk /dev/"$_disk"
     yes | mkfs.ext4 /dev/"$_disk${part_order[3]}"
 
-    # HOME on /dev/xxx4
+    # HOME partiton
     if [[ "$FIRMWARE" == "UEFI" ]]
     then
+        # HOME partiton size
         until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1} \
         || ${home_size,,} == "y" ]]
         do
@@ -87,6 +96,8 @@ _partition() {
             part_size="$home_size"
             home_size="+$home_size"
         fi
+
+        # Create HOME partition on /dev/xxx4
         _info "Setting Home /dev/$_disk${part_order[4]} [$part_size]"
         printf "n\n\n\n$home_size\nw" | fdisk /dev/"$_disk"
     else
