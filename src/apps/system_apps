@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# ArchLinux Base
-export _archbase="base base-devel"
-
 # ntp
 export _ntp="ntp"
 
