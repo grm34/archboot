@@ -75,6 +75,14 @@ _logs() {
     logfile="archboot_$datetime.log"
 }
 
+# Function to set system clock
+_clock() {
+    _info "Setting system clock"
+    timedatectl set-ntp true
+    timedatectl set-timezone Europe/Paris
+    hwclock --systohc
+}
+
 #
 # Global variables
 #
@@ -116,7 +124,7 @@ source ./base; source ./bootloader; source ./firmware; source ./mounting
 source ./partition; source ./user; source ./yaourt
 
 # Prepare the system
-_user_infos; _logs; _firmware; _partition; _mounting
+_user_infos; _clock; _logs; _firmware; _partition; _mounting
 
 # Install ArchLinux
 if [ $? -eq 0 ]
