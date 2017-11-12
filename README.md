@@ -6,7 +6,7 @@ This script perform an automatic install of ArchLinux.
 Pretty simple, it only ask you for hostname, username,
 password, which disk to use, required partitions sizes
 and if you wish or not to install desktop environment.
-KDE | Gnome | Xfce4 | Lxde are available.
+Kde | Gnome | Xfce | Lxde are available.
 
 ## Requirements
 
