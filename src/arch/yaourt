@@ -13,5 +13,5 @@ _yaourt() {
 
     # Install yaourt
     _info "Installing yaourt"
-    _chroot "pacman --noconfirm -Syu yaourt customizepkg"
+    _chroot "pacman --noconfirm -Syu $_yaourtapps"
 }

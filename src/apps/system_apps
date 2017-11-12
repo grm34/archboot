@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# ArchLinux Base
+export _archbase="base base-devel"
+
+# ntp
+export _ntp="ntp"
+
+# network
+export _networkapps="networkmanager wireless_tools iw wpa_supplicant"
+
+# required
+export _requiredapps="wget reflector git inxi htop nmap numlockx"
+
+# Bootloader
+export _bootapps="grub os-prober gptfdisk efibootmgr"
+
+# yaourt
+export _yaourtapps="yaourt customizepkg"
