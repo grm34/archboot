@@ -34,3 +34,7 @@ Take a look in **/var/log/archboot**
 
 [![OS](https://img.shields.io/badge/Archlinux-xfce4-blue.svg)](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
 ![](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
+
+## Official Documentation
+
+Take a look at [ArchLinux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) to view the official documentation.
