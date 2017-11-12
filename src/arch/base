@@ -4,7 +4,7 @@ _base() {
 
     # Install Base System
     _info "Installing base system"
-    yes '' | pacstrap /mnt base base-devel
+    yes '' | pacstrap /mnt "$_archbase"
 
     # Setting fstab
     _info "Setting fstab"
@@ -16,7 +16,7 @@ _base() {
 
     # Installing ntp
     _info "Installing ntp"
-    _chroot "pacman --noconfirm -S ntp"
+    _chroot "pacman --noconfirm -S $_ntp"
 
     # Setting TimeZone
     _info "Setting TimeZone"
@@ -40,10 +40,10 @@ _base() {
 
     # Install Network
     _info "Installing network"
-    _chroot "pacman --noconfirm -S networkmanager wireless_tools iw wpa_supplicant
+    _chroot "pacman --noconfirm -S $_networkapps
     systemctl enable NetworkManager"
 
     # Install required packages
     _info "Installing required packages"
-    _chroot "pacman --noconfirm -S wget reflector git inxi htop nmap numlockx"
+    _chroot "pacman --noconfirm -S $_requiredapps"
 }

@@ -113,6 +113,7 @@ then
     wget $_url/src/arch/partition       # to create table & partitions
     wget $_url/src/arch/user            # to ask user infos & create user
     wget $_url/src/arch/yaourt          # to set pacman.conf & install yaourt
+    wget $_url/src/apps/system_apps     # to load system required apps
 else
     exit
 fi
@@ -121,7 +122,7 @@ unset confirm
 # Import base sources
 _info "Importing sources"
 source ./base; source ./bootloader; source ./firmware; source ./mounting
-source ./partition; source ./user; source ./yaourt
+source ./partition; source ./user; source ./yaourt; source ./system_apps
 
 # Prepare the system
 _user_infos; _clock; _logs; _firmware; _partition; _mounting
@@ -148,12 +149,12 @@ then
     # Download desktop sources
     _info "Downloading desktop sources"
     wget $_url/src/desktop/gpu          # to check GPU & define drivers
-    wget $_url/src/desktop/apps         # to get all Desktop packages
     wget $_url/src/desktop/desktop      # to install Desktop Environment
+    wget $_url/src/apps/desktop_apps    # to load desktop required apps
 
     # Import desktop sources
     _info "Importing sources"
-    source ./gpu; source ./apps; source ./desktop
+    source ./gpu; source ./desktop; source ./desktop_apps
 
     # Install desktop environment
     (_gpu; _install_desktop; _desktop_settings) 2>&1 | tee -a "$logfile"
