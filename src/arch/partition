@@ -26,7 +26,7 @@ _partition() {
     || ${boot_size,,} == "y" ]]
     do
         _note "Partition size {M,G} => default: 512M"
-        _prompt "Boot partition size => default" "[y]"
+        _prompt "Boot partition size =>" "default [y]"
         read -r boot_size
     done
     if [[ ${boot_size,,} == "y" ]]
@@ -42,7 +42,7 @@ _partition() {
     || ${swap_size,,} == "y" ]]
     do
         _note "Partition size {M,G} => default: 2G"
-        _prompt "Swap partition size => default" "[y]"
+        _prompt "Swap partition size =>" "default [y]"
         read -r swap_size
     done
     if [[ ${swap_size,,} == "y" ]]
@@ -58,7 +58,7 @@ _partition() {
     || ${sys_size,,} == "y" ]]
     do
         _note "Partition size {G,T,P} => default: 25G"
-        _prompt "System partition size => default" "[y]"
+        _prompt "System partition size =>" "default [y]"
         read -r sys_size
     done
     if [[ ${sys_size,,} == "y" ]]
@@ -76,7 +76,7 @@ _partition() {
         || ${home_size,,} == "y" ]]
         do
             _note "Partition size {G,T,P} => default: free space"
-            _prompt "Home partition size => default" "[y]"
+            _prompt "Home partition size =>" "default [y]"
             read -r home_size
         done
         if [[ ${home_size,,} == "y" ]]
