@@ -90,10 +90,6 @@ _install_desktop() {
     if [[ ${desktop} == "xfce" ]]
     then
 
-        # Docky
-         _info "Installing Docky"
-        _chroot "pacman --noconfirm -S $_docky"
-
         # Fonts
         _info "Installing Fonts"
         _chroot "pacman --noconfirm -S $_fonts"
@@ -102,13 +98,13 @@ _install_desktop() {
         _info "Installing Multimedia"
         _chroot "pacman --noconfirm -S $_multimedia"
 
+        # Docky
+         _info "Installing Docky"
+        _chroot "pacman --noconfirm -S $_docky"
+
         # Accessories
         _info "Installing Accessories"
         _chroot "pacman --noconfirm -S $_accessories"
-
-        # Network Applet
-        _info "Installing Network Applet"
-        _chroot "pacman --noconfirm -S $_network_applet"
     fi
 }
 
