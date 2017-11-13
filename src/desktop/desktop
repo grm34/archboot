@@ -123,7 +123,6 @@ _desktop_settings() {
         # XFCE or LXDE > LXDM
         _info "Enabling LXDM"
         _chroot "wget $_url/conf/lxdm_$desktop.conf
-        rm /etc/lxdm/lxdm.conf
         mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
         systemctl enable lxdm"
 

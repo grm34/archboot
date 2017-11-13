@@ -95,5 +95,6 @@ _user_settings() {
     # Setting some Aliases
     _info "Setting some aliases"
     _chroot "wget $_url/conf/bashrc
-    cat bashrc >> /home/$USER_name/.bashrc"
+    cat bashrc >> /home/$USER_name/.bashrc
+    rm bashrc"
 }
