@@ -20,7 +20,7 @@ ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
 export _firefox="firefox firefox-i18n-fr hunspell-fr"
 
 # Flash
-export _flash="flashplugin"
+export _flash="flashplugin pepper-flash"
 
 # Java
 export _java="jre8-openjdk"
