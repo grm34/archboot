@@ -114,6 +114,7 @@ then
     wget $_url/src/arch/user            # to ask user infos & create user
     wget $_url/src/arch/yaourt          # to set pacman.conf & install yaourt
     wget $_url/src/apps/system_apps     # to load system required apps
+    wget $_url/conf/languages           # to get languages codes
 else
     exit
 fi
