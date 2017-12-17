@@ -3,7 +3,7 @@
 _user_infos() {
 
     # User Language
-    until grep -E [[ ${#SYS_lang} $_url/conf/languages ]]
+    until grep -E ${#SYS_lang} $_url/conf/languages
     do
         _prompt "Enter language code:" "(ex: fr_FR)"
         read -r SYS_lang
