@@ -2,6 +2,13 @@
 
 _user_infos() {
 
+    # User Language
+    until [[ grep -Fxq ${#SYS_lang} languages ]]
+    do
+        _prompt "Enter language code:" "(ex: fr_FR)"
+        read -r SYS_lang
+    done
+
     # Hostname
     until [[ ${#HOST_name} -ge 3 \
     && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]
@@ -81,7 +88,8 @@ _user_infos() {
     fi
 
     # Export
-    export HOST_name; export ROOT_passwd; export USER_name; export USER_passwd
+    export SYS_lang; export HOST_name; export ROOT_passwd
+    export USER_name; export USER_passwd
 }
 
 _user_settings() {
