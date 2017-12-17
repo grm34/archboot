@@ -114,7 +114,6 @@ then
     wget $_url/src/arch/user            # to ask user infos & create user
     wget $_url/src/arch/yaourt          # to set pacman.conf & install yaourt
     wget $_url/src/apps/system_apps     # to load system required apps
-    wget $_url/src/conf/languages       # to load languages list
 else
     exit
 fi
@@ -124,7 +123,6 @@ unset confirm
 _info "Importing sources"
 source ./base; source ./bootloader; source ./firmware; source ./mounting
 source ./partition; source ./user; source ./yaourt; source ./system_apps
-source ./languages
 
 # Prepare the system
 _user_infos; _clock; _logs; _firmware; _partition; _mounting
