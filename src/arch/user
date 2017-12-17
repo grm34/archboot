@@ -3,7 +3,7 @@
 _user_infos() {
 
     # User Language
-    until grep -E ${#SYS_lang} ./languages
+    while grep -Fxp ${#SYS_lang} ./languages > /dev/null
     do
         _prompt "Enter language code:" "(ex: fr_FR)"
         read -r SYS_lang
