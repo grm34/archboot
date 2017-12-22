@@ -28,7 +28,7 @@ _base() {
     _chroot "echo '$USER_lang.UTF-8 UTF-8' >> /etc/locale.gen
     locale-gen
     export LANG=$USER_lang.UTF-8
-    echo 'LANG=$USER_LANG.UTF-8' > /etc/locale.conf"
+    echo 'LANG=$USER_lang.UTF-8' > /etc/locale.conf"
 
     # Setting keyboard
     _info "Setting keyboard"
