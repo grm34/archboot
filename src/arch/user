@@ -2,6 +2,25 @@
 
 _user_infos() {
 
+    # User Language
+    _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
+    read -r USER_lang
+    if ! grep -Fxq "$USER_lang" ./languages
+    then
+        _error "unknown language code, full list is available on github"
+    fi
+    keymap_code=$(echo $USER_lang | cut -d'_' -f 1)
+    echo
+
+    # Region/City
+     _prompt "Enter Region code:" "(ex: Europe/Paris, Asia/Tokyo)"
+    read -r region_city
+    if ! grep -Fxq "$region_city" ./region_city
+    then
+        _error "unknown Region code, full list is available on github"
+    fi
+    echo
+
     # Hostname
     until [[ ${#HOST_name} -ge 3 \
     && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]
@@ -81,7 +100,8 @@ _user_infos() {
     fi
 
     # Export
-    export HOST_name; export ROOT_passwd; export USER_name; export USER_passwd
+    export USER_lang; export keymap_code; export region_city; export HOST_name
+    export ROOT_passwd; export USER_name; export USER_passwd
 }
 
 _user_settings() {

@@ -1,7 +1,7 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v2.6.3"
-__branch__="master"
+__version__="v2.7.0"
+__branch__="dev"
 __author__="@grm34"
 __license__="Apache v2.0 License"
 
@@ -114,6 +114,8 @@ then
     wget $_url/src/arch/user            # to ask user infos & create user
     wget $_url/src/arch/yaourt          # to set pacman.conf & install yaourt
     wget $_url/src/apps/system_apps     # to load system required apps
+    wget $_url/conf/languages           # to get languages codes
+    wget $_url/conf/region_city         # to get regions codes
 else
     exit
 fi
