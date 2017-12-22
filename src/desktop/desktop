@@ -113,6 +113,7 @@ _desktop_settings() {
     # Keyboard layout
     _info "Setting keyboard layout"
     _chroot "wget $_url/conf/00-keyboard.conf
+    sed -i -e 's/keymap_code/$keymap_code/g' 00-keyboard.conf
     mv 00-keyboard.conf /etc/X11/xorg.conf.d/"
 
 

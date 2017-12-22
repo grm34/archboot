@@ -20,19 +20,19 @@ _base() {
 
     # Setting TimeZone
     _info "Setting TimeZone"
-    _chroot "ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+    _chroot "ln -sf /usr/share/zoneinfo/$region_city /etc/localtime
     hwclock --systohc"
 
     # Setting locale
     _info "Setting and generating locale"
-    _chroot "echo 'fr_FR.UTF-8 UTF-8' >> /etc/locale.gen
+    _chroot "echo '$USER_lang.UTF-8 UTF-8' >> /etc/locale.gen
     locale-gen
-    export LANG=fr_FR.UTF-8
-    echo 'LANG=fr_FR.UTF-8' > /etc/locale.conf"
+    export LANG=$USER_lang.UTF-8
+    echo 'LANG=$USER_LANG.UTF-8' > /etc/locale.conf"
 
     # Setting keyboard
     _info "Setting keyboard"
-    _chroot "echo 'KEYMAP=fr' > /etc/vconsole.conf"
+    _chroot "echo 'KEYMAP=$keymap_code' > /etc/vconsole.conf"
 
     # Setting Linux
     _info "Setting Linux environment"
