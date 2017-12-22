@@ -3,21 +3,21 @@
 _user_infos() {
 
     # User Language
-    _prompt "Enter Language code:" "(ex: fr_FR, en_US)"
+    _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
     read -r USER_lang
     if ! grep -Fxq "$USER_lang" ./languages
     then
-        error "unknown language code, see https://github.com/grm34/archboot/blob/$__branch__/conf/languages"
+        _error "unknown language code, full list is available on github"
     fi
     keymap_code=$(echo $USER_lang | cut -d'_' -f 1)
     echo
 
     # Region/City
-     _prompt "Enter Region code:" "(ex: Europe/Paris)"
+     _prompt "Enter Region code:" "(ex: Europe/Paris, Asia/Tokyo)"
     read -r region_city
     if ! grep -Fxq "$region_city" ./region_city
     then
-        error "unknown Region code, see https://github.com/grm34/archboot/blob/$__branch__/conf/region_city"
+        _error "unknown Region code, full list is available on github"
     fi
     echo
 
