@@ -142,7 +142,7 @@ then
     fi
     unset confirm
 else
-    _error "partitionning error, system will reboot... Please try again."
+    _error "bad partitionning, please try again."
 fi
 
 # Desktop Environment
