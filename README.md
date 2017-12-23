@@ -18,7 +18,7 @@ The only thing you need is one **USB bootable device** of [ArchLinux](http://mir
 
 **2.** On the install menu of ArchLinux, select [Boot Arch Linux (x86_64)](https://raw.githubusercontent.com/grm34/archboot/master/img/archlinux.png).
 
-**3.** If you use AZERTY keyboard, set it by running this command: `loqdkeys fr`
+**3.** For AZERTY keyboard run: `loqdkeys fr`
 
 **4.** Download archboot and follow the instructions:
 
@@ -32,7 +32,7 @@ Take a look in **/var/log/archboot**
 
 ## Notes
 
-For list of availables languages and regions codes, please see [languages](https://github.com/grm34/archboot/blob/master/conf/languages) & [regions](https://github.com/grm34/archboot/blob/master/conf/region_city).
+For list of all available languages and regions codes, please see [languages](https://github.com/grm34/archboot/blob/master/conf/languages) and [regions](https://github.com/grm34/archboot/blob/master/conf/region_city).
 
 If you want to see whose packages are installed by this script, please see [Applications Folder](https://github.com/grm34/archboot/tree/master/src/apps).
 
