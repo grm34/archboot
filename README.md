@@ -32,7 +32,7 @@ Take a look in **/var/log/archboot**
 
 ## Notes
 
-For list of availables languages and regions codes, see [languages](https://github.com/grm34/archboot/blob/master/conf/languages) & [regions](https://github.com/grm34/archboot/blob/master/conf/region_city).
+For list of availables languages and regions codes, please see [languages](https://github.com/grm34/archboot/blob/master/conf/languages) & [regions](https://github.com/grm34/archboot/blob/master/conf/region_city).
 
 If you want to see whose packages are installed by this script, please see [Applications Folder](https://github.com/grm34/archboot/tree/master/src/apps).
 
