@@ -80,7 +80,7 @@ _logs() {
 _clock() {
     _info "Setting system clock"
     timedatectl set-ntp true
-    timedatectl set-timezone Europe/Paris
+    timedatectl set-timezone $region_city
     hwclock --systohc
 }
 
