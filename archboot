@@ -57,7 +57,7 @@ _note() {
 # Function to display errors
 _error() {
     echo -e "$red\nError: $yellow$1$nc" >&2
-    echo -e "$red\nSystem will reboot in 5s...$nc" >&2
+    echo -e "$green\nSystem will reboot in 5s...$nc" >&2
     sleep 5s
     reboot
 }
