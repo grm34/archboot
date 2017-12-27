@@ -56,10 +56,10 @@ _note() {
 
 # Function to display errors
 _error() {
-    echo -e "$red\nError: $yellow$1$nc" >&2
+    echo -e "$red\nError: $yellow$1$nc\n" >&2
     for delay in $(seq 5 -1 1)
     do
-        echo -ne "\r\033[K$greenSystem will reboot in ${delay}s...$nc" && sleep 1
+        echo -ne "\r\033[K${green}System will reboot in ${delay}s...$nc" && sleep 1
     done
     reboot
 }
