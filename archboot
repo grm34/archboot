@@ -1,7 +1,12 @@
 #!/bin/bash
 __appname__="archboot"
+<<<<<<< HEAD
 __version__="v2.7.1"
 __branch__="master"
+=======
+__version__="v2.7.0"
+__branch__="dev"
+>>>>>>> parent of 4df8e39... error timeout
 __author__="@grm34"
 __license__="Apache v2.0 License"
 
@@ -57,7 +62,10 @@ _note() {
 # Function to display errors
 _error() {
     echo -e "$red\nError: $yellow$1$nc" >&2
+<<<<<<< HEAD
     echo -e "$green\nSystem will reboot in 5s...$nc" >&2
+=======
+>>>>>>> parent of 4df8e39... error timeout
     sleep 5s
     reboot
 }
