@@ -3,23 +3,23 @@
 _user_infos() {
 
     # User Language
-    _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
-    read -r USER_lang
-    if ! grep -Fxq "$USER_lang" ./languages
-    then
-        _error "unknown language code, full list is available on github"
-    fi
+    until grep -Fxq "$USER_lang" ./languages
+    do
+        _note "list of all available languages codes is available on github"
+        _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
+        read -r USER_lang
+    done
+    echo
     keymap_code=$(echo $USER_lang | cut -d'_' -f 1)
     reflector_code=$(echo $USER_lang | cut -d'_' -f 2)
-    echo
 
     # Region/City
-     _prompt "Enter Region code:" "(ex: Europe/Paris, Asia/Tokyo)"
-    read -r region_city
-    if ! grep -Fxq "$region_city" ./region_city
-    then
-        _error "unknown Region code, full list is available on github"
-    fi
+    until grep -Fxq "$region_city" ./region_city
+    do
+        _note "list of all available regions codes is available on github"
+        _prompt "Enter Region code:" "(ex: Europe/Paris, Asia/Tokyo)"
+        read -r region_city
+    done
     echo
 
     # Hostname
