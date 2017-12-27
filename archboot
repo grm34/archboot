@@ -57,9 +57,9 @@ _note() {
 # Function to display errors
 _error() {
     echo -e "$red\nError: $yellow$1$nc\n" >&2
-    for delay in $(seq 5 -1 1)
+    for d in $(seq 5 -1 1)
     do
-        echo -ne "\r\033[K${green}System will reboot in ${delay}s...$nc" && sleep 1
+        echo -ne "\r\033[K${green}System will reboot in ${d}s...$nc" && sleep 1
     done
     echo
     reboot
@@ -141,7 +141,7 @@ then
     then
         (_base; _bootloader; _user_settings; _yaourt) 2>&1 | tee -a "$logfile"
     else
-        exit
+        _error "user ask for exit."
     fi
     unset confirm
 else
