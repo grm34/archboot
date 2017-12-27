@@ -61,6 +61,7 @@ _error() {
     do
         echo -ne "\r\033[K${green}System will reboot in ${delay}s...$nc" && sleep 1
     done
+    echo
     reboot
 }
 
