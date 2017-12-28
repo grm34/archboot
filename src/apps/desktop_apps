@@ -46,26 +46,13 @@ export _sane="sane simple-scan"
 export _gnome="gnome gnome-extra"
 
 # KDE Desktop
-export _kde="plasma kde-applications kde-l10n-fr aspell-fr \
-libappindicator-gtk2 libappindicator-gtk3 sni-qt \
-lib32-libappindicator-gtk2 lib32-libappindicator-gtk2 \
-kde-gtk-config oxygen-gtk2 oxygen-kde4 qtcurve-gtk2 qtcurve-qt5"
+export _kde="plasma kde-applications"
 
 # Lxde Desktop
 export _lxde="lxde"
 
 # Xfce Desktop
-export _xfce="xfce4 xfce4-goodies"
-
-#######################
-### DISPLAY MANAGER ###
-#######################
-
-# Sddm Display Manager
-export _sddm="sddm sddm-kcm"
-
-# Lxdm Display Manager
-export _lxdm="lxdm"
+export _xfce="xfce4 xfce4-goodies lxdm"
 
 #####################
 ### XFCE PACKAGES ###

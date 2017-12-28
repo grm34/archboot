@@ -24,36 +24,21 @@ _install_desktop() {
 
     # Desktop Environment
     _info "Installing $desktop"
+    _chroot "pacman --noconfirm -S $_${desktop}"
     if [[ ${desktop} == "xfce" ]]
     then
 
-        # XFCE
-        _chroot "pacman --noconfirm -S $_xfce"
+         # Multimedia
+        _info "Installing Multimedia"
+        _chroot "pacman --noconfirm -S $_multimedia"
 
-        # LXDM
-        _info "Installing lxdm"
-        _chroot "pacman --noconfirm -S $_lxdm"
+        # Docky
+         _info "Installing Docky"
+        _chroot "pacman --noconfirm -S $_docky"
 
-    elif [[ ${desktop} == "kde" ]]
-    then
-
-        # KDE
-        _chroot "pacman --noconfirm -S $_kde"
-
-        # SDDM
-        _info "Installing sddm"
-        _chroot "pacman --noconfirm -S $_sddm"
-
-    elif [[ ${desktop} == "gnome" ]]
-    then
-
-        # GNOME
-        _chroot "pacman --noconfirm -S $_gnome"
-
-    else
-
-        # LXDE
-        _chroot "pacman --noconfirm -S $_lxde"
+        # Accessories
+        _info "Installing Accessories"
+        _chroot "pacman --noconfirm -S $_accessories"
     fi
 
     # Additional apps
@@ -89,23 +74,6 @@ _install_desktop() {
         _info "Installing Sane"
         _chroot "pacman --noconfirm -S $_sane"
     fi
-
-    # XFCE Packages
-    if [[ ${desktop} == "xfce" ]]
-    then
-
-         # Multimedia
-        _info "Installing Multimedia"
-        _chroot "pacman --noconfirm -S $_multimedia"
-
-        # Docky
-         _info "Installing Docky"
-        _chroot "pacman --noconfirm -S $_docky"
-
-        # Accessories
-        _info "Installing Accessories"
-        _chroot "pacman --noconfirm -S $_accessories"
-    fi
 }
 
 _desktop_settings() {
@@ -133,15 +101,6 @@ _desktop_settings() {
         # GNOME > GDM
         _info "Enabling GDM"
         _chroot "systemctl enable gdm"
-
-    elif [[ ${desktop} == "kde" ]]
-    then
-
-        # KDE > SDDM
-        _info "Enabling SDDM"
-        _chroot "sed -i -e 's/Numlock=none/Numlock=on/g' /etc/sddm.conf
-        setfacl -m u:sddm:x /home/${USER_name}
-        systemctl enable sddm"
     fi
 
     # Themes & icons
