@@ -184,4 +184,3 @@ then
 else
     exit
 fi
-unset confirm
