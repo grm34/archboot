@@ -172,8 +172,7 @@ mkdir /mnt/var/log/archboot
 cp "$logfile" /mnt/var/log/archboot/
 
 # Install notes
-_note "Installation successful!"
-_note "$__appname__ $__version__ by $__author__ - $__license__"
+_note "Installation successful! $__appname__ $__version__ by $__author__ - $__license__"
 
 # Reboot
 _confirm "Do you want to reboot your computer now?"
