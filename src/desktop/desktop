@@ -24,7 +24,8 @@ _install_desktop() {
 
     # Desktop Environment
     _info "Installing $desktop"
-    _chroot "pacman --noconfirm -S $_${desktop}"
+    user_desktop="_$desktop"
+    _chroot "pacman --noconfirm -S ${!user_desktop}"
     if [[ ${desktop} == "xfce" ]]
     then
 
