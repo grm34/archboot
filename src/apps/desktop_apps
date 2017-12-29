@@ -46,7 +46,7 @@ export _sane="sane simple-scan"
 export _gnome="gnome gnome-extra"
 
 # KDE Desktop
-export _kde="plasma kde-applications"
+export _kde="plasma kde-applications sddm"
 
 # Lxde Desktop
 export _lxde="lxde"
