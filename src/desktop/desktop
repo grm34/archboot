@@ -102,6 +102,15 @@ _desktop_settings() {
         # GNOME > GDM
         _info "Enabling GDM"
         _chroot "systemctl enable gdm"
+
+    elif [[ ${desktop} == "kde" ]]
+    then
+
+        # KDE > SDDM
+        _info "Enabling SDDM"
+        _chroot "sed -i -e 's/Numlock=none/Numlock=on/g' /etc/sddm.conf
+        setfacl -m u:sddm:x /home/${USER_name}
+        systemctl enable sddm"
     fi
 
     # Themes & icons
