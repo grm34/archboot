@@ -61,8 +61,7 @@ _error() {
     do
         echo -ne "\r\033[K${green}System will reboot in ${d}s...$nc" && sleep 1
     done
-    echo
-    reboot
+    echo; reboot
 }
 
 # Function to execute actions in chrooted env
@@ -121,7 +120,7 @@ then
     wget $_url/conf/languages           # to get languages codes
     wget $_url/conf/region_city         # to get regions codes
 else
-    exit
+    echo; exit
 fi
 unset confirm
 
@@ -131,11 +130,13 @@ source ./base; source ./bootloader; source ./firmware; source ./mounting
 source ./partition; source ./user; source ./yaourt; source ./system_apps
 
 # Prepare the system
-_user_infos; _clock; _logs; _firmware; _partition; _mounting
+_user_infos; _clock; _logs; _firmware; _partition
 
-# Install ArchLinux
-if [ $? -eq 0 ]
+# Mount partitions & check for errors
+_mounting && if [ $? -eq 0 ]
 then
+
+    # Install ArchLinux
     _confirm "Do you wish to install ArchLinux now?"
     if [[ ${confirm} == "y" ]]
     then
@@ -178,8 +179,7 @@ _note "Installation successful! $__appname__ $__version__ by $__author__ - $__li
 _confirm "Do you want to reboot your computer now?"
 if [[ ${confirm} == "y" ]]
 then
-    umount -R /mnt
-    reboot
+    umount -R /mnt; reboot
 else
-    exit
+    echo; exit
 fi
