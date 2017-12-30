@@ -17,27 +17,6 @@ export _fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
 font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
 ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
 
-# Firefox
-export _firefox="firefox firefox-i18n-fr hunspell-fr"
-
-# Flash
-export _flash="flashplugin pepper-flash"
-
-# Java
-export _java="jre8-openjdk"
-
-# Libreoffice
-export _libreoffice="libreoffice libreoffice-fr"
-
-# Gimp
-export _gimp="gimp"
-
-# Cups
-export _cups="cups cups-pdf ghostscript gutenprint"
-
-# Sane
-export _sane="sane simple-scan"
-
 ###########################
 ### DESKTOP ENVIRONMENT ###
 ###########################
@@ -67,3 +46,28 @@ export _docky="docky"
 
 # Accessories
 export _accessories="gnome-calculator fbreader mupdf"
+
+#########################
+### OPTIONAL PACKAGES ###
+#########################
+
+# Firefox
+export _firefox="firefox firefox-i18n-fr hunspell-fr"
+
+# Flash
+export _flash="flashplugin pepper-flash"
+
+# Java
+export _java="jre8-openjdk"
+
+# Libreoffice
+export _libreoffice="libreoffice libreoffice-fr"
+
+# Gimp
+export _gimp="gimp"
+
+# Cups
+export _cups="cups cups-pdf ghostscript gutenprint"
+
+# Sane
+export _sane="sane simple-scan"

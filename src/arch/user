@@ -104,11 +104,11 @@ _user_infos() {
     fi
     unset confirm
 
-    # Additional apps
+    # Optional packages
     if [[ ! -z ${desktop+x} ]]
     then
-        _note "Additional Apps > Firefox, Libreoffice, Gimp, Cups, Sane"
-        _confirm "Do you wish to install Additional Apps?"
+        _note "Optional Packages > Firefox, Libreoffice, Gimp, Cups, Sane"
+        _confirm "Do you wish to install optional packages?"
         if [[ ${confirm} == "y" ]]
         then
             export additional_apps="ok"
