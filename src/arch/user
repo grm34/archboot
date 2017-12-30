@@ -1,5 +1,21 @@
 #!/bin/bash
 
+_user_settings() {
+
+    # Setting user
+    _info "Setting user"
+    _chroot "useradd -g users -m -s /bin/bash $USER_name
+    echo '${USER_name}:${USER_passwd}' | chpasswd
+    echo '${USER_name} ALL=(ALL) ALL' >> /etc/sudoers"
+
+    # Setting some Aliases
+    _info "Setting some aliases"
+    _chroot "wget $_url/conf/bashrc
+    sed -i -e 's/reflector_code/$reflector_code/g' bashrc
+    cat bashrc >> /home/$USER_name/.bashrc
+    rm bashrc"
+}
+
 _user_infos() {
 
     # User Language
@@ -88,11 +104,11 @@ _user_infos() {
     fi
     unset confirm
 
-    # Additional apps
+    # Optional packages
     if [[ ! -z ${desktop+x} ]]
     then
-        _note "Additional Apps > Firefox, Libreoffice, Gimp, Cups, Sane"
-        _confirm "Do you wish to install Additional Apps?"
+        _note "Optional Packages > Firefox, Libreoffice, Gimp, Cups, Sane"
+        _confirm "Do you wish to install optional packages?"
         if [[ ${confirm} == "y" ]]
         then
             export additional_apps="ok"
@@ -103,20 +119,4 @@ _user_infos() {
     # Export required vars
     export USER_lang; export keymap_code; export region_city
     export HOST_name; export ROOT_passwd; export USER_name; export USER_passwd
-}
-
-_user_settings() {
-
-    # Setting user
-    _info "Setting user"
-    _chroot "useradd -g users -m -s /bin/bash $USER_name
-    echo '${USER_name}:${USER_passwd}' | chpasswd
-    echo '${USER_name} ALL=(ALL) ALL' >> /etc/sudoers"
-
-    # Setting some Aliases
-    _info "Setting some aliases"
-    _chroot "wget $_url/conf/bashrc
-    sed -i -e 's/reflector_code/$reflector_code/g' bashrc
-    cat bashrc >> /home/$USER_name/.bashrc
-    rm bashrc"
 }
