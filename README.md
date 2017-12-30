@@ -20,17 +20,17 @@ The only thing you need is one **USB bootable device** of [ArchLinux](http://mir
 
 `wget tiny.cc/archboot; sh archboot`
 
-## Logs
-
-Take a look in **/var/log/archboot**
-
-`cat /var/log/archboot/archboot_*.log`
-
 ## Notes
 
 For list of all available languages and regions codes, please see [languages](https://github.com/grm34/archboot/blob/master/conf/languages) and [regions](https://github.com/grm34/archboot/blob/master/conf/region_city).
 
 If you want to see whose packages are installed by this script, please see [Applications Folder](https://github.com/grm34/archboot/tree/master/src/apps).
+
+## Logs
+
+For full installation logs, take a look in **/var/log/archboot**
+
+`cat /var/log/archboot/archboot_*.log`
 
 ## Screenshot
 
