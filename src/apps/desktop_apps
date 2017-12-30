@@ -39,7 +39,7 @@ export _xfce="xfce4 xfce4-goodies lxdm"
 
 # Multimedia
 export _multimedia="pulseaudio pulseaudio-alsa pavucontrol \
-mplayer parole vlc guvcview mediainfo-gui ffmpegthumbnailer"
+gnome-mplayer vlc guvcview mediainfo-gui ffmpegthumbnailer"
 
 # Docky
 export _docky="docky"
