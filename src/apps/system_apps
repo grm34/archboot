@@ -8,7 +8,7 @@ export _networkapps="networkmanager network-manager-applet dhclient \
 wireless_tools iw wpa_supplicant"
 
 # required
-export _requiredapps="wget reflector git inxi htop nmap numlockx"
+export _requiredapps="wget reflector git inxi htop nmap numlockx vim"
 
 # Bootloader
 export _bootapps="grub os-prober gptfdisk efibootmgr"
