@@ -26,7 +26,7 @@ For list of all available languages and regions codes, please see [languages](ht
 
 If you want to see whose packages are installed by this script, please see [Applications Folder](https://github.com/grm34/archboot/tree/master/src/apps).
 
-GPU Drivers are also available, please see [GPU](https://github.com/grm34/archboot/blob/master/src/desktop/gpu).
+And for GPU Drivers & support, please see [GPU](https://github.com/grm34/archboot/blob/master/src/desktop/gpu).
 
 ## Logs
 
