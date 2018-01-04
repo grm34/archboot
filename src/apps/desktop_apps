@@ -38,7 +38,7 @@ export _xfce="xfce4 xfce4-goodies lxdm"
 #####################
 
 # Multimedia
-export _multimedia="pulseaudio pulseaudio-alsa pavucontrol \
+export _multimedia="pulseaudio pulseaudio-alsa pavucontrol gst-plugins-good \
 gnome-mplayer vlc guvcview mediainfo-gui ffmpegthumbnailer"
 
 # Docky
