@@ -15,9 +15,9 @@ _banner() {
     echo -e "Welcome in archboot, a script made with love by grm34!" >&2
     echo -e "This script perform an automatic install of Archlinux." >&2
     echo -e "Pretty simple, it only ask you for hostname, username," >&2
-    echo -e "password, which disk to use, required partitions sizes" >&2
-    echo -e "and if you wish or not to install desktop environment." >&2
-    echo -e "Supported ones in $__version__ > Kde | Gnome | Xfce | Lxde." >&2
+    echo -e "password, which disk to use, required partitions size," >&2
+    echo -e "language and if you wish or not to install desktop en-"
+    echo -e "vironment [ Kde | Gnome | Xfce | Lxde ]." >&2
 }
 
 #
