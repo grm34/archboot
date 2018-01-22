@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#######################
-### GLOBAL PACKAGES ###
-#######################
+#
+# Global Packages
+#
 
 # Intel Microcode
 export _intel="intel-ucode"
@@ -17,25 +17,25 @@ export _fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
 font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
 ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
 
-###########################
-### DESKTOP ENVIRONMENT ###
-###########################
+#
+# Desktop Environment
+#
 
-# Gnome Desktop
+# Gnome
 export _gnome="gnome gnome-extra"
 
-# KDE Desktop
+# KDE Plasma
 export _kde="plasma kde-applications"
 
-# Lxde Desktop
+# Lxde
 export _lxde="lxde"
 
-# Xfce Desktop
+# Xfce
 export _xfce="xfce4 xfce4-goodies lxdm"
 
-#####################
-### XFCE PACKAGES ###
-#####################
+#
+# XFCE Packages
+#
 
 # Multimedia
 export _multimedia="pulseaudio pulseaudio-alsa pavucontrol gst-plugins-good \
@@ -47,9 +47,9 @@ export _docky="docky"
 # Accessories
 export _accessories="gnome-calculator fbreader mupdf"
 
-#########################
-### OPTIONAL PACKAGES ###
-#########################
+#
+# Optional Packages
+#
 
 # Firefox
 export _firefox="firefox firefox-i18n-fr hunspell-fr"
