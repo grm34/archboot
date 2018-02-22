@@ -27,7 +27,7 @@ _banner() {
 _prompt() {
     echo -e "$yellow" >&2
     echo -e "==> $green$1 $red$2 $green$3 $red$4 $green$5 $red$6 $green$7 $red$8 $green$9 $red${10}$nc" >&2
-    echo -e "$yellow==> ---------------------------------------------------$nc" >&2
+    echo -e "$yellow==> ------------------------------------------------------$nc" >&2
     echo -ne "$yellow==> $nc" >&2
 }
 
@@ -36,7 +36,7 @@ _confirm() {
     until [[ ${confirm} == "y" || ${confirm} == "n" ]]
     do
         echo -e "$yellow\n==> $green$1 $red[y/n]$nc" >&2
-        echo -e "$yellow==> --------------------------------------------------$nc" >&2
+        echo -e "$yellow==> -----------------------------------------------------$nc" >&2
         echo -ne "$yellow==> $nc" >&2
         read -r confirm
     done
