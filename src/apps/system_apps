@@ -4,8 +4,7 @@
 export _ntp="ntp"
 
 # network
-export _networkapps="networkmanager network-manager-applet dhclient \
-wireless_tools iw wpa_supplicant"
+export _networkapps="networkmanager dhclient iw wpa_supplicant wireless_tools"
 
 # required
 export _requiredapps="wget reflector git inxi htop nmap numlockx vim"
