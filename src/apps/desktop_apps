@@ -33,41 +33,5 @@ export _lxde="lxde"
 # Xfce
 export _xfce="xfce4 xfce4-goodies lxdm"
 
-#
-# XFCE Packages
-#
-
-# Multimedia
-export _multimedia="pulseaudio pulseaudio-alsa pavucontrol gst-plugins-good \
-gnome-mplayer vlc guvcview mediainfo-gui ffmpegthumbnailer"
-
-# Docky
-export _docky="docky"
-
-# Accessories
-export _accessories="gnome-calculator fbreader mupdf"
-
-#
-# Optional Packages
-#
-
-# Firefox
-export _firefox="firefox firefox-i18n-fr hunspell-fr"
-
-# Flash
-export _flash="flashplugin pepper-flash"
-
-# Java
-export _java="jre8-openjdk"
-
-# Libreoffice
-export _libreoffice="libreoffice libreoffice-fr"
-
-# Gimp
-export _gimp="gimp"
-
-# Cups
-export _cups="cups cups-pdf ghostscript gutenprint"
-
-# Sane
-export _sane="sane simple-scan"
+# Deepin
+export _deepin="deepin deepin-extra"

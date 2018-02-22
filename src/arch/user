@@ -94,27 +94,15 @@ _user_infos() {
     _confirm "Do you wish to install Desktop Environment?"
     if [[ ${confirm} == "y" ]]
     then
-        until [[ ${c} == "1" || ${c} == "2" || ${c} == "3" || ${c} == "4" ]]
+        until [[ ${c} == "1" || ${c} == "2" || ${c} == "3" || ${c} == "4" || ${c} == "5" ]]
         do
-            _prompt "Kde" "[1]" "- Gnome" "[2]" "- Xfce" "[3]" "- Lxde" "[4]"
+            _prompt "Kde" "[1]" "- Gnome" "[2]" "- Xfce" "[3]" "- Lxde" "[4]" "- Deepin" "[5]"
             read -r c
         done
         choice=(none kde gnome xfce lxde)
         export desktop=${choice[${c}]}
     fi
     unset confirm
-
-    # Optional packages
-    if [[ ! -z ${desktop+x} ]]
-    then
-        _note "Optional Packages > Firefox, Libreoffice, Gimp, Cups, Sane"
-        _confirm "Do you wish to install optional packages?"
-        if [[ ${confirm} == "y" ]]
-        then
-            export additional_apps="ok"
-        fi
-        unset confirm
-    fi
 
     # Export required vars
     export USER_lang; export keymap_code; export region_city

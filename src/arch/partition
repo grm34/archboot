@@ -17,6 +17,7 @@ _partition() {
     _confirm "Setting $part_table partition table on /dev/$_disk"
     if [[ ${confirm} == "y" ]]
     then
+        dd if=/dev/zero of=/dev/$_disk bs=512 count=1 conv=notrunc
         printf "$part_code\nw" | fdisk /dev/"$_disk"
     else
         _error "you need one HDD dedicated for the installation!"
