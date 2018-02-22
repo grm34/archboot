@@ -22,7 +22,7 @@ The only thing you need is one **USB bootable device** of [ArchLinux](http://mir
 
 ## Notes
 
-Available desktop environment: Lxde - Xfce - Kde - Gnome - Deepin
+Available desktop environment: [LXDE](https://wiki.archlinux.org/index.php/LXDE) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [KDE](https://wiki.archlinux.org/index.php/KDE) - [GNOME](https://wiki.archlinux.org/index.php/GNOME) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment)
 
 For list of all available languages and regions codes, please see [languages](https://github.com/grm34/archboot/blob/master/conf/languages) and [regions](https://github.com/grm34/archboot/blob/master/conf/region_city).
 
