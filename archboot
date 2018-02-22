@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v2.7.3"
+__version__="v2.7.4"
 __branch__="master"
 __author__="@grm34"
 __license__="Apache v2.0 License"
@@ -16,8 +16,7 @@ _banner() {
     echo -e "This script perform an automatic install of Archlinux." >&2
     echo -e "Pretty simple, it only ask you for hostname, username," >&2
     echo -e "password, which disk to use, required partitions size," >&2
-    echo -e "language and if you wish or not to install desktop en-"
-    echo -e "vironment [ Kde | Gnome | Xfce | Lxde ]." >&2
+    echo -e "language and if you wish or not to install desktop En." >&2
 }
 
 #
@@ -164,7 +163,7 @@ then
     source ./gpu; source ./desktop; source ./desktop_apps
 
     # Install desktop environment
-    (_gpu; _install_desktop; _desktop_settings) 2>&1 | tee -a "$logfile"
+    (_gpu; _install_DE; _display_manager; _DE_settings) 2>&1 | tee -a "$logfile"
 fi
 
 # Logfile path

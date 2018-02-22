@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_install_desktop() {
+_install_DE() {
 
     # Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
@@ -26,98 +26,47 @@ _install_desktop() {
     _info "Installing $desktop"
     user_desktop="_$desktop"
     _chroot "pacman --noconfirm -S ${!user_desktop}"
-    if [[ ${desktop} == "xfce" ]]
+ }
+
+_display_manager() {
+
+    # XFCE or LXDE > LXDM
+    if [[ ${desktop} == "xfce" || ${desktop} == "lxde" ]]
     then
+        _info "Enabling LXDM"
+        _chroot "wget $_url/conf/lxdm_$desktop.conf
+        mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
+        systemctl enable lxdm"
 
-         # Multimedia
-        _info "Installing Multimedia"
-        _chroot "pacman --noconfirm -S $_multimedia"
-
-        # Docky
-         _info "Installing Docky"
-        _chroot "pacman --noconfirm -S $_docky"
-
-        # Accessories
-        _info "Installing Accessories"
-        _chroot "pacman --noconfirm -S $_accessories"
-    fi
-
-    # Additional apps
-    if [[ ! -z ${additional_apps+x} ]]
+    # GNOME > GDM
+    elif [[ ${desktop} == "gnome" ]]
     then
+        _info "Enabling GDM"
+        _chroot "systemctl enable gdm"
 
-        # Firefox
-        _info "Installing Firefox"
-        _chroot "pacman --noconfirm -S $_firefox"
+    # KDE > SDDM
+    elif [[ ${desktop} == "kde" ]]
+    then
+        _info "Enabling SDDM"
+        _chroot "systemctl enable sddm"
 
-        # Flash
-        _info "Installing Flash"
-        _chroot "pacman --noconfirm -S $_flash"
-
-        # Java
-        _info "Installing Java"
-        _chroot "pacman --noconfirm -S $_java"
-
-        # Libreoffice
-        _info "Installing Libreoffice"
-        _chroot "pacman --noconfirm -S $_libreoffice"
-
-        # Gimp
-        _info "Installing Gimp"
-        _chroot "pacman --noconfirm -S $_gimp"
-
-        # Cups
-        _info "Installing Cups"
-        _chroot "pacman --noconfirm -S $_cups
-        systemctl enable org.cups.cupsd"
-
-        # Sane
-        _info "Installing Sane"
-        _chroot "pacman --noconfirm -S $_sane"
+    # DEEPIN > LIGHTDM
+    elif [[ ${desktop} == "deepin" ]]
+    then
+        _info "Enabling LightDM"
+        _chroot "echo 'greeter-session=lightdm-deepin-greeter' \
+        >> /etc/lightdm/lightdm.conf
+        systemctl lightdm"
     fi
 }
 
-_desktop_settings() {
+_DE_settings() {
 
     # Keyboard layout
     _info "Setting keyboard layout"
     _chroot "wget $_url/conf/00-keyboard.conf
     sed -i -e 's/keymap_code/$keymap_code/g' 00-keyboard.conf
     mv 00-keyboard.conf /etc/X11/xorg.conf.d/"
-
-    # Display Manager
-    if [[ ${desktop} == "xfce" || ${desktop} == "lxde" ]]
-    then
-
-        # XFCE or LXDE > LXDM
-        _info "Enabling LXDM"
-        _chroot "wget $_url/conf/lxdm_$desktop.conf
-        mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
-        systemctl enable lxdm"
-
-    elif [[ ${desktop} == "gnome" ]]
-    then
-
-        # GNOME > GDM
-        _info "Enabling GDM"
-        _chroot "systemctl enable gdm"
-
-    elif [[ ${desktop} == "kde" ]]
-    then
-
-        # KDE > SDDM
-        _info "Enabling SDDM"
-        _chroot "systemctl enable sddm"
-    fi
-
-    # Themes & icons
-    if [[ ${desktop} == "xfce" || ${desktop} == "gnome" ]]
-    then
-        _info "Adding some themes & icons"
-        _chroot "wget $_url/data/$desktop.tar.xz
-        tar xf $desktop.tar.xz -C /home/$USER_name/ > /dev/null 2>&1
-        rm $desktop.tar.xz"
-    fi
 
     # Groups
     _info "Add ${USER_name} to all groups"
