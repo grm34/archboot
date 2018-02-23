@@ -132,7 +132,8 @@ source ./partition; source ./user; source ./yaourt; source ./system_apps
 _user_infos; _clock; _logs; _firmware; _partition
 
 # Mount partitions & check for errors
-_mounting && if [ $? -eq 0 ]
+_mounting
+if [ $? -eq 0 ]
 then
 
     # Install ArchLinux
