@@ -7,20 +7,20 @@ _install_DE() {
     if [[ $? -eq 0 ]]
     then
         _info "Installing Intel CPU Microcode"
-        _chroot "pacman --noconfirm -S $_intel"
+        _chroot "pacman --noconfirm -S ${_intel}"
     fi
 
     # GPU Driver
     _info "Installing VGA Driver"
-    _chroot "pacman --noconfirm -S $GPU_driver"
+    _chroot "pacman --noconfirm -S ${GPU_driver}"
 
     # File System
     _info "Installing File System"
-    _chroot "pacman --noconfirm -S $_file_system"
+    _chroot "pacman --noconfirm -S ${_file_system}"
 
     # Fonts
     _info "Installing Fonts"
-    _chroot "pacman --noconfirm -S $_fonts"
+    _chroot "pacman --noconfirm -S ${_fonts}"
 
     # Desktop Environment
     _info "Installing $desktop"
@@ -34,8 +34,8 @@ _display_manager() {
     if [[ ${desktop} == "xfce" || ${desktop} == "lxde" ]]
     then
         _info "Enabling LXDM"
-        _chroot "wget $_url/conf/lxdm_$desktop.conf
-        mv lxdm_$desktop.conf /etc/lxdm/lxdm.conf
+        _chroot "wget $_url/conf/lxdm_${desktop}.conf
+        mv lxdm_${desktop}.conf /etc/lxdm/lxdm.conf
         systemctl enable lxdm"
 
     # GNOME > GDM
@@ -64,15 +64,15 @@ _DE_settings() {
 
     # Keyboard layout
     _info "Setting keyboard layout"
-    _chroot "wget $_url/conf/00-keyboard.conf
+    _chroot "wget ${_url}/conf/00-keyboard.conf
     sed -i -e 's/keymap_code/$keymap_code/g' 00-keyboard.conf
     mv 00-keyboard.conf /etc/X11/xorg.conf.d/"
 
     # Groups
     _info "Add ${USER_name} to all groups"
     group_list=$(cut -d: -f1 /mnt/etc/group)
-    for group in $group_list
+    for group in ${group_list}
     do
-        _chroot "usermod -aG $group $USER_name"
+        _chroot "usermod -aG ${group} ${USER_name}"
     done
 }

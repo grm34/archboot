@@ -4,33 +4,33 @@ _user_settings() {
 
     # Setting user
     _info "Setting user"
-    _chroot "useradd -g users -m -s /bin/bash $USER_name
+    _chroot "useradd -g users -m -s /bin/bash ${USER_name}
     echo '${USER_name}:${USER_passwd}' | chpasswd
     echo '${USER_name} ALL=(ALL) ALL' >> /etc/sudoers"
 
     # Setting some Aliases
     _info "Setting some aliases"
-    _chroot "wget $_url/conf/bashrc
-    sed -i -e 's/reflector_code/$reflector_code/g' bashrc
-    cat bashrc >> /home/$USER_name/.bashrc
+    _chroot "wget ${_url}/conf/bashrc
+    sed -i -e 's/reflector_code/${reflector_code}/g' bashrc
+    cat bashrc >> /home/${USER_name}/.bashrc
     rm bashrc"
 }
 
 _user_infos() {
 
     # User Language
-    until grep -Fxq "$USER_lang" ./languages
+    until grep -Fxq "${USER_lang}" ./languages
     do
         _note "list of all available languages codes is available on github"
         _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
         read -r USER_lang
     done
     echo
-    keymap_code=$(echo $USER_lang | cut -d'_' -f 1)
-    reflector_code=$(echo $USER_lang | cut -d'_' -f 2)
+    keymap_code=$(echo ${USER_lang} | cut -d'_' -f 1)
+    reflector_code=$(echo ${USER_lang} | cut -d'_' -f 2)
 
     # Region/City
-    until grep -Fxq "$region_city" ./region_city
+    until grep -Fxq "${region_city}" ./region_city
     do
         _note "list of all available regions codes is available on github"
         _prompt "Enter Region code:" "(ex: Europe/Paris, Asia/Tokyo)"
@@ -47,7 +47,7 @@ _user_infos() {
     done
 
     # Root Password
-    until [[ ${#a} -ge 8 && "$a" == *[a-z]* && "$a" == *[0-9]* ]]
+    until [[ ${#a} -ge 8 && "${a}" == *[a-z]* && "${a}" == *[0-9]* ]]
     do
         _note "password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for root:"
@@ -73,7 +73,7 @@ _user_infos() {
     done
 
     # User Password
-    until [[ ${#b} -ge 8 && "$b" == *[a-z]* && "$b" == *[0-9]* ]]
+    until [[ ${#b} -ge 8 && "${b}" == *[a-z]* && "${b}" == *[0-9]* ]]
     do
         _note "password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for ${USER_name}:"

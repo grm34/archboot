@@ -4,7 +4,7 @@ _yaourt() {
 
     # Setting pacman.conf
     _info "Setting pacman.conf"
-    _chroot "wget $_url/conf/pacman.conf
+    _chroot "wget ${_url}/conf/pacman.conf
     mv pacman.conf /etc/pacman.conf"
 
    # Setting Mirrorlist
@@ -13,5 +13,5 @@ _yaourt() {
 
     # Install yaourt
     _info "Installing yaourt"
-    _chroot "pacman --noconfirm -Syu $_yaourtapps"
+    _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
 }
