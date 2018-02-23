@@ -3,7 +3,7 @@
 _bootloader() {
 
     # Install Grub
-    _info "Installing Grub for $FIRMWARE system"
+    _info "Installing Grub for $FIRMWARE firmware"
     _chroot "pacman --noconfirm -S $_bootapps
     if [[ '$FIRMWARE' == 'UEFI' ]]
     then
