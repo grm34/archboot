@@ -16,23 +16,22 @@ _base() {
 
     # Installing ntp
     _info "Installing ntp"
-    _chroot "pacman --noconfirm -S $_ntp"
+    _chroot "pacman --noconfirm -S ${_ntp}"
 
     # Setting TimeZone
     _info "Setting TimeZone"
-    _chroot "ln -sf /usr/share/zoneinfo/$region_city /etc/localtime
-    hwclock --systohc"
+    _chroot "ln -sf /usr/share/zoneinfo/$region_city /etc/localtime"
 
     # Setting locale
     _info "Setting and generating locale"
-    _chroot "echo '$USER_lang.UTF-8 UTF-8' >> /etc/locale.gen
+    _chroot "echo '${USER_lang}.UTF-8 UTF-8' >> /etc/locale.gen
     locale-gen
-    export LANG=$USER_lang.UTF-8
-    echo 'LANG=$USER_lang.UTF-8' > /etc/locale.conf"
+    export LANG=${USER_lang}.UTF-8
+    echo 'LANG=${USER_lang}.UTF-8' > /etc/locale.conf"
 
     # Setting keyboard
     _info "Setting keyboard"
-    _chroot "echo 'KEYMAP=$keymap_code' > /etc/vconsole.conf"
+    _chroot "echo 'KEYMAP=${keymap_code}' > /etc/vconsole.conf"
 
     # Setting Linux
     _info "Setting Linux environment"
@@ -40,10 +39,10 @@ _base() {
 
     # Install Network
     _info "Installing network"
-    _chroot "pacman --noconfirm -S $_networkapps
+    _chroot "pacman --noconfirm -S ${_networkapps}
     systemctl enable NetworkManager"
 
     # Install required packages
     _info "Installing required packages"
-    _chroot "pacman --noconfirm -S $_requiredapps"
+    _chroot "pacman --noconfirm -S ${_requiredapps}"
 }

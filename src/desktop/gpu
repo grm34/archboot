@@ -12,7 +12,7 @@ _gpu() {
     if [[ $? -eq 0 ]]
     then
         _note "found INTEL GPU"
-        export GPU_driver="xf86-video-intel vulkan-intel libva-intel-driver $x"
+        export GPU_driver="xf86-video-intel vulkan-intel libva-intel-driver ${x}"
     fi
 
     # ATI GPU
@@ -20,7 +20,7 @@ _gpu() {
     if [[ $? -eq 0 ]]
     then
         _note "found ATI GPU"
-        export GPU_driver="xf86-video-ati xf86-video-amdgpu $x"
+        export GPU_driver="xf86-video-ati xf86-video-amdgpu ${x}"
     fi
 
     # nVidia GPU
@@ -28,6 +28,6 @@ _gpu() {
     if [[ $? -eq 0 ]]
     then
         _note "found nVidia GPU"
-        export GPU_driver="xf86-video-nouveau nouveau-dri $x"
+        export GPU_driver="xf86-video-nouveau nouveau-dri ${x}"
     fi
 }
