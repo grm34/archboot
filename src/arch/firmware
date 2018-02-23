@@ -20,7 +20,7 @@ _firmware() {
         part_table="MBR"
         part_code="o"
         part_type="p\n"
-        boot_filesystem="ext2"
+        boot_filesystem="ext4"
         _note "found BIOS firmware."
     fi
     part_order=(0 1 2 3 4)
