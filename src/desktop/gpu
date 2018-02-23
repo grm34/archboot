@@ -5,14 +5,14 @@ _gpu() {
     # GPU Drivers
     _info "GPU detection"
     GPU_driver="xf86-video-vesa"
-    x="mesa lib32-mesa mesa-vdpau lib32-mesa-vdpau mesa-libgl lib32-mesa-libgl"
+    Accel_driver="mesa lib32-mesa mesa-vdpau lib32-mesa-vdpau mesa-libgl lib32-mesa-libgl"
 
     # Intel GPU
     lspci | grep "VGA" | grep "Intel" >/dev/null 2>&1
     if [[ $? -eq 0 ]]
     then
         _note "found INTEL GPU"
-        export GPU_driver="xf86-video-intel vulkan-intel libva-intel-driver ${x}"
+        export GPU_driver="xf86-video-intel vulkan-intel libva-intel-driver ${Accel_driver}"
     fi
 
     # ATI GPU
@@ -20,7 +20,7 @@ _gpu() {
     if [[ $? -eq 0 ]]
     then
         _note "found ATI GPU"
-        export GPU_driver="xf86-video-ati xf86-video-amdgpu ${x}"
+        export GPU_driver="xf86-video-ati xf86-video-amdgpu ${Accel_driver}"
     fi
 
     # nVidia GPU
@@ -28,6 +28,6 @@ _gpu() {
     if [[ $? -eq 0 ]]
     then
         _note "found nVidia GPU"
-        export GPU_driver="xf86-video-nouveau nouveau-dri ${x}"
+        export GPU_driver="xf86-video-nouveau nouveau-dri ${Accel_driver}"
     fi
 }
