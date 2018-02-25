@@ -59,8 +59,8 @@ _base() {
     _info "Setting reflector.service"
     _chroot "wget ${_url}/conf/reflector.service
     mv reflector.service /etc/systemd/system/reflector.service
-    systemctl enable reflector.service
-    systemctl start reflector.service"
+    systemctl start reflector.service
+    systemctl enable reflector.service"
 
     # Setting user
     _info "Setting user"
