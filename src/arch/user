@@ -1,19 +1,5 @@
 #!/bin/bash
 
-_user_settings() {
-
-    # Setting user
-    _info "Setting user"
-    _chroot "useradd -g users -m -s /bin/bash ${USER_name}
-    echo '${USER_name}:${USER_passwd}' | chpasswd
-    echo '${USER_name} ALL=(ALL) ALL' >> /etc/sudoers"
-
-    # Setting some Aliases
-    _info "Setting some aliases"
-    _chroot "wget ${_url}/conf/bashrc
-    cat bashrc >> /home/${USER_name}/.bashrc"
-}
-
 _user_infos() {
 
     # User Language

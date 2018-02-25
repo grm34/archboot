@@ -139,7 +139,7 @@ then
     _confirm "Do you wish to install ArchLinux now?"
     if [[ ${confirm} == "y" ]]
     then
-        (_base; _bootloader; _user_settings) 2>&1 | tee -a "${logfile}"
+        (_base; _bootloader) 2>&1 | tee -a "${logfile}"
     else
         _error "user ask for exit."
     fi
