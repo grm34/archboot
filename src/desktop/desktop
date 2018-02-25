@@ -54,9 +54,9 @@ _display_manager() {
     elif [[ ${desktop} == "deepin" ]]
     then
         _info "Enabling LightDM"
-        _chroot "echo 'greeter-session=lightdm-deepin-greeter' \
-        >> /etc/lightdm/lightdm.conf
-        systemctl lightdm"
+        _chroot "wget $_url/conf/lightdm.conf
+        mv lightdm.conf /etc/lightdm/lightdm.conf
+        systemctl enable lightdm"
     fi
 }
 
