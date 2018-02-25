@@ -11,9 +11,7 @@ _user_settings() {
     # Setting some Aliases
     _info "Setting some aliases"
     _chroot "wget ${_url}/conf/bashrc
-    sed -i -e 's/reflector_code/${reflector_code}/g' bashrc
-    cat bashrc >> /home/${USER_name}/.bashrc
-    rm bashrc"
+    cat bashrc >> /home/${USER_name}/.bashrc"
 }
 
 _user_infos() {
@@ -27,7 +25,6 @@ _user_infos() {
     done
     echo
     keymap_code=$(echo ${USER_lang} | cut -d'_' -f 1)
-    reflector_code=$(echo ${USER_lang} | cut -d'_' -f 2)
 
     # Region/City
     until grep -Fxq "${region_city}" ./region_city
