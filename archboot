@@ -114,7 +114,6 @@ then
     wget ${_url}/src/arch/mounting        # to mount partitions & swap
     wget ${_url}/src/arch/partition       # to create table & partitions
     wget ${_url}/src/arch/user            # to ask user infos & create user
-    wget ${_url}/src/arch/yaourt          # to set pacman.conf & install yaourt
     wget ${_url}/src/apps/system_apps     # to load system required apps
     wget ${_url}/conf/languages           # to get languages codes
     wget ${_url}/conf/region_city         # to get regions codes
@@ -125,8 +124,8 @@ unset confirm
 
 # Import base sources
 _info "Importing sources"
-source ./base; source ./bootloader; source ./firmware; source ./mounting
-source ./partition; source ./user; source ./yaourt; source ./system_apps
+source ./base; source ./bootloader; source ./firmware
+source ./mounting; source ./partition; source ./user; source ./system_apps
 
 # Prepare the system
 _user_infos; _clock; _logs; _firmware; _partition
@@ -140,7 +139,7 @@ then
     _confirm "Do you wish to install ArchLinux now?"
     if [[ ${confirm} == "y" ]]
     then
-        (_base; _bootloader; _user_settings; _yaourt) 2>&1 | tee -a "${logfile}"
+        (_base; _bootloader; _user_settings) 2>&1 | tee -a "${logfile}"
     else
         _error "user ask for exit."
     fi
