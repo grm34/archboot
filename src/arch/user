@@ -5,7 +5,7 @@ _user_infos() {
     # User Language
     until grep -Fxq "${USER_lang}" ./languages
     do
-        _note "list of all available languages codes is available on github"
+        _note "list of available languages codes is available on github"
         _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
         read -r USER_lang
     done
@@ -15,7 +15,7 @@ _user_infos() {
     # Region/City
     until grep -Fxq "${region_city}" ./region_city
     do
-        _note "list of all available regions codes is available on github"
+        _note "list of available regions codes is available on github"
         _prompt "Enter Region code:" "(ex: Europe/Paris, Asia/Tokyo)"
         read -r region_city
     done
