@@ -106,8 +106,10 @@ _banner
 # Check Internet Connection
 _info "Check Internet Connection"
 ping -c 1 archlinux.org >/dev/null 2>&1
-if [[ $? != 0 ]]
+if [[ $? == 0 ]]
 then
+    _note "OK, you are connected to Internet."
+else
     _error "you are not connected to Internet, please check if ethernet is plugged in."
 fi
 
