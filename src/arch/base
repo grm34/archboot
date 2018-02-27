@@ -10,14 +10,6 @@ _base() {
     _info "Setting fstab"
     genfstab -U -p /mnt >> /mnt/etc/fstab
 
-    # ROOT password
-    _info "Setting root password"
-    _chroot "echo 'root:${ROOT_passwd}' | chpasswd"
-
-    # Installing ntp
-    _info "Installing ntp"
-    _chroot "pacman --noconfirm -S ${_ntp}"
-
     # Setting TimeZone
     _info "Setting TimeZone"
     _chroot "ln -sf /usr/share/zoneinfo/$region_city /etc/localtime"
@@ -60,6 +52,10 @@ _base() {
     _chroot "wget ${_url}/conf/reflector.service
     mv reflector.service /etc/systemd/system/reflector.service
     systemctl enable reflector.service"
+
+    # Setting root
+    _info "Setting root password"
+    _chroot "echo 'root:${ROOT_passwd}' | chpasswd"
 
     # Setting user
     _info "Setting user"
