@@ -181,7 +181,7 @@ _info "Setting logfile path"
 mkdir /mnt/var/log/archboot
 cp "${logfile}" /mnt/var/log/archboot/
 
-# Succes notes
+# Success notes
 _note "Installation successful! ${__appname__} ${__version__} by ${__author__} - ${__license__}"
 
 # Reboot
