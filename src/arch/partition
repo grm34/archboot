@@ -3,7 +3,7 @@
 _partition() {
 
     # Select disk to use
-    _info "$FIRMWARE detected. Listing disk"
+    _info "Listing disk and partitions"
     until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]
     do
         fdisk -l
