@@ -103,6 +103,13 @@ blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
 # Display banner
 _banner
 
+# Check Internet Connection
+ping -c 1 archlinux.org >/dev/null 2>&1
+if [[ $? != 0 ]]
+then
+    _error "you are not connected to Internet, please check if ethernet is plugged in."
+fi
+
 # Download base sources
 _confirm "Start downloading sources from github?"
 if [[ ${confirm} == "y" ]]
@@ -132,7 +139,7 @@ _user_infos; _clock; _logs; _firmware; _partition
 
 # Mount partitions & check for errors
 _mounting
-if [ $? -eq 0 ]
+if [[ $? -eq 0 ]]
 then
 
     # Install ArchLinux
