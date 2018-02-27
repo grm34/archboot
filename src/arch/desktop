@@ -10,9 +10,9 @@ _install_DE() {
     _info "Installing Fonts"
     _chroot "pacman --noconfirm -S ${_fonts}"
 
-    # GPU Driver
-    _info "Installing VGA Driver"
-    _chroot "pacman --noconfirm -S ${GPU_driver}"
+    # Display Server
+    _info "Installing Display Server"
+    _chroot "pacman --noconfirm -S ${xorg}"
 
     # Desktop Environment
     _info "Installing $desktop"
