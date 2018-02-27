@@ -4,7 +4,7 @@
 # Global Packages
 #
 
-# Intel Microcode
+# Intel Microcode (only for Intel CPU)
 export _intel="intel-ucode"
 
 # File system
