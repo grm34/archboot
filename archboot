@@ -63,14 +63,14 @@ _error() {
     echo; reboot
 }
 
-# Function to execute actions in chrooted env
+# Function to execute actions in chrooted environment
 _chroot() {
     arch-chroot /mnt /bin/bash <<EOF
     ${1}
 EOF
 }
 
-# Function to set install logfile
+# Function to set logfile
 _logs() {
     _info "Setting archboot log"
     datetime=$(date '+%d-%m-%Y')
@@ -179,7 +179,7 @@ _info "Setting logfile path"
 mkdir /mnt/var/log/archboot
 cp "${logfile}" /mnt/var/log/archboot/
 
-# Install notes
+# Succes notes
 _note "Installation successful! ${__appname__} ${__version__} by ${__author__} - ${__license__}"
 
 # Reboot
