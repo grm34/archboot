@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# network
+# Intel Microcode (only for Intel CPU)
+export _intel="intel-ucode"
+
+# Network
 export _networkapps="networkmanager dhclient iw wpa_supplicant wireless_tools"
 
-# required
+# Required
 export _requiredapps="ntp wget reflector git inxi htop nmap numlockx vim"
 
 # Bootloader

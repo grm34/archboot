@@ -4,9 +4,6 @@
 # Global Packages
 #
 
-# Intel Microcode (only for Intel CPU)
-export _intel="intel-ucode"
-
 # File system
 export _file_system="gvfs gvfs-afc gvfs-goa gvfs-google gvfs-gphoto2 \
 gvfs-mtp gvfs-nfs gvfs-smb gamin gparted ntfs-3g dosfstools exfat-utils \

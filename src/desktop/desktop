@@ -2,18 +2,6 @@
 
 _install_DE() {
 
-    # Intel Microcode
-    lscpu | grep "Intel" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]
-    then
-        _info "Installing Intel CPU Microcode"
-        _chroot "pacman --noconfirm -S ${_intel}"
-    fi
-
-    # GPU Driver
-    _info "Installing VGA Driver"
-    _chroot "pacman --noconfirm -S ${GPU_driver}"
-
     # File System
     _info "Installing File System"
     _chroot "pacman --noconfirm -S ${_file_system}"
@@ -21,6 +9,10 @@ _install_DE() {
     # Fonts
     _info "Installing Fonts"
     _chroot "pacman --noconfirm -S ${_fonts}"
+
+    # GPU Driver
+    _info "Installing VGA Driver"
+    _chroot "pacman --noconfirm -S ${GPU_driver}"
 
     # Desktop Environment
     _info "Installing $desktop"
