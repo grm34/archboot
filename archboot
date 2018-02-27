@@ -104,6 +104,7 @@ blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
 _banner
 
 # Check Internet Connection
+_info "Check Internet Connection"
 ping -c 1 archlinux.org >/dev/null 2>&1
 if [[ $? != 0 ]]
 then
