@@ -51,6 +51,14 @@ _base() {
     _chroot "pacman --noconfirm -S ${_networkapps}
     systemctl enable NetworkManager"
 
+    # Install Intel Microcode
+    lscpu | grep "Intel" >/dev/null 2>&1
+    if [[ $? -eq 0 ]]
+    then
+        _info "Installing Intel CPU Microcode"
+        _chroot "pacman --noconfirm -S ${_intel}"
+    fi
+
     # Install required packages
     _info "Installing required packages"
     _chroot "pacman --noconfirm -S ${_requiredapps}"
