@@ -4,24 +4,23 @@ _firmware() {
 
     # Firmware Detection
     _info "Firmware detection"
-    efivar -l >/dev/null 2>&1
+    if [ -d /sys/firmware/efi/efivars ]
 
     # Define vars for partition type
-    if [[ $? -eq 0 ]]
     then
         FIRMWARE="UEFI"
         part_table="GPT"
         part_code="g"
         part_type=""
         boot_filesystem="fat -F 32"
-        _note "found UEFI firmware."
+        _note "UEFI firmware detected."
     else
         FIRMWARE="BIOS"
         part_table="MBR"
         part_code="o"
         part_type="p\n"
         boot_filesystem="ext4"
-        _note "found BIOS firmware."
+        _note "BIOS firmware detected."
     fi
     part_order=(0 1 2 3 4)
 }
