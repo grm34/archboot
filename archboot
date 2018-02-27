@@ -16,7 +16,7 @@ _banner() {
     echo -e "This script perform an automatic install of Archlinux." >&2
     echo -e "Pretty simple, it only ask you for hostname, username," >&2
     echo -e "password, which disk to use, required partitions size," >&2
-    echo -e "language and if you wish or not to install desktop En." >&2
+    echo -e "language & if you wish to install desktop environment." >&2
 }
 
 #
