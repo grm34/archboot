@@ -144,6 +144,11 @@ _user_infos; _clock; _logs; _firmware; _partition
 _mounting
 if [[ $? -eq 0 ]]
 then
+    _note "system ready, partitions mounted without errors."
+
+    #
+    # Start the installation
+    #
 
     # Install ArchLinux
     _confirm "Do you wish to install ArchLinux now?"
@@ -154,41 +159,42 @@ then
         _error "user ask for exit."
     fi
     unset confirm
+
+    # Install Desktop Environment
+    if [[ ! -z ${desktop+x} ]]
+    then
+
+        # Download desktop sources
+        _info "Downloading desktop sources"
+        wget ${_url}/src/desktop/gpu          # to check GPU & define drivers
+        wget ${_url}/src/desktop/desktop      # to install Desktop Environment
+        wget ${_url}/src/apps/desktop_apps    # to load desktop required apps
+
+        # Import desktop sources
+        _info "Importing sources"
+        source ./gpu; source ./desktop; source ./desktop_apps
+
+        # Install desktop environment
+        (_gpu; _install_DE; _display_manager; _DE_settings) 2>&1 | tee -a "${logfile}"
+    fi
+
+    # Logfile path
+    _info "Setting logfile path"
+    mkdir /mnt/var/log/archboot
+    cp "${logfile}" /mnt/var/log/archboot/
+
+    # Success notes
+    _note "Installation successful! ${__appname__} ${__version__} by ${__author__} - ${__license__}"
+
+    # Reboot
+    _confirm "Do you want to reboot your computer now?"
+    if [[ ${confirm} == "y" ]]
+    then
+        umount -R /mnt; reboot
+    else
+        echo; exit
+    fi
+
 else
     _error "bad partitionning, please try again."
-fi
-
-# Desktop Environment
-if [[ ! -z ${desktop+x} ]]
-then
-
-    # Download desktop sources
-    _info "Downloading desktop sources"
-    wget ${_url}/src/desktop/gpu          # to check GPU & define drivers
-    wget ${_url}/src/desktop/desktop      # to install Desktop Environment
-    wget ${_url}/src/apps/desktop_apps    # to load desktop required apps
-
-    # Import desktop sources
-    _info "Importing sources"
-    source ./gpu; source ./desktop; source ./desktop_apps
-
-    # Install desktop environment
-    (_gpu; _install_DE; _display_manager; _DE_settings) 2>&1 | tee -a "${logfile}"
-fi
-
-# Logfile path
-_info "Setting logfile path"
-mkdir /mnt/var/log/archboot
-cp "${logfile}" /mnt/var/log/archboot/
-
-# Success notes
-_note "Installation successful! ${__appname__} ${__version__} by ${__author__} - ${__license__}"
-
-# Reboot
-_confirm "Do you want to reboot your computer now?"
-if [[ ${confirm} == "y" ]]
-then
-    umount -R /mnt; reboot
-else
-    echo; exit
 fi
