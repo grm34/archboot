@@ -1,13 +1,10 @@
 #!/bin/bash
 
-# ntp
-export _ntp="ntp"
-
 # network
 export _networkapps="networkmanager dhclient iw wpa_supplicant wireless_tools"
 
 # required
-export _requiredapps="wget reflector git inxi htop nmap numlockx vim"
+export _requiredapps="ntp wget reflector git inxi htop nmap numlockx vim"
 
 # Bootloader
 export _bootapps="grub os-prober gptfdisk efibootmgr"

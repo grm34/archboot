@@ -37,8 +37,8 @@ _base() {
     _info "Setting Linux environment"
     _chroot "mkinitcpio -p linux"
 
-    # Setting pacman.conf
-    _info "Setting pacman.conf"
+    # Setting pacman
+    _info "Setting pacman"
     _chroot "wget ${_url}/conf/pacman.conf
     mv pacman.conf /etc/pacman.conf"
 
