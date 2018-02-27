@@ -25,6 +25,6 @@ _bootloader() {
     echo "desktop-image: \"background.png\"" >> /boot/grub/themes/Archlinux/theme.txt'
 
     # Setting Grub
-    _info "Setting Grub config"
+    _info "Setting Grub for ${FIRMWARE} firmware"
     _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 }
