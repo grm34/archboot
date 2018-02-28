@@ -195,5 +195,5 @@ then
     fi
 
 else
-    _error "bad partitionning, please try again."
+    _error "bad partitionning. Please try again."
 fi
