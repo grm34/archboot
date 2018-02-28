@@ -24,7 +24,7 @@ export xorg="xorg xorg-server xorg-apps xorg-drivers"
 # Gnome
 export _gnome="gnome gnome-extra"
 
-# KDE Plasma
+# Kde
 export _kde="plasma kde-applications"
 
 # Lxde
@@ -35,3 +35,18 @@ export _xfce="xfce4 xfce4-goodies lxdm"
 
 # Deepin
 export _deepin="deepin deepin-extra"
+
+# Cinnamon
+#export _cinnamon="cinnamon"
+
+# Budgie
+#export _budgie="budgie-desktop"
+
+# Enlightenment
+#export _enlightenment="enlightenment terminology"
+
+# Mate
+#export _mate="mate mate-extra"
+
+# Lxqt
+#export _lxqt="lxqt"
