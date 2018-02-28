@@ -18,7 +18,7 @@ The only thing you need is one **USB bootable device** of [ArchLinux](http://mir
 
 **4.** Download archboot and follow the instructions:
 
-`wget tiny.cc/archboot; sh archboot`
+`wget tiny.cc/archboot-dev; sh archboot-dev`
 
 ## Notes
 
