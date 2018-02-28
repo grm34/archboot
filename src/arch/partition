@@ -28,7 +28,7 @@ _partition() {
     until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1} \
     || ${boot_size,,} == "y" ]]
     do
-        _note "Partition size {M,G} [ default: 512M ]"
+        _note "Partition size {M,G} [default: 512M]"
         _prompt "Boot partition size:" "default [y]"
         read -r boot_size
     done
@@ -46,7 +46,7 @@ _partition() {
     until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1} \
     || ${swap_size,,} == "y" ]]
     do
-        _note "Partition size {M,G} [ default: 2G ]"
+        _note "Partition size {M,G} [default: 2G]"
         _prompt "Swap partition size:" "default [y]"
         read -r swap_size
     done
@@ -64,7 +64,7 @@ _partition() {
     until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1} \
     || ${sys_size,,} == "y" ]]
     do
-        _note "Partition size {G,T,P} [ default: 25G ]"
+        _note "Partition size {G,T,P} [default: 25G]"
         _prompt "System partition size:" "default [y]"
         read -r sys_size
     done
@@ -85,7 +85,7 @@ _partition() {
         until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1} \
         || ${home_size,,} == "y" ]]
         do
-            _note "Partition size {G,T,P} [ default: free space ]"
+            _note "Partition size {G,T,P} [default: free space]"
             _prompt "Home partition size:" "default [y]"
             read -r home_size
         done
