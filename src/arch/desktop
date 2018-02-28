@@ -20,38 +20,6 @@ _install_DE() {
     _chroot "pacman --noconfirm -S ${!user_desktop}"
  }
 
-_display_manager() {
-
-    # XFCE or LXDE > LXDM
-    if [[ ${desktop} == "xfce" || ${desktop} == "lxde" ]]
-    then
-        _info "Enabling LXDM"
-        _chroot "wget ${_url}/conf/lxdm_${desktop}.conf
-        mv lxdm_${desktop}.conf /etc/lxdm/lxdm.conf
-        systemctl enable lxdm"
-
-    # GNOME > GDM
-    elif [[ ${desktop} == "gnome" ]]
-    then
-        _info "Enabling GDM"
-        _chroot "systemctl enable gdm"
-
-    # KDE > SDDM
-    elif [[ ${desktop} == "kde" ]]
-    then
-        _info "Enabling SDDM"
-        _chroot "systemctl enable sddm"
-
-    # DEEPIN > LIGHTDM
-    elif [[ ${desktop} == "deepin" ]]
-    then
-        _info "Enabling LightDM"
-        _chroot "wget ${_url}/conf/lightdm.conf
-        mv lightdm.conf /etc/lightdm/lightdm.conf
-        systemctl enable lightdm"
-    fi
-}
-
 _DE_settings() {
 
     # Keyboard layout
