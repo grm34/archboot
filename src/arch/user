@@ -82,7 +82,7 @@ _user_infos() {
             _prompt "Kde" "[1]" "- Gnome" "[2]" "- Xfce" "[3]" "- Lxde" "[4]" "- Deepin" "[5]"
             read -r c
         done
-        choice=(none kde gnome xfce lxde)
+        choice=(none kde gnome xfce4 lxde)
         export desktop=${choice[${c}]}
     fi
     unset confirm
