@@ -12,7 +12,7 @@ _base() {
 
     # Setting TimeZone
     _info "Setting TimeZone"
-    _chroot "ln -sf /usr/share/zoneinfo/$region_city /etc/localtime"
+    _chroot "ln -sf /usr/share/zoneinfo/${region_city} /etc/localtime"
 
     # Setting locale
     _info "Setting and generating locale"
