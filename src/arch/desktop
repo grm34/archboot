@@ -15,8 +15,8 @@ _install_DE() {
     _chroot "pacman --noconfirm -S ${xorg}"
 
     # Desktop Environment
-    _info "Installing $desktop"
-    user_desktop="_$desktop"
+    _info "Installing ${desktop}"
+    user_desktop="_${desktop}"
     _chroot "pacman --noconfirm -S ${!user_desktop}"
  }
 
@@ -26,7 +26,7 @@ _display_manager() {
     if [[ ${desktop} == "xfce" || ${desktop} == "lxde" ]]
     then
         _info "Enabling LXDM"
-        _chroot "wget $_url/conf/lxdm_${desktop}.conf
+        _chroot "wget ${_url}/conf/lxdm_${desktop}.conf
         mv lxdm_${desktop}.conf /etc/lxdm/lxdm.conf
         systemctl enable lxdm"
 
@@ -46,7 +46,7 @@ _display_manager() {
     elif [[ ${desktop} == "deepin" ]]
     then
         _info "Enabling LightDM"
-        _chroot "wget $_url/conf/lightdm.conf
+        _chroot "wget ${_url}/conf/lightdm.conf
         mv lightdm.conf /etc/lightdm/lightdm.conf
         systemctl enable lightdm"
     fi
@@ -57,7 +57,7 @@ _DE_settings() {
     # Keyboard layout
     _info "Setting keyboard layout"
     _chroot "wget ${_url}/conf/00-keyboard.conf
-    sed -i -e 's/keymap_code/$keymap_code/g' 00-keyboard.conf
+    sed -i -e 's/keymap_code/${keymap_code}/g' 00-keyboard.conf
     mv 00-keyboard.conf /etc/X11/xorg.conf.d/"
 
     # Groups
