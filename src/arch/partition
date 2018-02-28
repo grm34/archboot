@@ -38,7 +38,7 @@ _partition() {
     fi
 
     # Create BOOT partition on /dev/xxx1
-    _info "Setting boot on /dev/${_disk}${part_order[1]} - size: ${boot_size}"
+    _info "Setting boot of ${boot_size} on /dev/${_disk}${part_order[1]}"
     printf "n\n${part_type}\n\n+${boot_size}\nw" | fdisk /dev/"${_disk}"
     yes | mkfs."${boot_filesystem}" /dev/"${_disk}${part_order[1]}"
 
@@ -56,7 +56,7 @@ _partition() {
     fi
 
     # Create SWAP partition on /dev/xxx2
-    _info "Setting Swap on /dev/${_disk}${part_order[2]} - size: ${swap_size}"
+    _info "Setting Swap of ${swap_size} on /dev/${_disk}${part_order[2]}"
     printf "n\n${part_type}\n\n+${swap_size}\nw" | fdisk /dev/"${_disk}"
     yes | mkswap /dev/"${_disk}${part_order[2]}"
 
@@ -74,7 +74,7 @@ _partition() {
     fi
 
     # Create SYSTEM partition on /dev/xxx3
-    _info "Setting System on /dev/${_disk}${part_order[3]} - size: ${sys_size}"
+    _info "Setting System of ${sys_size} on /dev/${_disk}${part_order[3]}"
     printf "n\n${part_type}\n\n+${sys_size}\nw" | fdisk /dev/"${_disk}"
     yes | mkfs.ext4 /dev/"${_disk}${part_order[3]}"
 
@@ -99,11 +99,11 @@ _partition() {
         fi
 
         # Create HOME partition on /dev/xxx4
-        _info "Setting Home on /dev/${_disk}${part_order[4]} - size: $part_size"
+        _info "Setting Home of ${part_size} on /dev/${_disk}${part_order[4]}"
         printf "n\n\n\n${home_size}\nw" | fdisk /dev/"${_disk}"
     else
         _note "Home partition will use all free space"
-        _info "Setting Home partition /dev/${_disk}${part_order[4]}"
+        _info "Setting Home on /dev/${_disk}${part_order[4]}"
         printf "n\n${part_type}\n\nw" | fdisk /dev/"${_disk}"
     fi
     yes | mkfs.ext4 /dev/"${_disk}${part_order[4]}"
