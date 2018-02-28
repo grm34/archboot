@@ -30,7 +30,7 @@ If you want to see whose packages are installed by this script, please see [Appl
 
 ## Logs
 
-For full installation logs, take a look in **/var/log/archboot**
+For logs of the installation, take a look in **/var/log/archboot**
 
 `cat /var/log/archboot/archboot_*.log`
 
