@@ -3,11 +3,13 @@
 _display_manager() {
 
     # XFCE or LXDE > LXDM
-    if [[ ${desktop} == "xfce" || ${desktop} == "lxde" ]]
+    if [[ ${desktop} == "xfce4" || ${desktop} == "lxde" ]]
     then
         _info "Enabling LXDM"
-        _chroot "wget ${_url}/conf/lxdm_${desktop}.conf
-        mv lxdm_${desktop}.conf /etc/lxdm/lxdm.conf
+        _chroot "wget ${_url}/conf/lxdm.conf
+        sed -i -e 's/_desktop_/${desktop}/g' lxdm.conf
+        sed -i -e 's/_user_/${USER_name}/g' lxdm.conf
+        mv lxdm.conf /etc/lxdm/lxdm.conf
         systemctl enable lxdm"
 
     # GNOME > GDM
