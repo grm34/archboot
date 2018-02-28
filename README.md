@@ -36,7 +36,7 @@ For logs of the installation, take a look in **/var/log/archboot**
 
 ## Screenshot
 
-[![OS](https://img.shields.io/badge/Archlinux-xfce4-blue.svg)](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
+[![OS](https://img.shields.io/badge/Archlinux-Deepin-blue.svg)](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
 ![](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
 
 ## Official Documentation
