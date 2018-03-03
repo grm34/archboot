@@ -4,7 +4,7 @@ _base() {
 
     # Install Base System
     _info "Installing base system"
-    yes '' | pacstrap /mnt base base-devel
+    yes '' | pacstrap /mnt ${_arch}
 
     # Setting fstab
     _info "Setting fstab"

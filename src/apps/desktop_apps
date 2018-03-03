@@ -1,24 +1,10 @@
 #!/bin/bash
 
-#
-# Global Packages
-#
-
-# File system
-export _file_system="gvfs gvfs-afc gvfs-goa gvfs-google gvfs-gphoto2 \
-gvfs-mtp gvfs-nfs gvfs-smb gamin gparted ntfs-3g dosfstools exfat-utils \
-file-roller ifuse fuseiso unrar"
-
-# Fonts
-export _fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
-font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
-ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
-
 # Display Server
 export xorg="xorg xorg-server xorg-apps xorg-drivers"
 
 #
-# Desktop Environment
+# DESKTOP ENVIRONMENT
 #
 
 # Gnome

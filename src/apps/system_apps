@@ -1,13 +1,17 @@
 #!/bin/bash
 
+# ArchLinux
+export _arch="base base-devel"
+
 # Intel Microcode (only for Intel CPU)
 export _intel="intel-ucode"
 
 # Network
-export _networkapps="networkmanager dhclient iw wpa_supplicant wireless_tools"
+export _netapps="networkmanager network-manager-applet rp-pppoe \
+dhclient iw wpa_supplicant wireless_tools dialog"
 
 # Required
-export _requiredapps="ntp wget reflector git htop nmap numlockx vim"
+export _requiredapps="ntp wget git htop nmap numlockx vim reflector"
 
 # Bootloader
 export _bootapps="grub os-prober gptfdisk efibootmgr"
