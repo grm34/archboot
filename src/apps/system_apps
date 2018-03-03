@@ -16,5 +16,5 @@ export _requiredapps="vim git htop dialog numlockx reflector"
 # Bootloader
 export _bootapps="grub os-prober gptfdisk efibootmgr"
 
-# yaourt
+# yaourt (in case of AUR support)
 export _yaourtapps="yaourt customizepkg"
