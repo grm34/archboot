@@ -1,37 +1,46 @@
-## Welcome to GitHub Pages
+<img src="https://raw.githubusercontent.com/grm34/archboot/master/img/archboot.png" width="640">
 
-You can use the [editor on GitHub](https://github.com/grm34/archboot/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[![version](https://img.shields.io/badge/archboot-v2.7.4-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![Gitter](https://badges.gitter.im/grm34/archboot.svg)](https://gitter.im/grm34/archboot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+This script perform an automatic install of ArchLinux. Pretty simple, it only ask you for hostname, username, password, which disk to use, required partitions size, language & if you wish to install a desktop environment.
 
-### Markdown
+## Requirements
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+The only thing you need is one **USB bootable device** of [ArchLinux](http://mir.archlinux.fr/iso/latest) and one **HDD dedicated** for the installation (see USB Boot instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR) or for [Linux](https://debian-facile.org/doc:install:usb-boot)).
 
-```markdown
-Syntax highlighted code block
+## Usage
 
-# Header 1
-## Header 2
-### Header 3
+**1.** Reboot your computer, open Boot Selection Menu and boot on the USB bootable device.
 
-- Bulleted
-- List
+**2.** On the install menu of ArchLinux, select [Boot Arch Linux (x86_64)](https://raw.githubusercontent.com/grm34/archboot/master/img/archlinux.png).
 
-1. Numbered
-2. List
+**3.** For AZERTY keyboard run: `loqdkeys fr`
 
-**Bold** and _Italic_ and `Code` text
+**4.** Download archboot and follow the instructions:
 
-[Link](url) and ![Image](src)
-```
+`wget tiny.cc/archboot; sh archboot`
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Notes
 
-### Jekyll Themes
+For list of all available languages and regions codes, please see [languages](https://github.com/grm34/archboot/blob/master/conf/languages) and [regions](https://github.com/grm34/archboot/blob/master/conf/region_city).
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/grm34/archboot/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+If you want to see whose packages are installed by this script, please see [Applications Folder](https://github.com/grm34/archboot/tree/master/src/apps).
 
-### Support or Contact
+Available desktop environment: [KDE](https://wiki.archlinux.org/index.php/KDE) - [GNOME](https://wiki.archlinux.org/index.php/GNOME) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE)
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
+
+## Logs
+
+Take a look in **/var/log/archboot** for logs of the installation.
+
+`cat /var/log/archboot/archboot_*.log`
+
+## Screenshot
+
+[![OS](https://img.shields.io/badge/Archlinux-Deepin-blue.svg)](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
+![](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
+
+## Official Documentation
+
+Take a look at [ArchLinux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) to view the official documentation.
