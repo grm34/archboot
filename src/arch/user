@@ -3,7 +3,7 @@
 _user_infos() {
 
     # User Language
-    until grep -Fxq "${USER_lang}" ./languages
+    until grep -Fxq "${USER_lang}" ./language
     do
         _note "list of available Language code is available on github"
         _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
@@ -13,7 +13,7 @@ _user_infos() {
     keymap_code=$(echo ${USER_lang} | cut -d'_' -f 1)
 
     # TimeZone
-    until grep -Fxq "${region_city}" ./region_city
+    until grep -Fxq "${region_city}" ./timezone
     do
         _note "list of available TimeZone code is available on github"
         _prompt "Enter TimeZone code:" "(ex: Europe/Paris, Asia/Tokyo)"

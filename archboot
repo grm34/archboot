@@ -120,13 +120,13 @@ then
     _info "Downloading sources"
     wget ${_url}/src/arch/base            # to install ArchLinux Base system
     wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
-    wget ${_url}/src/arch/firmware        # to define partitions options
+    wget ${_url}/src/arch/firmware        # to define options of partitions
     wget ${_url}/src/arch/mounting        # to mount partitions & swap
     wget ${_url}/src/arch/partition       # to create table & partitions
-    wget ${_url}/src/arch/user            # to ask user infos & create user
+    wget ${_url}/src/arch/user            # to ask user infos
     wget ${_url}/src/apps/system_apps     # to load system apps
-    wget ${_url}/conf/languages           # to get languages codes
-    wget ${_url}/conf/region_city         # to get regions codes
+    wget ${_url}/conf/language            # to get language code
+    wget ${_url}/conf/timezone            # to get region code
 else
     echo; exit
 fi
