@@ -48,7 +48,7 @@ _base() {
 
     # Install Network
     _info "Installing network"
-    _chroot "pacman --noconfirm -S ${_networkapps}
+    _chroot "pacman --noconfirm -S ${_netapps}
     systemctl enable NetworkManager"
 
     # Install Intel Microcode
