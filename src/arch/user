@@ -73,6 +73,22 @@ _user_infos() {
     fi
     echo
 
+    # Multilib
+    _confirm "Enable multilib for 32bit support?"
+    if [[ ${confirm} == "y" ]]
+    then
+        export _multilib="yes"
+    fi
+    unset confirm
+
+    # AUR
+    _confirm "Install yaourt for AUR support?"
+    if [[ ${confirm} == "y" ]]
+    then
+        export _aur="yes"
+    fi
+    unset confirm
+
     # Desktop Environment
     _confirm "Do you wish to install Desktop Environment?"
     if [[ ${confirm} == "y" ]]
