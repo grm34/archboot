@@ -2,11 +2,11 @@
 
 [![version](https://img.shields.io/badge/archboot-v2.7.4-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![Gitter](https://badges.gitter.im/grm34/archboot.svg)](https://gitter.im/grm34/archboot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE)
 
-This script perform an automatic install of ArchLinux. Pretty simple, it only ask you for hostname, username, password, which disk to use, required partitions size, language & if you wish to install a desktop environment.
+This script perform an automatic install of Arch Linux. Pretty simple, it only ask you for hostname, username, password, which disk to use, required partitions size, language & if you wish to install a desktop environment.
 
 ## Requirements
 
-The only thing you need is one **USB bootable device** of [ArchLinux](http://mir.archlinux.fr/iso/latest) and one **HDD dedicated** for the installation (see USB Boot instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR) or for [Linux](https://debian-facile.org/doc:install:usb-boot)).
+The only thing you need is one **USB bootable device** of [Arch Linux](http://mir.archlinux.fr/iso/latest) and one **HDD dedicated** for the installation (see USB Boot instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR) or for [Linux](https://debian-facile.org/doc:install:usb-boot)).
 
 ## Usage
 
@@ -43,4 +43,4 @@ Take a look in **/var/log/archboot** for logs of the installation.
 
 ## Official Documentation
 
-Take a look at [ArchLinux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) to view the official documentation.
+Take a look at [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) to view the official documentation.
