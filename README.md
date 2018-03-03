@@ -28,6 +28,8 @@ For list of all available languages and regions codes, please see [languages](ht
 
 If you want to see whose packages are installed by this script, please see [Applications Folder](https://github.com/grm34/archboot/tree/master/src/apps).
 
+Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
+
 ## Logs
 
 Take a look in **/var/log/archboot** for logs of the installation.
