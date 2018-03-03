@@ -22,11 +22,11 @@ The only thing you need is one **USB bootable device** of [ArchLinux](http://mir
 
 ## Notes
 
-Available desktop environment: [KDE](https://wiki.archlinux.org/index.php/KDE) - [GNOME](https://wiki.archlinux.org/index.php/GNOME) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE)
-
 For list of all available languages and regions codes, please see [languages](https://github.com/grm34/archboot/blob/master/conf/languages) and [regions](https://github.com/grm34/archboot/blob/master/conf/region_city).
 
 If you want to see whose packages are installed by this script, please see [Applications Folder](https://github.com/grm34/archboot/tree/master/src/apps).
+
+Available desktop environment: [KDE](https://wiki.archlinux.org/index.php/KDE) - [GNOME](https://wiki.archlinux.org/index.php/GNOME) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE)
 
 Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
 
