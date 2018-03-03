@@ -43,7 +43,7 @@ _user_infos() {
     read -rs ROOT_passwd
     if [[ ${ROOT_passwd} != "${a}" ]]
     then
-        _error "passwords does not match!"
+        _error "passwords does not match! Please try again."
     fi
     echo
 
@@ -69,7 +69,7 @@ _user_infos() {
     read -rs USER_passwd
     if [[ ${USER_passwd} != "${b}" ]]
     then
-        _error "passwords does not match!"
+        _error "passwords does not match! Please try again."
     fi
     echo
 
