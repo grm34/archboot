@@ -124,7 +124,7 @@ then
     wget ${_url}/src/arch/mounting        # to mount partitions & swap
     wget ${_url}/src/arch/partition       # to create table & partitions
     wget ${_url}/src/arch/user            # to ask user infos & create user
-    wget ${_url}/src/apps/system_apps     # to load system required apps
+    wget ${_url}/src/apps/system_apps     # to load system apps
     wget ${_url}/conf/languages           # to get languages codes
     wget ${_url}/conf/region_city         # to get regions codes
 else
@@ -168,7 +168,7 @@ then
         _info "Downloading desktop sources"
         wget ${_url}/src/arch/desktop         # to install Desktop Environment
         wget ${_url}/src/arch/display         # to configure Display Manager
-        wget ${_url}/src/apps/desktop_apps    # to load desktop required apps
+        wget ${_url}/src/apps/desktop_apps    # to load desktop apps
 
         # Import desktop sources
         _info "Importing sources"
