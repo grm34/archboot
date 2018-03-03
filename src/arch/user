@@ -74,7 +74,7 @@ _user_infos() {
     echo
 
     # Multilib
-    _confirm "Enable multilib for 32bit support?"
+    _confirm "Enable multilib for 32-bit support?"
     if [[ ${confirm} == "y" ]]
     then
         export _multilib="yes"
@@ -82,7 +82,7 @@ _user_infos() {
     unset confirm
 
     # AUR
-    _confirm "Install yaourt for AUR support?"
+    _confirm "Install yaourt to enable AUR support?"
     if [[ ${confirm} == "y" ]]
     then
         export _aur="yes"
