@@ -23,25 +23,6 @@ _banner() {
 # Global functions
 #
 
-# Function to ask some infos
-_prompt() {
-    echo -e "${yellow}" >&2
-    echo -e "==> ${green}${1} ${red}${2} ${green}${3} ${red}${4} ${green}${5} ${red}${6} ${green}${7} ${red}${8} ${green}${9} ${red}${10}${nc}" >&2
-    echo -e "${yellow}==> ------------------------------------------------------${nc}" >&2
-    echo -ne "${yellow}==> ${nc}" >&2
-}
-
-# Function to ask confirmation (Yes/No)
-_confirm() {
-    until [[ ${confirm} == "y" || ${confirm} == "n" ]]
-    do
-        echo -e "${yellow}\n==> ${green}${1} ${red}[y/n]${nc}" >&2
-        echo -e "${yellow}==> -----------------------------------------------------${nc}" >&2
-        echo -ne "${yellow}==> ${nc}" >&2
-        read -r confirm
-    done
-}
-
 # Function to display install steps
 _info() {
     echo -e "${yellow}\n==> ${cyan}${1}...${nc}"
@@ -51,16 +32,6 @@ _info() {
 # Function to display some notes
 _note() {
     echo -e "${red}\nNote: ${blue}${1}${nc}" >&2
-}
-
-# Function to display errors
-_error() {
-    echo -e "${red}\n\nError: ${yellow}${1}${nc}\n" >&2
-    for d in $(seq 10 -1 1)
-    do
-        echo -ne "\r\033[K${green}System will reboot in ${d}s...${nc}" && sleep 1
-    done
-    echo; reboot
 }
 
 # Function to execute actions in chrooted environment
@@ -83,6 +54,35 @@ _clock() {
     timedatectl set-ntp true
     timedatectl set-timezone ${region_city}
     hwclock --systohc
+}
+
+# Function to display errors
+_error() {
+    echo -e "${red}\n\nError: ${yellow}${1}${nc}\n" >&2
+    for d in $(seq 10 -1 1)
+    do
+        echo -ne "\r\033[K${green}System will reboot in ${d}s...${nc}" && sleep 1
+    done
+    echo; reboot
+}
+
+# Function to ask confirmation (Yes/No)
+_confirm() {
+    until [[ ${confirm} == "y" || ${confirm} == "n" ]]
+    do
+        echo -e "${yellow}\n==> ${green}${1} ${red}[y/n]${nc}" >&2
+        echo -e "${yellow}==> -----------------------------------------------------${nc}" >&2
+        echo -ne "${yellow}==> ${nc}" >&2
+        read -r confirm
+    done
+}
+
+# Function to ask some infos
+_prompt() {
+    echo -e "${yellow}" >&2
+    echo -e "==> ${green}${1} ${red}${2} ${green}${3} ${red}${4} ${green}${5} ${red}${6} ${green}${7} ${red}${8} ${green}${9} ${red}${10}${nc}" >&2
+    echo -e "${yellow}==> ------------------------------------------------------${nc}" >&2
+    echo -ne "${yellow}==> ${nc}" >&2
 }
 
 #
