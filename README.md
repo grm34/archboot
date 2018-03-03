@@ -2,7 +2,7 @@
 
 [![version](https://img.shields.io/badge/archboot-v2.7.4-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![Gitter](https://badges.gitter.im/grm34/archboot.svg)](https://gitter.im/grm34/archboot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE)
 
-This script perform an automatic install of ArchLinux. Pretty simple, it only ask you for hostname, username, password, which disk to use, required partitions size, language & if you wish to install a desktop environment.
+This script perform an automatic install of Arch Linux. Pretty simple, it only ask you for hostname, username, password, which disk to use, required partitions size, language & if you wish to install a desktop environment.
 
 ## Requirements
 
