@@ -7,11 +7,11 @@ export _arch="base base-devel"
 export _intel="intel-ucode"
 
 # Network
-export _netapps="networkmanager network-manager-applet rp-pppoe \
-dhclient iw wpa_supplicant wireless_tools dialog"
+export _netapps="ntp networkmanager network-manager-applet \
+wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools dialog"
 
 # Required
-export _requiredapps="ntp wget git htop nmap numlockx vim reflector"
+export _requiredapps="vim git htop numlockx reflector"
 
 # Bootloader
 export _bootapps="grub os-prober gptfdisk efibootmgr"
