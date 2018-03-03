@@ -12,14 +12,14 @@ _base() {
 
     # Setting TimeZone
     _info "Setting TimeZone"
-    _chroot "ln -sf /usr/share/zoneinfo/${region_city} /etc/localtime"
+    _chroot "ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime"
 
     # Setting locale
     _info "Setting and generating locale"
-    _chroot "echo '${USER_lang}.UTF-8 UTF-8' >> /etc/locale.gen
+    _chroot "echo '${language}.UTF-8 UTF-8' >> /etc/locale.gen
     locale-gen
-    export LANG=${USER_lang}.UTF-8
-    echo 'LANG=${USER_lang}.UTF-8' > /etc/locale.conf"
+    export LANG=${language}.UTF-8
+    echo 'LANG=${language}.UTF-8' > /etc/locale.conf"
 
     # Setting keyboard
     _info "Setting keyboard"

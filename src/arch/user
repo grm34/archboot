@@ -3,21 +3,21 @@
 _user_infos() {
 
     # User Language
-    until grep -Fxq "${USER_lang}" ./language
+    until grep -Fxq "${language}" ./language
     do
         _note "list of available Language code is available on github"
         _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
-        read -r USER_lang
+        read -r language
     done
     echo
-    keymap_code=$(echo ${USER_lang} | cut -d'_' -f 1)
+    keymap_code=$(echo ${language} | cut -d'_' -f 1)
 
     # TimeZone
-    until grep -Fxq "${region_city}" ./timezone
+    until grep -Fxq "${timezone}" ./timezone
     do
         _note "list of available TimeZone code is available on github"
         _prompt "Enter TimeZone code:" "(ex: Europe/Paris, Asia/Tokyo)"
-        read -r region_city
+        read -r timezone
     done
     echo
 
@@ -104,6 +104,6 @@ _user_infos() {
     unset confirm
 
     # Export required vars
-    export USER_lang; export keymap_code; export region_city
+    export language; export keymap_code; export timezone
     export HOST_name; export ROOT_passwd; export USER_name; export USER_passwd
 }
