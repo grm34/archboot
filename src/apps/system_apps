@@ -8,10 +8,10 @@ export _intel="intel-ucode"
 
 # Network
 export _netapps="ntp networkmanager network-manager-applet \
-wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools dialog"
+wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools"
 
 # Required
-export _requiredapps="vim git htop numlockx reflector"
+export _requiredapps="vim git htop dialog numlockx reflector"
 
 # Bootloader
 export _bootapps="grub os-prober gptfdisk efibootmgr"
