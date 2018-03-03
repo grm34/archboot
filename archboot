@@ -110,7 +110,7 @@ if [[ $? == 0 ]]
 then
     _note "OK, you are connected to Internet."
 else
-    _error "you are not connected to Internet, please check if ethernet is plugged in."
+    _error "you are not connected to Internet. Please check if ethernet is plugged in."
 fi
 
 # Download base sources
@@ -144,7 +144,7 @@ _user_infos; _clock; _logs; _firmware; _partition
 _mounting
 if [[ $? -eq 0 ]]
 then
-    _note "system ready! partitions mounted & swap activated."
+    _note "system ready! Partitions mounted & swap activated."
 
     #
     # Start the installation
@@ -196,5 +196,5 @@ then
     fi
 
 else
-    _error "bad partitionning! Please try again."
+    _error "bad partitionning! Error occur during mount. Please try again."
 fi
