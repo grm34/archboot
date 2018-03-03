@@ -144,7 +144,7 @@ _user_infos; _clock; _logs; _firmware; _partition
 _mounting
 if [[ $? -eq 0 ]]
 then
-    _note "system ready, partitions mounted without errors."
+    _note "system ready! partitions mounted & swap activated."
 
     #
     # Start the installation
@@ -156,7 +156,7 @@ then
     then
         (_base; _bootloader) 2>&1 | tee -a "${logfile}"
     else
-        _error "aborted installation. Please try again."
+        _error "aborted by user! Please try again."
     fi
     unset confirm
 
@@ -196,5 +196,5 @@ then
     fi
 
 else
-    _error "bad partitionning. Please try again."
+    _error "bad partitionning! Please try again."
 fi
