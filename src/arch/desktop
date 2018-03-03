@@ -2,14 +2,6 @@
 
 _install_DE() {
 
-    # File System
-    _info "Installing File System"
-    _chroot "pacman --noconfirm -S ${_file_system}"
-
-    # Fonts
-    _info "Installing Fonts"
-    _chroot "pacman --noconfirm -S ${_fonts}"
-
     # Display Server
     _info "Installing Display Server"
     _chroot "pacman --noconfirm -S ${xorg}"
