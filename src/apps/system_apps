@@ -3,7 +3,7 @@
 # ArchLinux
 export _arch="base base-devel"
 
-# Intel Microcode (only for Intel CPU)
+# Microcode (only for Intel CPU)
 export _intel="intel-ucode"
 
 # Network
