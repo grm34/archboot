@@ -20,7 +20,9 @@
     <header>
       <div class="inner">
         <a href="{{ '/' | absolute_url }}">
-          <img src="/archboot/assets/images/archboot-v2.png" id="logo-v2" alt="logo-v2"/>
+          <div id="logo-container">
+            <img src="/archboot/assets/images/archboot-v2.png" id="logo-v2" alt="logo-v2"/>
+          </div>
         </a>
         <h2>{{ site.description | default: site.github.project_tagline }}</h2>
         {% if site.github.is_project_page %}
