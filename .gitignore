@@ -1,0 +1,6 @@
+# Sublime Text
+.project
+*.sublime-*
+
+# Testing
+*_test*
