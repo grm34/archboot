@@ -38,11 +38,11 @@ Take a look in **/var/log/archboot** for logs of the installation.
 
 `cat /var/log/archboot/archboot_*.log`
 
-## Official Documentation
-
-Take a look at [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) to view the official documentation.
-
 ## Screenshot
 
 [![OS](https://img.shields.io/badge/Archlinux-Deepin-blue.svg)](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
 ![](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
+
+## Official Documentation
+
+Take a look at [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) to view the official documentation.
