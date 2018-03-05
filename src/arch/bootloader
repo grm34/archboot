@@ -15,7 +15,7 @@ _bootloader() {
     # Downloading Grub Themes
     _info "Downloading Grub Themes"
     _chroot "git clone git://github.com/Generator/Grub2-themes.git
-    wget ${_url}/img/background.png"
+    _wget ${_url}/img/background.png"
 
     # Installing Grub Themes
     _info "Installing Grub Themes"

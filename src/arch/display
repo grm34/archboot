@@ -6,7 +6,7 @@ _display_manager() {
     if [[ ${desktop} == "xfce4" || ${desktop} == "lxde" ]]
     then
         _info "Enabling LXDM"
-        _chroot "wget ${_url}/conf/lxdm.conf
+        _chroot "_wget ${_url}/conf/lxdm.conf
         sed -i -e 's/_desktop_/${desktop}/g' lxdm.conf
         sed -i -e 's/_user_/${USER_name}/g' lxdm.conf
         mv lxdm.conf /etc/lxdm/lxdm.conf
@@ -28,7 +28,7 @@ _display_manager() {
     elif [[ ${desktop} == "deepin" ]]
     then
         _info "Enabling LightDM"
-        _chroot "wget ${_url}/conf/lightdm.conf
+        _chroot "_wget ${_url}/conf/lightdm.conf
         mv lightdm.conf /etc/lightdm/lightdm.conf
         systemctl enable lightdm"
     fi
