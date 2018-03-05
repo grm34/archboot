@@ -7,8 +7,6 @@
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}" media="screen" type="text/css">
     <link rel="stylesheet" href="{{ '/assets/css/print.css' | relative_url }}" media="print" type="text/css">
-    <link rel="stylesheet" type="text/css" href="/archboot/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/archboot/assets/css/mdb.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="/archboot/assets/images/favicon.ico">
 
     <!--[if lt IE 9]>
@@ -66,13 +64,12 @@
       </div>
     </div>
 
-    <footer class="page-footer font-small blue pt-4 mt-4">
-        <div class="footer-copyright py-3 text-center">
-            <div class="container-fluid">
-                © 2017 Copyright: <a href="https://grm34.github.io/archboot/"> archboot </a>
-
-            </div>
-        </div>
+    <footer id="colophon" class="site-footer" role="contentinfo">
+      <div class="site-info">
+        <a href="<?php echo esc_url( __( 'https://wordpress.org/', 'architectpz' ) ); ?>"><?php printf( esc_html__( 'Proudly powered by %s', 'architectpz' ), 'WordPress' ); ?></a>
+        <span class="sep"> | </span>
+        <?php printf( esc_html__( 'Theme: %1$s by %2$s.', 'architectpz' ), 'architectpz', '<a href="http://architect4wp.com" rel="designer">Chris Howard</a>' ); ?>
+      </div>
     </footer>
 
     {% if site.google_analytics %}
