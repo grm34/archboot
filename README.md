@@ -65,6 +65,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 
 <details><summary>List of available Language code</summary>
 <p>
+
 ```python
 aa_DJ
 af_ZA
@@ -215,6 +216,7 @@ zu_ZA
 
 <details><summary>List of available TimeZone code</summary>
 <p>
+
 ```python
 Africa/Abidjan
 Africa/Accra
