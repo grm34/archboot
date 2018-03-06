@@ -37,7 +37,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 
 # Microcode (in case of Intel CPU) = intel-ucode
 
-# Network = ntp networkmanager network-manager-applet wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools
+# Network = ntp networkmanager wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools
 
 # Required = vim git htop dialog numlockx reflector
 
