@@ -24,9 +24,43 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 ## Notes
 
-Available desktop environment: [KDE](https://wiki.archlinux.org/index.php/KDE) - [GNOME](https://wiki.archlinux.org/index.php/GNOME) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE)
+* Available desktop environment: [KDE](https://wiki.archlinux.org/index.php/KDE) - [GNOME](https://wiki.archlinux.org/index.php/GNOME) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE)
 
-Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
+* Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
+
+<details><summary>List of packages installed by archboot</summary>
+<p>
+#### System Apps
+```python
+# ArchLinux = base base-devel
+
+# Microcode (in case of Intel CPU) = intel-ucode
+
+# Network = ntp networkmanager network-manager-applet wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools
+
+# Required = vim git htop dialog numlockx reflector
+
+# Bootloader = grub os-prober gptfdisk efibootmgr
+
+# yaourt (in case of AUR support) = yaourt customizepkg
+```
+
+#### Desktop Apps
+````python
+# Display Server = xorg xorg-server xorg-apps xorg-drivers
+
+# Gnome = gnome gnome-extra
+
+# Kde = plasma kde-applications
+
+# Lxde = lxde
+
+# Xfce = xfce4 xfce4-goodies lxdm
+
+# Deepin = deepin deepin-extra
+````
+</p>
+</details>
 
 <details><summary>List of available Language</summary>
 <p>
@@ -606,40 +640,6 @@ Pacific/Tongatapu
 Pacific/Wake
 Pacific/Wallis
 ```
-</p>
-</details>
-
-<details><summary>List of packages in installed by archboot</summary>
-<p>
-#### System Apps
-```python
-# ArchLinux = base base-devel
-
-# Microcode (in case of Intel CPU) = intel-ucode
-
-# Network = ntp networkmanager network-manager-applet wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools
-
-# Required = vim git htop dialog numlockx reflector
-
-# Bootloader = grub os-prober gptfdisk efibootmgr
-
-# yaourt (in case of AUR support) = yaourt customizepkg
-```
-
-#### Desktop Apps
-````python
-# Display Server = xorg xorg-server xorg-apps xorg-drivers
-
-# Gnome = gnome gnome-extra
-
-# Kde = plasma kde-applications
-
-# Lxde = lxde
-
-# Xfce = xfce4 xfce4-goodies lxdm
-
-# Deepin = deepin deepin-extra
-````
 </p>
 </details>
 
