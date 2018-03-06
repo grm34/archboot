@@ -32,6 +32,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 <p>
 
 #### System Apps
+
 ```python
 # ArchLinux = base base-devel
 
@@ -47,6 +48,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 ```
 
 #### Desktop Apps
+
 ````python
 # Display Server = xorg xorg-server xorg-apps xorg-drivers
 
@@ -67,149 +69,149 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 <p>
 
 ```python
-aa_DJ
-af_ZA
-an_ES
-ar_AE
-ar_BH
-ar_DZ
-ar_EG
-ar_IQ
-ar_JO
-ar_KW
-ar_LB
-ar_LY
-ar_MA
-ar_OM
-ar_QA
-ar_SA
-ar_SD
-ar_SY
-ar_TN
-ar_YE
-ast_ES
-be_BY
-bg_BG
-bhb_IN
-br_FR
-bs_BA
-ca_AD
-ca_FR
-ca_IT
-cs_CZ
-cy_GB
-da_DK
-de_AT
-de_BE
-de_CH
-de_DE
-de_IT
-de_LI
-de_LU
-el_GR
-el_CY
-en_AU
-en_BW
-en_CA
-en_DK
-en_GB
-en_HK
-en_IE
-en_NZ
-en_PH
-en_SG
-en_US
-en_ZA
-en_ZW
-es_AR
-es_BO
-es_CL
-es_CO
-es_CR
-es_DO
-es_EC
-es_ES
-es_GT
-es_HN
-es_MX
-es_NI
-es_PA
-es_PE
-es_PR
-es_PY
-es_SV
-es_US
-es_UY
-es_VE
-et_EE
-eu_ES
-fi_FI
-fo_FO
-fr_BE
-fr_CA
-fr_CH
-fr_FR
-fr_LU
-ga_IE
-gd_GB
-gl_ES
-gv_GB
-he_IL
-hr_HR
-hsb_DE
-hu_HU
-id_ID
-is_IS
-it_CH
-it_IT
-ja_JP
-ka_GE
-kk_KZ
-kl_GL
-kw_GB
-lg_UG
-lt_LT
-lv_LV
-mg_MG
-mk_MK
-ms_MY
-nb_NO
-nl_BE
-nl_NL
-nn_NO
-oc_FR
-om_KE
-pl_PL
-pt_BR
-pt_PT
-ro_RO
-ru_RU
-ru_UA
-sk_SK
-sl_SI
-so_DJ
-so_KE
-so_SO
-sq_AL
-st_ZA
-sv_FI
-sv_SE
-tcy_IN
-tg_TJ
-th_TH
-tl_PH
-tr_CY
-tr_TR
-uk_UA
-uz_UZ
-wa_BE
-xh_ZA
-yi_US
-zh_CN
-zh_HK
-zh_SG
-zh_TW
-zu_ZA
+    aa_DJ
+    af_ZA
+    an_ES
+    ar_AE
+    ar_BH
+    ar_DZ
+    ar_EG
+    ar_IQ
+    ar_JO
+    ar_KW
+    ar_LB
+    ar_LY
+    ar_MA
+    ar_OM
+    ar_QA
+    ar_SA
+    ar_SD
+    ar_SY
+    ar_TN
+    ar_YE
+    ast_ES
+    be_BY
+    bg_BG
+    bhb_IN
+    br_FR
+    bs_BA
+    ca_AD
+    ca_FR
+    ca_IT
+    cs_CZ
+    cy_GB
+    da_DK
+    de_AT
+    de_BE
+    de_CH
+    de_DE
+    de_IT
+    de_LI
+    de_LU
+    el_GR
+    el_CY
+    en_AU
+    en_BW
+    en_CA
+    en_DK
+    en_GB
+    en_HK
+    en_IE
+    en_NZ
+    en_PH
+    en_SG
+    en_US
+    en_ZA
+    en_ZW
+    es_AR
+    es_BO
+    es_CL
+    es_CO
+    es_CR
+    es_DO
+    es_EC
+    es_ES
+    es_GT
+    es_HN
+    es_MX
+    es_NI
+    es_PA
+    es_PE
+    es_PR
+    es_PY
+    es_SV
+    es_US
+    es_UY
+    es_VE
+    et_EE
+    eu_ES
+    fi_FI
+    fo_FO
+    fr_BE
+    fr_CA
+    fr_CH
+    fr_FR
+    fr_LU
+    ga_IE
+    gd_GB
+    gl_ES
+    gv_GB
+    he_IL
+    hr_HR
+    hsb_DE
+    hu_HU
+    id_ID
+    is_IS
+    it_CH
+    it_IT
+    ja_JP
+    ka_GE
+    kk_KZ
+    kl_GL
+    kw_GB
+    lg_UG
+    lt_LT
+    lv_LV
+    mg_MG
+    mk_MK
+    ms_MY
+    nb_NO
+    nl_BE
+    nl_NL
+    nn_NO
+    oc_FR
+    om_KE
+    pl_PL
+    pt_BR
+    pt_PT
+    ro_RO
+    ru_RU
+    ru_UA
+    sk_SK
+    sl_SI
+    so_DJ
+    so_KE
+    so_SO
+    sq_AL
+    st_ZA
+    sv_FI
+    sv_SE
+    tcy_IN
+    tg_TJ
+    th_TH
+    tl_PH
+    tr_CY
+    tr_TR
+    uk_UA
+    uz_UZ
+    wa_BE
+    xh_ZA
+    yi_US
+    zh_CN
+    zh_HK
+    zh_SG
+    zh_TW
+    zu_ZA
 ```
 </p>
 </details>
