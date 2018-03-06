@@ -28,7 +28,7 @@ Available desktop environment: [KDE](https://wiki.archlinux.org/index.php/KDE) -
 
 Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
 
-<details><summary>List of packages installed by <a href="https://grm34.github.io/archboot/" rel="nofollow">archboot</a></summary>
+<details><summary>List of installed packages</summary>
 <p>
 
 #### System Apps
