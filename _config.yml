@@ -2,7 +2,3 @@ title: archboot
 description: Arch Linux Auto Install
 theme: jekyll-theme-architect
 show_downloads: True
-markdown: kramdown
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
