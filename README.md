@@ -32,7 +32,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 <p>
 
 #### System Apps
-```python
+```
 # ArchLinux = base base-devel
 
 # Microcode (in case of Intel CPU) = intel-ucode
