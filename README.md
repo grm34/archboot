@@ -30,8 +30,8 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 
 <details><summary>List of packages installed by archboot</summary>
 <p>
-#### System Apps
 
+#### System Apps
 ```python
 # ArchLinux = base base-devel
 
@@ -47,7 +47,6 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 ```
 
 #### Desktop Apps
-
 ````python
 # Display Server = xorg xorg-server xorg-apps xorg-drivers
 
@@ -64,7 +63,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 </p>
 </details>
 
-<details><summary>List of available Language</summary>
+<details><summary>List of available Language code</summary>
 <p>
 
 ```python
@@ -215,7 +214,7 @@ zu_ZA
 </p>
 </details>
 
-<details><summary>List of available TimeZone</summary>
+<details><summary>List of available TimeZone code</summary>
 <p>
 
 ```python
