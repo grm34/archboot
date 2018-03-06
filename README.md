@@ -32,7 +32,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 <p>
 
 #### System Apps
-```python
+```
 # ArchLinux = base base-devel
 
 # Microcode (in case of Intel CPU) = intel-ucode
@@ -47,7 +47,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 ```
 
 #### Desktop Apps
-````python
+```
 # Display Server = xorg xorg-server xorg-apps xorg-drivers
 
 # Gnome = gnome gnome-extra
@@ -66,7 +66,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 <details><summary>List of available Language code</summary>
 <p>
 
-```python
+```
 aa_DJ
 af_ZA
 an_ES
@@ -217,7 +217,7 @@ zu_ZA
 <details><summary>List of available TimeZone code</summary>
 <p>
 
-```python
+```
 Africa/Abidjan
 Africa/Accra
 Africa/Addis_Ababa
