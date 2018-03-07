@@ -660,3 +660,7 @@ Take a look in **/var/log/archboot** for logs of the installation.
 ## Official Documentation
 
 Take a look at [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) to view the official documentation.
+
+## Improvement
+
+Do not be afraid to open issue to purpose some improvements suck as new desktop environment ([Cinnamon](https://wiki.archlinux.org/index.php/cinnamon#Starting_Cinnamon), [Budgie](https://wiki.archlinux.org/index.php/Budgie_Desktop), [Enlightenment](https://wiki.archlinux.org/index.php/Enlightenment), [MATE](https://wiki.archlinux.org/index.php/MATE), [LXQt](https://wiki.archlinux.org/index.php/LXQt) will be implemented soon) or to fork and pull request better code quality.
