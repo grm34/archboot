@@ -646,6 +646,8 @@ Pacific/Wallis
 </p>
 </details>
 
+Arch Linux is a light and fast distribution whose concept is to stay as simple as possible. This script is therefore intended to provide the most minimal installation possible. It installs only the required packages in order to give free choice to the user, so it is possible according to the chosen desktop environment, that you need to install the missing dependencies to enjoy full support (Printer/Scanner support with [Cups](https://wiki.archlinux.org/index.php/CUPS), [File System](https://wiki.archlinux.org/index.php/file_systems), [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) or to [Improving Performance](https://wiki.archlinux.org/index.php/improving_performance)).
+
 ## Logs
 
 Take a look in **/var/log/archboot** for logs of the installation.
