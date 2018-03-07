@@ -30,7 +30,7 @@ _banner() {
 
 # Function to DL with progress bar but without output
 _wget() {
-    wget $1 -q --show-progress
+    wget ${1} -q --show-progress
 }
 
 # Function to display install steps
@@ -116,7 +116,7 @@ _banner
 # Check Internet Connection
 _info "Check Internet Connection"
 ping -c 1 archlinux.org >/dev/null 2>&1
-if [[ $? == 0 ]]
+if [[ ${?} == 0 ]]
 then
     _note "OK, you are connected to Internet."
 else
@@ -152,7 +152,7 @@ _user_infos; _clock; _logs; _firmware; _partition
 
 # Mount partitions & check for errors
 _mounting
-if [[ $? -eq 0 ]]
+if [[ ${?} -eq 0 ]]
 then
     _note "system ready! Partitions mounted & swap activated."
 
@@ -194,7 +194,7 @@ then
     cp "${logfile}" /mnt/var/log/archboot/
 
     # Success notes
-    _note "Installation successful! ${__appname__} ${__version__} by ${__author__} - ${__license__}"
+    _note "Installation successful! ${__appname__} ${__version__} by ${__author__} under ${__license__}"
 
     # Reboot
     _confirm "Do you want to reboot your computer now?"
