@@ -15,7 +15,7 @@ _banner() {
     echo -e "${blue}Welcome in archboot, a script made with love by ${__author__}${nc}\n" >&2
     echo -e "Arch Linux is a light and fast distribution whose concept" >&2
     echo -e "is to remain as simple as possible. In the same purpose this" >&2
-    echo -e "script performs minimalist installation. It only installs the" >&2
+    echo -e "script performs minimalist installation, it only installs the" >&2
     echo -e "required packages, in order to give free choice to the user." >&2
     echo -e "Pretty simple, it just prompt for hostname,username, password," >&2
     echo -e "which disk to use, required partitions, language, timezone and" >&2
