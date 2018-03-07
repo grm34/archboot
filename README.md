@@ -4,7 +4,7 @@
 
 [![version](https://img.shields.io/badge/archboot-v2.7.4-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![Gitter](https://badges.gitter.im/grm34/archboot.svg)](https://gitter.im/grm34/archboot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE)
 
-This script perform an automatic install of Arch Linux. Pretty simple, it only ask you for hostname, username, password, which disk to use, required partitions size, language & if you wish to install a desktop environment.
+[Arch Linux](https://www.archlinux.org/) is a light and fast distribution whose concept is to remain as simple as possible. In the same purpose, this script performs minimalist installation. It only installs the required packages in order to give free choice to the user. Pretty simple, it just prompt for hostname, username, password, which disk to use, required partitions size, language, timezone and if you wish to install a desktop environment. According to the chosen one and in order to get complete support, additionals packages may be required ([File System](https://wiki.archlinux.org/index.php/file_systems) - [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) - [Cups](https://wiki.archlinux.org/index.php/CUPS) - [Improving Performance](https://wiki.archlinux.org/index.php/improving_performance)).
 
 ## Requirements
 
@@ -645,8 +645,6 @@ Pacific/Wallis
 ```
 </p>
 </details>
-
-Arch Linux is a light and fast distribution whose concept is to stay as simple as possible. This script is therefore intended to provide the most minimal installation possible. It installs only the required packages in order to give free choice to the user, so it is possible according to the chosen desktop environment, that you need to install the missing dependencies to enjoy full support (Printer/Scanner support with [Cups](https://wiki.archlinux.org/index.php/CUPS), [File System](https://wiki.archlinux.org/index.php/file_systems), [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) or to [Improving Performance](https://wiki.archlinux.org/index.php/improving_performance)).
 
 ## Logs
 
