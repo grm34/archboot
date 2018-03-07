@@ -81,7 +81,7 @@ _confirm() {
     until [[ ${confirm} == "y" || ${confirm} == "n" ]]
     do
         echo -e "${yellow}\n==> ${green}${1} ${red}[y/n]${nc}" >&2
-        echo -e "${yellow}==> -----------------------------------------------------${nc}" >&2
+        echo -e "${yellow}==> -------------------------------------------------------${nc}" >&2
         echo -ne "${yellow}==> ${nc}" >&2
         read -r confirm
     done
@@ -90,8 +90,12 @@ _confirm() {
 # Function to ask some infos
 _prompt() {
     echo -e "${yellow}" >&2
-    echo -e "==> ${green}${1} ${red}${2} ${green}${3} ${red}${4} ${green}${5} ${red}${6} ${green}${7} ${red}${8} ${green}${9} ${red}${10}${nc}" >&2
-    echo -e "${yellow}==> ------------------------------------------------------${nc}" >&2
+    echo -e "==> ${green}${1} ${red}${2} ${green}${3} ${red}${4} ${green}${5} ${red}${6} ${green}${7} ${red}${8} ${green}${9} ${red}${10} ${green}${11} ${red}${12}${nc}" >&2
+    if [[ ! -z ${13+x} ]]
+    then
+        echo -e "${yellow}==> ${green}${13} ${red}${14} ${green}${15} ${red}${16} ${green}${17} ${red}${18} ${green}${19} ${red}${20}${nc}" >&2
+    fi
+    echo -e "${yellow}==> -------------------------------------------------------${nc}" >&2
     echo -ne "${yellow}==> ${nc}" >&2
 }
 
@@ -116,7 +120,7 @@ _banner
 # Check Internet Connection
 _info "Check Internet Connection"
 ping -c 1 archlinux.org >/dev/null 2>&1
-if [[ ${?} == 0 ]]
+if [[ $? == 0 ]]
 then
     _note "OK, you are connected to Internet."
 else
@@ -152,7 +156,7 @@ _user_infos; _clock; _logs; _firmware; _partition
 
 # Mount partitions & check for errors
 _mounting
-if [[ ${?} -eq 0 ]]
+if [[ $? -eq 0 ]]
 then
     _note "system ready! Partitions mounted & swap activated."
 

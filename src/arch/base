@@ -61,7 +61,7 @@ _base() {
 
     # Install Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
-    if [[ ${?} -eq 0 ]]
+    if [[ $? -eq 0 ]]
     then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${_intel}"
