@@ -28,9 +28,7 @@ Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repositor
 
 ## Logs
 
-Take a look in **/var/log/archboot** for logs of the installation.
-
-`cat /var/log/archboot/archboot_*.log`
+Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log/archboot/archboot_*.log`
 
 ## Improvement
 
