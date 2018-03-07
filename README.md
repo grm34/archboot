@@ -12,13 +12,13 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 ## Usage
 
-**1.** Reboot your computer, open Boot Selection Menu and boot on the USB bootable device.
+:one: Reboot your computer, open Boot Selection Menu and boot on the USB bootable device.
 
-**2.** On the install menu of ArchLinux, select [Boot Arch Linux (x86_64)](https://raw.githubusercontent.com/grm34/archboot/master/img/archlinux.png).
+:two: On the install menu of ArchLinux, select [Boot Arch Linux (x86_64)](https://raw.githubusercontent.com/grm34/archboot/master/img/archlinux.png).
 
-**3.** For AZERTY keyboard run: `loqdkeys fr`
+:three: For AZERTY keyboard run: `loqdkeys fr`
 
-**4.** Download archboot and follow the instructions:
+:four: Download archboot and follow the instructions:
 
 `wget tiny.cc/archboot; sh archboot`
 
