@@ -22,7 +22,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 ## Notes
 
-Available desktop environment: [KDE](https://wiki.archlinux.org/index.php/KDE) - [GNOME](https://wiki.archlinux.org/index.php/GNOME) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE). Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
+Available desktop environment: [KDE](https://wiki.archlinux.org/index.php/KDE) - [GNOME](https://wiki.archlinux.org/index.php/GNOME) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE) [Cinnamon](https://wiki.archlinux.org/index.php/cinnamon#Starting_Cinnamon), [Budgie](https://wiki.archlinux.org/index.php/Budgie_Desktop), [Enlightenment](https://wiki.archlinux.org/index.php/Enlightenment), [MATE](https://wiki.archlinux.org/index.php/MATE), [LXQt](https://wiki.archlinux.org/index.php/LXQt). Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
 
 <details><summary>List of installed packages</summary>
 <p>
@@ -648,7 +648,7 @@ Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log
 
 ## Improvement
 
-Do not be afraid to open issue to purpose some improvements such as new desktop environment ([Cinnamon](https://wiki.archlinux.org/index.php/cinnamon#Starting_Cinnamon), [Budgie](https://wiki.archlinux.org/index.php/Budgie_Desktop), [Enlightenment](https://wiki.archlinux.org/index.php/Enlightenment), [MATE](https://wiki.archlinux.org/index.php/MATE), [LXQt](https://wiki.archlinux.org/index.php/LXQt) will be implemented soon) or to fork and pull request better code quality.
+Do not be afraid to open issue to purpose some improvements such as new desktop environment or to fork and pull request for better code quality.
 
 ## Screenshot
 
