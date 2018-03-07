@@ -646,9 +646,7 @@ Pacific/Wallis
 
 ## Logs
 
-Take a look in **/var/log/archboot** for logs of the installation.
-
-`cat /var/log/archboot/archboot_*.log`
+Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log/archboot/archboot_*.log`
 
 ## Improvement
 
