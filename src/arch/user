@@ -32,7 +32,8 @@ _user_infos() {
     # Root Password
     until [[ ${#a} -ge 8 && "${a}" == *[a-z]* && "${a}" == *[0-9]* ]]
     do
-        _note "password should be at least 8 chars long with 1 letter and 1 digit"
+        _note \
+"password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for root:"
         read -rs a
     done
@@ -58,7 +59,8 @@ _user_infos() {
     # User Password
     until [[ ${#b} -ge 8 && "${b}" == *[a-z]* && "${b}" == *[0-9]* ]]
     do
-        _note "password should be at least 8 chars long with 1 letter and 1 digit"
+        _note \
+"password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for ${USER_name}:"
         read -rs b
     done
@@ -93,13 +95,16 @@ _user_infos() {
     _confirm "Do you wish to install Desktop Environment?"
     if [[ ${confirm} == "y" ]]
     then
-        until [[ ${c} == [1-9] || ${c} == "10" ]]
+        until [[ ${c} =~ ^([1-9]|10)$ ]]
         do
-            _prompt "Gnome" "[1]" "KDE" "[2]" "MATE" "[3]" "Xfce" "[4]" "LXDE" "[5]" "LXQt" "[6]" "Deepin" "[7]" "Budgie" "[8]" "Cinnamon" "[9]" "Enlightenment" "[10]"
+            _prompt "Gnome" "[1]" "KDE" "[2]" "MATE" "[3]" "Xfce" "[4]" \
+"LXDE" "[5]" "LXQt" "[6]" "Deepin" "[7]" "Budgie" "[8]" "Cinnamon" "[9]" \
+"Enlightenment" "[10]"
             read -r c
         done
-        choice=(none gnome kde mate xfce4 lxde lxqt deepin budgie cinnamon enlightenment)
-        export desktop=${choice[${c}]}
+        DE=\
+(none gnome kde mate xfce4 lxde lxqt deepin budgie cinnamon enlightenment)
+        export desktop=${DE[${c}]}
     fi
     unset confirm
 

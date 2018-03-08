@@ -7,7 +7,8 @@ export _arch="base base-devel"
 export _intel="intel-ucode"
 
 # Network
-export _netapps="ntp networkmanager wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools"
+export _netapps="ntp networkmanager wget nmap rp-pppoe dhclient \
+iw wpa_supplicant wireless_tools"
 
 # Required
 export _requiredapps="vim git htop dialog numlockx reflector"
