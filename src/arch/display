@@ -18,37 +18,38 @@ _display_manager() {
     elif [[ ${desktop} == "deepin" ]]
     then
         _info "Enabling LightDM"
-        _chroot "_wget ${_url}/conf/lightdm.conf
-        mv lightdm.conf /etc/lightdm/lightdm.conf
-        systemctl enable lightdm"
+        _wget ${_url}/conf/lightdm.conf
+        mv lightdm.conf /mnt/etc/lightdm/lightdm.conf
+        _chroot "systemctl enable lightdm"
 
     # LXDM > Xfce, Lxde, Lxqt, Cinnamon
     else
     then
         _info "Enabling LXDM"
-        _chroot "_wget ${_url}/conf/lxdm.conf"
+        _wget ${_url}/conf/lxdm.conf
 
         # Cinnamon / Mate
         if [[ ${desktop} == "cinnamon" || ${desktop} == "mate" ]]
         then
-            _chroot "sed -i -e 's/_desktop_/${desktop}-session/g' lxdm.conf"
+            sed -i -e 's/_desktop_/${desktop}-session/g' lxdm.conf
 
         # Enlightenment
         elif [[ ${desktop} == "enlightenment" ]]
         then
-            _chroot "sed -i -e 's/_desktop_/enlightenment_start/g' lxdm.conf"
+            sed -i -e 's/_desktop_/enlightenment_start/g' lxdm.conf
 
         # Budgie
         elif [[ ${desktop} == "budgie" ]]
         then
-            _chroot "sed -i -e 's/_desktop_/budgie-desktop/g' lxdm.conf"
+            sed -i -e 's/_desktop_/budgie-desktop/g' lxdm.conf
 
         # Xfce / Lxde / Lxqt
         else
-            _chroot "sed -i -e 's/_desktop_/start${desktop}/g' lxdm.conf"
+            sed -i -e 's/_desktop_/start${desktop}/g' lxdm.conf
+        fi
 
-        _chroot "sed -i -e 's/_user_/${USER_name}/g' lxdm.conf
-        mv lxdm.conf /etc/lxdm/lxdm.conf
-        systemctl enable lxdm"
+        sed -i -e 's/_user_/${USER_name}/g' lxdm.conf
+        mv lxdm.conf /mnt/etc/lxdm/lxdm.conf
+        _chroot "systemctl enable lxdm"
     fi
 }
