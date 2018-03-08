@@ -39,8 +39,8 @@ _base() {
 
     # Setting pacman
     _info "Setting pacman"
-    _chroot "_wget ${_url}/conf/pacman.conf
-    mv pacman.conf /etc/pacman.conf"
+    _wget ${_url}/conf/pacman.conf
+    mv pacman.conf /mnt/etc/pacman.conf
     if [[ ! -z ${_multilib+x} ]]
     then
         _chroot "sed -i -e 's/#MULTI //g' /etc/pacman.conf"
@@ -73,9 +73,9 @@ _base() {
 
     # Setting Reflector
     _info "Setting reflector service"
-    _chroot "_wget ${_url}/conf/reflector.service
-    mv reflector.service /etc/systemd/system/reflector.service
-    systemctl enable reflector.service"
+    _wget ${_url}/conf/reflector.service
+    mv reflector.service /mnt/etc/systemd/system/reflector.service
+    _chroot "systemctl enable reflector.service"
 
     # Setting user
     _info "Setting user"
