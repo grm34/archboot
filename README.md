@@ -35,7 +35,7 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 
 # Network = ntp networkmanager wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools
 
-# Required = vim git htop dialog numlockx reflector
+# Required = vim git htop numlockx reflector
 
 # Bootloader = grub os-prober gptfdisk efibootmgr
 
