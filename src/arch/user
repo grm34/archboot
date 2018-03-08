@@ -9,7 +9,6 @@ _user_infos() {
         _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
         read -r language
     done
-    echo
     keymap_code=$(echo ${language} | cut -d'_' -f 1)
 
     # TimeZone
@@ -19,7 +18,6 @@ _user_infos() {
         _prompt "Enter TimeZone code:" "(ex: Europe/Paris, Asia/Tokyo)"
         read -r timezone
     done
-    echo
 
     # Hostname
     until [[ ${#HOST_name} -ge 3 \
