@@ -55,6 +55,16 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 # Xfce = xfce4 xfce4-goodies lxdm
 
 # Deepin = deepin deepin-extra
+
+# Cinnamon = cinnamon lxdm
+
+# Budgie = budgie-desktop lxdm
+
+# Enlightenment = enlightenment lxdm
+
+# Mate = mate mate-extra lxdm
+
+# Lxqt = lxqt lxdm
 ````
 </p>
 </details>
