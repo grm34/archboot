@@ -23,16 +23,16 @@ export _xfce4="xfce4 xfce4-goodies lxdm"
 export _deepin="deepin deepin-extra"
 
 # Cinnamon
-#export _cinnamon="cinnamon"
+export _cinnamon="cinnamon lxdm"
 
 # Budgie
-#export _budgie="budgie-desktop"
+export _budgie="budgie-desktop lxdm"
 
 # Enlightenment
-#export _enlightenment="enlightenment terminology"
+export _enlightenment="enlightenment lxdm"
 
 # Mate
-#export _mate="mate mate-extra"
+export _mate="mate mate-extra lxdm"
 
 # Lxqt
-#export _lxqt="lxqt"
+export _lxqt="lxqt lxdm"

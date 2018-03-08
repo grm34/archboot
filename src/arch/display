@@ -2,34 +2,54 @@
 
 _display_manager() {
 
-    # XFCE or LXDE > LXDM
-    if [[ ${desktop} == "xfce4" || ${desktop} == "lxde" ]]
-    then
-        _info "Enabling LXDM"
-        _chroot "_wget ${_url}/conf/lxdm.conf
-        sed -i -e 's/_desktop_/${desktop}/g' lxdm.conf
-        sed -i -e 's/_user_/${USER_name}/g' lxdm.conf
-        mv lxdm.conf /etc/lxdm/lxdm.conf
-        systemctl enable lxdm"
-
-    # GNOME > GDM
-    elif [[ ${desktop} == "gnome" ]]
+    # GDM > Gnome
+    if [[ ${desktop} == "gnome" ]]
     then
         _info "Enabling GDM"
         _chroot "systemctl enable gdm"
 
-    # KDE > SDDM
+    # SDDM > Kde
     elif [[ ${desktop} == "kde" ]]
     then
         _info "Enabling SDDM"
         _chroot "systemctl enable sddm"
 
-    # DEEPIN > LIGHTDM
+    # LIGHTDM > Deepin
     elif [[ ${desktop} == "deepin" ]]
     then
         _info "Enabling LightDM"
-        _chroot "_wget ${_url}/conf/lightdm.conf
-        mv lightdm.conf /etc/lightdm/lightdm.conf
-        systemctl enable lightdm"
+        _wget ${_url}/conf/lightdm.conf
+        mv lightdm.conf /mnt/etc/lightdm/lightdm.conf
+        _chroot "systemctl enable lightdm"
+
+    # LXDM > Xfce, Lxde, Lxqt, Cinnamon
+    else
+    then
+        _info "Enabling LXDM"
+        _wget ${_url}/conf/lxdm.conf
+
+        # Cinnamon / Mate
+        if [[ ${desktop} == "cinnamon" || ${desktop} == "mate" ]]
+        then
+            sed -i -e 's/_desktop_/${desktop}-session/g' lxdm.conf
+
+        # Enlightenment
+        elif [[ ${desktop} == "enlightenment" ]]
+        then
+            sed -i -e 's/_desktop_/enlightenment_start/g' lxdm.conf
+
+        # Budgie
+        elif [[ ${desktop} == "budgie" ]]
+        then
+            sed -i -e 's/_desktop_/budgie-desktop/g' lxdm.conf
+
+        # Xfce / Lxde / Lxqt
+        else
+            sed -i -e 's/_desktop_/start${desktop}/g' lxdm.conf
+        fi
+
+        sed -i -e 's/_user_/${USER_name}/g' lxdm.conf
+        mv lxdm.conf /mnt/etc/lxdm/lxdm.conf
+        _chroot "systemctl enable lxdm"
     fi
 }

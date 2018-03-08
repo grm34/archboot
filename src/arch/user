@@ -9,7 +9,6 @@ _user_infos() {
         _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
         read -r language
     done
-    echo
     keymap_code=$(echo ${language} | cut -d'_' -f 1)
 
     # TimeZone
@@ -19,7 +18,6 @@ _user_infos() {
         _prompt "Enter TimeZone code:" "(ex: Europe/Paris, Asia/Tokyo)"
         read -r timezone
     done
-    echo
 
     # Hostname
     until [[ ${#HOST_name} -ge 3 \
@@ -32,7 +30,8 @@ _user_infos() {
     # Root Password
     until [[ ${#a} -ge 8 && "${a}" == *[a-z]* && "${a}" == *[0-9]* ]]
     do
-        _note "password should be at least 8 chars long with 1 letter and 1 digit"
+        _note \
+"password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for root:"
         read -rs a
     done
@@ -58,7 +57,8 @@ _user_infos() {
     # User Password
     until [[ ${#b} -ge 8 && "${b}" == *[a-z]* && "${b}" == *[0-9]* ]]
     do
-        _note "password should be at least 8 chars long with 1 letter and 1 digit"
+        _note \
+"password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for ${USER_name}:"
         read -rs b
     done
@@ -93,13 +93,16 @@ _user_infos() {
     _confirm "Do you wish to install Desktop Environment?"
     if [[ ${confirm} == "y" ]]
     then
-        until [[ ${c} == "1" || ${c} == "2" || ${c} == "3" || ${c} == "4" || ${c} == "5" ]]
+        until [[ ${c} =~ ^([1-9]|10)$ ]]
         do
-            _prompt "Kde" "[1]" "- Gnome" "[2]" "- Xfce" "[3]" "- Lxde" "[4]" "- Deepin" "[5]"
+            _prompt "Gnome" "[1]" "KDE" "[2]" "MATE" "[3]" "Xfce" "[4]" \
+"LXDE" "[5]" "LXQt" "[6]" "Deepin" "[7]" "Budgie" "[8]" "Cinnamon" "[9]" \
+"Enlightenment" "[10]"
             read -r c
         done
-        choice=(none kde gnome xfce4 lxde)
-        export desktop=${choice[${c}]}
+        DE=\
+(none gnome kde mate xfce4 lxde lxqt deepin budgie cinnamon enlightenment)
+        export desktop=${DE[${c}]}
     fi
     unset confirm
 
