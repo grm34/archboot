@@ -7,7 +7,8 @@ _bootloader() {
     _chroot "pacman --noconfirm -S ${_bootapps}
     if [[ '${FIRMWARE}' == 'UEFI' ]]
     then
-        grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch
+        grub-install --target=x86_64-efi --efi-directory=/boot/efi \
+--bootloader-id=arch
     else
         grub-install --target=i386-pc /dev/${_disk}
     fi"
@@ -21,8 +22,10 @@ _bootloader() {
     _info "Installing Grub Themes"
     _chroot 'cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/
     mv background.png /boot/grub/themes/Archlinux/
-    echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" >> /etc/default/grub
-    echo "desktop-image: \"background.png\"" >> /boot/grub/themes/Archlinux/theme.txt'
+    echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
+>> /etc/default/grub
+    echo "desktop-image: \"background.png\"" \
+>> /boot/grub/themes/Archlinux/theme.txt'
 
     # Setting Grub
     _info "Setting Grub for ${FIRMWARE} firmware"
