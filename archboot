@@ -33,11 +33,6 @@ ${__author__}" >&2
 # Global functions
 #
 
-# Function to DL with progress bar but without output
-_wget() {
-    wget ${1} -q --show-progress
-}
-
 # Function to display install steps
 _info() {
     echo -e "${yellow}\n==> ${cyan}${1}...${nc}"
@@ -47,6 +42,11 @@ _info() {
 # Function to display some notes
 _note() {
     echo -e "${red}\nNote: ${blue}${1}${nc}" >&2
+}
+
+# Function to DL with progress bar but without output
+_wget() {
+    wget ${1} -q --show-progress
 }
 
 # Function to execute actions in chrooted environment
@@ -76,7 +76,7 @@ _check() {
     "$@"
     local status=$?
     if [ ${status} -ne 0 ]; then
-        echo -e "${red}\n\nError: ${yellow}${1}. Please try again.${nc}\n" >&2
+        echo -e "${red}Error: ${yellow}${1}. Please try again.${nc}\n" >&2
         for d in $(seq 10 -1 1); do
             echo -ne "\r\033[K${green}System will reboot in ${d}s...${nc}\n"
             sleep 1
@@ -91,7 +91,7 @@ _confirm() {
     until [[ ${confirm} =~ ^[yn]$ ]]; do
         echo -e "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}" >&2
         echo -e "==> \
--------------------------------------------------------" >&2
+------------------------------------------------------" >&2
         echo -ne "==> ${nc}" >&2
         read -r confirm
     done
@@ -107,7 +107,7 @@ ${red}${10} ${green}${11} ${red}${12}${yellow}" >&2
         echo -e "==> ${green}${13} ${red}${14} ${green}${15} ${red}${16} \
 ${green}${17} ${red}${18} ${green}${19} ${red}${20}${yellow}" >&2
     fi
-    echo -e "==> -------------------------------------------------------" >&2
+    echo -e "==> ------------------------------------------------------" >&2
     echo -ne "==> ${nc}" >&2
 }
 
@@ -153,7 +153,6 @@ if [[ ${confirm} == "y" ]]; then
     _wget ${_url}/conf/language            # to get language code
     _wget ${_url}/conf/timezone            # to get region code
 else
-    echo
     exit
 fi
 unset confirm
@@ -209,6 +208,5 @@ if [[ ${confirm} == "y" ]]; then
     umount -R /mnt
     reboot
 else
-    echo
     exit
 fi
