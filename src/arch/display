@@ -22,33 +22,32 @@ _display_manager() {
         mv lightdm.conf /mnt/etc/lightdm/lightdm.conf
         _chroot "systemctl enable lightdm"
 
-    # LXDM > Xfce, Lxde, Lxqt, Cinnamon
+    # LXDM
     else
-    then
         _info "Enabling LXDM"
         _wget ${_url}/conf/lxdm.conf
 
         # Cinnamon / Mate
         if [[ ${desktop} == "cinnamon" || ${desktop} == "mate" ]]
         then
-            sed -i -e 's/_desktop_/${desktop}-session/g' lxdm.conf
+            sed -i -e "s/_desktop_/${desktop}-session/g" lxdm.conf
 
         # Enlightenment
         elif [[ ${desktop} == "enlightenment" ]]
         then
-            sed -i -e 's/_desktop_/enlightenment_start/g' lxdm.conf
+            sed -i -e "s/_desktop_/enlightenment_start/g" lxdm.conf
 
         # Budgie
         elif [[ ${desktop} == "budgie" ]]
         then
-            sed -i -e 's/_desktop_/budgie-desktop/g' lxdm.conf
+            sed -i -e "s/_desktop_/budgie-desktop/g" lxdm.conf
 
         # Xfce / Lxde / Lxqt
         else
-            sed -i -e 's/_desktop_/start${desktop}/g' lxdm.conf
+            sed -i -e "s/_desktop_/start${desktop}/g" lxdm.conf
         fi
 
-        sed -i -e 's/_user_/${USER_name}/g' lxdm.conf
+        sed -i -e "s/_user_/${USER_name}/g" lxdm.conf
         mv lxdm.conf /mnt/etc/lxdm/lxdm.conf
         _chroot "systemctl enable lxdm"
     fi
