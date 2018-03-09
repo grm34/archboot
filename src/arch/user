@@ -3,8 +3,7 @@
 _user_infos() {
 
     # User Language
-    until grep -Fxq "${language}" ./language
-    do
+    until grep -Fxq "${language}" ./language; do
         _note "list of available Language code is available on github"
         _prompt "Enter Language code:" "(ex: fr_FR, en_US, de_DE)"
         read -r language
@@ -12,8 +11,7 @@ _user_infos() {
     keymap_code=$(echo ${language} | cut -d'_' -f 1)
 
     # TimeZone
-    until grep -Fxq "${timezone}" ./timezone
-    do
+    until grep -Fxq "${timezone}" ./timezone; do
         _note "list of available TimeZone code is available on github"
         _prompt "Enter TimeZone code:" "(ex: Europe/Paris, Asia/Tokyo)"
         read -r timezone
@@ -21,15 +19,13 @@ _user_infos() {
 
     # Hostname
     until [[ ${#HOST_name} -ge 3 \
-    && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]
-    do
+    && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter Hostname:" "(ex: my-favorite-computer)"
         read -r HOST_name
     done
 
     # Root Password
-    until [[ ${#a} -ge 8 && "${a}" == *[a-z]* && "${a}" == *[0-9]* ]]
-    do
+    until [[ ${#a} -ge 8 && "${a}" == *[a-z]* && "${a}" == *[0-9]* ]]; do
         _note \
 "password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for root:"
@@ -40,23 +36,20 @@ _user_infos() {
     # Confirm Root Password
     _prompt "Confirm password for root:"
     read -rs ROOT_passwd
-    if [[ ${ROOT_passwd} != "${a}" ]]
-    then
+    if [[ ${ROOT_passwd} != "${a}" ]]; then
         _error "passwords does not match! Please try again."
     fi
     echo
 
     # Username
     until [[ ${#USER_name} -ge 3 \
-    && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]
-    do
+    && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter Username:" "(ex: johnny)"
         read -r USER_name
     done
 
     # User Password
-    until [[ ${#b} -ge 8 && "${b}" == *[a-z]* && "${b}" == *[0-9]* ]]
-    do
+    until [[ ${#b} -ge 8 && "${b}" == *[a-z]* && "${b}" == *[0-9]* ]]; do
         _note \
 "password should be at least 8 chars long with 1 letter and 1 digit"
         _prompt "Enter password for ${USER_name}:"
@@ -67,34 +60,29 @@ _user_infos() {
     # Confirm User Password
     _prompt "Confirm password for ${USER_name}:"
     read -rs USER_passwd
-    if [[ ${USER_passwd} != "${b}" ]]
-    then
+    if [[ ${USER_passwd} != "${b}" ]]; then
         _error "passwords does not match! Please try again."
     fi
     echo
 
     # Multilib
     _confirm "Enable multilib for 32-bit support?"
-    if [[ ${confirm} == "y" ]]
-    then
+    if [[ ${confirm} == "y" ]]; then
         export _multilib="yes"
     fi
     unset confirm
 
     # AUR
     _confirm "Install yaourt to enable AUR support?"
-    if [[ ${confirm} == "y" ]]
-    then
+    if [[ ${confirm} == "y" ]]; then
         export _aur="yes"
     fi
     unset confirm
 
     # Desktop Environment
     _confirm "Do you wish to install Desktop Environment?"
-    if [[ ${confirm} == "y" ]]
-    then
-        until [[ ${c} =~ ^([1-9]|10)$ ]]
-        do
+    if [[ ${confirm} == "y" ]]; then
+        until [[ ${c} =~ ^([1-9]|10)$ ]]; do
             _prompt "Gnome" "[1]" "KDE" "[2]" "MATE" "[3]" "Xfce" "[4]" \
 "LXDE" "[5]" "LXQt" "[6]" "Deepin" "[7]" "Budgie" "[8]" "Cinnamon" "[9]" \
 "Enlightenment" "[10]"
