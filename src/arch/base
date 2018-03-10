@@ -75,8 +75,10 @@ _base() {
     _chroot "systemctl enable reflector.service"
 
     # Setting user
-    _info "Setting user"
+    _info "Setting ${USER_name}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_name}
-    echo '${USER_name}:${USER_passwd}' | chpasswd
-    echo '${USER_name} ALL=(ALL) ALL' >> /etc/sudoers"
+    echo '${USER_name}:${USER_passwd}' | chpasswd"
+    if [[ ! -z ${power+x} ]]; then
+        echo "${USER_name} ALL=(ALL) ALL" >> /mnt/etc/sudoers
+    fi
 }
