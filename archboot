@@ -196,7 +196,7 @@ fi
 # Logfile path
 _info "Setting logfile path"
 mkdir /mnt/var/log/archboot
-cp "${logfile}" /mnt/var/log/archboot/
+cp "${log}" /mnt/var/log/archboot/
 
 # Success notes
 _note "Installation successful! \
