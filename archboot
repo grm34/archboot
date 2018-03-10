@@ -86,6 +86,17 @@ _check() {
     return ${status}
 }
 
+# Function to display errors
+_error() {
+    echo -e "${red}\n\nError: ${yellow}${1}${nc}\n" >&2
+    for d in $(seq 10 -1 1)
+    do
+        echo -ne "\r\033[K${green}System will reboot in ${d}s...${nc}"
+        sleep 1
+    done
+    reboot
+}
+
 # Function to ask confirmation (Yes/No)
 _confirm() {
     until [[ ${confirm} =~ ^[yn]$ ]]; do
@@ -163,7 +174,7 @@ source ./base; source ./bootloader; source ./firmware
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
 # Prepare the system
-_user_infos; _clock; _logs; _firmware; _partition; mounting
+_user_infos; _clock; _logs; _firmware; _partition; _mounting
 
 _note "system ready! Partitions mounted & swap activated."
 
