@@ -65,7 +65,7 @@ _user_infos() {
     fi
     echo
 
-    # Multilib
+    # User Rights
     _confirm "Give all rights to ${USER_name}?"
     if [[ ${confirm} == "y" ]]; then
         export power="yes"
@@ -75,14 +75,14 @@ _user_infos() {
     # Multilib
     _confirm "Enable multilib for 32-bit support?"
     if [[ ${confirm} == "y" ]]; then
-        export _multilib="yes"
+        export multilib="yes"
     fi
     unset confirm
 
     # AUR
     _confirm "Install yaourt to enable AUR support?"
     if [[ ${confirm} == "y" ]]; then
-        export _aur="yes"
+        export aur="yes"
     fi
     unset confirm
 
