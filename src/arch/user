@@ -66,6 +66,13 @@ _user_infos() {
     echo
 
     # Multilib
+    _confirm "Give all rights to ${USER_name}?"
+    if [[ ${confirm} == "y" ]]; then
+        export power="yes"
+    fi
+    unset confirm
+
+    # Multilib
     _confirm "Enable multilib for 32-bit support?"
     if [[ ${confirm} == "y" ]]; then
         export _multilib="yes"
