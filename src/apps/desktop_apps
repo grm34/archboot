@@ -29,7 +29,7 @@ export _cinnamon="cinnamon lxdm"
 export _budgie="budgie-desktop lxdm"
 
 # Enlightenment
-export _enlightenment="enlightenment lxdm"
+export _enlightenment="enlightenment terminology lxdm"
 
 # Mate
 export _mate="mate mate-extra lxdm"
