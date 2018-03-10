@@ -16,7 +16,7 @@ _DE_settings() {
 
     # Keyboard layout
     _info "Setting keyboard layout"
-    _wget ${_url}/conf/00-keyboard.conf
+    wget ${_url}/conf/00-keyboard.conf
     sed -i -e "s/keymap_code/${keymap_code}/g" 00-keyboard.conf
     mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
 
