@@ -22,6 +22,8 @@ _DE_settings() {
 
     # Groups
     _info "Add ${USER_name} to all groups"
+    _chroot "yes | pwck"
+    _chroot "yes | grpck"
     group_list=$(cut -d: -f1 /mnt/etc/group)
     for group in ${group_list}; do
         _chroot "gpasswd -a ${USER_name} ${group}"
