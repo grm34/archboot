@@ -45,17 +45,17 @@ _base() {
         _chroot "sed -i -e 's/#MULTI //g' /etc/pacman.conf"
     fi
 
+    # Install Network
+    _info "Installing network"
+    _chroot "pacman --noconfirm -S ${_netapps}
+    systemctl enable NetworkManager"
+
     # Install yaourt
     if [[ ! -z ${aur+x} ]]; then
         _info "Installing yaourt"
         sed -i -e "s/#AUR //g" /mnt/etc/pacman.conf
         _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
     fi
-
-    # Install Network
-    _info "Installing network"
-    _chroot "pacman --noconfirm -S ${_netapps}
-    systemctl enable NetworkManager"
 
     # Install Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
