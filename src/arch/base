@@ -12,22 +12,22 @@ _base() {
 
     # Setting TimeZone
     _info "Setting TimeZone"
-    _chroot "ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime"
+    ln -sf /usr/share/zoneinfo/${timezone} /mnt/etc/localtime
 
     # Setting locale
     _info "Setting and generating locale"
-    _chroot "echo '${language}.UTF-8 UTF-8' >> /etc/locale.gen
-    locale-gen
-    export LANG=${language}.UTF-8
-    echo 'LANG=${language}.UTF-8' > /etc/locale.conf"
+    echo "${language}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+    _chroot "locale-gen
+    export LANG=${language}.UTF-8"
+    echo "LANG=${language}.UTF-8" > /mnt/etc/locale.conf
 
     # Setting keyboard
     _info "Setting keyboard"
-    _chroot "echo 'KEYMAP=${keymap_code}' > /etc/vconsole.conf"
+    echo "KEYMAP=${keymap_code}" > /mnt/etc/vconsole.conf
 
     # Setting hostname
     _info "Setting hostname"
-    _chroot "echo '${HOST_name}' > /etc/hostname"
+    echo "${HOST_name}" > /mnt/etc/hostname
 
     # Setting Linux
     _info "Setting Linux environment"
@@ -39,7 +39,7 @@ _base() {
 
     # Setting pacman
     _info "Setting pacman"
-    _wget ${_url}/conf/pacman.conf
+    wget ${_url}/conf/pacman.conf
     mv pacman.conf /mnt/etc/pacman.conf
     if [[ ! -z ${_multilib+x} ]]; then
         _chroot "sed -i -e 's/#MULTI //g' /etc/pacman.conf"
@@ -48,8 +48,8 @@ _base() {
     # Install yaourt
     if [[ ! -z ${_aur+x} ]]; then
         _info "Installing yaourt"
-        _chroot "sed -i -e 's/#AUR //g' /etc/pacman.conf
-        pacman --noconfirm -Syu ${_yaourtapps}"
+        sed -i -e "s/#AUR //g" /mnt/etc/pacman.conf
+        _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
     fi
 
     # Install Network
@@ -70,7 +70,7 @@ _base() {
 
     # Setting Reflector
     _info "Setting reflector service"
-    _wget ${_url}/conf/reflector.service
+    wget ${_url}/conf/reflector.service
     mv reflector.service /mnt/etc/systemd/system/reflector.service
     _chroot "systemctl enable reflector.service"
 
