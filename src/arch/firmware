@@ -4,10 +4,7 @@ _firmware() {
 
     # Firmware Detection
     _info "Firmware detection"
-    if [ -d /sys/firmware/efi/efivars ]
-
-    # Define vars for partition type
-    then
+    if [ -d /sys/firmware/efi/efivars ]; then
         FIRMWARE="UEFI"
         part_table="GPT"
         part_code="g"

@@ -4,14 +4,13 @@ _bootloader() {
 
     # Install Grub
     _info "Installing Grub for ${FIRMWARE} firmware"
-    _chroot "pacman --noconfirm -S ${_bootapps}
-    if [[ '${FIRMWARE}' == 'UEFI' ]]
-    then
-        grub-install --target=x86_64-efi --efi-directory=/boot/efi \
---bootloader-id=arch
+    _chroot "pacman --noconfirm -S ${_bootapps}"
+    if [[ '${FIRMWARE}' == 'UEFI' ]]; then
+        _chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi \
+--bootloader-id=arch"
     else
-        grub-install --target=i386-pc /dev/${_disk}
-    fi"
+        _chroot "grub-install --target=i386-pc /dev/${_disk}"
+    fi
 
     # Downloading Grub Themes
     _info "Downloading Grub Themes"
@@ -20,12 +19,12 @@ _bootloader() {
 
     # Installing Grub Themes
     _info "Installing Grub Themes"
-    mv background.png /mnt/boot/grub/themes/Archlinux/
     _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
     echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
 >> /mnt/etc/default/grub
     echo "desktop-image: \"background.png\"" \
 >> /mnt/boot/grub/themes/Archlinux/theme.txt
+    mv background.png /mnt/boot/grub/themes/Archlinux/
 
     # Setting Grub
     _info "Setting Grub for ${FIRMWARE} firmware"

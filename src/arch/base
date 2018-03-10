@@ -41,14 +41,12 @@ _base() {
     _info "Setting pacman"
     _wget ${_url}/conf/pacman.conf
     mv pacman.conf /mnt/etc/pacman.conf
-    if [[ ! -z ${_multilib+x} ]]
-    then
+    if [[ ! -z ${_multilib+x} ]]; then
         _chroot "sed -i -e 's/#MULTI //g' /etc/pacman.conf"
     fi
 
     # Install yaourt
-    if [[ ! -z ${_aur+x} ]]
-    then
+    if [[ ! -z ${_aur+x} ]]; then
         _info "Installing yaourt"
         _chroot "sed -i -e 's/#AUR //g' /etc/pacman.conf
         pacman --noconfirm -Syu ${_yaourtapps}"
@@ -61,8 +59,7 @@ _base() {
 
     # Install Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]
-    then
+    if [[ $? -eq 0 ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${_intel}"
     fi

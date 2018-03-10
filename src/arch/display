@@ -3,20 +3,17 @@
 _display_manager() {
 
     # GDM > Gnome
-    if [[ ${desktop} == "gnome" ]]
-    then
+    if [[ ${desktop} == "gnome" ]]; then
         _info "Enabling GDM"
         _chroot "systemctl enable gdm"
 
     # SDDM > Kde
-    elif [[ ${desktop} == "kde" ]]
-    then
+    elif [[ ${desktop} == "kde" ]]; then
         _info "Enabling SDDM"
         _chroot "systemctl enable sddm"
 
     # LIGHTDM > Deepin
-    elif [[ ${desktop} == "deepin" ]]
-    then
+    elif [[ ${desktop} == "deepin" ]]; then
         _info "Enabling LightDM"
         _wget ${_url}/conf/lightdm.conf
         mv lightdm.conf /mnt/etc/lightdm/lightdm.conf
@@ -28,18 +25,15 @@ _display_manager() {
         _wget ${_url}/conf/lxdm.conf
 
         # Cinnamon / Mate
-        if [[ ${desktop} == "cinnamon" || ${desktop} == "mate" ]]
-        then
+        if [[ ${desktop} == "cinnamon" || ${desktop} == "mate" ]]; then
             sed -i -e "s/_desktop_/${desktop}-session/g" lxdm.conf
 
         # Enlightenment
-        elif [[ ${desktop} == "enlightenment" ]]
-        then
+        elif [[ ${desktop} == "enlightenment" ]]; then
             sed -i -e "s/_desktop_/enlightenment_start/g" lxdm.conf
 
         # Budgie
-        elif [[ ${desktop} == "budgie" ]]
-        then
+        elif [[ ${desktop} == "budgie" ]]; then
             sed -i -e "s/_desktop_/budgie-desktop/g" lxdm.conf
 
         # Xfce / Lxde / Lxqt
