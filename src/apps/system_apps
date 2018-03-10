@@ -11,7 +11,7 @@ export _netapps="ntp networkmanager wget nmap rp-pppoe dhclient \
 iw wpa_supplicant wireless_tools"
 
 # Required
-export _requiredapps="vim git htop numlockx reflector"
+export _requiredapps="git numlockx reflector"
 
 # Bootloader
 export _bootapps="grub os-prober gptfdisk efibootmgr"
