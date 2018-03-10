@@ -37,7 +37,7 @@ _user_infos() {
     _prompt "Confirm password for root:"
     read -rs ROOT_passwd
     if [[ ${ROOT_passwd} != "${a}" ]]; then
-        _error "passwords does not match! Please try again."
+        _error "passwords does not match!"
     fi
     echo
 
@@ -61,7 +61,7 @@ _user_infos() {
     _prompt "Confirm password for ${USER_name}:"
     read -rs USER_passwd
     if [[ ${USER_passwd} != "${b}" ]]; then
-        _error "passwords does not match! Please try again."
+        _error "passwords does not match!"
     fi
     echo
 

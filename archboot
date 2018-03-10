@@ -44,12 +44,12 @@ _note() {
     echo -e "${red}\nNote: ${blue}${1}${nc}" >&2
 }
 
-# Function to DL with progress bar but without output
+# Function to DL with progress bar only
 _wget() {
     wget ${1} -q --show-progress
 }
 
-# Function to execute actions in chrooted environment
+# Function to execute action in chrooted environment
 _chroot() {
     arch-chroot /mnt /bin/bash <<EOF
     ${1}
@@ -76,21 +76,15 @@ _check() {
     "$@"
     local status=$?
     if [ ${status} -ne 0 ]; then
-        echo -e "${red}Error: ${yellow}${1}. Please try again.${nc}\n" >&2
-        for d in $(seq 10 -1 1); do
-            echo -ne "\r\033[K${green}System will reboot in ${d}s...${nc}\n"
-            sleep 1
-        done
-        reboot
+        _error
     fi
     return ${status}
 }
 
-# Function to display errors
+# Function to display error & reboot
 _error() {
-    echo -e "${red}\n\nError: ${yellow}${1}${nc}\n" >&2
-    for d in $(seq 10 -1 1)
-    do
+    echo -e "${red}Error: ${yellow}${1}. Please try again.${nc}\n" >&2
+    for d in $(seq 10 -1 1); do
         echo -ne "\r\033[K${green}System will reboot in ${d}s...${nc}"
         sleep 1
     done
@@ -146,8 +140,7 @@ ping -c 1 archlinux.org >/dev/null 2>&1
 if [[ $? == 0 ]]; then
     _note "OK, you are connected to Internet."
 else
-    _error "you are not connected to Internet. \
-Please check if ethernet is plugged in."
+    _error "you are not connected to Internet. Ethernet seems not plugged in."
 fi
 
 # Download base sources
@@ -183,7 +176,7 @@ _confirm "Do you wish to install ArchLinux now?"
 if [[ ${confirm} == "y" ]]; then
     (_base; _bootloader) 2>&1 | tee -a "${log}"
 else
-    _error "aborted by user! Please try again."
+    _error "aborted by user!"
 fi
 unset confirm
 
