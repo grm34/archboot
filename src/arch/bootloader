@@ -19,12 +19,12 @@ _bootloader() {
 
     # Installing Grub Themes
     _info "Installing Grub Themes"
-    mv background.png /mnt/boot/grub/themes/Archlinux/
     _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
     echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
 >> /mnt/etc/default/grub
     echo "desktop-image: \"background.png\"" \
 >> /mnt/boot/grub/themes/Archlinux/theme.txt
+    mv background.png /mnt/boot/grub/themes/Archlinux/
 
     # Setting Grub
     _info "Setting Grub for ${FIRMWARE} firmware"
