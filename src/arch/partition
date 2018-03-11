@@ -18,7 +18,7 @@ _partition() {
         dd if=/dev/zero of=/dev/${_disk} bs=512 count=1 conv=notrunc
         printf "${part_code}\nw" | fdisk /dev/"${_disk}"
     else
-        _error "aborted by user! HDD dedicated is required. Please try again."
+        _error "aborted by user! HDD dedicated is required."
     fi
     unset confirm
 

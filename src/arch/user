@@ -37,7 +37,7 @@ _user_infos() {
     _prompt "Confirm password for root:"
     read -rs ROOT_passwd
     if [[ ${ROOT_passwd} != "${a}" ]]; then
-        _error "passwords does not match! Please try again."
+        _error "passwords does not match!"
     fi
     echo
 
@@ -61,21 +61,28 @@ _user_infos() {
     _prompt "Confirm password for ${USER_name}:"
     read -rs USER_passwd
     if [[ ${USER_passwd} != "${b}" ]]; then
-        _error "passwords does not match! Please try again."
+        _error "passwords does not match!"
     fi
     echo
+
+    # User Rights
+    _confirm "Give all rights to ${USER_name}?"
+    if [[ ${confirm} == "y" ]]; then
+        export power="yes"
+    fi
+    unset confirm
 
     # Multilib
     _confirm "Enable multilib for 32-bit support?"
     if [[ ${confirm} == "y" ]]; then
-        export _multilib="yes"
+        export multilib="yes"
     fi
     unset confirm
 
     # AUR
     _confirm "Install yaourt to enable AUR support?"
     if [[ ${confirm} == "y" ]]; then
-        export _aur="yes"
+        export aur="yes"
     fi
     unset confirm
 

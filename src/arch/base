@@ -12,22 +12,22 @@ _base() {
 
     # Setting TimeZone
     _info "Setting TimeZone"
-    _chroot "ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime"
+    ln -sf /usr/share/zoneinfo/${timezone} /mnt/etc/localtime
 
     # Setting locale
     _info "Setting and generating locale"
-    _chroot "echo '${language}.UTF-8 UTF-8' >> /etc/locale.gen
-    locale-gen
-    export LANG=${language}.UTF-8
-    echo 'LANG=${language}.UTF-8' > /etc/locale.conf"
+    echo "${language}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+    _chroot "locale-gen
+    export LANG=${language}.UTF-8"
+    echo "LANG=${language}.UTF-8" > /mnt/etc/locale.conf
 
     # Setting keyboard
     _info "Setting keyboard"
-    _chroot "echo 'KEYMAP=${keymap_code}' > /etc/vconsole.conf"
+    echo "KEYMAP=${keymap_code}" > /mnt/etc/vconsole.conf
 
     # Setting hostname
     _info "Setting hostname"
-    _chroot "echo '${HOST_name}' > /etc/hostname"
+    echo "${HOST_name}" > /mnt/etc/hostname
 
     # Setting Linux
     _info "Setting Linux environment"
@@ -39,23 +39,27 @@ _base() {
 
     # Setting pacman
     _info "Setting pacman"
-    _wget ${_url}/conf/pacman.conf
+    wget ${_url}/conf/pacman.conf
     mv pacman.conf /mnt/etc/pacman.conf
-    if [[ ! -z ${_multilib+x} ]]; then
+    if [[ ! -z ${multilib+x} ]]; then
         _chroot "sed -i -e 's/#MULTI //g' /etc/pacman.conf"
     fi
 
-    # Install yaourt
-    if [[ ! -z ${_aur+x} ]]; then
-        _info "Installing yaourt"
-        _chroot "sed -i -e 's/#AUR //g' /etc/pacman.conf
-        pacman --noconfirm -Syu ${_yaourtapps}"
-    fi
+    # Upgrading packages
+    _info "Upgrading packages"
+    _chroot "pacman -Syu"
 
     # Install Network
     _info "Installing network"
     _chroot "pacman --noconfirm -S ${_netapps}
     systemctl enable NetworkManager"
+
+    # Install yaourt
+    if [[ ! -z ${aur+x} ]]; then
+        _info "Installing yaourt"
+        sed -i -e "s/#AUR //g" /mnt/etc/pacman.conf
+        _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
+    fi
 
     # Install Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
@@ -70,13 +74,15 @@ _base() {
 
     # Setting Reflector
     _info "Setting reflector service"
-    _wget ${_url}/conf/reflector.service
+    wget ${_url}/conf/reflector.service
     mv reflector.service /mnt/etc/systemd/system/reflector.service
     _chroot "systemctl enable reflector.service"
 
     # Setting user
-    _info "Setting user"
+    _info "Setting ${USER_name}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_name}
-    echo '${USER_name}:${USER_passwd}' | chpasswd
-    echo '${USER_name} ALL=(ALL) ALL' >> /etc/sudoers"
+    echo '${USER_name}:${USER_passwd}' | chpasswd"
+    if [[ ! -z ${power+x} ]]; then
+        echo "${USER_name} ALL=(ALL) ALL" >> /mnt/etc/sudoers
+    fi
 }
