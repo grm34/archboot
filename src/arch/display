@@ -15,14 +15,14 @@ _display_manager() {
     # LIGHTDM > Deepin
     elif [[ ${desktop} == "deepin" ]]; then
         _info "Enabling LightDM"
-        _wget ${_url}/conf/lightdm.conf
+        wget ${_url}/conf/lightdm.conf
         mv lightdm.conf /mnt/etc/lightdm/lightdm.conf
         _chroot "systemctl enable lightdm"
 
     # LXDM
     else
         _info "Enabling LXDM"
-        _wget ${_url}/conf/lxdm.conf
+        wget ${_url}/conf/lxdm.conf
 
         # Cinnamon / Mate
         if [[ ${desktop} == "cinnamon" || ${desktop} == "mate" ]]; then
