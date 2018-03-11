@@ -45,6 +45,10 @@ _base() {
         _chroot "sed -i -e 's/#MULTI //g' /etc/pacman.conf"
     fi
 
+    # Upgrading packages
+    _info "Upgrading packages"
+    _chroot "pacman -Syu"
+
     # Install Network
     _info "Installing network"
     _chroot "pacman --noconfirm -S ${_netapps}
