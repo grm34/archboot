@@ -30,7 +30,7 @@ Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log
 
 ## Improvement
 
-Do not be afraid to open issue to purpose some improvements such as new desktop environment or to fork and pull request for better code quality.
+Feel free to open issue to purpose some improvements such as new desktop environment or to fork and pull request better code quality.
 
 ## Screenshot
 
