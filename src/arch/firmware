@@ -9,7 +9,7 @@ _firmware() {
         part_table="GPT"
         part_code="g"
         part_type=""
-        boot_filesystem="fat -F 32"
+        boot_filesystem="fat -F32"
         _note "UEFI firmware detected."
     else
         FIRMWARE="BIOS"
