@@ -4,14 +4,14 @@ _mounting() {
 
     # Mount partitions & swap
     _info "Mounting partitions & swap"
-    _check mount /dev/"${_disk}${part_order[3]}" /mnt
+    _check mount /dev/${_disk}${part_order[3]} /mnt
     _check mkdir /mnt/{boot,home}
-    if [[ "${FIRMWARE}" == "UEFI" ]]; then
+    if [[ ${FIRMWARE} == "UEFI" ]]; then
         _check mkdir -p /mnt/boot/efi/EFI
-        _check mount -t vfat /dev/"${_disk}${part_order[1]}" /mnt/boot/efi
+        _check mount -t vfat /dev/${_disk}${part_order[1]} /mnt/boot/efi
     else
-        _check mount /dev/"${_disk}${part_order[1]}" /mnt/boot
+        _check mount /dev/${_disk}${part_order[1]} /mnt/boot
     fi
-    _check swapon /dev/"${_disk}${part_order[2]}"
-    _check mount /dev/"${_disk}${part_order[4]}" /mnt/home
+    _check swapon /dev/${_disk}${part_order[2]}
+    _check mount /dev/${_disk}${part_order[4]} /mnt/home
 }
