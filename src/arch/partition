@@ -17,6 +17,7 @@ _partition() {
     if [[ ${confirm} == "y" ]]; then
         dd if=/dev/zero of=/dev/${_disk} bs=512 count=1 conv=notrunc
         printf ${part_code}"\nw" | fdisk /dev/${_disk}
+        partprobe /dev/${_disk}
     else
         _error "aborted by user! HDD dedicated is required."
     fi
