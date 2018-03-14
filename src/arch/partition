@@ -72,7 +72,7 @@ _partition() {
     yes | _check mkfs.ext4 /dev/${_disk}${part_order[3]}
 
     # HOME partiton
-    if [[ "$FIRMWARE" == "UEFI" ]]; then
+    if [[ ${FIRMWARE} == "UEFI" ]]; then
 
         # HOME partiton size
         until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1} \
