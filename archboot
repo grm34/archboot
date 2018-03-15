@@ -7,7 +7,6 @@ __license__="Apache v2.0 License"
 
 _archboot_banner() {
     echo -e """${red}
-
       _             _     _                 _   
      / \   _ __  __| |__ | |__   ___   ___ | |_ 
     / _ \ | '__/ __| '_ \| '_ \ / _ \ / _ \| __|
@@ -80,9 +79,8 @@ _check() {
     return ${status}
 }
 
-# Function to display error & reboot
-_error() {
-    echo -e "${red}Error: ${yellow}${1}. Please try again.${nc}\n"
+# Function to reboot with 10s timeout
+_reboot() {
     for d in $(seq 10 -1 1); do
         echo -ne "\r\033[K${green}System will reboot in ${d}s...${nc}"
         sleep 1
@@ -90,7 +88,13 @@ _error() {
     reboot
 }
 
-# Function to display end of question
+# Function to display error
+_error() {
+    echo -e "${red}Error: ${yellow}${1}. Please try again.${nc}\n"
+    _reboot
+}
+
+# Function to display end
 _end() {
     for char in $(seq ${count}); do
         echo -ne "-"
