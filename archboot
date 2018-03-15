@@ -6,8 +6,8 @@ __author__="@grm34"
 __license__="Apache v2.0 License"
 
 _archboot_banner() {
-    echo -e """
-${red}
+    echo -e """${red}
+
       _             _     _                 _   
      / \   _ __  __| |__ | |__   ___   ___ | |_ 
     / _ \ | '__/ __| '_ \| '_ \ / _ \ / _ \| __|
