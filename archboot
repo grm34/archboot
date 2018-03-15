@@ -182,14 +182,14 @@ source ./base; source ./bootloader; source ./firmware
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
 # Prepare the system
-_user_infos || _clock || _logs || _firmware || _partition || _mounting
+_user_infos; _clock; _logs; _firmware; _partition; _mounting
 
 _note "system ready! Partitions mounted & swap activated."
 
 # Install ArchLinux
 _confirm "Do you wish to install ArchLinux now?"
 if [[ ${confirm} == "y" ]]; then
-    (_base || _bootloader) 2>&1 | tee -a ${log}
+    (_base; _bootloader) 2>&1 | tee -a ${log}
 else
     _error "aborted by user!"
 fi
@@ -213,7 +213,7 @@ if [[ ! -z ${desktop+x} ]]; then
     _vga_controller 2>&1 | tee -a ${log}
 
     # Install desktop environment
-    (_install_DE || _display_manager || _DE_settings) 2>&1 | tee -a ${log}
+    (_install_DE; _display_manager; _DE_settings) 2>&1 | tee -a ${log}
 fi
 
 # Logfile path
