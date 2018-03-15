@@ -31,5 +31,5 @@ _vga_controller() {
 			fi
 		fi
 	fi
-	return vga_controller
+	export vga_controller
 }
