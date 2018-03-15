@@ -1,32 +1,31 @@
 #!/bin/bash
 __appname__="archboot"
 __version__="v2.7.5"
-__branch__="master"
+__branch__="dev"
 __author__="@grm34"
 __license__="Apache v2.0 License"
 
-_banner() {
-    echo -e "${red}" >&2
-    echo -e "      _             _     _                 _   " >&2
-    echo -e "     / \   _ __  __| |__ | |__   ___   ___ | |_ " >&2
-    echo -e "    / _ \ | '__/ __| '_ \| '_ \ / _ \ / _ \| __|" >&2
-    echo -e "   / ___ \| | | (__| | | | |_) | (_) | (_) | |_ " >&2
-    echo -e "  /_/   \_\_|  \___|_| |_|_.__/ \___/ \___/ \__|\
-${green}${__version__}" >&2
-    echo -e "${blue}" >&2
-    echo -e " Welcome in archboot, a script made with love by \
-${__author__}" >&2
-    echo -e "${nc}" >&2
-    echo -e "Arch Linux is a light and fast distribution whose concept" >&2
-    echo -e "is to remain  as simple as possible.  In the same purpose" >&2
-    echo -e "this script  performs  minimalist  installation,  it only" >&2
-    echo -e "installs  the required  packages,  in order  to give free" >&2
-    echo -e "choice to  the user.  Pretty simple,  it just  prompt for" >&2
-    echo -e "hostname, username, password, which disk to use, required" >&2
-    echo -e "partitions, language, timezone and if you wish to install" >&2
-    echo -e "a desktop  environment.  According to the  chosen one and" >&2
-    echo -e "in order to get  complete  support, additionals  packages" >&2
-    echo -e "may be required." >&2
+_archboot_banner() {
+    echo -e """
+${red}
+      _             _     _                 _   
+     / \   _ __  __| |__ | |__   ___   ___ | |_ 
+    / _ \ | '__/ __| '_ \| '_ \ / _ \ / _ \| __|
+   / ___ \| | | (__| | | | |_) | (_) | (_) | |_ 
+  /_/   \_\_|  \___|_| |_|_.__/ \___/ \___/ \__|${green}${__version__}
+${blue}
+ Welcome in archboot, a script made with love by ${__author__}
+${nc}
+Arch Linux is a light and fast distribution whose concept
+is to remain  as simple as possible.  In the same purpose
+this script  performs  minimalist  installation,  it only
+installs  the required  packages,  in order  to give free
+choice to  the user.  Pretty simple,  it just  prompt for
+hostname, username, password, which disk to use, required
+partitions, language, timezone and if you wish to install
+a desktop  environment.  According to the  chosen one and
+in order to get  complete  support, additionals  packages
+may be required."""
 }
 
 #
@@ -41,7 +40,7 @@ _info() {
 
 # Function to display some notes
 _note() {
-    echo -e "${red}\nNote: ${blue}${1}${nc}" >&2
+    echo -e "${red}\nNote: ${blue}${1}${nc}"
 }
 
 # Function to DL with progress bar only
@@ -75,7 +74,7 @@ _clock() {
 _check() {
     "$@"
     local status=$?
-    if [ ${status} -ne 0 ]; then
+    if [[ ${status} -ne 0 ]]; then
         _error "with ${1}"
     fi
     return ${status}
@@ -83,7 +82,7 @@ _check() {
 
 # Function to display error & reboot
 _error() {
-    echo -e "${red}Error: ${yellow}${1}. Please try again.${nc}\n" >&2
+    echo -e "${red}Error: ${yellow}${1}. Please try again.${nc}\n"
     for d in $(seq 10 -1 1); do
         echo -ne "\r\033[K${green}System will reboot in ${d}s...${nc}"
         sleep 1
@@ -91,29 +90,46 @@ _error() {
     reboot
 }
 
+# Function to display end of question
+_end() {
+    for char in $(seq ${count}); do
+        echo -ne "-"
+    done
+    echo -ne "\n==> ${nc}"
+}
+
+
 # Function to ask confirmation (Yes/No)
 _confirm() {
+    count=$((${#1} + 6))
     until [[ ${confirm} =~ ^[yn]$ ]]; do
-        echo -e "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}" >&2
-        echo -e "==> \
-------------------------------------------------------" >&2
-        echo -ne "==> ${nc}" >&2
+        echo -ne "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}\n==> "
+        _end
         read -r confirm
     done
 }
 
+# Function to select an option
+_select() {
+    count=0
+    echo -ne "${yellow}\n==> "
+    for entry in ${@}; do
+        echo -ne "${green}${entry} ${red}[$((++count))] ${nc}"
+    done
+    lenth=${@}
+    number=$((${#*} * 4))
+    count=$((${#lenth} + ${number} + 1))
+    echo -ne "${yellow}\n==> "
+    _end
+}
+
 # Function to ask some infos
 _prompt() {
-    echo -e "${yellow}" >&2
-    echo -e "==> ${green}${1} ${red}${2} ${green}${3} ${red}${4} \
-${green}${5} ${red}${6} ${green}${7} ${red}${8} ${green}${9} \
-${red}${10} ${green}${11} ${red}${12}${yellow}" >&2
-    if [[ ! -z ${13+x} ]]; then
-        echo -e "==> ${green}${13} ${red}${14} ${green}${15} ${red}${16} \
-${green}${17} ${red}${18} ${green}${19} ${red}${20}${yellow}" >&2
-    fi
-    echo -e "==> ------------------------------------------------------" >&2
-    echo -ne "==> ${nc}" >&2
+    lenth=${@}
+    count=${#lenth}
+    echo -ne "\n${yellow}==> ${green}${1} ${red}${2}"
+    echo -ne "${yellow}\n==> "
+    _end
 }
 
 #
@@ -131,13 +147,12 @@ blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
 # Start Archboot
 #
 
-# Display banner
-_banner
+_archboot_banner
 
 # Check Internet Connection
 _info "Check Internet Connection"
 ping -c 1 archlinux.org >/dev/null 2>&1
-if [[ $? == 0 ]]; then
+if [[ $? -eq 0 ]]; then
     _note "OK, you are connected to Internet."
 else
     _error "you are not connected to Internet. Ethernet seems not plugged in."
@@ -167,14 +182,14 @@ source ./base; source ./bootloader; source ./firmware
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
 # Prepare the system
-_user_infos; _clock; _logs; _firmware; _partition; _mounting
+_user_infos || _clock || _logs || _firmware || _partition || _mounting
 
 _note "system ready! Partitions mounted & swap activated."
 
 # Install ArchLinux
 _confirm "Do you wish to install ArchLinux now?"
 if [[ ${confirm} == "y" ]]; then
-    (_base; _bootloader) 2>&1 | tee -a "${log}"
+    (_base || _bootloader) 2>&1 | tee -a ${log}
 else
     _error "aborted by user!"
 fi
@@ -185,16 +200,20 @@ if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
+    _wget ${_url}/src/arch/vga             # to scan video card
     _wget ${_url}/src/arch/desktop         # to install Desktop Environment
     _wget ${_url}/src/arch/display         # to configure Display Manager
     _wget ${_url}/src/apps/desktop_apps    # to load desktop apps
 
     # Import desktop sources
     _info "Importing sources"
-    source ./desktop; source ./display; source ./desktop_apps
+    source ./vga; source ./desktop; source ./display; source ./desktop_apps
+    
+    # Check VGA Card
+    _vga_controller 2>&1 | tee -a ${log}
 
     # Install desktop environment
-    (_install_DE; _display_manager; _DE_settings) 2>&1 | tee -a "${log}"
+    (_install_DE || _display_manager || _DE_settings) 2>&1 | tee -a ${log}
 fi
 
 # Logfile path
