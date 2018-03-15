@@ -2,9 +2,16 @@
 
 _install_DE() {
 
-    # Display Server
-    _info "Installing Display Server"
-    _chroot "pacman --noconfirm -S ${xorg}"
+    # VGA Controller
+    _info "Installing VGA Driver"
+    vga_driver="_${vga_controller}"
+    _chroot "pacman --noconfirm -S ${!vga_driver}"
+    if [[ ${vga_controller} != "default" ]]; then
+        _chroot "pacman --noconfirm -S ${openGL_x64} ${hard_video}"
+        if [[ ! -z ${multilib+x} ]]; then
+            _chroot "pacman --noconfirm -S ${openGL_x86}"
+        fi
+    fi
 
     # Desktop Environment
     _info "Installing ${desktop}"
