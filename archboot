@@ -90,7 +90,7 @@ _reboot() {
 
 # Function to display error
 _error() {
-    echo -e "${red}Error: ${yellow}${1}. Please try again.${nc}\n"
+    echo -e "${red}Error: ${yellow}${1} ==> Please try again.${nc}\n"
     _reboot
 }
 
