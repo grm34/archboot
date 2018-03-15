@@ -89,14 +89,14 @@ _user_infos() {
     # Desktop Environment
     _confirm "Do you wish to install Desktop Environment?"
     if [[ ${confirm} == "y" ]]; then
-        until [[ ${c} =~ ^([1-9]|10)$ ]]; do
+        until [[ ${desk} =~ ^([1-9]|10)$ ]]; do
             _select "Gnome" "KDE" "MATE" "Xfce" "LXDE" "LXQt" \
 "Deepin" "Budgie" "Cinnamon" "Enlightenment"
-            read -r c
+            read -r desk
         done
-        DE=\
+        desktop_choice=\
 (none gnome kde mate xfce4 lxde lxqt deepin budgie cinnamon enlightenment)
-        export desktop=${DE[${c}]}
+        export desktop=${desktop_choice[${desk}]}
     fi
     unset confirm
 
