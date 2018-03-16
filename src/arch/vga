@@ -8,26 +8,26 @@ _vga_controller() {
 	nvidia_card=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
 	if [[ $? -eq 0 ]]; then
 		_note "${nvidia_card##*: } detected."
-		export vga_controller="nvidia"
+		export vga_driver="nvidia"
 	else
 
 		# AMD / ATI
 		amd_card=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
 		if [[ $? -eq 0 ]]; then
 			_note "${amd_card##*: } detected."
-			export vga_controller="amd"
+			export vga_driver="amd"
 		else
 
 			# INTEL
 			intel_card=$(lspci | grep -e VGA -e 3D | grep -i intel)
 			if [[ $? -eq 0 ]]; then
 				_note "${intel_card##*: } detected."
-				export vga_controller="intel"
+				export vga_driver="intel"
 			
 			# DEFAULT
 			else
 				_note "VGA controller not found, default driver will be used."
-				export vga_controller="default"
+				export vga_driver="default"
 			fi
 		fi
 	fi
