@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_vga_controller() {
+_vga() {
 
 	_info "Scanning VGA Controller"
 
