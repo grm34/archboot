@@ -4,9 +4,9 @@ _install_DE() {
 
     # VGA Controller
     _info "Installing VGA Driver"
-    vga_driver="_${vga_controller}"
-    _chroot "pacman --noconfirm -S ${!vga_driver}"
-    if [[ ${vga_controller} != "default" ]]; then
+    install_vga="_${vga_driver}"
+    _chroot "pacman --noconfirm -S ${!install_vga}"
+    if [[ ${vga_driver} != "default" ]]; then
         _chroot "pacman --noconfirm -S ${openGL_x64} ${hard_video}"
         if [[ ! -z ${multilib+x} ]]; then
             _chroot "pacman --noconfirm -S ${openGL_x86}"
