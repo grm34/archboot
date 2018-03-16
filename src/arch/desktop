@@ -4,9 +4,8 @@ _install_DE() {
 
     # VGA Controller
     _info "Installing VGA Driver"
-    _vga_dv="_${vga_driver}"
-    install_vga=${!_vga_dv}
-    _chroot "pacman --noconfirm -S ${install_vga}"
+    install_vga="_${vga_driver}"
+    _chroot "pacman --noconfirm -S ${!install_vga}"
 
     # OpenGL & Hardware Video Acceleration
     if [[ ${vga_driver} != "default" ]]; then
