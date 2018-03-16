@@ -18,7 +18,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 :three: For AZERTY keyboard run: `loqdkeys fr`
 
-:four: Download archboot and follow the instructions: `wget tiny.cc/archboot; sh archboot`
+:four: Download archboot and follow the instructions: `wget tiny.cc/archboot-dev; sh archboot-dev`
 
 ## Notes
 
@@ -44,7 +44,7 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 
 #### Desktop Apps
 ```
-# Display Server = xorg xorg-server xorg-apps xorg-drivers
+# VGA Driver = xf86-video-* with Hardware Video Acceleration
 
 # Gnome = gnome gnome-extra
 

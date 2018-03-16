@@ -1,7 +1,25 @@
 #!/bin/bash
 
-# Display Server
-export xorg="xorg xorg-server xorg-apps xorg-drivers"
+#
+# VGA DRIVER
+#
+
+# Intel
+export _intel="xf86-video-intel vulkan-intel libva-intel-driver"
+
+# AMD
+export _amd="xf86-video-ati xf86-video-amdgpu vulkan-radeon"
+
+# Nvidia
+export _nvidia="xf86-video-nouveau"
+
+# Default Driver
+export _default="xf86-video-vesa"
+
+# OpenGL
+export openGL_x64="mesa"
+export openGL_x86="lib32-mesa"
+export hard_video="mesa-vdpau libva-vdpau-driver libvdpau-va-gl"
 
 #
 # DESKTOP ENVIRONMENT

@@ -15,7 +15,7 @@ _partition() {
     _note "WARNING! This will erase the entire drive."
     _confirm "Setting ${part_table} partition table on /dev/${_disk}"
     if [[ ${confirm} == "y" ]]; then
-        dd if=/dev/zero of=/dev/${_disk} bs=512 count=1 conv=notrunc
+        wipefs -fa /dev/${_disk}
         printf ${part_code}"\nw" | fdisk /dev/${_disk}
         partprobe /dev/${_disk}
     else
@@ -37,7 +37,9 @@ _partition() {
     # Create BOOT partition on /dev/xxx1
     _info "Setting boot of ${boot_size} on /dev/${_disk}${part_order[1]}"
     printf "n\n${part_type}\n\n+${boot_size}\nw" | fdisk /dev/${_disk}
+    partprobe /dev/${_disk}
     yes | _check mkfs.${boot_filesystem} /dev/${_disk}${part_order[1]}
+    partprobe /dev/${_disk}
 
     # SWAP partition size
     until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1} \
@@ -53,7 +55,9 @@ _partition() {
     # Create SWAP partition on /dev/xxx2
     _info "Setting Swap of ${swap_size} on /dev/${_disk}${part_order[2]}"
     printf "n\n${part_type}\n\n+${swap_size}\nw" | fdisk /dev/${_disk}
+    partprobe /dev/${_disk}
     yes | _check mkswap /dev/${_disk}${part_order[2]}
+    partprobe /dev/${_disk}
 
     # SYSTEM partiton size
     until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1} \
@@ -69,7 +73,9 @@ _partition() {
     # Create SYSTEM partition on /dev/xxx3
     _info "Setting System of ${sys_size} on /dev/${_disk}${part_order[3]}"
     printf "n\n${part_type}\n\n+${sys_size}\nw" | fdisk /dev/${_disk}
+    partprobe /dev/${_disk}
     yes | _check mkfs.ext4 /dev/${_disk}${part_order[3]}
+    partprobe /dev/${_disk}
 
     # HOME partiton
     if [[ ${FIRMWARE} == "UEFI" ]]; then
@@ -97,7 +103,9 @@ _partition() {
         _info "Setting Home on /dev/${_disk}${part_order[4]}"
         printf "n\n${part_type}\n\nw" | fdisk /dev/${_disk}
     fi
+    partprobe /dev/${_disk}
     yes | _check mkfs.ext4 /dev/${_disk}${part_order[4]}
+    partprobe /dev/${_disk}
 
     # Export
     export _disk
