@@ -68,15 +68,9 @@ _base() {
         _chroot "pacman --noconfirm -S ${_intel}"
     fi
 
-    # Install required packages
-    _info "Installing required packages"
-    _chroot "pacman --noconfirm -S ${_requiredapps}"
-
-    # Setting Reflector
-    _info "Setting reflector service"
-    wget ${_url}/conf/reflector.service
-    mv reflector.service /mnt/etc/systemd/system/reflector.service
-    _chroot "systemctl enable reflector.service"
+    # Numlock on Bootup
+    _info "Installing Numlock on Bootup"
+    _chroot "pacman --noconfirm -S ${_numlock}"
 
     # Setting user
     _info "Setting ${USER_name}"

@@ -212,8 +212,8 @@ if [[ ! -z ${desktop+x} ]]; then
     # Import desktop sources
     _info "Importing sources"
     source ./vga; source ./desktop; source ./display; source ./desktop_apps
-    
-    # Check VGA Controller
+
+    # Scan VGA Controller
     _vga_controller 2>&1 | tee -a ${log}
 
     # Install desktop environment
