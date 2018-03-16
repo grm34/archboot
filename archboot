@@ -213,11 +213,8 @@ if [[ ! -z ${desktop+x} ]]; then
     _info "Importing sources"
     source ./vga; source ./desktop; source ./display; source ./desktop_apps
 
-    # Scan VGA Controller
-    _vga_controller 2>&1 | tee -a ${log}
-
     # Install desktop environment
-    (_install_DE; _display_manager; _DE_settings) 2>&1 | tee -a ${log}
+    (_vga; _install_DE; _display_manager; _DE_settings) 2>&1 | tee -a ${log}
 fi
 
 # Logfile path
