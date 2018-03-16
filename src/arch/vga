@@ -1,0 +1,34 @@
+#!/bin/bash
+
+_vga_controller() {
+
+	_info "Scanning VGA Controller"
+
+	# NVIDIA
+	nvidia_card=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
+	if [[ $? -eq 0 ]]; then
+		_note ${nvidia_card##*: } "detected."
+		export vga_controller="nvidia"
+	else
+
+		# AMD / ATI
+		amd_card=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
+		if [[ $? -eq 0 ]]; then
+			_note ${amd_card##*: } "detected."
+			export vga_controller="amd"
+		else
+
+			# INTEL
+			intel_card=$(lspci | grep -e VGA -e 3D | grep -i intel)
+			if [[ $? -eq 0 ]]; then
+				_note ${intel_card##*: } "detected."
+				export vga_controller="intel"
+			
+			# DEFAULT
+			else
+				_note "VGA controller not found, default driver will be used."
+				export vga_controller="default"
+			fi
+		fi
+	fi
+}
