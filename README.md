@@ -14,7 +14,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 **1.** Reboot your computer, open Boot Selection Menu and boot on the USB bootable device.
 
-**2.** On the install menu of Arch Linux, select [Boot Arch Linux (x86_64)](https://raw.githubusercontent.com/grm34/archboot/master/img/archlinux.png).
+**2.** On the install menu of Arch Linux, select Boot Arch Linux (x86_64).
 
 **3.** For AZERTY keyboard run: `loqdkeys fr`
 
@@ -31,11 +31,6 @@ Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log
 ## Improvement
 
 Feel free to open issue to purpose some improvements such as new desktop environment or to fork and pull request better code quality.
-
-## Screenshot
-
-[![OS](https://img.shields.io/badge/Archlinux-Deepin-blue.svg)](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
-![](https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png)
 
 ## Official Documentation
 
