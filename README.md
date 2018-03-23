@@ -33,9 +33,9 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 
 # Microcode (in case of Intel CPU) = intel-ucode
 
-# Network = ntp networkmanager wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools
+# Network = ntp networkmanager wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools git
 
-# Required = vim git htop numlockx reflector
+# NumLock = numlockx
 
 # Bootloader = grub os-prober gptfdisk efibootmgr
 
