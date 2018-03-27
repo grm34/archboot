@@ -102,7 +102,6 @@ _end() {
     echo -ne "\n==> ${nc}"
 }
 
-
 # Function to ask confirmation (Yes/No)
 _confirm() {
     count=$((${#1} + 6))
