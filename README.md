@@ -30,8 +30,8 @@ Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log
 
 ## Improvement
 
-Feel free to open issue to purpose some improvements such as new desktop environment or to fork and pull request better code quality.
+Feel free opening issue to purpose some improvements such as new desktop environment or to fork and pull request better code quality.
 
 ## Official Documentation
 
-Take a look at [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) to view the official documentation.
+Take a look at [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) for the official documentation.
