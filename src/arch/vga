@@ -3,31 +3,46 @@
 _vga() {
 
 	_info "Scanning VGA Controller"
+	lspci | grep -e VGA -e 3D | wc -l >/dev/null 2>&1
 
-	# NVIDIA
-	nvidia_card=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
-	if [[ $? -eq 0 ]]; then
-		_note "${nvidia_card##*: } detected."
-		export vga_driver="nvidia"
+	# DUAL VGA CONTROLLER
+	if [[ $? == "2" ]]; then
+
+		# Check if Intel & Nvidia to install Bumblebee
+		lspci | grep -e VGA -e 3D | grep -ie nvidia | grep -i intel
+		if [[ $? -eq 0 ]]; then
+			_note "Your system is compatible to install Bumblebee."
+			export vga_driver="bumblebee"
+		fi
+
+	# SINGLE VGA CONTROLLER
 	else
 
-		# AMD / ATI
-		amd_card=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
+		# NVIDIA
+		nvidia_card=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
 		if [[ $? -eq 0 ]]; then
-			_note "${amd_card##*: } detected."
-			export vga_driver="amd"
+			_note "${nvidia_card##*: } detected."
+			export vga_driver="nvidia"
 		else
 
-			# INTEL
-			intel_card=$(lspci | grep -e VGA -e 3D | grep -i intel)
+			# AMD / ATI
+			amd_card=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
 			if [[ $? -eq 0 ]]; then
-				_note "${intel_card##*: } detected."
-				export vga_driver="intel"
-			
-			# DEFAULT
+				_note "${amd_card##*: } detected."
+				export vga_driver="amd"
 			else
-				_note "VGA controller not found, default driver will be used."
-				export vga_driver="default"
+
+				# INTEL
+				intel_card=$(lspci | grep -e VGA -e 3D | grep -i intel)
+				if [[ $? -eq 0 ]]; then
+					_note "${intel_card##*: } detected."
+					export vga_driver="intel"
+
+				# DEFAULT
+				else
+					_note "Controller not found, default driver will be used."
+					export vga_driver="default"
+				fi
 			fi
 		fi
 	fi
