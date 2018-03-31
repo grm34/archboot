@@ -20,7 +20,4 @@ _firmware() {
         _note "BIOS firmware detected."
     fi
     part_order=(0 1 2 3 4)
-
-    # Home Detection
-    #_info "Checking previous install"
 }
