@@ -6,6 +6,10 @@ _install_DE() {
     _info "Installing VGA Driver"
     install_vga="_${vga_driver}"
     _chroot "pacman --noconfirm -S ${!install_vga}"
+    if [[ ${vga_driver} == "bumblebee" ]]; then
+        _note "Enabling Bumblebee service"
+        _chroot "systemctl enable bumblebeed"
+    fi
 
     # OpenGL & Hardware Video Acceleration
     if [[ ${vga_driver} != "default" ]]; then
