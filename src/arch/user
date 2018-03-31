@@ -2,6 +2,15 @@
 
 _user_infos() {
 
+    # Fresh install
+    # if [[ ! -z ${home_exist+x} ]]; then
+    #     _confirm "Do you wish to keep your Home partition untouched?"
+    #     if [[ ${confirm} == "y" ]]; then
+    #         export fresh_install="yes"
+    #     fi
+    #     unset confirm
+    # fi
+
     # User Language
     until grep -Fxq "${language}" ./language; do
         _note "list of available Language code is available on github"
