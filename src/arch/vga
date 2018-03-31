@@ -3,10 +3,10 @@
 _vga() {
 
 	_info "Scanning VGA Controller"
-	lspci | grep -e VGA -e 3D | wc -l >/dev/null 2>&1
+	vga_number=$(lspci | grep -e VGA -e 3D | wc -l)
 
 	# DUAL VGA CONTROLLER
-	if [[ $? == "2" ]]; then
+	if [[ ${vga_number} == "2" ]]; then
 
 		# Check if Intel & Nvidia to install Bumblebee
 		lspci | grep -e VGA -e 3D | grep -ie nvidia | grep -i intel
