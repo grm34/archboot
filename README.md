@@ -44,8 +44,6 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 
 #### Desktop Apps
 ```
-# VGA Driver = xf86-video-* with Hardware Video Acceleration
-
 # Gnome = gnome gnome-extra
 
 # Kde = plasma kde-applications
@@ -65,6 +63,47 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 # Mate = mate mate-extra lxdm
 
 # Lxqt = lxqt lxdm
+````
+
+#### VGA Apps
+```
+# Default Driver = xf86-video-vesa
+
+# Driver Intel (open source) = xf86-video-intel
+
+# OpenGL Intel x64 (open source) = mesa
+
+# OpenGL Intel x86 (open source) = lib32-mesa
+
+# Hardware Acceleration Intel = vulkan-intel libva-intel-driver libvdpau-va-gl
+
+# Driver AMD (open source) = xf86-video-ati xf86-video-amdgpu
+
+# OpenGL AMD x64 (open source) = mesa
+
+# OpenGL AMD x86 (open source) = lib32-mesa
+
+# Hardware Acceleration AMD = vulkan-radeon libva-mesa-driver mesa-vdpau
+
+# Driver Nouveau (open source) = xf86-video-nouveau
+
+# OpenGL Nouveau x64 (open source) = mesa
+
+# OpenGL Nouveau x86 (open source) = lib32-mesa
+
+# Hardware Acceleration Nouveau (open source) = libva-vdpau-driver mesa-vdpau
+
+# Driver Nvidia (proprietary) = xf86-video-nvidia
+
+# OpenGL Nvidia x64 (proprietary) = nvidia-utils
+
+# OpenGL Nvidia x86 (proprietary) = lib32-nvidia-utils
+
+# Hardware Acceleration Nvidia (proprietary) = libva-vdpau-driver
+
+# Bumblebee open source config = bumblebee xf86-video-intel xf86-video-nouveau
+
+# Bumblebee proprietary config = bumblebee xf86-video-intel xf86-video-nvidia
 ````
 </p>
 </details>
