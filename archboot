@@ -29,7 +29,7 @@ may be required."""
 
 #
 # Global functions
-#
+# ________________
 
 # Function to display install steps
 _info() {
@@ -137,7 +137,7 @@ _prompt() {
 
 #
 # Global variables
-#
+# ________________
 
 # Github url
 _url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
@@ -148,7 +148,7 @@ blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
 
 #
 # Start Archboot
-#
+# ______________
 
 _archboot_banner
 
@@ -184,21 +184,10 @@ _info "Importing sources"
 source ./base; source ./bootloader; source ./firmware
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
-# Prepare the system
-_user_infos; _clock; _logs; _firmware; _partition; _mounting
+# User infos
+_user_infos
 
-_note "system ready! Partitions mounted & swap activated."
-
-# Install ArchLinux
-_confirm "Do you wish to install ArchLinux now?"
-if [[ ${confirm} == "y" ]]; then
-    (_base; _bootloader) 2>&1 | tee -a ${log}
-else
-    _error "aborted by user!"
-fi
-unset confirm
-
-# Install Desktop Environment
+# If Desktop Environment
 if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
@@ -207,23 +196,45 @@ if [[ ! -z ${desktop+x} ]]; then
     _wget ${_url}/src/arch/desktop         # to install Desktop Environment
     _wget ${_url}/src/arch/display         # to configure Display Manager
     _wget ${_url}/src/apps/desktop_apps    # to load desktop apps
+    _wget ${_url}/src/apps/vga_apps        # to load VGA apps
 
     # Import desktop sources
     _info "Importing sources"
-    source ./vga; source ./desktop; source ./display; source ./desktop_apps
+    source ./vga; source ./desktop; source ./display
+    source ./desktop_apps; source ./vga_apps
 
-    # Install desktop environment
-    (_vga; _install_DE; _display_manager; _DE_settings) 2>&1 | tee -a ${log}
+    # Scan VGA Controller and select appropriate driver
+    _scan_vga_controller
 fi
 
-# Logfile path
-_info "Setting logfile path"
-mkdir /mnt/var/log/archboot
-cp "${log}" /mnt/var/log/archboot/
+# Prepare the system
+_clock; _logs; _firmware; _partition; _mounting
 
-# Success notes
-_note "Installation successful! \
-${__appname__} ${__version__} by ${__author__} under ${__license__}"
+_note "system ready! Partitions mounted & swap activated."
+
+# Install ArchLinux
+_confirm "Do you wish to install ArchLinux now?"
+if [[ ${confirm} == "y" ]]; then
+    (_base; _bootloader) 2>&1 | tee -a ${log}
+
+    # Install desktop environment
+    if [[ ! -z ${desktop+x} ]]; then
+        (_install_DE; _display_manager; _DE_settings) 2>&1 | tee -a ${log}
+    fi
+
+    # Logfile path
+    _info "Setting logfile path"
+    mkdir /mnt/var/log/archboot
+    cp "${log}" /mnt/var/log/archboot/
+
+    # Success notes
+    _note "Installation successful! \
+    ${__appname__} ${__version__} by ${__author__} under ${__license__}"
+
+else
+    _error "aborted by user!"
+fi
+unset confirm
 
 # Reboot
 _confirm "Do you want to reboot your computer now?"
