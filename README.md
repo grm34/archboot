@@ -28,6 +28,12 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 
 Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log/archboot/archboot_*.log`
 
+## Screenshot
+
+<a href="https://grm34.github.io/archboot/">
+  <img src="https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png">
+</a>
+
 ## Improvement
 
 Feel free opening issue to purpose some improvements such as new desktop environment or to fork and pull request better code quality.
