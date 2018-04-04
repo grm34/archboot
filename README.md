@@ -100,7 +100,7 @@ ____ Nvidia Open Source ____
 
 # OpenGL x86 = lib32-mesa
 
-# Hardware Acceleration Nouveau (open source) = libva-vdpau-driver mesa-vdpau
+# Hardware Acceleration = libva-vdpau-driver mesa-vdpau
 
 
 ____ Nvidia Proprietary ____
