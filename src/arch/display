@@ -5,11 +5,14 @@ _display_manager() {
     # GDM > Gnome
     if [[ ${desktop} == "gnome" ]]; then
         _info "Enabling GDM"
+        wget ${_url}/conf/xprofile
+        mv xprofile /mnt/etc/xprofile
         _chroot "systemctl enable gdm"
 
     # SDDM > Kde
     elif [[ ${desktop} == "kde" ]]; then
         _info "Enabling SDDM"
+        sed -i -e "s/Numlock=none/Numlock=on/g" /mnt/etc/sddm.conf
         _chroot "systemctl enable sddm"
 
     # LIGHTDM > Deepin
@@ -17,7 +20,10 @@ _display_manager() {
         _info "Enabling LightDM"
         default-session="#greeter-session=example-gtk-gnome"
         session="greeter-session=lightdm-deepin-greeter"
+        numlock="greeter-setup-script=/usr/bin/numlockx on"
         sed -i -e "s|${default-session}|${session}|g" \
+        /mnt/etc/lightdm/lightdm.conf
+        sed -i -e "s|#greeter-setup-script=|${numlock}|g" \
         /mnt/etc/lightdm/lightdm.conf
         _chroot "systemctl enable lightdm"
 
