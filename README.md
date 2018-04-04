@@ -18,7 +18,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 **3.** For AZERTY keyboard run: `loqdkeys fr`
 
-**4.** Download archboot and follow the instructions: `wget tiny.cc/archboot; sh archboot`
+**4.** Download archboot and follow the instructions: `wget tiny.cc/archboot-dev; sh archboot-dev`
 
 ## Notes
 
@@ -713,7 +713,7 @@ Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log
 ## Screenshot
 
 <a href="https://grm34.github.io/archboot/">
-  <img src="https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png" width="   auto">
+  <img src="https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png">
 </a>
 
 ## Improvement
