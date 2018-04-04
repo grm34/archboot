@@ -28,7 +28,7 @@ may be required."""
 }
 
 #
-# Global functions
+# GLOBAL FUNCTIONS
 # ________________
 
 # Function to display install steps
@@ -136,7 +136,7 @@ _prompt() {
 }
 
 #
-# Global variables
+# GLOBAL VARIABLES
 # ________________
 
 # Github url
@@ -147,7 +147,7 @@ red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
 blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
 
 #
-# Start Archboot
+# START ARCHBOOT
 # ______________
 
 _archboot_banner
@@ -164,7 +164,7 @@ fi
 # Download base sources
 _confirm "Start downloading sources from github?"
 if [[ ${confirm} == "y" ]]; then
-    _info "Downloading sources"
+    _info "Downloading base sources"
     _wget ${_url}/src/arch/base            # to install ArchLinux Base system
     _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
     _wget ${_url}/src/arch/firmware        # to define options of partitions
@@ -180,12 +180,12 @@ fi
 unset confirm
 
 # Import base sources
-_info "Importing sources"
+_info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
-# User infos
-_user_infos
+# Ask for user informations
+_ask_user_informations
 
 # If Desktop Environment
 if [[ ! -z ${desktop+x} ]]; then
@@ -199,7 +199,7 @@ if [[ ! -z ${desktop+x} ]]; then
     _wget ${_url}/src/apps/vga_apps        # to load VGA apps
 
     # Import desktop sources
-    _info "Importing sources"
+    _info "Importing desktop sources"
     source ./vga; source ./desktop; source ./display
     source ./desktop_apps; source ./vga_apps
 
@@ -209,7 +209,6 @@ fi
 
 # Prepare the system
 _clock; _logs; _firmware; _partition; _mounting
-
 _note "system ready! Partitions mounted & swap activated."
 
 # Install ArchLinux

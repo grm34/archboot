@@ -37,29 +37,28 @@ _base() {
     _info "Setting root password"
     _chroot "echo 'root:${ROOT_passwd}' | chpasswd"
 
-    # Setting pacman
-    _info "Setting pacman"
-    wget ${_url}/conf/pacman.conf
-    mv pacman.conf /mnt/etc/pacman.conf
+    # Multilib support
     if [[ ! -z ${multilib+x} ]]; then
-        _chroot "sed -i -e 's/#MULTI //g' /etc/pacman.conf"
+        _info "Enabling multilib support"
+        sed -i -e "/multilib]/,/mirrorlist/ s/#//g" /mnt/etc/pacman.conf
     fi
 
-    # Upgrading packages
-    _info "Upgrading packages"
+    # AUR support
+    if [[ ! -z ${aur+x} ]]; then
+        _info "Enabling AUR support"
+        cat "[archlinuxfr]" >> /mnt/etc/pacman.conf
+        cat "SigLevel = Never" >> /mnt/etc/pacman.conf
+        cat "Server = http://repo.archlinux.fr/$arch" >> /mnt/etc/pacman.conf
+    fi
+
+    # Upgrading system
+    _info "Upgrading system"
     _chroot "pacman -Syu"
 
     # Install Network
     _info "Installing network"
     _chroot "pacman --noconfirm -S ${_netapps}
     systemctl enable NetworkManager"
-
-    # Install yaourt
-    if [[ ! -z ${aur+x} ]]; then
-        _info "Installing yaourt"
-        sed -i -e "s/#AUR //g" /mnt/etc/pacman.conf
-        _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
-    fi
 
     # Install Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
@@ -68,9 +67,15 @@ _base() {
         _chroot "pacman --noconfirm -S ${_intel}"
     fi
 
-    # Numlock on Bootup
-    _info "Installing Numlock on Bootup"
+    # Install Numlock
+    _info "Installing Numlock"
     _chroot "pacman --noconfirm -S ${_numlock}"
+
+    # Install yaourt
+    if [[ ! -z ${aur+x} ]]; then
+        _info "Installing yaourt"
+        _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
+    fi
 
     # Setting user
     _info "Setting ${USER_name}"
