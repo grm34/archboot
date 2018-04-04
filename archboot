@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v2.7.5"
+__version__="v2.7.6"
 __branch__="master"
 __author__="@grm34"
 __license__="Apache v2.0 License"
@@ -28,8 +28,8 @@ may be required."""
 }
 
 #
-# Global functions
-#
+# GLOBAL FUNCTIONS
+# ________________
 
 # Function to display install steps
 _info() {
@@ -136,8 +136,8 @@ _prompt() {
 }
 
 #
-# Global variables
-#
+# GLOBAL VARIABLES
+# ________________
 
 # Github url
 _url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
@@ -147,8 +147,8 @@ red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
 blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
 
 #
-# Start Archboot
-#
+# START ARCHBOOT
+# ______________
 
 _archboot_banner
 
@@ -164,7 +164,7 @@ fi
 # Download base sources
 _confirm "Start downloading sources from github?"
 if [[ ${confirm} == "y" ]]; then
-    _info "Downloading sources"
+    _info "Downloading base sources"
     _wget ${_url}/src/arch/base            # to install ArchLinux Base system
     _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
     _wget ${_url}/src/arch/firmware        # to define options of partitions
@@ -180,52 +180,65 @@ fi
 unset confirm
 
 # Import base sources
-_info "Importing sources"
+_info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
-# Prepare the system
-_user_infos; _clock; _logs; _firmware; _partition; _mounting
+# Ask for user informations
+_ask_user_informations
 
+# If Desktop Environment
+if [[ ! -z ${desktop+x} ]]; then
+
+    # Download desktop sources
+    _info "Downloading desktop sources"
+    _wget ${_url}/src/arch/vga             # to scan VGA Controller
+    _wget ${_url}/src/arch/desktop         # to install Desktop Environment
+    _wget ${_url}/src/arch/display         # to configure Display Manager
+    _wget ${_url}/src/apps/desktop_apps    # to load desktop apps
+    _wget ${_url}/src/apps/vga_apps        # to load VGA apps
+
+    # Import desktop sources
+    _info "Importing desktop sources"
+    source ./vga; source ./desktop; source ./display
+    source ./desktop_apps; source ./vga_apps
+
+    # Scan VGA Controller and select appropriate driver
+    _scan_vga_controller
+fi
+
+# Prepare the system
+_clock; _logs; _firmware; _partition; _mounting
 _note "system ready! Partitions mounted & swap activated."
 
 # Install ArchLinux
 _confirm "Do you wish to install ArchLinux now?"
 if [[ ${confirm} == "y" ]]; then
     (_base; _bootloader) 2>&1 | tee -a ${log}
+
+    # Install desktop environment
+    if [[ ! -z ${desktop+x} ]]; then
+        (_install_DE; _display_manager; _DE_settings) 2>&1 | tee -a ${log}
+    fi
+
+    # Logfile path
+    _info "Setting logfile path"
+    mkdir /mnt/var/log/archboot
+    cp "${log}" /mnt/var/log/archboot/
+
+    # Success notes
+    _note "Installation successful! \
+    ${__appname__} ${__version__} by ${__author__} under ${__license__}"
+
 else
     _error "aborted by user!"
 fi
 unset confirm
 
-# Install Desktop Environment
-if [[ ! -z ${desktop+x} ]]; then
+#
+# SYSTEM REBOOT
+# _____________
 
-    # Download desktop sources
-    _info "Downloading desktop sources"
-    _wget ${_url}/src/arch/vga             # to scan video card
-    _wget ${_url}/src/arch/desktop         # to install Desktop Environment
-    _wget ${_url}/src/arch/display         # to configure Display Manager
-    _wget ${_url}/src/apps/desktop_apps    # to load desktop apps
-
-    # Import desktop sources
-    _info "Importing sources"
-    source ./vga; source ./desktop; source ./display; source ./desktop_apps
-
-    # Install desktop environment
-    (_vga; _install_DE; _display_manager; _DE_settings) 2>&1 | tee -a ${log}
-fi
-
-# Logfile path
-_info "Setting logfile path"
-mkdir /mnt/var/log/archboot
-cp "${log}" /mnt/var/log/archboot/
-
-# Success notes
-_note "Installation successful! \
-${__appname__} ${__version__} by ${__author__} under ${__license__}"
-
-# Reboot
 _confirm "Do you want to reboot your computer now?"
 if [[ ${confirm} == "y" ]]; then
     umount -R /mnt
