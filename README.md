@@ -94,11 +94,11 @@ ____ ATi/AMD Open Source ____
 
 ____ Nvidia Open Source ____
 
-# Driver Nouveau (open source) = xf86-video-nouveau
+# Driver = xf86-video-nouveau
 
-# OpenGL Nouveau x64 (open source) = mesa
+# OpenGL x64 = mesa
 
-# OpenGL Nouveau x86 (open source) = lib32-mesa
+# OpenGL x86 = lib32-mesa
 
 # Hardware Acceleration Nouveau (open source) = libva-vdpau-driver mesa-vdpau
 
