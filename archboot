@@ -235,7 +235,10 @@ else
 fi
 unset confirm
 
-# Reboot
+#
+# SYSTEM REBOOT
+# _____________
+
 _confirm "Do you want to reboot your computer now?"
 if [[ ${confirm} == "y" ]]; then
     umount -R /mnt
