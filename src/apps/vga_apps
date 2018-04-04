@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# Default Driver
+export _default="xf86-video-vesa"
+
+#
+# INTEL
+# _____
+
+# Driver Intel
+export _intel="xf86-video-intel"
+
+# OpenGL Intel (open source)
+export _openGL_x64_intel="mesa"
+export _openGL_x86_intel="lib32-mesa"
+export _hard_video_intel="vulkan-intel libva-intel-driver libvdpau-va-gl"
+
+#
+# ATI/AMD
+# _______
+
+# Driver AMD (open source)
+export _amd="xf86-video-ati xf86-video-amdgpu"
+
+# OpenGL Intel
+export _openGL_x64_amd="mesa"
+export _openGL_x86_amd="lib32-mesa"
+export _hard_video_amd="vulkan-radeon libva-mesa-driver mesa-vdpau"
+
+#
+# NVIDIA
+# ______
+
+# Driver Nouveau (open source)
+export _nouveau="xf86-video-nouveau"
+
+# Driver Nvidia (proprietary)
+export _nvidia="xf86-video-nvidia"
+
+# OpenGL Nouveau (open source)
+export _openGL_x64_nouveau="mesa"
+export _openGL_x86_nouveau="lib32-mesa"
+export _hard_video_nouveau="libva-vdpau-driver mesa-vdpau"
+
+# OpenGL Nvidia (proprietary)
+export _openGL_x64_nvidia="nvidia-utils"
+export _openGL_x86_nvidia="lib32-nvidia-utils"
+export _hard_video_nvidia="libva-vdpau-driver"
+
+#
+# BUMBLEBEE
+# _________
+
+# Driver Bumblebee (open source)
+export _bumblebee_nvidia="bumblebee xf86-video-intel xf86-video-nouveau"
+
+# Driver Bumblebee (proprietary)
+export _bumblebee_nouveau="bumblebee xf86-video-intel xf86-video-nvidia"

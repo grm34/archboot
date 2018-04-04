@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_user_infos() {
+_ask_user_informations() {
 
     # User Language
     until grep -Fxq "${language}" ./language; do

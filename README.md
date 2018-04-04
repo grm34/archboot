@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/grm34/archboot/master/img/archboot.png" width="640">
 </a>
 
-[![version](https://img.shields.io/badge/archboot-v2.7.5-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![Gitter](https://badges.gitter.im/grm34/archboot.svg)](https://gitter.im/grm34/archboot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE)
+[![version](https://img.shields.io/badge/archboot-v2.7.6-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![Gitter](https://badges.gitter.im/grm34/archboot.svg)](https://gitter.im/grm34/archboot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE)
 
 [Arch Linux](https://www.archlinux.org/) is a light and fast distribution whose concept is to remain as simple as possible. In the same purpose, this script performs minimalist installation, it only installs the required packages in order to give free choice to the user. Pretty simple, it just prompt for hostname, username, password, which disk to use, required partitions size, language, timezone and if you wish to install a desktop environment. According to the chosen one and in order to get complete support, additionals packages may be required ([File System](https://wiki.archlinux.org/index.php/file_systems) - [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) - [Cups](https://wiki.archlinux.org/index.php/CUPS) - [Sane](https://wiki.archlinux.org/index.php/SANE) - [Samba](https://wiki.archlinux.org/index.php/Samba) - [Improving Performance](https://wiki.archlinux.org/index.php/improving_performance)).
 
@@ -12,13 +12,13 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 ## Usage
 
-:one: Reboot your computer, open Boot Selection Menu and boot on the USB bootable device.
+**1.** Reboot your computer, open Boot Selection Menu and boot on the USB bootable device.
 
-:two: On the install menu of Arch Linux, select Boot Arch Linux (x86_64).
+**2.** On the install menu of Arch Linux, select Boot Arch Linux (x86_64).
 
-:three: For AZERTY keyboard run: `loqdkeys fr`
+**3.** For AZERTY keyboard run: `loqdkeys fr`
 
-:four: Download archboot and follow the instructions: `wget tiny.cc/archboot; sh archboot`
+**4.** Download archboot and follow the instructions: `wget tiny.cc/archboot; sh archboot`
 
 ## Notes
 
@@ -44,8 +44,6 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 
 #### Desktop Apps
 ```
-# VGA Driver = xf86-video-* with Hardware Video Acceleration
-
 # Gnome = gnome gnome-extra
 
 # Kde = plasma kde-applications
@@ -65,6 +63,62 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 # Mate = mate mate-extra lxdm
 
 # Lxqt = lxqt lxdm
+````
+
+#### VGA Apps
+```
+# Default Driver = xf86-video-vesa
+
+
+____ INTEL Open Source ____
+
+# Driver = xf86-video-intel
+
+# OpenGL x64 = mesa
+
+# OpenGL x86 = lib32-mesa
+
+# Hardware Acceleration = vulkan-intel libva-intel-driver libvdpau-va-gl
+
+
+____ ATi/AMD Open Source ____
+
+# Driver = xf86-video-ati xf86-video-amdgpu
+
+# OpenGL x64 = mesa
+
+# OpenGL x86 = lib32-mesa
+
+# Hardware Acceleration = vulkan-radeon libva-mesa-driver mesa-vdpau
+
+
+____ Nvidia Open Source ____
+
+# Driver = xf86-video-nouveau
+
+# OpenGL x64 = mesa
+
+# OpenGL x86 = lib32-mesa
+
+# Hardware Acceleration = libva-vdpau-driver mesa-vdpau
+
+
+____ Nvidia Proprietary ____
+
+# Driver = xf86-video-nvidia
+
+# OpenGL x64 = nvidia-utils
+
+# OpenGL x86 = lib32-nvidia-utils
+
+# Hardware Acceleration = libva-vdpau-driver
+
+
+____ Bumblebee ____
+
+# Bumblebee with Open Source = bumblebee xf86-video-intel xf86-video-nouveau
+
+# Bumblebee with Proprietary = bumblebee xf86-video-intel xf86-video-nvidia
 ````
 </p>
 </details>
