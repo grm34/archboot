@@ -4,20 +4,20 @@ _firmware() {
 
     # Firmware Detection
     _info "Firmware detection"
+    export part_order=(0 1 2 3 4)
     if [ -d /sys/firmware/efi/efivars ]; then
-        FIRMWARE="UEFI"
-        part_table="GPT"
-        part_code="g"
-        part_type=""
-        boot_filesystem="fat -F32"
+        export FIRMWARE="UEFI"
+        export part_table="GPT"
+        export part_code="g"
+        export part_type=""
+        export boot_filesystem="fat -F32"
         _note "UEFI firmware detected."
     else
         FIRMWARE="BIOS"
-        part_table="MBR"
-        part_code="o"
-        part_type="p\n"
-        boot_filesystem="ext4"
+        export part_table="MBR"
+        export part_code="o"
+        export part_type="p\n"
+        export boot_filesystem="ext4"
         _note "BIOS firmware detected."
     fi
-    part_order=(0 1 2 3 4)
 }
