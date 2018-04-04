@@ -116,9 +116,9 @@ ____ Nvidia Proprietary ____
 
 ____ Bumblebee ____
 
-# Bumblebee Open Source = bumblebee xf86-video-intel xf86-video-nouveau
+# Bumblebee with Open Source = bumblebee xf86-video-intel xf86-video-nouveau
 
-# Bumblebee Proprietary = bumblebee xf86-video-intel xf86-video-nvidia
+# Bumblebee with Proprietary = bumblebee xf86-video-intel xf86-video-nvidia
 ````
 </p>
 </details>
