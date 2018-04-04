@@ -192,7 +192,7 @@ if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
-    _wget ${_url}/src/arch/vga             # to scan video card
+    _wget ${_url}/src/arch/vga             # to scan VGA Controller
     _wget ${_url}/src/arch/desktop         # to install Desktop Environment
     _wget ${_url}/src/arch/display         # to configure Display Manager
     _wget ${_url}/src/apps/desktop_apps    # to load desktop apps
