@@ -14,16 +14,16 @@ _scan_vga_controller() {
 			_note "Nvidia + Intel - System compatible to install Bumblebee."
 			_confirm "Use Nvidia proprietary driver instead of open source?"
 		    if [[ ${confirm} == "y" ]]; then
-		        export vga_driver="bumblebee-nvidia"
-		        export openGL_x64="openGL_x64-nvidia"
-				export openGL_x86="openGL_x86-nvidia"
-				export hard_video="hard_video-nvidia"
+		        export vga_driver="bumblebee_nvidia"
+		        export openGL_x64="openGL_x64_nvidia"
+				export openGL_x86="openGL_x86_nvidia"
+				export hard_video="hard_video_nvidia"
 
 		    else
-		    	export vga_driver="bumblebee-nouveau"
-		    	export openGL_x64="openGL_x64-nouveau"
-				export openGL_x86="openGL_x86-nouveau"
-				export hard_video="hard_video-nouveau"
+		    	export vga_driver="bumblebee_nouveau"
+		    	export openGL_x64="openGL_x64_nouveau"
+				export openGL_x86="openGL_x86_nouveau"
+				export hard_video="hard_video_nouveau"
 		    fi
 		    unset confirm
 		fi
@@ -38,14 +38,14 @@ _scan_vga_controller() {
 			_confirm "Use Nvidia proprietary driver instead of open source?"
 		    if [[ ${confirm} == "y" ]]; then
 		        export vga_driver="nvidia"
-		        export openGL_x64="openGL_x64-nvidia"
-				export openGL_x86="openGL_x86-nvidia"
-				export hard_video="hard_video-nvidia"
+		        export openGL_x64="openGL_x64_nvidia"
+				export openGL_x86="openGL_x86_nvidia"
+				export hard_video="hard_video_nvidia"
 		    else
 		    	export vga_driver="nouveau"
-		    	export openGL_x64="openGL_x64-nouveau"
-				export openGL_x86="openGL_x86-nouveau"
-				export hard_video="hard_video-nouveau"
+		    	export openGL_x64="openGL_x64_nouveau"
+				export openGL_x86="openGL_x86_nouveau"
+				export hard_video="hard_video_nouveau"
 		    fi
 		    unset confirm
 		else
@@ -56,9 +56,9 @@ _scan_vga_controller() {
 				_note "${amd_card##*: } detected."
 				_confirm "Use ATI proprietary driver instead of open source?"
 			    export vga_driver="amd"
-			    export openGL_x64="openGL_x64-amd"
-				export openGL_x86="openGL_x86-amd"
-				export hard_video="hard_video-amd"
+			    export openGL_x64="openGL_x64_amd"
+				export openGL_x86="openGL_x86_amd"
+				export hard_video="hard_video_amd"
 
 			else
 
@@ -67,9 +67,9 @@ _scan_vga_controller() {
 				if [[ $? -eq 0 ]]; then
 					_note "${intel_card##*: } detected."
 					export vga_driver="intel"
-					export openGL_x64="openGL_x64-intel"
-					export openGL_x86="openGL_x86-intel"
-					export hard_video="hard_video-intel"
+					export openGL_x64="openGL_x64_intel"
+					export openGL_x86="openGL_x86_intel"
+					export hard_video="hard_video_intel"
 
 				# DEFAULT
 				else
