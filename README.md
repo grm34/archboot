@@ -713,7 +713,7 @@ Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log
 ## Screenshot
 
 <a href="https://grm34.github.io/archboot/">
-  <img src="https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png" width="   auto">
+  <img src="https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png">
 </a>
 
 ## Improvement
