@@ -69,21 +69,30 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 ```
 # Default Driver = xf86-video-vesa
 
-# Driver Intel (open source) = xf86-video-intel
 
-# OpenGL Intel x64 (open source) = mesa
+____ INTEL Open Source ____
 
-# OpenGL Intel x86 (open source) = lib32-mesa
+# Driver = xf86-video-intel
 
-# Hardware Acceleration Intel = vulkan-intel libva-intel-driver libvdpau-va-gl
+# OpenGL x64 = mesa
 
-# Driver AMD (open source) = xf86-video-ati xf86-video-amdgpu
+# OpenGL x86 = lib32-mesa
 
-# OpenGL AMD x64 (open source) = mesa
+# Hardware Acceleration = vulkan-intel libva-intel-driver libvdpau-va-gl
 
-# OpenGL AMD x86 (open source) = lib32-mesa
 
-# Hardware Acceleration AMD = vulkan-radeon libva-mesa-driver mesa-vdpau
+____ ATi/AMD Open Source ____
+
+# Driver = xf86-video-ati xf86-video-amdgpu
+
+# OpenGL x64 = mesa
+
+# OpenGL x86 = lib32-mesa
+
+# Hardware Acceleration = vulkan-radeon libva-mesa-driver mesa-vdpau
+
+
+____ Nvidia Open Source ____
 
 # Driver Nouveau (open source) = xf86-video-nouveau
 
@@ -93,17 +102,23 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 
 # Hardware Acceleration Nouveau (open source) = libva-vdpau-driver mesa-vdpau
 
-# Driver Nvidia (proprietary) = xf86-video-nvidia
 
-# OpenGL Nvidia x64 (proprietary) = nvidia-utils
+____ Nvidia Proprietary ____
 
-# OpenGL Nvidia x86 (proprietary) = lib32-nvidia-utils
+# Driver = xf86-video-nvidia
 
-# Hardware Acceleration Nvidia (proprietary) = libva-vdpau-driver
+# OpenGL x64 = nvidia-utils
 
-# Bumblebee open source config = bumblebee xf86-video-intel xf86-video-nouveau
+# OpenGL x86 = lib32-nvidia-utils
 
-# Bumblebee proprietary config = bumblebee xf86-video-intel xf86-video-nvidia
+# Hardware Acceleration = libva-vdpau-driver
+
+
+____ Bumblebee ____
+
+# Bumblebee Open Source = bumblebee xf86-video-intel xf86-video-nouveau
+
+# Bumblebee Proprietary = bumblebee xf86-video-intel xf86-video-nvidia
 ````
 </p>
 </details>
