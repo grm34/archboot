@@ -28,8 +28,15 @@ may be required."""
 }
 
 #
-# GLOBAL FUNCTIONS
-# ________________
+# MANAGEMENT
+# __________
+
+# Github url
+_url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
+
+# Bash Colors
+red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
+blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
 
 # Function to display install steps
 _info() {
@@ -90,7 +97,7 @@ _reboot() {
 
 # Function to display error
 _error() {
-    echo -e "${red}Error: ${yellow}${1} ==> Please try again.${nc}\n"
+    echo -e "${red}Error: ${yellow}${1} | Please try again.${nc}\n"
     _reboot
 }
 
@@ -105,7 +112,7 @@ _end() {
 # Function to ask confirmation (Yes/No)
 _confirm() {
     count=$((${#1} + 6))
-    until [[ ${confirm} =~ ^[yn]$ ]]; do
+    until [[ ${confirm} =~ ^(y|n|Y|N|yes|no|Yes|No)$ ]]; do
         echo -ne "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}\n==> "
         _end
         read -r confirm
@@ -136,17 +143,6 @@ _prompt() {
 }
 
 #
-# GLOBAL VARIABLES
-# ________________
-
-# Github url
-_url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
-
-# Bash Colors
-red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
-blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
-
-#
 # START ARCHBOOT
 # ______________
 
@@ -175,9 +171,8 @@ case ${confirm} in
         _wget ${_url}/src/apps/system_apps     # to load system apps
         _wget ${_url}/conf/language            # to get language code
         _wget ${_url}/conf/timezone            # to get region code
-    ;;
-    *) exit
-    ;;
+        ;;
+    *) exit;;
 esac
 unset confirm
 
@@ -214,8 +209,8 @@ fi
 _clock; _logs; _firmware; _partition; _mounting
 _note "system ready! Partitions mounted & swap activated."
 
-# Install ArchLinux
-_confirm "Do you wish to install ArchLinux now?"
+# Install Arch Linux
+_confirm "Do you wish to install Arch Linux now?"
 case ${confirm} in
     y|Y|yes|Yes)
         (_base; _bootloader) 2>&1 | tee -a ${log}
@@ -234,9 +229,10 @@ case ${confirm} in
         # Success notes
         _note "Installation successful! \
         ${__appname__} ${__version__} by ${__author__} under ${__license__}"
-    ;;
-    *) _error "aborted by user!"
-    ;;
+        ;;
+
+    # Aborted
+    *) _error "aborted by user!";;
 esac
 unset confirm
 
@@ -246,10 +242,6 @@ unset confirm
 
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
-    y|Y|yes|Yes)
-        umount -R /mnt
-        reboot
-    ;;
-    *) exit
-    ;;
+    y|Y|yes|Yes) umount -R /mnt; _reboot;;
+    *) exit;;
 esac
