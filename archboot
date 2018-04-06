@@ -163,20 +163,22 @@ fi
 
 # Download base sources
 _confirm "Start downloading sources from github?"
-if [[ ${confirm} == "y" ]]; then
-    _info "Downloading base sources"
-    _wget ${_url}/src/arch/base            # to install ArchLinux Base system
-    _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
-    _wget ${_url}/src/arch/firmware        # to define options of partitions
-    _wget ${_url}/src/arch/mounting        # to mount partitions & swap
-    _wget ${_url}/src/arch/partition       # to create table & partitions
-    _wget ${_url}/src/arch/user            # to ask user infos
-    _wget ${_url}/src/apps/system_apps     # to load system apps
-    _wget ${_url}/conf/language            # to get language code
-    _wget ${_url}/conf/timezone            # to get region code
-else
-    exit
-fi
+case ${confirm} in
+    y|Y|yes|Yes)
+        _info "Downloading base sources"
+        _wget ${_url}/src/arch/base            # to install Base system
+        _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
+        _wget ${_url}/src/arch/firmware        # to define partitions settings
+        _wget ${_url}/src/arch/mounting        # to mount partitions & swap
+        _wget ${_url}/src/arch/partition       # to create table & partitions
+        _wget ${_url}/src/arch/user            # to ask user infos
+        _wget ${_url}/src/apps/system_apps     # to load system apps
+        _wget ${_url}/conf/language            # to get language code
+        _wget ${_url}/conf/timezone            # to get region code
+    ;;
+    *) exit
+    ;;
+esac
 unset confirm
 
 # Import base sources
@@ -214,27 +216,28 @@ _note "system ready! Partitions mounted & swap activated."
 
 # Install ArchLinux
 _confirm "Do you wish to install ArchLinux now?"
-if [[ ${confirm} == "y" ]]; then
-    (_base; _bootloader) 2>&1 | tee -a ${log}
+case ${confirm} in
+    y|Y|yes|Yes)
+        (_base; _bootloader) 2>&1 | tee -a ${log}
 
-    # Install desktop environment
-    if [[ ! -z ${desktop+x} ]]; then
-        (_install_vga_controller; _install_desktop_environment; \
-        _display_manager; _desktop_settings) 2>&1 | tee -a ${log}
-    fi
+        # Install desktop environment
+        if [[ ! -z ${desktop+x} ]]; then
+            (_install_vga_controller; _install_desktop_environment; \
+            _display_manager; _desktop_settings) 2>&1 | tee -a ${log}
+        fi
 
-    # Logfile path
-    _info "Setting logfile path"
-    mkdir /mnt/var/log/archboot
-    cp "${log}" /mnt/var/log/archboot/
+        # Logfile path
+        _info "Setting logfile path"
+        mkdir /mnt/var/log/archboot
+        cp "${log}" /mnt/var/log/archboot/
 
-    # Success notes
-    _note "Installation successful! \
-    ${__appname__} ${__version__} by ${__author__} under ${__license__}"
-
-else
-    _error "aborted by user!"
-fi
+        # Success notes
+        _note "Installation successful! \
+        ${__appname__} ${__version__} by ${__author__} under ${__license__}"
+    ;;
+    *) _error "aborted by user!"
+    ;;
+esac
 unset confirm
 
 #
@@ -242,9 +245,11 @@ unset confirm
 # _____________
 
 _confirm "Do you want to reboot your computer now?"
-if [[ ${confirm} == "y" ]]; then
-    umount -R /mnt
-    reboot
-else
-    exit
-fi
+case ${confirm} in
+    y|Y|yes|Yes)
+        umount -R /mnt
+        reboot
+    ;;
+    *) exit
+    ;;
+esac
