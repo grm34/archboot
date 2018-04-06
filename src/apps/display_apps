@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# GDM
+export _gdm="gdm"
+
+# LightDM
+export _lightdm="lightdm"
+
+# SDDM
+export _sddm="sddm"
+
+# LXDM
+export _lxdm="lxdm"
+
+# XDM
+export _xdm="xdm"
