@@ -13,4 +13,4 @@ export _sddm="sddm"
 export _lxdm="lxdm"
 
 # XDM
-export _xdm="xdm"
+export _xdm="xorg-xdm"
