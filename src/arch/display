@@ -8,7 +8,7 @@ _display_manager() {
     _chroot "pacman --noconfirm -S ${!install_display}; "
     _chroot "systemctl enable ${display_man}"
 
-    # Session start command
+    # Start Command
     case ${desktop} in
         gnome|mate|cinnamon) session="/usr/bin/${desktop}-session";;
         kde|xfce4|lxde|lxqt) session="/usr/bin/start${desktop}";;
@@ -25,14 +25,12 @@ _display_manager() {
     # LIGHTDM
     elif [[ ${display_man} == "lightdm" ]]; then
 
-        # Select Greeter
-        if [[ ${desktop} == "deepin"]]; then
-            greeter="deepin"
-        elif [[ ${desktop} == "kde"]]; then
-            greeter="kde"
-        else
-            greeter="gtk"
-        fi
+        # Greeter
+        case ${desktop} in
+            deepin) greeter="deepin";;
+            kde) greeter="kde";;
+            *) greeter="gtk";;
+        esac
 
         default="#greeter-session=example-gtk-gnome"
         session="greeter-session=lightdm-${greeter}-greeter"
