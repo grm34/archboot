@@ -8,25 +8,14 @@ _display_manager() {
     _chroot "pacman --noconfirm -S ${!install_display}; "
     _chroot "systemctl enable ${display_man}"
 
-    # Start Session type
-    gnome_mate_cinnamon_session=(gnome mate cinnamon)
-    kde_xfce_lxde_lxqt_session=(kde xfce lxde lxqt)
-    enlightenment_session=(enlightenment)
-    budgie_session=(budgie)
-    deepin_session=(deepin)
-
-    # Start Session command
-    if [[ echo ${gnome_mate_cinnamon_session} | grep -w ${desktop} ]]; then
-        session="/usr/bin/${desktop}-session"
-    elif [[ echo ${kde_xfce_lxde_lxqt_session} | grep -w ${desktop} ]]; then
-        session="/usr/bin/start${desktop}"
-    elif [[ echo ${enlightenment_session} | grep -w ${desktop} ]]; then
-        session="/usr/bin/enlightenment_start"
-    elif [[ echo ${budgie_session} | grep -w ${desktop} ]]; then
-        sssion="/usr/bin/budgie-desktop"
-    elif[[ echo ${deepin_session} | grep -w ${desktop} ]]; then
-        session="/usr/bin/startdde"
-    fi
+    # Session start command
+    case ${desktop} in
+        gnome|mate|cinnamon) session="/usr/bin/${desktop}-session";;
+        kde|xfce4|lxde|lxqt) session="/usr/bin/start${desktop}";;
+        enlightenment) session="/usr/bin/enlightenment_start";;
+        budgie) session="/usr/bin/budgie-desktop";;
+        deepin) session="/usr/bin/startdde";;
+    esac
 
     # GDM
     if [[ ${display_man} == "gdm" ]]; then

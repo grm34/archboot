@@ -67,60 +67,56 @@ _ask_user_informations() {
 
     # User Rights
     _confirm "Give all rights to ${USER_name}?"
-    if [[ ${confirm} == "y" ]]; then
-        export power="yes"
-    fi
+    case ${confirm} in y|Y|yes|Yes) export power="yes";; esac
     unset confirm
 
     # Multilib
     _confirm "Enable multilib for 32-bit support?"
-    if [[ ${confirm} == "y" ]]; then
-        export multilib="yes"
-    fi
+    case ${confirm} in y|Y|yes|Yes) export multilib="yes";; esac
     unset confirm
 
     # AUR
     _confirm "Install yaourt to enable AUR support?"
-    if [[ ${confirm} == "y" ]]; then
-        export aur="yes"
-    fi
+    case ${confirm} in y|Y|yes|Yes) export aur="yes";; esac
     unset confirm
 
     # Desktop Environment
     _confirm "Do you wish to install Desktop Environment?"
-    if [[ ${confirm} == "y" ]]; then
+    case ${confirm} in y|Y|yes|Yes)
         until [[ ${desk} =~ ^([1-9]|10)$ ]]; do
-            _select "Gnome" "KDE" "MATE" "Xfce" "LXDE" "LXQt" \
-"Deepin" "Budgie" "Cinnamon" "Enlightenment"
+            _select "Gnome" "KDE" "MATE" "Xfce" \
+"LXDE" "LXQt" "Deepin" "Budgie" "Cinnamon" "Enlightenment"
             read -r desk
         done
         desktop_choice=\
 (none gnome kde mate xfce4 lxde lxqt deepin budgie cinnamon enlightenment)
-        export desktop=${desktop_choice[${desk}]}
-    fi
+        export desktop=${desktop_choice[${desk}]};;
+    esac
     unset confirm
 
     # Display Manager
     if [[ ! -z ${desktop+x} ]]; then
+
+        # Custom display manager
         _confirm "Use custom Display Manager?"
-        if [[ ${confirm} == "y" ]]; then
-            until [[ ${disp} =~ ^([1-5])$ ]]; do
-                _select "Gdm" "LightDM" "Sddm" "Lxdm" "Xdm"
-                read -r disp
-            done
-            display_choice=(none gdm lightdm sddm lxdm xdm)
-            export display_man=${display_choice[${desk}]}
-        else
-            if [[ ${desktop} == "gnome" ]]; then
-                export display_man="gdm"
-            elif [[ ${desktop} == "kde" ]]; then
-                export display_man="sddm"
-            elif [[ ${desktop} == "deepin" ]]; then
-                export display_man="lightdm"
-            else
-                export display_man="lxdm"
-            fi
-        fi
+        case ${confirm} in
+            y|Y|yes|Yes)
+                until [[ ${disp} =~ ^([1-5])$ ]]; do
+                    _select "Gdm" "LightDM" "Sddm" "Lxdm" "Xdm"
+                    read -r disp
+                done
+                display_choice=(none gdm lightdm sddm lxdm xdm)
+                export display_man=${display_choice[${desk}]};;
+
+        # Default display manager
+            *)
+                case ${desktop} in
+                    gnome) export display_man="gdm";;
+                    kde) export display_man="sddm";;
+                    deepin) export display_man="lightdm";;
+                    *) export display_man="lxdm";;
+                esac;;
+        esac
         unset confirm
     fi
 
