@@ -4,31 +4,28 @@ _scan_vga_controller() {
 
 	_info "Scanning VGA Controller"
 	vga_number=$(lspci | grep -e VGA -e 3D | wc -l)
+    lspci | grep -e VGA -e 3D | grep -ie nvidia | grep -i intel
 
-	# DUAL VGA CONTROLLER
-	if [[ ${vga_number} -ge "2" ]]; then
+	# DUAL VGA CONTROLLER Intel & Nvidia to install Bumblebee
+	if [[ $? -eq 0 && ${vga_number} -ge "2" ]]; then
 
-		# Check if Intel & Nvidia to install Bumblebee
-		lspci | grep -e VGA -e 3D | grep -ie nvidia | grep -i intel
-		if [[ $? -eq 0 ]]; then
-			_note "Nvidia + Intel - System compatible to install Bumblebee."
-			_confirm "Use Nvidia proprietary driver instead of open source?"
-		    case ${confirm} in
-                y|Y|yes|Yes)
-    		        export vga_driver="bumblebee_nvidia"
-    		        export openGL_x64="openGL_x64_nvidia"
-    				export openGL_x86="openGL_x86_nvidia"
-    				export hard_video="hard_video_nvidia"
-                    ;;
-                *)
-    		    	export vga_driver="bumblebee_nouveau"
-    		    	export openGL_x64="openGL_x64_nouveau"
-    				export openGL_x86="openGL_x86_nouveau"
-    				export hard_video="hard_video_nouveau"
-                    ;;
-		    esac
-		    unset confirm
-		fi
+		_note "System compatible to install Bumblebee."
+		_confirm "Use Nvidia proprietary driver instead of open source?"
+	    case ${confirm} in
+            y|Y|yes|Yes)
+		        export vga_driver="bumblebee_nvidia"
+		        export openGL_x64="openGL_x64_nvidia"
+				export openGL_x86="openGL_x86_nvidia"
+				export hard_video="hard_video_nvidia"
+                ;;
+            *)
+		    	export vga_driver="bumblebee_nouveau"
+		    	export openGL_x64="openGL_x64_nouveau"
+				export openGL_x86="openGL_x86_nouveau"
+				export hard_video="hard_video_nouveau"
+                ;;
+	    esac
+	    unset confirm
 
 	# SINGLE VGA CONTROLLER
 	else
