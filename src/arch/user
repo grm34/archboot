@@ -108,7 +108,7 @@ _ask_user_informations() {
                 done
                 display_choice=(none gdm lightdm sddm lxdm xdm)
                 export display_man=${display_choice[${desk}]}
-            ;;
+                ;;
 
             # Default display manager
             *)
@@ -118,7 +118,7 @@ _ask_user_informations() {
                     deepin) export display_man="lightdm";;
                     *) export display_man="lxdm";;
                 esac
-            ;;
+                ;;
         esac
         unset confirm
     fi
