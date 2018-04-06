@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v2.7.6"
+__version__="v2.7.7"
 __branch__="dev"
 __author__="@grm34"
 __license__="Apache v2.0 License"
@@ -192,16 +192,17 @@ if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
-    _wget ${_url}/src/arch/vga             # to scan VGA Controller
+    _wget ${_url}/src/arch/vga             # to scan/install VGA Controller
     _wget ${_url}/src/arch/desktop         # to install Desktop Environment
-    _wget ${_url}/src/arch/display         # to configure Display Manager
-    _wget ${_url}/src/apps/desktop_apps    # to load desktop apps
+    _wget ${_url}/src/arch/display         # to install Display Manager
     _wget ${_url}/src/apps/vga_apps        # to load VGA apps
+    _wget ${_url}/src/apps/desktop_apps    # to load Desktop apps
+    _wget ${_url}/src/apps/display_apps    # to load Display Manager apps
 
     # Import desktop sources
     _info "Importing desktop sources"
     source ./vga; source ./desktop; source ./display
-    source ./desktop_apps; source ./vga_apps
+    source ./vga_apps; source ./desktop_apps; source ./display_apps
 
     # Scan VGA Controller and select appropriate driver
     _scan_vga_controller
@@ -218,7 +219,8 @@ if [[ ${confirm} == "y" ]]; then
 
     # Install desktop environment
     if [[ ! -z ${desktop+x} ]]; then
-        (_install_DE; _display_manager; _DE_settings) 2>&1 | tee -a ${log}
+        (_install_vga_controller; _install_desktop_environment; \
+        _display_manager; _desktop_settings) 2>&1 | tee -a ${log}
     fi
 
     # Logfile path

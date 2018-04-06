@@ -2,22 +2,19 @@
 
 _display_manager() {
 
-    # GDM > Gnome
-    if [[ ${desktop} == "gnome" ]]; then
-        _info "Enabling GDM"
+    # Install Display Manager
+    _info "Installing ${display_man}"
+    install_display="_${display_man}"
+    _chroot "pacman --noconfirm -S ${!install_display}; "
+    _chroot "systemctl enable ${display_man}"
+
+    # GDM
+    if [[ ${display_man} == "gdm" ]]; then
         wget ${_url}/conf/xprofile
         mv xprofile /mnt/etc/xprofile
-        _chroot "systemctl enable gdm"
 
-    # SDDM > Kde
-    elif [[ ${desktop} == "kde" ]]; then
-        _info "Enabling SDDM"
-        sed -i -e "s/Numlock=none/Numlock=on/g" /mnt/etc/sddm.conf
-        _chroot "systemctl enable sddm"
-
-    # LIGHTDM > Deepin
-    elif [[ ${desktop} == "deepin" ]]; then
-        _info "Enabling LightDM"
+    # LIGHTDM
+    elif [[ ${display_man} == "lightdm" ]]; then
         default-session="#greeter-session=example-gtk-gnome"
         session="greeter-session=lightdm-deepin-greeter"
         numlock="greeter-setup-script=/usr/bin/numlockx on"
@@ -25,17 +22,18 @@ _display_manager() {
         /mnt/etc/lightdm/lightdm.conf
         sed -i -e "s|#greeter-setup-script=|${numlock}|g" \
         /mnt/etc/lightdm/lightdm.conf
-        _chroot "systemctl enable lightdm"
+
+    # SDDM
+    elif [[ ${display_man} == "sddm" ]]; then
+        sed -i -e "s/Numlock=none/Numlock=on/g" /mnt/etc/sddm.conf
 
     # LXDM
-    else
-        _info "Enabling LXDM"
+    elif [[ ${display_man} == "lxdm" ]]; then
         default-session="# session=/usr/bin/startlxde"
 
         # Cinnamon / Mate
         if [[ ${desktop} == "cinnamon" || ${desktop} == "mate" ]]; then
             session="session=/usr/bin/${desktop}-session"
-
 
         # Enlightenment
         elif [[ ${desktop} == "enlightenment" ]]; then
@@ -55,6 +53,9 @@ _display_manager() {
         sed -i -e "s/# numlock=0/numlock=1/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/white=/white=${USER_name}/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/black=/black=root/g" /mnt/etc/lxdm/lxdm.conf
-        _chroot "systemctl enable lxdm"
+
+    # XDM
+    elif [[ ${display_man} == "xdm" ]]; then
+
     fi
 }
