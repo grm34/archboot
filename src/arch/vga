@@ -83,6 +83,7 @@ _scan_vga_controller() {
 }
 
 _install_vga_controller() {
+
     # VGA Controller
     _info "Installing VGA Driver"
     install_vga="_${vga_driver}"
