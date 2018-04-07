@@ -69,7 +69,6 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 #### Display Manager (display apps)
 ````
-
 # Gdm = gdm
 
 # LightDM = lightdm
