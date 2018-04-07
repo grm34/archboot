@@ -27,7 +27,7 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 <details><summary>List of installed packages</summary>
 <p>
 
-#### System Apps
+#### Arch Linux (system apps)
 ```
 # ArchLinux = base base-devel
 
@@ -42,7 +42,7 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 # yaourt (in case of AUR support) = yaourt customizepkg
 ```
 
-#### Desktop Apps
+#### Desktop Environment (desktop apps)
 ```
 # Gnome = gnome gnome-extra
 
@@ -65,7 +65,7 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 # Lxqt = lxqt
 ````
 
-#### Display Apps
+#### Display Manager (display apps)
 ````
 
 # Gdm = gdm
@@ -79,7 +79,7 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 # Xdm = xdm
 ````
 
-#### VGA Apps
+#### VGA Drivers (vga apps)
 ```
 # Default Driver = xf86-video-vesa
 
