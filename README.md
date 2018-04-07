@@ -29,7 +29,7 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 
 #### Arch Linux (system apps)
 ```
-# ArchLinux = base base-devel
+# Arch Linux = base base-devel
 
 # Microcode (in case of Intel CPU) = intel-ucode
 
