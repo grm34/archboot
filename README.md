@@ -1,5 +1,5 @@
 <a href="https://grm34.github.io/archboot/">
-  <img src="https://raw.githubusercontent.com/grm34/archboot/master/img/archboot.png" width="640">
+  <img src="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/archboot.png" width="640">
 </a>
 
 [![version](https://img.shields.io/badge/archboot-v2.7.6-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![Gitter](https://badges.gitter.im/grm34/archboot.svg)](https://gitter.im/grm34/archboot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE)
@@ -22,14 +22,16 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 ## Notes
 
-Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOME) - [KDE](https://wiki.archlinux.org/index.php/KDE) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE) - [Cinnamon](https://wiki.archlinux.org/index.php/cinnamon#Starting_Cinnamon) - [Budgie](https://wiki.archlinux.org/index.php/Budgie_Desktop) - [Enlightenment](https://wiki.archlinux.org/index.php/Enlightenment) - [MATE](https://wiki.archlinux.org/index.php/MATE) - [LXQt](https://wiki.archlinux.org/index.php/LXQt). Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
+* Desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOME) - [KDE](https://wiki.archlinux.org/index.php/KDE) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE) - [Cinnamon](https://wiki.archlinux.org/index.php/cinnamon#Starting_Cinnamon) - [Budgie](https://wiki.archlinux.org/index.php/Budgie_Desktop) - [Enlightenment](https://wiki.archlinux.org/index.php/Enlightenment) - [MATE](https://wiki.archlinux.org/index.php/MATE) - [LXQt](https://wiki.archlinux.org/index.php/LXQt)
+* Display manager: [Gdm](https://wiki.archlinux.org/index.php/GDM) - [LightDM](https://wiki.archlinux.org/index.php/LightDM) - [Sddm](https://wiki.archlinux.org/index.php/SDDM) - [Lxdm](https://wiki.archlinux.org/index.php/LXDM) - [Xdm](https://wiki.archlinux.org/index.php/XDM)
+* Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
 
 <details><summary>List of installed packages</summary>
 <p>
 
-#### System Apps
+#### Arch Linux (system apps)
 ```
-# ArchLinux = base base-devel
+# Arch Linux = base base-devel
 
 # Microcode (in case of Intel CPU) = intel-ucode
 
@@ -42,7 +44,7 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 # yaourt (in case of AUR support) = yaourt customizepkg
 ```
 
-#### Desktop Apps
+#### Desktop Environment (desktop apps)
 ```
 # Gnome = gnome gnome-extra
 
@@ -50,22 +52,35 @@ Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOM
 
 # Lxde = lxde
 
-# Xfce = xfce4 xfce4-goodies lxdm
+# Xfce = xfce4 xfce4-goodies
 
 # Deepin = deepin deepin-extra
 
-# Cinnamon = cinnamon lxdm
+# Cinnamon = cinnamon
 
-# Budgie = budgie-desktop lxdm
+# Budgie = budgie-desktop
 
-# Enlightenment = enlightenment lxdm
+# Enlightenment = enlightenment
 
-# Mate = mate mate-extra lxdm
+# Mate = mate mate-extra
 
-# Lxqt = lxqt lxdm
+# Lxqt = lxqt
 ````
 
-#### VGA Apps
+#### Display Manager (display apps)
+````
+# Gdm = gdm
+
+# LightDM = lightdm
+
+# Sddm = sddm
+
+# Lxdm = lxdm
+
+# Xdm = xdm
+````
+
+#### VGA Drivers (vga apps)
 ```
 # Default Driver = xf86-video-vesa
 
@@ -713,12 +728,8 @@ Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log
 ## Screenshot
 
 <a href="https://grm34.github.io/archboot/">
-  <img src="https://raw.githubusercontent.com/grm34/archboot/master/img/screenshot.png">
+  <img src="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/screenshot.png">
 </a>
-
-## Improvement
-
-Feel free opening issue to purpose some improvements such as new desktop environment, or to fork and pull request for better code quality.
 
 ## Official Documentation
 
