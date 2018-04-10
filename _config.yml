@@ -1,6 +1,6 @@
 title: archboot
 description: Arch Linux Auto Install
-theme: jekyll-theme-modernist
+theme: jekyll-theme-midnight
 show_downloads: True
 markdown: kramdown
 highlighter: rouge
