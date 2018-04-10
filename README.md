@@ -22,7 +22,9 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 ## Notes
 
-Available desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOME) - [KDE](https://wiki.archlinux.org/index.php/KDE) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE) - [Cinnamon](https://wiki.archlinux.org/index.php/cinnamon#Starting_Cinnamon) - [Budgie](https://wiki.archlinux.org/index.php/Budgie_Desktop) - [Enlightenment](https://wiki.archlinux.org/index.php/Enlightenment) - [MATE](https://wiki.archlinux.org/index.php/MATE) - [LXQt](https://wiki.archlinux.org/index.php/LXQt). Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
+* Desktop environment: [Gnome](https://wiki.archlinux.org/index.php/GNOME) - [KDE](https://wiki.archlinux.org/index.php/KDE) - [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment) - [Xfce](https://wiki.archlinux.org/index.php/xfce) - [LXDE](https://wiki.archlinux.org/index.php/LXDE) - [Cinnamon](https://wiki.archlinux.org/index.php/cinnamon#Starting_Cinnamon) - [Budgie](https://wiki.archlinux.org/index.php/Budgie_Desktop) - [Enlightenment](https://wiki.archlinux.org/index.php/Enlightenment) - [MATE](https://wiki.archlinux.org/index.php/MATE) - [LXQt](https://wiki.archlinux.org/index.php/LXQt)
+* Display manager: [Gdm](https://wiki.archlinux.org/index.php/GDM) - [LightDM](https://wiki.archlinux.org/index.php/LightDM) - [Sddm](https://wiki.archlinux.org/index.php/SDDM) - [Lxdm](https://wiki.archlinux.org/index.php/LXDM) - [Xdm](https://wiki.archlinux.org/index.php/XDM)
+* Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
 
 ## Logs
 
@@ -33,10 +35,6 @@ Take a look in **/var/log/archboot** for logs of the installation: `cat /var/log
 <a href="https://grm34.github.io/archboot/">
   <img src="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/screenshot.png">
 </a>
-
-## Improvement
-
-Feel free opening issue to purpose some improvements such as new desktop environment or to fork and pull request better code quality.
 
 ## Official Documentation
 
