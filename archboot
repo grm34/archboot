@@ -141,6 +141,7 @@ _prompt() {
 
 # Github url
 _url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
+_gh_pages="https://raw.githubusercontent.com/grm34/archboot/gh-pages"
 
 # Bash Colors
 red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
