@@ -1,4 +1,4 @@
 title: <a href="https://grm34.github.io/archboot/"><img src="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/archboot.png" width="320"></a>
 description: Arch Linux Auto Install
-theme: jekyll-theme-slate
+theme: jekyll-theme-merlot
 show_downloads: True
