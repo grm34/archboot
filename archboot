@@ -1,0 +1,248 @@
+#!/bin/bash
+__appname__="archboot"
+__version__="v2.7.7"
+__branch__="dev"
+__author__="@grm34"
+__license__="Apache v2.0 License"
+
+_archboot_banner() {
+    echo -e """${red}
+      _             _     _                 _
+     / \   _ __  __| |__ | |__   ___   ___ | |_
+    / _ \ | '__/ __| '_ \| '_ \ / _ \ / _ \| __|
+   / ___ \| | | (__| | | | |_) | (_) | (_) | |_
+  /_/   \_\_|  \___|_| |_|_.__/ \___/ \___/ \__|${green}${__version__}
+${blue}
+ Welcome in archboot, a script made with love by ${__author__}
+${nc}
+Arch Linux is a light and fast distribution whose concept
+is to remain  as simple as possible.  In the same purpose
+this script  performs  minimalist  installation,  it only
+installs  the required  packages,  in order  to give free
+choice to  the user.  Pretty simple,  it just  prompt for
+hostname, username, password, which disk to use, required
+partitions, language, timezone and if you wish to install
+a desktop  environment.  According to the  chosen one and
+in order to get  complete  support, additionals  packages
+may be required."""
+}
+
+#
+# SYSTEM MANAGEMENT
+# _________________
+
+# Github url
+_url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
+_gh_pages="https://raw.githubusercontent.com/grm34/archboot/gh-pages"
+
+# Bash Color
+red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
+blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
+
+# Display install steps
+_info() {
+    echo -e "${yellow}\n==> ${cyan}${1}...${nc}"
+    sleep 2s
+}
+
+# Display some notes
+_note() {
+    echo -e "${red}\nNote: ${blue}${1}${nc}"
+}
+
+# DL show progress bar only
+_wget() {
+    wget ${1} -q --show-progress
+}
+
+# Execute action in chrooted environment
+_chroot() {
+    arch-chroot /mnt /bin/bash <<EOF
+    ${1}
+EOF
+}
+
+# Set logfile
+_logs() {
+    _info "Setting archboot log"
+    datetime=$(date '+%d-%m-%Y')
+    log="archboot_${datetime}.log"
+}
+
+# Set system clock
+_clock() {
+    _info "Setting system clock"
+    timedatectl set-ntp true
+    timedatectl set-timezone ${timezone}
+    hwclock --systohc
+}
+
+# Check command status
+_check() {
+    "$@"
+    local status=$?
+    if [[ ${status} -ne 0 ]]; then
+        _error "with ${1}"
+    fi
+    return ${status}
+}
+
+# Reboot with 10s timeout
+_reboot() {
+    for d in $(seq 10 -1 1); do
+        echo -ne "\r\033[K${green}System will reboot in ${d}s...${nc}"
+        sleep 1
+    done
+    reboot
+}
+
+# Display error
+_error() {
+    echo -e "${red}Error: ${yellow}${1} Please try again.${nc}\n"
+    _reboot
+}
+
+# Display end of prompt or confirm
+_end() {
+    for char in $(seq ${count}); do
+        echo -ne "-"
+    done
+    echo -ne "\n==> ${nc}"
+}
+
+# Ask confirmation (Yes/No)
+_confirm() {
+    count=$((${#1} + 6))
+    until [[ ${confirm} =~ ^(y|n|Y|N|yes|no|Yes|No)$ ]]; do
+        echo -ne "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}\n==> "
+        _end
+        read -r confirm
+    done
+}
+
+# Select an option
+_select() {
+    count=0
+    echo -ne "${yellow}\n==> "
+    for entry in ${@}; do
+        echo -ne "${green}${entry} ${red}[$((++count))] ${nc}"
+    done
+    lenth=${@}
+    number=$((${#*} * 4))
+    count=$((${#lenth} + ${number} + 1))
+    echo -ne "${yellow}\n==> "
+    _end
+}
+
+# Ask some infos
+_prompt() {
+    lenth=${@}
+    count=${#lenth}
+    echo -ne "\n${yellow}==> ${green}${1} ${red}${2}"
+    echo -ne "${yellow}\n==> "
+    _end
+}
+
+#
+# START ARCHBOOT
+# ______________
+
+_archboot_banner
+
+# Check Internet Connection
+_info "Check Internet Connection"
+ping -c 1 archlinux.org >/dev/null 2>&1
+if [[ $? -eq 0 ]]; then
+    _note "OK, you are connected to Internet."
+else
+    _error "you are not connected to Internet. Ethernet seems not plugged in."
+fi
+
+# Download base sources
+_confirm "Start downloading sources from github?"
+case ${confirm} in
+    y|Y|yes|Yes)
+        _info "Downloading base sources"
+        _wget ${_url}/src/arch/base            # to install Base system
+        _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
+        _wget ${_url}/src/arch/firmware        # to define partitions settings
+        _wget ${_url}/src/arch/mounting        # to mount partitions & swap
+        _wget ${_url}/src/arch/partition       # to create table & partitions
+        _wget ${_url}/src/arch/user            # to ask user infos
+        _wget ${_url}/src/apps/system_apps     # to load system apps
+        _wget ${_url}/conf/language            # to get language code
+        _wget ${_url}/conf/timezone            # to get region code
+        ;;
+    *) exit;;
+esac
+unset confirm
+
+# Import base sources
+_info "Importing base sources"
+source ./base; source ./bootloader; source ./firmware
+source ./mounting; source ./partition; source ./user; source ./system_apps
+
+# Ask for user informations
+_ask_user_informations
+
+# If Desktop Environment
+if [[ ! -z ${desktop+x} ]]; then
+
+    # Download desktop sources
+    _info "Downloading desktop sources"
+    _wget ${_url}/src/arch/vga             # to scan/install VGA Controller
+    _wget ${_url}/src/arch/desktop         # to install Desktop Environment
+    _wget ${_url}/src/arch/display         # to install Display Manager
+    _wget ${_url}/src/apps/vga_apps        # to load VGA apps
+    _wget ${_url}/src/apps/desktop_apps    # to load Desktop apps
+    _wget ${_url}/src/apps/display_apps    # to load Display Manager apps
+
+    # Import desktop sources
+    _info "Importing desktop sources"
+    source ./vga; source ./desktop; source ./display
+    source ./vga_apps; source ./desktop_apps; source ./display_apps
+
+    # Scan VGA Controller and select appropriate driver
+    _scan_vga_controller
+fi
+
+# Prepare the system
+_clock; _logs; _firmware; _partition; _mounting
+_note "system ready! Partitions mounted & swap activated."
+
+# Install Arch Linux
+_confirm "Do you wish to install Arch Linux now?"
+case ${confirm} in
+    y|Y|yes|Yes)
+        (_base; _bootloader) 2>&1 | tee -a ${log}
+
+        # Install desktop environment
+        if [[ ! -z ${desktop+x} ]]; then
+            (_install_vga_controller; _install_desktop_environment; \
+            _display_manager; _desktop_settings) 2>&1 | tee -a ${log}
+        fi
+
+        # Logfile path
+        _info "Setting logfile path"
+        mkdir /mnt/var/log/archboot
+        cp "${log}" /mnt/var/log/archboot/
+
+        # Success notes
+        _note "Installation successful! \
+        ${__appname__} ${__version__} by ${__author__} under ${__license__}"
+        ;;
+
+    # Aborted
+    *) _error "aborted by user!";;
+esac
+unset confirm
+
+#
+# SYSTEM REBOOT
+# _____________
+
+_confirm "Do you want to reboot your computer now?"
+case ${confirm} in
+    y|Y|yes|Yes) umount -R /mnt; _reboot;;
+    *) exit;;
+esac
