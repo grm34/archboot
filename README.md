@@ -20,7 +20,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 ## Notes
 
-* Desktop environment:
+* Available Desktop Environment:
     * [Gnome](https://wiki.archlinux.org/index.php/GNOME)
     * [KDE](https://wiki.archlinux.org/index.php/KDE)
     * [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment)
@@ -32,7 +32,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
     * [MATE](https://wiki.archlinux.org/index.php/MATE)
     * [LXQt](https://wiki.archlinux.org/index.php/LXQt)
 
-* Display manager:
+* Available Display Manager:
     * [Gdm](https://wiki.archlinux.org/index.php/GDM)
     * [LightDM](https://wiki.archlinux.org/index.php/LightDM)
     * [Sddm](https://wiki.archlinux.org/index.php/SDDM)
