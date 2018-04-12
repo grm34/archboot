@@ -1,0 +1,8 @@
+# Travis CI
+language: bash
+addons:
+  apt:
+    sources:
+    - debian-sid
+    packages:
+    - shellcheck
