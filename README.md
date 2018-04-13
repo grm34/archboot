@@ -41,10 +41,6 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 * Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
 
-* List of installed [packages](https://github.com/grm34/archboot#arch-linux-system-apps)
-* List of available [Language code](https://github.com/grm34/archboot/blob/master/README.md#language-code)
-* List of available [TimeZone code](https://github.com/grm34/archboot/blob/master/README.md#timezone-code)
-
 ## Logs
 
 Take a look in **/var/log/archboot** for logs: `cat /var/log/archboot/archboot_*.log`
