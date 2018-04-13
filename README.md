@@ -158,6 +158,7 @@ ____ Bumblebee ____
 <details><summary>List of available Language code</summary>
 <p>
 
+#### Language code
 ```
 aa_DJ
 af_ZA
@@ -309,6 +310,7 @@ zu_ZA
 <details><summary>List of available TimeZone code</summary>
 <p>
 
+#### TimeZone code
 ```
 Africa/Abidjan
 Africa/Accra
