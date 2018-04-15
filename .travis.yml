@@ -4,5 +4,7 @@ addons:
   apt:
     sources:
     - debian-sid
-    packages:
-    - shellcheck
+before-script:
+  - "sudo apt-get install cabal-install"
+  - "cabal update"
+  - "cabal install shellcheck"
