@@ -58,7 +58,9 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 # Bootloader = grub os-prober gptfdisk efibootmgr
 
-# yaourt (in case of AUR support) = yaourt customizepkg
+# AUR support = yaourt customizepkg
+
+# Terminal = terminator
 ```
 
 #### Desktop Environment (desktop apps)
