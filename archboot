@@ -125,7 +125,7 @@ _select() {
     count=0
     echo -ne "${yellow}\n==> "
     for entry in ${@}; do
-        echo -ne "${green}${entry} ${red}[$((++count))] ${nc}"
+        echo -ne "${red}[$((++count))] ${green}${entry} ${nc}"
     done
     lenth=${@}
     number=$((${#*} * 4))
