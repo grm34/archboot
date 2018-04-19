@@ -113,7 +113,7 @@ _end() {
 # Ask confirmation (Yes/No)
 _confirm() {
     count=$((${#1} + 6))
-    until [[ ${confirm} =~ ^(y|n|Y|N|yes|no|Yes|No)$ ]]; do
+    until [[ ${confirm} =~ ^(y|n|Y|N)$ ]]; do
         echo -ne "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}\n==> "
         _end
         read -r confirm
