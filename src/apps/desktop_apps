@@ -10,22 +10,22 @@ export _kde="plasma kde-applications"
 export _lxde="lxde"
 
 # Xfce
-export _xfce4="xfce4 xfce4-goodies lxdm"
+export _xfce4="xfce4 xfce4-goodies"
 
 # Deepin
 export _deepin="deepin deepin-extra"
 
 # Cinnamon
-export _cinnamon="cinnamon lxdm"
+export _cinnamon="cinnamon"
 
 # Budgie
-export _budgie="budgie-desktop lxdm"
+export _budgie="budgie-desktop"
 
 # Enlightenment
-export _enlightenment="enlightenment terminology lxdm"
+export _enlightenment="enlightenment"
 
 # Mate
-export _mate="mate mate-extra lxdm"
+export _mate="mate mate-extra"
 
 # Lxqt
-export _lxqt="lxqt lxdm"
+export _lxqt="lxqt"
