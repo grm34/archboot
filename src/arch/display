@@ -51,7 +51,7 @@ _display_manager() {
         fi
 
         # Configure settings
-        sed -i -e "s/${default_session}/${session}/g" /mnt/etc/lxdm/lxdm.conf
+        sed -i -e "s|${default_session}|${session}|g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/# numlock=0/numlock=1/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/white=/white=${USER_name}/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/black=/black=root/g" /mnt/etc/lxdm/lxdm.conf
