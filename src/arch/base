@@ -7,11 +7,11 @@ _base() {
     yes '' | pacstrap /mnt ${_arch}
 
     # Setting fstab
-    _info "Setting fstab"
+    _info "Setting and generating fstab"
     genfstab -U -p /mnt >> /mnt/etc/fstab
 
     # Setting TimeZone
-    _info "Setting TimeZone"
+    _info "Setting time zone"
     ln -sf /usr/share/zoneinfo/${timezone} /mnt/etc/localtime
 
     # Setting locale
@@ -22,7 +22,7 @@ _base() {
     echo "LANG=${language}.UTF-8" > /mnt/etc/locale.conf
 
     # Setting keyboard
-    _info "Setting keyboard"
+    _info "Setting vconsole"
     echo "KEYMAP=${keymap_code}" > /mnt/etc/vconsole.conf
 
     # Setting hostname
@@ -69,7 +69,7 @@ _base() {
     fi
 
     # Install Numlock
-    _info "Installing Numlock"
+    _info "Installing numlock"
     _chroot "pacman --noconfirm -S ${_numlock}"
 
     # Install yaourt
@@ -79,7 +79,7 @@ _base() {
     fi
 
     # Setting user
-    _info "Setting ${USER_name}"
+    _info "Setting user ${USER_name}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_name}
     echo '${USER_name}:${USER_passwd}' | chpasswd"
     if [[ ! -z ${power+x} ]]; then

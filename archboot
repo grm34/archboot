@@ -228,8 +228,8 @@ case ${confirm} in
         cp "${log}" /mnt/var/log/archboot/
 
         # Success notes
-        _note "Installation successful! \
-        ${__appname__} ${__version__} by ${__author__} under ${__license__}"
+        _note "installation successful! // \
+${__appname__} ${__version__} by ${__author__} under ${__license__}"
         ;;
 
     # Aborted

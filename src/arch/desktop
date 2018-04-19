@@ -18,7 +18,7 @@ _desktop_settings() {
 
     # Groups
     if [[ ! -z ${power+x} ]]; then
-        _info "Add ${USER_name} to all groups"
+        _info "Add user ${USER_name} to all groups"
         _chroot "yes | pwck"
         _chroot "yes | grpck"
         group_list=$(cut -d: -f1 /mnt/etc/group)
