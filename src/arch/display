@@ -2,59 +2,60 @@
 
 _display_manager() {
 
-    # GDM > Gnome
-    if [[ ${desktop} == "gnome" ]]; then
-        _info "Enabling GDM"
+    # Install Display Manager
+    _info "Installing ${display_man}"
+    install_display="_${display_man}"
+    _chroot "pacman --noconfirm -S ${!install_display}; "
+    _chroot "systemctl enable ${display_man}"
+
+    # Start Command
+    case ${desktop} in
+        gnome|mate|cinnamon) session="/usr/bin/${desktop}-session";;
+        kde|xfce4|lxde|lxqt) session="/usr/bin/start${desktop}";;
+        enlightenment) session="/usr/bin/enlightenment_start";;
+        budgie) session="/usr/bin/budgie-desktop";;
+        deepin) session="/usr/bin/startdde";;
+    esac
+
+    # GDM
+    if [[ ${display_man} == "gdm" ]]; then
         wget ${_url}/conf/xprofile
         mv xprofile /mnt/etc/xprofile
-        _chroot "systemctl enable gdm"
 
-    # SDDM > Kde
-    elif [[ ${desktop} == "kde" ]]; then
-        _info "Enabling SDDM"
+    # LIGHTDM
+    elif [[ ${display_man} == "lightdm" ]]; then
+
+        # Greeter
+        case ${desktop} in
+            deepin) greeter="deepin";;
+            kde) greeter="kde";;
+            *) greeter="gtk";;
+        esac
+
+        default="#greeter-session=example-gtk-gnome"
+        session="greeter-session=lightdm-${greeter}-greeter"
+        num_on="greeter-setup-script=/usr/bin/numlockx on"
+        num_off="#greeter-setup-script="
+        sed -i -e "s|${default}|${session}|g" /mnt/etc/lightdm/lightdm.conf
+        sed -i -e "s|${num_off}|${num_on}|g" /mnt/etc/lightdm/lightdm.conf
+
+    # SDDM
+    elif [[ ${display_man} == "sddm" ]]; then
+        _chroot "sddm --example-config > /etc/sddm.conf"
+        sed -i -e "s|Session=|Session=${session}|g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/Numlock=none/Numlock=on/g" /mnt/etc/sddm.conf
-        _chroot "systemctl enable sddm"
-
-    # LIGHTDM > Deepin
-    elif [[ ${desktop} == "deepin" ]]; then
-        _info "Enabling LightDM"
-        default_session="#greeter-session=example-gtk-gnome"
-        session="greeter-session=lightdm-deepin-greeter"
-        numlock="greeter-setup-script=/usr/bin/numlockx on"
-        sed -i -e "s|${default-session}|${session}|g" \
-        /mnt/etc/lightdm/lightdm.conf
-        sed -i -e "s|#greeter-setup-script=|${numlock}|g" \
-        /mnt/etc/lightdm/lightdm.conf
-        _chroot "systemctl enable lightdm"
 
     # LXDM
-    else
-        _info "Enabling LXDM"
-        default_session="# session=/usr/bin/startlxde"
-
-        # Cinnamon / Mate
-        if [[ ${desktop} == "cinnamon" || ${desktop} == "mate" ]]; then
-            session="session=/usr/bin/${desktop}-session"
-
-
-        # Enlightenment
-        elif [[ ${desktop} == "enlightenment" ]]; then
-            session="session=/usr/bin/enlightenment_start"
-
-        # Budgie
-        elif [[ ${desktop} == "budgie" ]]; then
-            session="session=/usr/bin/budgie-desktop"
-
-        # Xfce / Lxde / Lxqt
-        else
-            session="session=/usr/bin/start${desktop}"
-        fi
-
-        # Configure settings
-        sed -i -e "s|${default_session}|${session}|g" /mnt/etc/lxdm/lxdm.conf
+    elif [[ ${display_man} == "lxdm" ]]; then
+        default="# session=/usr/bin/startlxde"
+        sed -i -e "s|${default}|session=${session}|g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/# numlock=0/numlock=1/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/white=/white=${USER_name}/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/black=/black=root/g" /mnt/etc/lxdm/lxdm.conf
-        _chroot "systemctl enable lxdm"
+
+    # XDM
+    elif [[ ${display_man} == "xdm" ]]; then
+        echo ${session} > /mnt/home/${USER_name}/.xsession
+        chmod 700 /mnt/home/${USER_name}/.xsession
     fi
 }
