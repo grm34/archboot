@@ -46,9 +46,10 @@ _base() {
     # AUR support
     if [[ ! -z ${aur+x} ]]; then
         _info "Enabling AUR support"
-        echo "[archlinuxfr]" >> /mnt/etc/pacman.conf
-        echo "SigLevel = Never" >> /mnt/etc/pacman.conf
-        echo "Server = http://repo.archlinux.fr/$arch" >> /mnt/etc/pacman.conf
+        echo -e "\n[archlinuxfr]" >> /mnt/etc/pacman.conf
+        echo -e "SigLevel = Never" >> /mnt/etc/pacman.conf
+        echo -e "Server = http://repo.archlinux.fr/\$arch" \
+        >> /mnt/etc/pacman.conf
     fi
 
     # Upgrading system
