@@ -23,7 +23,7 @@ choice to  the user.  Pretty simple,  it just  prompt for
 hostname, username, password, which disk to use, required
 partitions, language, timezone and if you wish to install
 a desktop  environment.  According to the  chosen one and
-in order to get  complete  support, additionals  packages
+in order  to get  complete  support, additional  packages
 may be required."""
 }
 
