@@ -12,7 +12,7 @@ _scan_vga_controller() {
 		_note "System compatible to install Bumblebee."
 		_confirm "Use Nvidia proprietary driver instead of open source?"
 	    case ${confirm} in
-            y|Y|yes|Yes)
+            y|Y)
 		        export vga_driver="bumblebee_nvidia"
 		        export openGL_x64="openGL_x64_nvidia"
 				export openGL_x86="openGL_x86_nvidia"
@@ -36,7 +36,7 @@ _scan_vga_controller() {
 			_note "${nvidia_card##*: } detected."
 			_confirm "Use Nvidia proprietary driver instead of open source?"
 		    case ${confirm} in
-                y|Y|yes|Yes)
+                y|Y)
     		        export vga_driver="nvidia"
     		        export openGL_x64="openGL_x64_nvidia"
     				export openGL_x86="openGL_x86_nvidia"
