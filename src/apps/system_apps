@@ -21,3 +21,8 @@ export _yaourtapps="yaourt customizepkg"
 
 # Terminal
 export _termapps="terminator"
+
+# Fonts
+export _fontapps="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
+font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate \
+ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
