@@ -58,11 +58,13 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 # Arch User Repository (in case of AUR support) = yaourt customizepkg
 
+# Xorg Server (in case of Desktop Environment) = xorg-server
+
+# Fonts (in case of Desktop Environment) = xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+
 # NumLock (in case of Desktop Environment) = numlockx
 
 # Terminal (in case of Desktop Environment) = terminator
-
-# Fonts (in case of Desktop Environment) = xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 ```
 
 #### Desktop Environment (desktop apps)
