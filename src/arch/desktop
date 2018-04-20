@@ -23,10 +23,12 @@ _install_desktop_environment() {
 _desktop_settings() {
 
     # Keyboard layout
-    _info "Setting keyboard layout"
-    wget ${_url}/conf/00-keyboard.conf
-    sed -i -e "s/keymap_code/${keymap_code}/g" 00-keyboard.conf
-    mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
+    if [ -d "/mnt/etc/X11/xorg.conf.d/" ]; then
+        _info "Setting keyboard layout"
+        wget ${_url}/conf/00-keyboard.conf
+        sed -i -e "s/keymap_code/${keymap_code}/g" 00-keyboard.conf
+        mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
+    fi
 
     # Groups
     if [[ ! -z ${power+x} ]]; then
