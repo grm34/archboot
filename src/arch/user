@@ -90,7 +90,8 @@ _ask_user_informations() {
         done
         desktop_choice=\
 (none gnome kde mate xfce4 lxde lxqt deepin budgie cinnamon enlightenment)
-        export desktop=${desktop_choice[${desk}]};;
+        export desktop=${desktop_choice[${desk}]}
+        ;;
     esac
     unset confirm
 
