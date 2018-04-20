@@ -5,7 +5,15 @@ _install_desktop_environment() {
     # Desktop Environment
     _info "Installing ${desktop}"
     user_desktop="_${desktop}"
-    _chroot "pacman --noconfirm -S ${!user_desktop} ${_termapps} ${_fontapps}"
+    _chroot "pacman --noconfirm -S ${!user_desktop}"
+
+    # Terminal
+    _info "Installing terminal"
+    _chroot "pacman --noconfirm -S ${_termapps}"
+
+    # Fonts
+    _info "Installing fonts"
+    _chroot "pacman --noconfirm -S ${_fontapps}"
  }
 
 _desktop_settings() {
