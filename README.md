@@ -61,8 +61,6 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 #### Desktop Environment (desktop apps)
 ```
-____ Desktop Environment ____
-
 # Gnome = gnome gnome-extra
 
 # Kde = plasma kde-applications
