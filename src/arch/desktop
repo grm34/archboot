@@ -7,13 +7,17 @@ _install_desktop_environment() {
     user_desktop="_${desktop}"
     _chroot "pacman --noconfirm -S ${!user_desktop}"
 
-    # Terminal
-    _info "Installing terminal"
-    _chroot "pacman --noconfirm -S ${_termapps}"
+    # Install Numlock
+    _info "Installing numlock"
+    _chroot "pacman --noconfirm -S ${_numlock}"
 
     # Fonts
     _info "Installing fonts"
-    _chroot "pacman --noconfirm -S ${_fontapps}"
+    _chroot "pacman --noconfirm -S ${_fonts}"
+
+    # Terminal
+    _info "Installing terminal"
+    _chroot "pacman --noconfirm -S ${_term}"
  }
 
 _desktop_settings() {

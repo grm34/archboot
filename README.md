@@ -54,11 +54,11 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 # Network = ntp networkmanager wget nmap rp-pppoe dhclient iw wpa_supplicant wireless_tools git
 
-# NumLock = numlockx
-
 # Bootloader = grub os-prober gptfdisk efibootmgr
 
 # Arch User Repository (in case of AUR support) = yaourt customizepkg
+
+# NumLock (in case of Desktop Environment) = numlockx
 
 # Terminal (in case of Desktop Environment) = terminator
 

@@ -68,10 +68,6 @@ _base() {
         _chroot "pacman --noconfirm -S ${_intel}"
     fi
 
-    # Install Numlock
-    _info "Installing numlock"
-    _chroot "pacman --noconfirm -S ${_numlock}"
-
     # Install yaourt
     if [[ ! -z ${aur+x} ]]; then
         _info "Installing yaourt"
