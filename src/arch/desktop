@@ -26,15 +26,13 @@ _install_desktop_environment() {
 
 _desktop_settings() {
 
-    # Keyboard layout
-    if [ -d "/mnt/etc/X11/xorg.conf.d/" ]; then
-        _info "Setting keyboard layout"
-        wget ${_url}/conf/00-keyboard.conf
-        sed -i -e "s/keymap_code/${keymap_code}/g" 00-keyboard.conf
-        mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
-    fi
+    # Setting Keyboard layout
+    _info "Setting keyboard layout"
+    wget ${_url}/conf/00-keyboard.conf
+    sed -i -e "s/keymap_code/${keymap_code}/g" 00-keyboard.conf
+    mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
 
-    # Groups
+    # Add user to all group
     if [[ ! -z ${power+x} ]]; then
         _info "Add user ${USER_name} to all groups"
         _chroot "yes | pwck"

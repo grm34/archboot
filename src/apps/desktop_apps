@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#
+# DESKTOP ENVIRONMENT
+# ___________________
+
 # Gnome
 export _gnome="gnome gnome-extra"
 
@@ -29,3 +33,21 @@ export _mate="mate mate-extra"
 
 # Lxqt
 export _lxqt="lxqt"
+
+#
+# REQUIRED PACKAGES
+# _________________
+
+# Xorg
+export _xorg="xorg-server"
+
+# Fonts
+export _fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
+font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate \
+ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
+
+# Numlock
+export _numlock="numlockx"
+
+# Terminal
+export _term="terminator"

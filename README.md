@@ -57,18 +57,13 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 # Bootloader = grub os-prober gptfdisk efibootmgr
 
 # Arch User Repository (in case of AUR support) = yaourt customizepkg
-
-# Xorg Server (in case of Desktop Environment) = xorg-server
-
-# Fonts (in case of Desktop Environment) = xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
-
-# NumLock (in case of Desktop Environment) = numlockx
-
-# Terminal (in case of Desktop Environment) = terminator
 ```
 
 #### Desktop Environment (desktop apps)
 ```
+
+____ Desktop Environment ____
+
 # Gnome = gnome gnome-extra
 
 # Kde = plasma kde-applications
@@ -88,6 +83,17 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 # Mate = mate mate-extra
 
 # Lxqt = lxqt
+
+
+____ Required Packages ____
+
+# Xorg = xorg-server
+
+# Fonts = xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+
+# NumLock = numlockx
+
+# Terminal = terminator
 ````
 
 #### Display Manager (display apps)
