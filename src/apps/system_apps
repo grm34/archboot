@@ -15,17 +15,3 @@ export _bootapps="grub os-prober gptfdisk efibootmgr"
 
 # Arch User Repository (in case of AUR support)
 export _yaourtapps="yaourt customizepkg"
-
-# Xorg (in case of Desktop Environment)
-export _xorg="xorg-server"
-
-# Fonts (in case of Desktop Environment)
-export _fonts="xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf \
-font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate \
-ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
-
-# Numlock (in case of Desktop Environment)
-export _numlock="numlockx"
-
-# Terminal (in case of Desktop Environment)
-export _term="terminator"
