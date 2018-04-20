@@ -83,6 +83,7 @@ ____ Desktop Environment ____
 
 # Lxqt = lxqt
 
+
 ____ Required Packages ____
 
 # Xorg = xorg-server
@@ -111,6 +112,7 @@ ____ Required Packages ____
 ```
 # Default Driver = xf86-video-vesa
 
+
 ____ INTEL Open Source ____
 
 # Driver = xf86-video-intel
@@ -120,6 +122,7 @@ ____ INTEL Open Source ____
 # OpenGL x86 (in case of Multilib support) = lib32-mesa
 
 # Hardware Acceleration = vulkan-intel libva-intel-driver libvdpau-va-gl
+
 
 ____ ATi/AMD Open Source ____
 
@@ -131,6 +134,7 @@ ____ ATi/AMD Open Source ____
 
 # Hardware Acceleration = vulkan-radeon libva-mesa-driver mesa-vdpau
 
+
 ____ Nvidia Open Source ____
 
 # Driver = xf86-video-nouveau
@@ -141,6 +145,7 @@ ____ Nvidia Open Source ____
 
 # Hardware Acceleration = libva-vdpau-driver mesa-vdpau
 
+
 ____ Nvidia Proprietary ____
 
 # Driver = xf86-video-nvidia
@@ -150,6 +155,7 @@ ____ Nvidia Proprietary ____
 # OpenGL x86 (in case of Multilib support) = lib32-nvidia-utils
 
 # Hardware Acceleration = libva-vdpau-driver
+
 
 ____ Bumblebee ____
 
