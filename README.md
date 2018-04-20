@@ -61,7 +61,6 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 #### Desktop Environment (desktop apps)
 ```
-
 ____ Desktop Environment ____
 
 # Gnome = gnome gnome-extra
@@ -83,7 +82,6 @@ ____ Desktop Environment ____
 # Mate = mate mate-extra
 
 # Lxqt = lxqt
-
 
 ____ Required Packages ____
 
@@ -113,7 +111,6 @@ ____ Required Packages ____
 ```
 # Default Driver = xf86-video-vesa
 
-
 ____ INTEL Open Source ____
 
 # Driver = xf86-video-intel
@@ -123,7 +120,6 @@ ____ INTEL Open Source ____
 # OpenGL x86 (in case of Multilib support) = lib32-mesa
 
 # Hardware Acceleration = vulkan-intel libva-intel-driver libvdpau-va-gl
-
 
 ____ ATi/AMD Open Source ____
 
@@ -135,7 +131,6 @@ ____ ATi/AMD Open Source ____
 
 # Hardware Acceleration = vulkan-radeon libva-mesa-driver mesa-vdpau
 
-
 ____ Nvidia Open Source ____
 
 # Driver = xf86-video-nouveau
@@ -146,7 +141,6 @@ ____ Nvidia Open Source ____
 
 # Hardware Acceleration = libva-vdpau-driver mesa-vdpau
 
-
 ____ Nvidia Proprietary ____
 
 # Driver = xf86-video-nvidia
@@ -156,7 +150,6 @@ ____ Nvidia Proprietary ____
 # OpenGL x86 (in case of Multilib support) = lib32-nvidia-utils
 
 # Hardware Acceleration = libva-vdpau-driver
-
 
 ____ Bumblebee ____
 
