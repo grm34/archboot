@@ -25,13 +25,18 @@ _display_manager() {
     # LIGHTDM
     elif [[ ${display_man} == "lightdm" ]]; then
 
-        # Greeter
+        # Select Greeter
         case ${desktop} in
             deepin) greeter="deepin";;
             kde) greeter="kde";;
             *) greeter="gtk";;
         esac
 
+        # Install Greeter
+        _info "Installing lightdm-${greeter}-greeter"
+        _chroot "pacman --noconfirm -S lightdm-${greeter}-greeter"
+
+        # Configure Greeter
         default="#greeter-session=example-gtk-gnome"
         session="greeter-session=lightdm-${greeter}-greeter"
         num_on="greeter-setup-script=/usr/bin/numlockx on"
