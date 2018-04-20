@@ -62,7 +62,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 # Terminal (in case of Desktop Environment) = terminator
 
-# Fonts (in case of DE) = xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
+# Fonts (in case of Desktop Environment) = xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 ```
 
 #### Desktop Environment (desktop apps)
