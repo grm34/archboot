@@ -45,7 +45,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 ## Advanced
 
-<details><summary>List of installed packages</summary>
+<details><summary>List of installed Packages</summary>
 <p>
 
 #### Arch Linux (system apps)
