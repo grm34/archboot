@@ -67,22 +67,22 @@ _ask_user_informations() {
 
     # User Rights
     _confirm "Give all rights to user ${USER_name}?"
-    case ${confirm} in y|Y|yes|Yes) export power="yes";; esac
+    case ${confirm} in y|Y) export power="yes";; esac
     unset confirm
 
     # Multilib
     _confirm "Enable multilib for 32-bit support?"
-    case ${confirm} in y|Y|yes|Yes) export multilib="yes";; esac
+    case ${confirm} in y|Y) export multilib="yes";; esac
     unset confirm
 
     # AUR
     _confirm "Install yaourt to enable AUR support?"
-    case ${confirm} in y|Y|yes|Yes) export aur="yes";; esac
+    case ${confirm} in y|Y) export aur="yes";; esac
     unset confirm
 
     # Desktop Environment
     _confirm "Do you wish to install desktop environment?"
-    case ${confirm} in y|Y|yes|Yes)
+    case ${confirm} in y|Y)
         until [[ ${desk} =~ ^([1-9]|10)$ ]]; do
             _select "Gnome" "KDE" "MATE" "Xfce" \
 "LXDE" "LXQt" "Deepin" "Budgie" "Cinnamon" "Enlightenment"
@@ -101,13 +101,13 @@ _ask_user_informations() {
         case ${confirm} in
 
             # Custom display manager
-            y|Y|yes|Yes)
+            y|Y)
                 until [[ ${disp} =~ ^([1-5])$ ]]; do
                     _select "Gdm" "LightDM" "Sddm" "Lxdm" "Xdm"
                     read -r disp
                 done
                 display_choice=(none gdm lightdm sddm lxdm xdm)
-                export display_man=${display_choice[${desk}]}
+                export display_man=${display_choice[${disp}]}
                 ;;
 
             # Default display manager
