@@ -58,9 +58,9 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 # Bootloader = grub os-prober gptfdisk efibootmgr
 
-# AUR support = yaourt customizepkg
+# Arch User Repository (in case of AUR support) = yaourt customizepkg
 
-# Terminal (in case of DE) = terminator
+# Terminal (in case of Desktop Environment) = terminator
 
 # Fonts (in case of DE) = xorg-fonts-type1 ttf-dejavu artwiz-fonts font-bh-ttf font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera ttf-cheapskate ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk
 ```
@@ -112,7 +112,7 @@ ____ INTEL Open Source ____
 
 # OpenGL x64 = mesa
 
-# OpenGL x86 = lib32-mesa
+# OpenGL x86 (in case of Multilib support) = lib32-mesa
 
 # Hardware Acceleration = vulkan-intel libva-intel-driver libvdpau-va-gl
 
@@ -123,7 +123,7 @@ ____ ATi/AMD Open Source ____
 
 # OpenGL x64 = mesa
 
-# OpenGL x86 = lib32-mesa
+# OpenGL x86 (in case of Multilib support) = lib32-mesa
 
 # Hardware Acceleration = vulkan-radeon libva-mesa-driver mesa-vdpau
 
@@ -134,7 +134,7 @@ ____ Nvidia Open Source ____
 
 # OpenGL x64 = mesa
 
-# OpenGL x86 = lib32-mesa
+# OpenGL x86 (in case of Multilib support) = lib32-mesa
 
 # Hardware Acceleration = libva-vdpau-driver mesa-vdpau
 
@@ -145,7 +145,7 @@ ____ Nvidia Proprietary ____
 
 # OpenGL x64 = nvidia-utils
 
-# OpenGL x86 = lib32-nvidia-utils
+# OpenGL x86 (in case of Multilib support) = lib32-nvidia-utils
 
 # Hardware Acceleration = libva-vdpau-driver
 
