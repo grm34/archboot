@@ -50,11 +50,9 @@ _base() {
         echo -e "SigLevel = Never" >> /mnt/etc/pacman.conf
         echo -e "Server = http://repo.archlinux.fr/\$arch" \
         >> /mnt/etc/pacman.conf
+        _info "Installing yaourt"
+        _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
     fi
-
-    # Upgrading system
-    _info "Upgrading system"
-    _chroot "pacman -Syu"
 
     # Install Network
     _info "Installing network"
@@ -66,12 +64,6 @@ _base() {
     if [[ $? -eq 0 ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${_intel}"
-    fi
-
-    # Install yaourt
-    if [[ ! -z ${aur+x} ]]; then
-        _info "Installing yaourt"
-        _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
     fi
 
     # Setting user
