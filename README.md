@@ -43,9 +43,9 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 ## Advanced
 
-* List of installed [Packages](https://github.com/grm34/archboot#advanced)
-* List of available [Language code](https://github.com/grm34/archboot#advanced)
-* List of available [TimeZone code](https://github.com/grm34/archboot#advanced)
+* List of installed [Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
+* List of available [Language code](https://github.com/grm34/archboot/wiki/Language-code)
+* List of available [TimeZone code](https://github.com/grm34/archboot/wiki/TimeZone-code)
 
 ## Logs
 
