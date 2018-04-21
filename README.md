@@ -23,6 +23,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 * List of installed [Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
 * List of available [Language code](https://github.com/grm34/archboot/wiki/Language-code)
 * List of available [TimeZone code](https://github.com/grm34/archboot/wiki/TimeZone-code)
+
 * Available Desktop Environment:
     * [Gnome](https://wiki.archlinux.org/index.php/GNOME)
     * [KDE](https://wiki.archlinux.org/index.php/KDE)
