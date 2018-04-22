@@ -18,32 +18,15 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 
 **4.** Download archboot and follow the [instructions](https://github.com/grm34/archboot/wiki/Installation-step-by-step): `wget tiny.cc/archboot; sh archboot`
 
-## Notes
+## Wiki
 
-* List of installed [Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
-* List of available [Language code](https://github.com/grm34/archboot/wiki/Language-code)
-* List of available [TimeZone code](https://github.com/grm34/archboot/wiki/TimeZone-code)
-
-* Available Desktop Environment:
-    * [Gnome](https://wiki.archlinux.org/index.php/GNOME)
-    * [KDE](https://wiki.archlinux.org/index.php/KDE)
-    * [Deepin](https://wiki.archlinux.org/index.php/Deepin_Desktop_Environment)
-    * [Xfce](https://wiki.archlinux.org/index.php/xfce)
-    * [LXDE](https://wiki.archlinux.org/index.php/LXDE)
-    * [Cinnamon](https://wiki.archlinux.org/index.php/cinnamon#Starting_Cinnamon)
-    * [Budgie](https://wiki.archlinux.org/index.php/Budgie_Desktop)
-    * [Enlightenment](https://wiki.archlinux.org/index.php/Enlightenment)
-    * [MATE](https://wiki.archlinux.org/index.php/MATE)
-    * [LXQt](https://wiki.archlinux.org/index.php/LXQt)
-
-* Available Display Manager:
-    * [Gdm](https://wiki.archlinux.org/index.php/GDM)
-    * [LightDM](https://wiki.archlinux.org/index.php/LightDM)
-    * [Sddm](https://wiki.archlinux.org/index.php/SDDM)
-    * [Lxdm](https://wiki.archlinux.org/index.php/LXDM)
-    * [Xdm](https://wiki.archlinux.org/index.php/XDM)
-
-* Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is also available.
+* [Installation step by step](https://github.com/grm34/archboot/wiki/Installation-step-by-step)
+* [Desktop Environment](https://github.com/grm34/archboot/wiki/Desktop-Environment)
+* [Display Manager](https://github.com/grm34/archboot/wiki/Display-Manager)
+* [Language code](https://github.com/grm34/archboot/wiki/Language-code)
+* [TimeZone code](https://github.com/grm34/archboot/wiki/TimeZone-code)
+* [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
+* Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is available.
 
 ## Logs
 
