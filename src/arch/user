@@ -4,7 +4,7 @@ _ask_user_informations() {
 
     # User Language
     until grep -Fxq "${language}" ./language; do
-        _note "list of available language code is available on github"
+        _note "list of available language code is available in the wiki"
         _prompt "Enter language code:" "(ex: fr_FR, en_US, de_DE)"
         read -r language
     done
@@ -12,7 +12,7 @@ _ask_user_informations() {
 
     # TimeZone
     until grep -Fxq "${timezone}" ./timezone; do
-        _note "list of available time zone code is available on github"
+        _note "list of available time zone code is available in the wiki"
         _prompt "Enter time zone code:" "(ex: Europe/Paris, Asia/Tokyo)"
         read -r timezone
     done
