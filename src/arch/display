@@ -49,7 +49,7 @@ _display_manager() {
     # SDDM
     elif [[ ${display_man} == "sddm" ]]; then
         _chroot "sddm --example-config > /etc/sddm.conf"
-        sed -i -e "s|Session=|Session=${session}|g" /mnt/etc/lxdm/lxdm.conf
+        sed -i -e "s|Session=|Session=${session}|g" /mnt/etc/sddm.conf
         sed -i -e "s/Numlock=none/Numlock=on/g" /mnt/etc/sddm.conf
 
     # LXDM
