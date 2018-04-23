@@ -41,6 +41,7 @@ _base() {
     if [[ ! -z ${multilib+x} ]]; then
         _info "Enabling multilib support"
         sed -i -e "/multilib]/,/mirrorlist/ s/#//g" /mnt/etc/pacman.conf
+        _chroot "pacman --noconfirm -Syu"
     fi
 
     # AUR support
