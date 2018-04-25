@@ -2,3 +2,5 @@ title: <a href="https://grm34.github.io/archboot/"><img src="https://raw.githubu
 description: Arch Linux auto install
 theme: jekyll-theme-slate
 show_downloads: True
+plugins:
+  - jekyll-seo-tag
