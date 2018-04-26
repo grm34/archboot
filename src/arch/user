@@ -114,10 +114,10 @@ _ask_user_informations() {
             # Default display manager
             *)
                 case ${desktop} in
-                    gnome) export display_man="gdm";;
+                    gnome|budgie|cinnamon|mate) export display_man="gdm";;
                     kde) export display_man="sddm";;
-                    deepin) export display_man="lightdm";;
-                    *) export display_man="lxdm";;
+                    deepin|enlightenment) export display_man="lightdm";;
+                    xfce4|lxde|lxqt) export display_man="lxdm";;
                 esac
                 ;;
         esac
