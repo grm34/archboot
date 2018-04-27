@@ -5,7 +5,7 @@ _ask_user_informations() {
     # User Language
     until grep -Fxq "${language}" ./language; do
         _note "list of available language code is in the archboot wiki"
-        _prompt "Enter language code:" "(ex: fr_FR, en_US, de_DE)"
+        _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
         read -r language
     done
     keymap_code=$(echo ${language} | cut -d'_' -f 1)
@@ -13,14 +13,14 @@ _ask_user_informations() {
     # TimeZone
     until grep -Fxq "${timezone}" ./timezone; do
         _note "list of available time zone code is in the archboot wiki"
-        _prompt "Enter time zone code:" "(ex: Europe/Paris, Asia/Tokyo)"
+        _prompt "Enter time zone code:" "(e.g., Europe/Paris, Asia/Tokyo)"
         read -r timezone
     done
 
     # Hostname
     until [[ ${#HOST_name} -ge 3 \
     && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
-        _prompt "Enter hostname:" "(ex: my-favorite-computer)"
+        _prompt "Enter hostname:" "(e.g., my-favorite-computer)"
         read -r HOST_name
     done
 
@@ -44,7 +44,7 @@ _ask_user_informations() {
     # Username
     until [[ ${#USER_name} -ge 3 \
     && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
-        _prompt "Enter username:" "(ex: johnny)"
+        _prompt "Enter username:" "(e.g., johnny)"
         read -r USER_name
     done
 
