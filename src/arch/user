@@ -4,7 +4,7 @@ _ask_user_informations() {
 
     # User Language
     until grep -Fxq "${language}" ./language; do
-        _note "list of available language code is available in the wiki"
+        _note "list of available language code is in the archboot wiki"
         _prompt "Enter language code:" "(ex: fr_FR, en_US, de_DE)"
         read -r language
     done
@@ -12,7 +12,7 @@ _ask_user_informations() {
 
     # TimeZone
     until grep -Fxq "${timezone}" ./timezone; do
-        _note "list of available time zone code is available in the wiki"
+        _note "list of available time zone code is in the archboot wiki"
         _prompt "Enter time zone code:" "(ex: Europe/Paris, Asia/Tokyo)"
         read -r timezone
     done
@@ -76,12 +76,12 @@ _ask_user_informations() {
     unset confirm
 
     # AUR
-    _confirm "Install yaourt to enable AUR support?"
+    _confirm "Enable Arch User Repository (AUR) support?"
     case ${confirm} in y|Y) export aur="yes";; esac
     unset confirm
 
     # Desktop Environment
-    _confirm "Do you wish to install desktop environment?"
+    _confirm "Do you wish to install Desktop Environment?"
     case ${confirm} in y|Y)
         until [[ ${desk} =~ ^([1-9]|10)$ ]]; do
             _select "Gnome" "KDE" "MATE" "Xfce" \
@@ -98,11 +98,11 @@ _ask_user_informations() {
     # Display Manager
     if [[ ! -z ${desktop+x} ]]; then
 
-        _confirm "Use custom display manager?"
+        _confirm "Use default Display Manager?"
         case ${confirm} in
 
             # Custom display manager
-            y|Y)
+            n|N)
                 until [[ ${disp} =~ ^([1-5])$ ]]; do
                     _select "Gdm" "LightDM" "Sddm" "Lxdm" "Xdm"
                     read -r disp

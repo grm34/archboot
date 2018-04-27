@@ -102,24 +102,6 @@ _error() {
     _reboot
 }
 
-# Display end of prompt or confirm
-_end() {
-    for char in $(seq ${count}); do
-        echo -ne "-"
-    done
-    echo -ne "\n==> ${nc}"
-}
-
-# Ask confirmation (Yes/No)
-_confirm() {
-    count=$((${#1} + 6))
-    until [[ ${confirm} =~ ^(y|n|Y|N)$ ]]; do
-        echo -ne "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}\n==> "
-        _end
-        read -r confirm
-    done
-}
-
 # Select an option
 _select() {
     count=0
@@ -134,6 +116,16 @@ _select() {
     _end
 }
 
+# Ask confirmation (Yes/No)
+_confirm() {
+    count=$((${#1} + 6))
+    until [[ ${confirm} =~ ^(y|n|Y|N)$ ]]; do
+        echo -ne "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}\n==> "
+        _end
+        read -r confirm
+    done
+}
+
 # Ask some infos
 _prompt() {
     lenth=${@}
@@ -141,6 +133,14 @@ _prompt() {
     echo -ne "\n${yellow}==> ${green}${1} ${red}${2}"
     echo -ne "${yellow}\n==> "
     _end
+}
+
+# Display end of prompt or confirm
+_end() {
+    for char in $(seq ${count}); do
+        echo -ne "-"
+    done
+    echo -ne "\n==> ${nc}"
 }
 
 #
