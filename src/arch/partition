@@ -7,7 +7,7 @@ _partition() {
     # Select disk to use
     until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]; do
         fdisk -l
-        _prompt "Enter disk to use:" "(ex: sda)"
+        _prompt "Enter disk to use:" "(e.g., sda)"
         read -r _disk
     done
 
