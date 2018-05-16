@@ -10,13 +10,13 @@
 The only thing you need is one **USB bootable device** of [Arch Linux](http://mir.archlinux.fr/iso/latest) and one **HDD dedicated** for the installation (USB Boot instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR) or for [Linux](https://debian-facile.org/doc:install:usb-boot)).
 
 ## Usage
-**1.** Reboot your computer, open Boot Selection Menu and boot on the USB bootable device.
+**1.** Reboot your computer, open Boot Selection Menu and boot on the USB device.
 
 **2.** On the install menu of Arch Linux, select Boot Arch Linux (x86_64).
 
 **3.** For AZERTY keyboard run: `loqdkeys fr`
 
-**4.** Download archboot and follow the instructions `wget tiny.cc/archboot; sh archboot`
+**4.** Download and follow the instructions `wget tiny.cc/archboot; sh archboot`
 
 ## Wiki
 * [Installation step by step](https://github.com/grm34/archboot/wiki/Installation-step-by-step)
