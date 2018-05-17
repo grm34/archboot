@@ -1,8 +1,29 @@
 #!/bin/bash
 
+# ARCHBOOT USER INFORMATIONS
+# ============================================================================
+# Here we prompt all required informations to the user and stored them.
+# Required informations:
+#
+#      Language.......: list of avalaible language code is in the wiki
+#      TimeZone.......: list of available timezone code is in the wiki
+#      Hostname.......: a computer name such as <my-favorite-computer>
+#      Root passwd....: secure password must be used
+#      Username.......: an username such as <bobby>
+#      User passwd....: secure password must be used
+#      User rights....: add user to all groups and ALL power in sudoers
+#      Multilib.......: support for 32-bits applications
+#      AUR............: support for Arch User Repository applications
+#      Desktop Env....: Gnome - KDE - Deepin - Xfce - LXDE - Cinnamon
+#                       Budgie - Enlightenment - MATE - LXQt
+#      Display Man....: Gdm - LightDM - Sddm - Lxdm - Xdm
+#
+# More informations on installation steps are available in the wiki:
+# https://github.com/grm34/archboot/wiki/Installation-step-by-step
+
 _ask_user_informations() {
 
-    # User Language
+    # Language
     until grep -Fxq "${language}" ./language; do
         _note "list of available language code is in the archboot wiki"
         _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"

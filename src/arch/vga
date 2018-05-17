@@ -1,12 +1,21 @@
 #!/bin/bash
 
+# ARCHBOOT VGA CONTROLLER
+# ============================================================================
+# Here we scan VGA Controllers to select and install the appropriate drivers.
+# In case of dual controller (intel+nvidia) we use Bumblebee.
+# User can choose to install proprietary drivers instead of open source ones.
+# OpenGL and Hardware Acceleration support available.
+# More informations on VGA Driver installation are available in the official
+# documentation: https://wiki.archlinux.org/index.php/Xorg#Driver_installation
+
 _scan_vga_controller() {
 
 	_info "Scanning VGA Controller"
 	vga_number=$(lspci | grep -e VGA -e 3D | wc -l)
     lspci | grep -e VGA -e 3D | grep -ie nvidia | grep -i intel
 
-	# DUAL VGA CONTROLLER Intel & Nvidia to install Bumblebee
+	# DUAL VGA CONTROLLER Intel & Nvidia >>> Bumblebee
 	if [[ $? -eq 0 && ${vga_number} -ge "2" ]]; then
 
 		_note "System compatible to install Bumblebee."

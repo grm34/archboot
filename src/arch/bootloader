@@ -1,23 +1,33 @@
 #!/bin/bash
 
+# ARCHBOOT BOOTLOADER
+# ============================================================================
+# Here we install and configure Grub bootloader, all steps are described in 
+# official documentation: https://wiki.archlinux.org/index.php/GRUB
+# We also install additional themes for beautifull menu of OS selection.
+
 _bootloader() {
 
     # Install Grub
     _info "Installing Grub for ${FIRMWARE} firmware"
     _chroot "pacman --noconfirm -S ${_bootapps}"
+
+    # -- UEFI --
     if [[ ${FIRMWARE} == "UEFI" ]]; then
         _chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi \
 --bootloader-id=arch"
+    
+    # -- BIOS --
     else
         _chroot "grub-install --target=i386-pc /dev/${_disk}"
     fi
 
-    # Downloading Grub Themes
+    # Download Grub Themes
     _info "Downloading Grub Themes"
     _wget ${_gh_pages}/assets/images/background.png
     _chroot "git clone git://github.com/Generator/Grub2-themes.git"
 
-    # Installing Grub Themes
+    # Install Grub Themes
     _info "Installing Grub Themes"
     _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
     echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
@@ -27,7 +37,7 @@ _bootloader() {
     mv background.png /mnt/boot/grub/themes/Archlinux/
     rm -r /mnt/Grub2-themes
 
-    # Setting Grub
+    # Config Grub
     _info "Setting Grub for ${FIRMWARE} firmware"
     _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 }

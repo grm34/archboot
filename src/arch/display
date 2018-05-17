@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# ARCHBOOT DISPLAY MANAGER
+# ============================================================================
+# Here we install and configure display manager. Default settings:
+# 
+#     Gdm........: Gnome / Budgie / Cinnamon / Mate
+#     LightDM....: Deepin / Enlightenment
+#     Sddm.......: KDE
+#     Lxdm.......: Xfce4 / Lxde / Lxqt
+#
+# User can also decide to install the display manager of his choice.
+# More informations on display manager are available in the official
+# documentation: https://wiki.archlinux.org/index.php/Display_manager
+
 _display_manager() {
 
     # Install Display Manager
@@ -8,7 +21,7 @@ _display_manager() {
     _chroot "pacman --noconfirm -S ${!install_display}; "
     _chroot "systemctl enable ${display_man}"
 
-    # Start Command
+    # Start command of each Desktop Environment
     case ${desktop} in
         gnome|mate|cinnamon) session="/usr/bin/${desktop}-session";;
         kde|xfce4|lxde|lxqt) session="/usr/bin/start${desktop}";;

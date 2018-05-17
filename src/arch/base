@@ -1,39 +1,47 @@
 #!/bin/bash
 
+# ARCHBOOT BASE SYSTEM
+# ============================================================================
+# Here we install base system, all steps are described in the official
+# documentation: https://wiki.archlinux.org/index.php/Installation_guide
+# User can choose to enable AUR support and/or Multilib support.
+# In case of Intel CPU we install intel microcode to enable microcode updates.
+# And if full rights given to the user we add him to sudoers with ALL power.
+
 _base() {
 
-    # Install Base System
+    # Base System
     _info "Installing base system"
     yes '' | pacstrap /mnt ${_arch}
 
-    # Setting fstab
+    # fstab
     _info "Setting and generating fstab"
     genfstab -U -p /mnt >> /mnt/etc/fstab
 
-    # Setting TimeZone
+    # TimeZone
     _info "Setting time zone"
     ln -sf /usr/share/zoneinfo/${timezone} /mnt/etc/localtime
 
-    # Setting locale
+    # locale
     _info "Setting and generating locale"
     echo "${language}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
     _chroot "locale-gen
     export LANG=${language}.UTF-8"
     echo "LANG=${language}.UTF-8" > /mnt/etc/locale.conf
 
-    # Setting keyboard
+    # keyboard
     _info "Setting vconsole"
     echo "KEYMAP=${keymap_code}" > /mnt/etc/vconsole.conf
 
-    # Setting hostname
+    # hostname
     _info "Setting hostname"
     echo "${HOST_name}" > /mnt/etc/hostname
 
-    # Setting Linux
-    _info "Setting Linux environment"
+    # initramfs
+    _info "Setting initramfs"
     _chroot "mkinitcpio -p linux"
 
-    # Setting root passwd
+    # root passwd
     _info "Setting root password"
     _chroot "echo 'root:${ROOT_passwd}' | chpasswd"
 
@@ -55,19 +63,19 @@ _base() {
         _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
     fi
 
-    # Install Network
+    # network
     _info "Installing network"
     _chroot "pacman --noconfirm -S ${_netapps}
     systemctl enable NetworkManager"
 
-    # Install Intel Microcode
+    # Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${_intel}"
     fi
 
-    # Setting user
+    # user
     _info "Setting user ${USER_name}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_name}
     echo '${USER_name}:${USER_passwd}' | chpasswd"

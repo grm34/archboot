@@ -29,8 +29,8 @@ may be required."""
 
 # ARCHBOOT SYSTEM MANAGEMENT
 # ============================================================================
-# Here we defined all required variables and functions to manage archboot. 
-# Variables are pretty simple such as define needed url and colors. 
+# Here we defined all required variables and functions to manage archboot.
+# Variables are pretty simple such as define needed url and colors.
 # Functions are used to display install steps, notes, errors or to do some
 # actions like reboot after fatal error, execute cmd in chrooted environment,
 # select an option, ask some informations to the user or to get install logs.
@@ -229,7 +229,7 @@ _note "system ready! Partitions mounted & swap activated."
 # bootloader [src/arch/bootloader]. We use <tee> to get logs of those steps.
 # In case of desktop environment we install VGA Drivers and Display Manager.
 # If system won't start desktop environment after reboot, check the logs and
-# open an issue on GitHub. Logs are availables in /var/log/archboot. 
+# open an issue on GitHub. Logs are availables in /var/log/archboot.
 
 _confirm "Do you wish to install Arch Linux now?"
 case ${confirm} in
