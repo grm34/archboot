@@ -35,7 +35,7 @@ may be required."""
 # actions like reboot after fatal error, execute cmd in chrooted environment,
 # select an option, ask some informations to the user or to get install logs.
 
-# Github url > $_url for sources and $_gh_pages for images
+# Github url: $_url for sources and $_gh_pages for images
 _url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
 _gh_pages="https://raw.githubusercontent.com/grm34/archboot/gh-pages"
 
@@ -155,6 +155,7 @@ _end() {
 # In case of desktop environment, additionals sources will be imported and
 # scan of VGA controller(s) is done to select appropriate VGA Drivers.
 
+# Display archboot banner
 _archboot_banner
 
 # Check Internet Connection
@@ -192,7 +193,7 @@ _info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
-# Ask for user informations
+# Ask for user informations [src/arch/user]
 _ask_user_informations
 
 # If Desktop Environment
@@ -212,7 +213,7 @@ if [[ ! -z ${desktop+x} ]]; then
     source ./vga; source ./desktop; source ./display
     source ./vga_apps; source ./desktop_apps; source ./display_apps
 
-    # Scan VGA Controller and select appropriate driver
+    # Scan VGA Controller and select appropriate driver [src/arch/vga]
     _scan_vga_controller
 fi
 
@@ -224,8 +225,8 @@ _note "system ready! Partitions mounted & swap activated."
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
 # user informations stored. We can start Arch Linux installation.
-# First step is to install base system [src/base] and second to install Grub2
-# bootloader [src/bootloader]. We use <tee> to get logs of those steps.
+# First step is to install base system [src/arch/base] and 2nd to install Grub
+# bootloader [src/arch/bootloader]. We use <tee> to get logs of those steps.
 # In case of desktop environment we install VGA Drivers and Display Manager.
 # If system won't start desktop environment after reboot, check the logs and
 # open an issue on GitHub. Logs are availables in /var/log/archboot. 
