@@ -33,7 +33,7 @@ may be required."""
 # Variables are pretty simple such as define needed url and colors. 
 # Functions are used to display install steps, notes, errors or to do some
 # actions like reboot after fatal error, execute cmd in chrooted environment,
-# select an option, ask some informations to the user, get install logs.
+# select an option, ask some informations to the user or to get install logs.
 
 # Github url > $_url for sources and $_gh_pages for images
 _url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
@@ -225,7 +225,7 @@ _note "system ready! Partitions mounted & swap activated."
 # At this point system is ready, partitions are created, properly mounted and
 # user informations stored. We can start Arch Linux installation.
 # First step is to install base system [src/base] and second to install Grub2
-# bootloader [src/bootloader]. We use tee to get logs of those steps.
+# bootloader [src/bootloader]. We use <tee> to get logs of those steps.
 # In case of desktop environment we install VGA Drivers and Display Manager.
 # If system won't start desktop environment after reboot, check the logs and
 # open an issue on GitHub. Logs are availables in /var/log/archboot. 
@@ -260,7 +260,7 @@ unset confirm
 
 # ARCHBOOT SYSTEM REBOOT
 # ============================================================================
-# Here we go!                     archboot by grm34 under Apache v2.0 License 
+# And here we go!                 archboot by grm34 under Apache v2.0 License.
 
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
