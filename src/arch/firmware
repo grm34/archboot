@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ARCHBOOT FIRMWARE DETECTION
+# FIRMWARE DETECTION
 # ============================================================================
 # Here we detect if system is running on UEFI or BIOS firmware to properly
 # define partitions oreder, type, table and filesystem.

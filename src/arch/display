@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# ARCHBOOT DISPLAY MANAGER
+# DISPLAY MANAGER
 # ============================================================================
 # Here we install and configure display manager. Default settings:
-# 
+#
 #     Gdm........: Gnome / Budgie / Cinnamon / Mate
 #     LightDM....: Deepin / Enlightenment
 #     Sddm.......: KDE

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# ARCHBOOT BOOTLOADER
+# BOOTLOADER
 # ============================================================================
-# Here we install and configure Grub bootloader, all steps are described in 
+# Here we install and configure Grub bootloader, all steps are described in
 # official documentation: https://wiki.archlinux.org/index.php/GRUB
-# We also install additional themes for beautifull menu of OS selection.
+# We also install additional themes for beautifull OS selection menu.
 
 _bootloader() {
 
@@ -16,7 +16,7 @@ _bootloader() {
     if [[ ${FIRMWARE} == "UEFI" ]]; then
         _chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi \
 --bootloader-id=arch"
-    
+
     # -- BIOS --
     else
         _chroot "grub-install --target=i386-pc /dev/${_disk}"

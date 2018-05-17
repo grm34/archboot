@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ARCHBOOT VGA CONTROLLER
+# VGA CONTROLLER
 # ============================================================================
 # Here we scan VGA Controllers to select and install the appropriate drivers.
 # In case of dual controller (intel+nvidia) we use Bumblebee.

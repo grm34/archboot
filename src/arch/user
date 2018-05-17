@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ARCHBOOT USER INFORMATIONS
+# USER INFORMATIONS
 # ============================================================================
 # Here we prompt all required informations to the user and stored them.
 # Required informations:

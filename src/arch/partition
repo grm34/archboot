@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ARCHBOOT PARTITIONING SCHEME
+# PARTITIONING SCHEME
 # ============================================================================
 # Here we listing existing disk and partitions to select disk to use, format
 # it and create required partitions. Required onces are:
