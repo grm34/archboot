@@ -260,7 +260,8 @@ unset confirm
 
 # ARCHBOOT SYSTEM REBOOT
 # ============================================================================
-# And here we go!                 archboot by grm34 under Apache v2.0 License.
+# And here we go! We could now umount all partitions and reboot the computer
+# to restart on our fresh Arch Linux installation. Enjoy!
 
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
@@ -272,3 +273,5 @@ case ${confirm} in
         exit
         ;;
 esac
+
+# archboot by grm34 under Apache v2.0 License.
