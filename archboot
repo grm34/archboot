@@ -27,15 +27,19 @@ in order  to get  complete  support, additional  packages
 may be required."""
 }
 
-#
-# SYSTEM MANAGEMENT
-# _________________
+# ARCHBOOT SYSTEM MANAGEMENT
+# ============================================================================
+# Here we defined all required variables and functions to manage archboot. 
+# Variables are pretty simple such as define needed url and colors. 
+# Functions are used to display install steps, notes, errors or to do some
+# actions like reboot after fatal error, execute cmd in chrooted environment,
+# select an option, ask some informations to the user, get install logs.
 
-# Github url
+# Github url > $_url for sources and $_gh_pages for images
 _url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
 _gh_pages="https://raw.githubusercontent.com/grm34/archboot/gh-pages"
 
-# Shell color
+# Shell colors
 red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
 blue="\e[1;34m"; cyan="\e[1;36m"; nc="\e[0m"
 
@@ -126,7 +130,7 @@ _confirm() {
     done
 }
 
-# Ask some infos
+# Ask some informations
 _prompt() {
     lenth=${@}
     count=${#lenth}
@@ -135,7 +139,7 @@ _prompt() {
     _end
 }
 
-# Display end of prompt or confirm
+# Display the end of _prompt() and _confirm()
 _end() {
     for char in $(seq ${count}); do
         echo -ne "-"
@@ -143,9 +147,13 @@ _end() {
     echo -ne "\n==> ${nc}"
 }
 
-#
-# START ARCHBOOT
-# ______________
+# ARCHBOOT SYSTEM PROCESS
+# ============================================================================
+# Here we check internet connection before downloading and importing sources.
+# Sources are sorted by type: applications and scripts [src/apps & src/arch]
+# Once done we could ask for user informations and stored them to run install.
+# In case of desktop environment, additionals sources will be imported and
+# scan of VGA controller(s) is done to select appropriate VGA Drivers.
 
 _archboot_banner
 
@@ -212,7 +220,16 @@ fi
 _clock; _logs; _firmware; _partition; _mounting
 _note "system ready! Partitions mounted & swap activated."
 
-# Install Arch Linux
+# ARCHBOOT SYSTEM INSTALLATION
+# ============================================================================
+# At this point system is ready, partitions are created, properly mounted and
+# user informations stored. We can start Arch Linux installation.
+# First step is to install base system [src/base] and second to install Grub2
+# bootloader [src/bootloader]. We use tee to get logs of those steps.
+# In case of desktop environment we install VGA Drivers and Display Manager.
+# If system won't start desktop environment after reboot, check the logs and
+# open an issue on GitHub. Logs are availables in /var/log/archboot. 
+
 _confirm "Do you wish to install Arch Linux now?"
 case ${confirm} in
     y|Y)
@@ -241,9 +258,9 @@ ${__appname__} ${__version__} by ${__author__} under ${__license__}"
 esac
 unset confirm
 
-#
-# SYSTEM REBOOT
-# _____________
+# ARCHBOOT SYSTEM REBOOT
+# ============================================================================
+# Here we go!                     archboot by grm34 under Apache v2.0 License 
 
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
