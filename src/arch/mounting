@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ARCHBOOT MOUNT PARTITIONS & SWAP
+# MOUNT PARTITIONS & SWAP
 # ============================================================================
 # Here we mount all previously created required partitions and activate swap.
 # More informations on mounting filesystem are available in the official
@@ -10,18 +10,18 @@
 _mounting() {
 
     _info "Mounting partitions & swap"
-    
+
     # System on /mnt
     _check mount /dev/${_disk}${part_order[3]} /mnt
-    
+
     # Create boot and home folders
     _check mkdir /mnt/{boot,home}
-    
+
     # -- UEFI -- Boot on /mnt/boot/efi
     if [[ ${FIRMWARE} == "UEFI" ]]; then
         _check mkdir -p /mnt/boot/efi/EFI
         _check mount -t vfat /dev/${_disk}${part_order[1]} /mnt/boot/efi
-    
+
     # -- BIOS -- Boot on /mnt/boot
     else
         _check mount /dev/${_disk}${part_order[1]} /mnt/boot
@@ -29,7 +29,7 @@ _mounting() {
 
     # Activate swap
     _check swapon /dev/${_disk}${part_order[2]}
-    
+
     # Home on /mnt/home
     _check mount /dev/${_disk}${part_order[4]} /mnt/home
 }
