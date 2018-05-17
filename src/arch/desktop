@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# ARCHBOOT DESKTOP ENVIRONMENT
+# ============================================================================
+# Here we install and configure desktop environment and required packages
+# such as display server, fonts to prevent issues in gtk apps on some DE,
+# terminal and numlockx to get numlock_ON on bootup.
+# To prevent password issues on the login screen of the display manager
+# caused by wrong keyboard layout, we add keyboard.conf to xorg settings.
+# And if full rights given to the user, we add him to all groups.
+# More informations on desktop environment are available in the official
+# documentation: https://wiki.archlinux.org/index.php/Desktop_environment
+
 _install_desktop_environment() {
 
     # Install Xorg
@@ -26,7 +37,7 @@ _install_desktop_environment() {
 
 _desktop_settings() {
 
-    # Setting Keyboard layout
+    # Keyboard layout
     _info "Setting keyboard layout"
     wget ${_url}/conf/00-keyboard.conf
     sed -i -e "s/keymap_code/${keymap_code}/g" 00-keyboard.conf
