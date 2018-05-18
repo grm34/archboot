@@ -209,6 +209,16 @@ case ${confirm} in
 esac
 unset confirm
 
+_confirm "Do you want to reboot your computer now?"
+case ${confirm} in
+    y|Y)
+        _cleanup; _reboot
+        ;;
+    *)
+        _cleanup
+        ;;
+esac
+
 # Import base sources
 _info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware
@@ -288,10 +298,11 @@ unset confirm
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
     y|Y)
-        _cleanup; _reboot
+        umount -R /mnt
+        _reboot
         ;;
     *)
-        _cleanup; exit
+        _cleanup
         ;;
 esac
 
