@@ -291,7 +291,7 @@ case ${confirm} in
         _cleanup; _reboot
         ;;
     *)
-        exit
+        _cleanup; exit
         ;;
 esac
 
