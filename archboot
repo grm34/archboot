@@ -282,8 +282,8 @@ unset confirm
 
 # ARCHBOOT SYSTEM REBOOT
 # ============================================================================
-# And here we go! We could now umount all partitions and reboot the computer
-# to restart on our fresh Arch Linux installation. Enjoy!
+# And here we go! We could now cleanup sources, umount all partitions and
+# reboot the computer to restart on our fresh Arch Linux installation.
 
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
