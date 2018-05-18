@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v2.7.7"
+__version__="v2.7.8"
 __branch__="master"
 __author__="@grm34"
 __license__="Apache v2.0 License"
@@ -81,7 +81,7 @@ _clock() {
     hwclock --systohc
 }
 
-# Check command status
+# Check and return command status
 _check() {
     "$@"
     local status=$?
@@ -90,6 +90,24 @@ _check() {
     fi
     return ${status}
 }
+
+# Cleanup archboot: delete sources, umount partitions and exit
+_cleanup() {
+    echo -e "\nCleaning up archboot..."
+    for source in *; do
+        if [[ ${source} =~ ^(base|bootloader|desktop|display|firmware|\
+mounting|partition|user|vga|desktop_apps|display_apps|system_apps|vga_apps|\
+00-keyboard|language|timezone|xprofile|background.png|Grub2-themes)$ ]]; then
+            rm -rf ${source}
+        fi
+    done
+    umount -R /mnt
+    sleep 2
+    exit
+}
+
+# Cleanup on keyboard interrupt
+trap _cleanup 1 2 3 6
 
 # Reboot with 10s timeout
 _reboot() {
@@ -100,10 +118,10 @@ _reboot() {
     reboot
 }
 
-# Display error
+# Display error, cleanup and exit
 _error() {
     echo -e "${red}Error: ${yellow}${1} Please try again.${nc}\n"
-    _reboot
+    _cleanup
 }
 
 # Select an option
@@ -139,7 +157,7 @@ _prompt() {
     _end
 }
 
-# Display the end of _prompt() and _confirm()
+# Display the end of select(), _confirm() and _prompt() functions
 _end() {
     for char in $(seq ${count}); do
         echo -ne "-"
@@ -267,8 +285,7 @@ unset confirm
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
     y|Y)
-        umount -R /mnt
-        _reboot
+        _cleanup; _reboot
         ;;
     *)
         exit
