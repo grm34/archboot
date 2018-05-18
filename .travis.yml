@@ -1,4 +1,6 @@
-# Travis CI
+# Travis CI Configuration
+# ============================================================================
+
 language: bash
 addons:
   apt:
