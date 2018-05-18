@@ -32,7 +32,7 @@ may be required."""
 # Here we defined all required variables and functions to manage archboot.
 # Variables are pretty simple such as define needed url and colors.
 # Functions are used to display install steps, notes, errors or to do some
-# actions like reboot after fatal error, execute cmd in chrooted environment,
+# actions like cleanup after fatal error, execute cmd in chrooted environment,
 # select an option, ask some informations to the user or to get install logs.
 
 # Github url: $_url for sources and $_gh_pages for images
