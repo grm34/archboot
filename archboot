@@ -101,7 +101,10 @@ mounting|partition|user|vga|desktop_apps|display_apps|system_apps|vga_apps|\
             rm -rf ${source}
         fi
     done
-    umount -R /mnt
+    df | grep -q /mnt
+    if [[ $? -eq 1 ]]; then
+        umount -R /mnt
+    fi
     sleep 2
     exit
 }
