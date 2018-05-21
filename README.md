@@ -11,9 +11,9 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 * USB Boot instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR) or for [Linux](https://debian-facile.org/doc:install:usb-boot)
 
 ## Usage
-**1.** Reboot your computer, open Boot Selection Menu and boot on the USB device.
+**1.** Reboot your computer, open Boot Selection Menu and boot on the USB device
 
-**2.** On the install menu of Arch Linux, select Boot Arch Linux (x86_64).
+**2.** On the install menu of Arch Linux, select Boot Arch Linux (x86_64)
 
 **3.** For AZERTY keyboard run: `loqdkeys fr`
 
@@ -26,7 +26,9 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 * [Language code](https://github.com/grm34/archboot/wiki/Language-code)
 * [TimeZone code](https://github.com/grm34/archboot/wiki/TimeZone-code)
 * [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
-* Ability to enable [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support is available.
+* [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and/or [Multilib](https://wiki.archlinux.org/index.php/multilib) support available
+* [VGA Drivers](https://wiki.archlinux.org/index.php/Xorg#Driver_installation) open source or proprietary support available
+* [Bumblebee](https://wiki.archlinux.org/index.php/Bumblebee) support available in case of Intel+nVidia controller
 
 ## Logs
 Take a look in **/var/log/archboot** for logs: `cat /var/log/archboot/archboot_*.log`
