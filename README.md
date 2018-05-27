@@ -44,4 +44,3 @@ Take a look at [Arch Linux Installation Guide](https://wiki.archlinux.org/index.
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/for-you.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/its-not-a-lie-if-you-believe-it.svg)](https://forthebadge.com)
-+
