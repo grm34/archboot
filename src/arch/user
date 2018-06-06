@@ -12,8 +12,6 @@
 #      Username.......: an username such as <bobby>
 #      User passwd....: secure password must be used
 #      User rights....: add user to all groups and ALL power in sudoers
-#      Multilib.......: support for 32-bits applications
-#      AUR............: support for Arch User Repository applications
 #      Desktop Env....: Gnome - KDE - Deepin - Xfce - LXDE - Cinnamon
 #                       Budgie - Enlightenment - MATE - LXQt
 #      Display Man....: Gdm - LightDM - Sddm - Lxdm - Xdm
@@ -89,16 +87,6 @@ _ask_user_informations() {
     # User Rights
     _confirm "Give all rights to user ${USER_name}?"
     case ${confirm} in y|Y) export power="yes";; esac
-    unset confirm
-
-    # Multilib
-    _confirm "Enable multilib for 32-bit support?"
-    case ${confirm} in y|Y) export multilib="yes";; esac
-    unset confirm
-
-    # AUR
-    _confirm "Enable Arch User Repository (AUR) support?"
-    case ${confirm} in y|Y) export aur="yes";; esac
     unset confirm
 
     # Desktop Environment

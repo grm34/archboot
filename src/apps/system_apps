@@ -4,7 +4,7 @@
 # ============================================================================
 
 # Arch Linux
-export _arch="base base-devel"
+export _arch="base"
 
 # Microcode (in case of Intel CPU)
 export _intel="intel-ucode"
@@ -15,6 +15,3 @@ iw wpa_supplicant wireless_tools git"
 
 # Bootloader
 export _bootapps="grub os-prober gptfdisk efibootmgr"
-
-# Arch User Repository (in case of AUR support)
-export _yaourtapps="yaourt customizepkg"

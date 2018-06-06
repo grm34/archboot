@@ -4,7 +4,6 @@
 # ============================================================================
 # Here we install base system, all steps are described in the official
 # documentation: https://wiki.archlinux.org/index.php/Installation_guide
-# User can choose to enable AUR support and/or Multilib support.
 # In case of Intel CPU we install intel microcode to enable microcode updates.
 # And if full rights given to the user we add him to sudoers with ALL power.
 
@@ -44,24 +43,6 @@ _base() {
     # root passwd
     _info "Setting root password"
     _chroot "echo 'root:${ROOT_passwd}' | chpasswd"
-
-    # Multilib support
-    if [[ ! -z ${multilib+x} ]]; then
-        _info "Enabling multilib support"
-        sed -i -e "/multilib]/,/mirrorlist/ s/#//g" /mnt/etc/pacman.conf
-        _chroot "pacman --noconfirm -Syu"
-    fi
-
-    # AUR support
-    if [[ ! -z ${aur+x} ]]; then
-        _info "Enabling AUR support"
-        echo -e "\n[archlinuxfr]" >> /mnt/etc/pacman.conf
-        echo -e "SigLevel = Never" >> /mnt/etc/pacman.conf
-        echo -e "Server = http://repo.archlinux.fr/\$arch" \
-        >> /mnt/etc/pacman.conf
-        _info "Installing yaourt"
-        _chroot "pacman --noconfirm -Syu ${_yaourtapps}"
-    fi
 
     # network
     _info "Installing network"
