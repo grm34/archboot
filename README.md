@@ -24,7 +24,6 @@ The only thing you need is one **USB bootable device** of [Arch Linux](http://mi
 * [Language code](https://github.com/grm34/archboot/wiki/Language-code)
 * [TimeZone code](https://github.com/grm34/archboot/wiki/TimeZone-code)
 * [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
-* [AUR](https://wiki.archlinux.org/index.php/Arch_User_Repository) and [Multilib](https://wiki.archlinux.org/index.php/multilib) support available
 * [VGA Drivers](https://wiki.archlinux.org/index.php/Xorg#Driver_installation) open source and proprietary support available
 * [Bumblebee](https://wiki.archlinux.org/index.php/Bumblebee) support available in case of Intel+nVidia controller
 
