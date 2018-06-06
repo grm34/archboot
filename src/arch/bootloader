@@ -30,6 +30,8 @@ _bootloader() {
     # Install Grub Themes
     _info "Installing Grub Themes"
     _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
+    sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
+/mnt/etc/default/grub
     echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
 >> /mnt/etc/default/grub
     echo "desktop-image: \"background.png\"" \
