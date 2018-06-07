@@ -35,7 +35,7 @@ export _hard_video_amd="vulkan-radeon libva-mesa-driver mesa-vdpau"
 export _nouveau="xf86-video-nouveau"
 
 # Driver Nvidia (proprietary)
-export _nvidia="nvidia"
+export _nvidia="nvidia nvidia-settings"
 
 # OpenGL Nouveau (open source)
 export _openGL_x64_nouveau="mesa"
