@@ -107,9 +107,8 @@ mounting|partition|user|vga|desktop_apps|display_apps|system_apps|vga_apps|\
     if [[ $? -eq 1 ]]; then
         umount -R /mnt
     fi
-    PID=$!
     sleep 2
-    kill $PID
+    exit 1
 }
 
 # Cleanup on keyboard interrupt
