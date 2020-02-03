@@ -13,8 +13,7 @@ export _default="xf86-video-vesa"
 export _intel="xf86-video-intel"
 
 # OpenGL Intel (open source)
-export _openGL_x64_intel="mesa"
-export _openGL_x86_intel="lib32-mesa"
+export _openGL_intel="mesa"
 export _hard_video_intel="vulkan-intel libva-intel-driver libvdpau-va-gl"
 
 # ATI/AMD
@@ -24,8 +23,7 @@ export _hard_video_intel="vulkan-intel libva-intel-driver libvdpau-va-gl"
 export _amd="xf86-video-ati xf86-video-amdgpu"
 
 # OpenGL Intel
-export _openGL_x64_amd="mesa"
-export _openGL_x86_amd="lib32-mesa"
+export _openGL_amd="mesa"
 export _hard_video_amd="vulkan-radeon libva-mesa-driver mesa-vdpau"
 
 # NVIDIA
@@ -38,13 +36,11 @@ export _nouveau="xf86-video-nouveau"
 export _nvidia="nvidia nvidia-settings"
 
 # OpenGL Nouveau (open source)
-export _openGL_x64_nouveau="mesa"
-export _openGL_x86_nouveau="lib32-mesa"
+export _openGL_nouveau="mesa"
 export _hard_video_nouveau="libva-vdpau-driver mesa-vdpau"
 
 # OpenGL Nvidia (proprietary)
-export _openGL_x64_nvidia="nvidia-utils"
-export _openGL_x86_nvidia="lib32-nvidia-utils"
+export _openGL_nvidia="nvidia-utils"
 export _hard_video_nvidia="libva-vdpau-driver"
 
 # BUMBLEBEE
