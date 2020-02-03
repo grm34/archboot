@@ -39,7 +39,7 @@ Take a look in **/var/log/archboot** for logs: `cat /var/log/archboot/archboot_*
 
 ## Screenshot
 
-<a href="https://grm34.github.io/archboot/">
+<a href="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/screenshot.png">
   <img src="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/screenshot.png">
 </a>
 
