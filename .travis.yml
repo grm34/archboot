@@ -1,12 +1,4 @@
 # Travis CI Configuration
 # ============================================================================
 
-language: bash
-addons:
-  apt:
-    sources:
-    - debian-sid
-before-script:
-  - "sudo apt-get install cabal-install"
-  - "cabal update"
-  - "cabal install shellcheck"
+language: generic
