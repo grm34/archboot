@@ -20,11 +20,18 @@ _partition() {
     _info "Listing disk and partitions"
 
     # Select disk to use
-    until [[ ${_disk} =~ ^(sd|hd)[a-z]{1}$ ]]; do
+    until [[ ${_disk} =~ ^(sd|hd|nvme0n)[a-z0-9]{1}$ ]]; do
         fdisk -l
-        _prompt "Enter disk to use:" "(e.g., sda)"
+        _prompt "Enter disk to use:" "(e.g., sda, nvme0n1)"
         read -r _disk
     done
+
+    # Define partition order
+    if [[ ${_disk} =~ "nvme0n" ]]; then
+        export part_order=(0 p1 p2 p3 p4)
+    else
+        export part_order=(0 1 2 3 4)
+    fi
 
     # Create MBR or GPT Table
     fdisk -l /dev/${_disk}

@@ -23,14 +23,12 @@ _scan_vga_controller() {
 	    case ${confirm} in
             y|Y)
 		        export vga_driver="bumblebee_nvidia"
-		        export openGL_x64="openGL_x64_nvidia"
-				export openGL_x86="openGL_x86_nvidia"
+		        export openGL="openGL_nvidia"
 				export hard_video="hard_video_nvidia"
                 ;;
             *)
 		    	export vga_driver="bumblebee_nouveau"
-		    	export openGL_x64="openGL_x64_nouveau"
-				export openGL_x86="openGL_x86_nouveau"
+		    	export openGL="openGL_nouveau"
 				export hard_video="hard_video_nouveau"
                 ;;
 	    esac
@@ -47,14 +45,12 @@ _scan_vga_controller() {
 		    case ${confirm} in
                 y|Y)
     		        export vga_driver="nvidia"
-    		        export openGL_x64="openGL_x64_nvidia"
-    				export openGL_x86="openGL_x86_nvidia"
+    		        export openGL="openGL_nvidia"
     				export hard_video="hard_video_nvidia"
                     ;;
 		        *)
     		    	export vga_driver="nouveau"
-    		    	export openGL_x64="openGL_x64_nouveau"
-    				export openGL_x86="openGL_x86_nouveau"
+    		    	export openGL="openGL_nouveau"
     				export hard_video="hard_video_nouveau"
                     ;;
 		    esac
@@ -66,8 +62,7 @@ _scan_vga_controller() {
 			if [[ $? -eq 0 ]]; then
 				_note "${amd_card##*: } detected."
 			    export vga_driver="amd"
-			    export openGL_x64="openGL_x64_amd"
-				export openGL_x86="openGL_x86_amd"
+			    export openGL="openGL_amd"
 				export hard_video="hard_video_amd"
 
 			else
@@ -77,8 +72,7 @@ _scan_vga_controller() {
 				if [[ $? -eq 0 ]]; then
 					_note "${intel_card##*: } detected."
 					export vga_driver="intel"
-					export openGL_x64="openGL_x64_intel"
-					export openGL_x86="openGL_x86_intel"
+					export openGL="openGL_intel"
 					export hard_video="hard_video_intel"
 
 				# DEFAULT
@@ -105,13 +99,8 @@ _install_vga_controller() {
     # OpenGL & Hardware Video Acceleration
     if [[ ${vga_driver} != "default" ]]; then
         _info "Installing OpenGL & Hardware Video Acceleration"
-        install_openGLx64="_${openGL_x64}"
+        install_openGL="_${openGL}"
         install_hard="_${hard_video}"
-        _chroot "pacman --noconfirm -S ${!install_openGLx64} ${!install_hard}"
-
-        if [[ ! -z ${multilib+x} ]]; then
-            install_openGLx86="_${openGL_x86}"
-            _chroot "pacman --noconfirm -S ${!install_openGLx86}"
-        fi
+        _chroot "pacman --noconfirm -S ${!install_openGL} ${!install_hard}"
     fi
 }
