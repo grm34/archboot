@@ -4,7 +4,7 @@
 # ============================================================================
 
 # Arch Linux
-export _arch="base base-devel"
+export _arch="base base-devel linux linux-firmware"
 
 # Microcode (in case of Intel CPU)
 export _intel="intel-ucode"
