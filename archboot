@@ -72,7 +72,7 @@ EOF
 _logs() {
     _info "Setting archboot log"
     datetime=$(date '+%d-%m-%Y')
-    log="archboot_${datetime}.log"
+    log="${__appname__}-${__version__}_${datetime}.log"
 }
 
 # Set system clock
