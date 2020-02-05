@@ -17,15 +17,15 @@ ${blue}
 ${nc}
 Arch Linux is a light and fast distribution whose concept
 is to remain  as simple as possible.  In the same purpose
-this script  performs  minimalist  installation,  it only
-installs  the required  packages,  in order  to give free
+this  script  perform  minimalist  installation,  it only
+install  the required  packages,  in order  to  give free
 choice to  the user.  Pretty simple,  it just  prompt for
 hostname, username, password, which disk to use, required
 partitions, language, timezone and if you wish to install
 a desktop  environment.  According to the  chosen one and
 in order  to get  complete  support, additional  packages
-may be  required. For more  informations, take a  look in
-the archboot wiki: https://github.com/grm34/archboot/wiki
+may be  required. For more  informations, take a  look at
+the wiki.........: https://github.com/grm34/archboot/wiki
 """
 }
 
@@ -72,7 +72,7 @@ EOF
 _logs() {
     _info "Setting archboot log"
     datetime=$(date '+%d-%m-%Y')
-    log="archboot_${datetime}.log"
+    log="${__appname__}-${__version__}_${datetime}.log"
 }
 
 # Set system clock
