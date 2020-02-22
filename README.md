@@ -8,7 +8,7 @@
 
 ## Requirements
 
-The only thing you need is one **USB bootable device** of [Arch Linux](https://mir.archlinux.fr/iso/latest) and one **HDD dedicated** for the installation.
+The only thing you need is one **USB bootable device** of [Arch Linux](https://mir.archlinux.fr/iso/latest).
 
 * USB Boot instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR) or for [Linux](https://debian-facile.org/doc:install:usb-boot)
 
