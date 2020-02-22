@@ -32,6 +32,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](https://m
 * [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
 * [VGA Drivers](https://wiki.archlinux.org/index.php/Xorg#Driver_installation) open source and proprietary support available
 * [Bumblebee](https://wiki.archlinux.org/index.php/Bumblebee) support available in case of Intel+nVidia controller
+* [Custom Partitioning](https://github.com/grm34/archboot/wiki/Custom-Partitioning)
 
 ## Logs
 
