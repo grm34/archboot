@@ -1,6 +1,6 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v2.8.0"
+__version__="v2.8.1"
 __branch__="dev"
 __author__="@grm34"
 __license__="Apache v2.0 License"
@@ -241,7 +241,24 @@ if [[ ! -z ${desktop+x} ]]; then
 fi
 
 # Prepare the system
-_clock; _logs; _firmware; _partition; _mounting
+_clock; _logs; _firmware
+
+# Manage partitions
+_note "WARNING! Enter NO only if partitions properly created and formated"
+_confirm "Are you installing Arch Linux on a fresh disk?"
+case ${confirm} in
+    y|Y)
+        _partition
+        ;;
+    *)
+        _custom_partition
+        ;;
+esac
+unset confirm
+
+# Mount partitions
+_mounting
+
 _note "system ready! Partitions mounted & swap activated."
 
 # ARCHBOOT SYSTEM INSTALLATION

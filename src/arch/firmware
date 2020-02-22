@@ -3,7 +3,7 @@
 # FIRMWARE DETECTION
 # ============================================================================
 # Here we detect if system is running on UEFI or BIOS firmware to properly
-# define partitions oreder, type, table and filesystem.
+# define partitions order, type, table and filesystem.
 # More informations on partitioning are available in the official
 # documentation: https://wiki.archlinux.org/index.php/Partitioning
 
