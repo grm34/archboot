@@ -130,22 +130,15 @@ _partition() {
 
     # Export required vars
     export _disk
-    export _system="/dev/${_disk}${part_order[3]}"
     export _boot="/dev/${_disk}${part_order[1]}"
     export _swap="/dev/${_disk}${part_order[2]}"
+    export _system="/dev/${_disk}${part_order[3]}"
     export _home="/dev/${_disk}${part_order[4]}"
 }
 
 custom_partition() {
 
     _info "Listing disk and partitions"
-
-    # Select system
-    until [[ ${_sys} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
-        fdisk -l
-        _prompt "Enter partition for system:" "(e.g., sda1, nvme0n1p1)"
-        read -r _sys
-    done
 
     # Select boot
     until [[ ${_bt} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
@@ -161,6 +154,13 @@ custom_partition() {
         read -r _swp
     done
 
+    # Select system
+    until [[ ${_sys} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
+        fdisk -l
+        _prompt "Enter partition for system:" "(e.g., sda1, nvme0n1p1)"
+        read -r _sys
+    done
+
     # Select home
     until [[ ${_hm} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
         fdisk -l
@@ -169,7 +169,6 @@ custom_partition() {
     done
 
     # Export required vars
-    export _system="/dev/${_sys}"
     if [[ ${_bt} =~ "nvme0n" ]]; then
         export _disk=${_bt%p*}
     else
@@ -177,5 +176,6 @@ custom_partition() {
     fi
     export _boot="/dev/${_bt}"
     export _swap="/dev/${_swp}"
+    export _system="/dev/${_sys}"
     export _home="/dev/${_hm}"
 }
