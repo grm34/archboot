@@ -4,7 +4,13 @@
 # ============================================================================
 
 # Arch Linux
-export _arch="base base-devel linux linux-firmware"
+export _arch="base base-devel linux-firmware"
+
+# Kernel
+export _default_kernel="linux"
+export _hardened_kernel="linux-hardened"
+export _lts_kernel="linux-lts"
+export _zen_kernel="linux-zen"
 
 # Microcode (in case of Intel CPU)
 export _intel="intel-ucode"
