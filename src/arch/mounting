@@ -12,7 +12,7 @@ _mounting() {
     _info "Mounting partitions & swap"
 
     # System on /mnt
-    _check mount /dev/${_disk}${part_order[3]} /mnt
+    _check mount ${_system} /mnt
 
     # Create boot and home folders
     _check mkdir /mnt/{boot,home}
@@ -20,16 +20,16 @@ _mounting() {
     # -- UEFI -- Boot on /mnt/boot/efi
     if [[ ${FIRMWARE} == "UEFI" ]]; then
         _check mkdir -p /mnt/boot/efi/EFI
-        _check mount -t vfat /dev/${_disk}${part_order[1]} /mnt/boot/efi
+        _check mount -t vfat ${_boot} /mnt/boot/efi
 
     # -- BIOS -- Boot on /mnt/boot
     else
-        _check mount /dev/${_disk}${part_order[1]} /mnt/boot
+        _check mount ${_boot} /mnt/boot
     fi
 
     # Activate swap
-    _check swapon /dev/${_disk}${part_order[2]}
+    _check swapon ${_swap}
 
     # Home on /mnt/home
-    _check mount /dev/${_disk}${part_order[4]} /mnt/home
+    _check mount ${_home} /mnt/home
 }

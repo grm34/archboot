@@ -24,12 +24,12 @@ _scan_vga_controller() {
             y|Y)
 		        export vga_driver="bumblebee_nvidia"
 		        export openGL="openGL_nvidia"
-			export hard_video="hard_video_nvidia"
+				export hard_video="hard_video_nvidia"
                 ;;
             *)
 		    	export vga_driver="bumblebee_nouveau"
 		    	export openGL="openGL_nouveau"
-			export hard_video="hard_video_nouveau"
+				export hard_video="hard_video_nouveau"
                 ;;
 	    esac
 	    unset confirm
@@ -46,12 +46,12 @@ _scan_vga_controller() {
                 y|Y)
     		        export vga_driver="nvidia"
     		        export openGL="openGL_nvidia"
-    			export hard_video="hard_video_nvidia"
+    				export hard_video="hard_video_nvidia"
                     ;;
 		        *)
     		    	export vga_driver="nouveau"
     		    	export openGL="openGL_nouveau"
-    			export hard_video="hard_video_nouveau"
+    				export hard_video="hard_video_nouveau"
                     ;;
 		    esac
 		    unset confirm
@@ -60,25 +60,25 @@ _scan_vga_controller() {
 			# AMD / ATI
 			amd_card=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
 			if [[ $? -eq 0 ]]; then
-			    _note "${amd_card##*: } detected."
+				_note "${amd_card##*: } detected."
 			    export vga_driver="amd"
 			    export openGL="openGL_amd"
-			    export hard_video="hard_video_amd"
+				export hard_video="hard_video_amd"
 
 			else
 
 				# INTEL
 				intel_card=$(lspci | grep -e VGA -e 3D | grep -i intel)
 				if [[ $? -eq 0 ]]; then
-				    _note "${intel_card##*: } detected."
-				    export vga_driver="intel"
-				    export openGL="openGL_intel"
-				    export hard_video="hard_video_intel"
+					_note "${intel_card##*: } detected."
+					export vga_driver="intel"
+					export openGL="openGL_intel"
+					export hard_video="hard_video_intel"
 
 				# DEFAULT
 				else
-				    _note "Controller not found, default driver will be used."
-				    export vga_driver="default"
+					_note "Controller not found, default driver will be used."
+					export vga_driver="default"
 				fi
 			fi
 		fi
