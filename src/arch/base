@@ -11,7 +11,8 @@ _base() {
 
     # Base System
     _info "Installing base system"
-    yes '' | pacstrap /mnt ${_arch}
+    user_kernel="_${kernel}"
+    yes '' | pacstrap /mnt ${_arch} ${!user_kernel}
 
     # fstab
     _info "Setting and generating fstab"
@@ -37,8 +38,8 @@ _base() {
     echo "${HOST_name}" > /mnt/etc/hostname
 
     # initramfs
-    _info "Setting initramfs"
-    _chroot "mkinitcpio -p linux"
+    #_info "Setting initramfs"
+    #_chroot "mkinitcpio -p linux"
 
     # root passwd
     _info "Setting root password"

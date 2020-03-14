@@ -89,6 +89,24 @@ _ask_user_informations() {
     case ${confirm} in y|Y) export power="yes";; esac
     unset confirm
 
+    # Linux Kernel
+    _confirm "Do you wish to install custom Linux Kernel?"
+    case ${confirm} in
+        y|Y)
+            until [[ ${kern} =~ ^([1-9]|4)$ ]]; do
+                _select "Default" "Hardened" "LTS" "ZEN"
+                read -r kern
+            done
+            kernel_choice=\
+(none default_kernel hardened_kernel lts_kernel zen_kernel)
+            export kernel=${kernel_choice[${kern}]}
+            ;;
+        *)
+            export kernel="default_kernel"
+            ;;
+    esac
+    unset confirm
+
     # Desktop Environment
     _confirm "Do you wish to install Desktop Environment?"
     case ${confirm} in y|Y)
