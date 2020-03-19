@@ -107,6 +107,7 @@ mounting|partition|user|vga|desktop_apps|display_apps|system_apps|vga_apps|\
     if [[ $? -eq 1 ]]; then
         umount -R /mnt
     fi
+    _note "you must reboot to prevent unreconized system changes."
     sleep 2
     exit 1
 }
