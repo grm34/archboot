@@ -11,9 +11,10 @@ _base() {
 
     # Mirrorlist
     _info "Setting mirrorlist"
+    country=$(curl -s ipinfo.io/ | grep "country" | grep -o '[A-Z][^ ]')
     mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
     curl -s \
-"https://www.archlinux.org/mirrorlist/?country=${mirror_code}\
+"https://www.archlinux.org/mirrorlist/?country=${country}\
 &use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' \
 > /etc/pacman.d/mirrorlist
     cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
