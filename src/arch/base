@@ -9,6 +9,16 @@
 
 _base() {
 
+    # Mirrorlist
+    _info "Setting mirrorlist"
+    mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+    curl -s \
+"https://www.archlinux.org/mirrorlist/?country=${mirror_code}\
+&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' \
+> /etc/pacman.d/mirrorlist
+    cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
+    rm /etc/pacman.d/mirrorlist.backup
+
     # Base System
     _info "Installing base system"
     user_kernel="_${kernel}"
