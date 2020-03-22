@@ -1,7 +1,7 @@
 #!/bin/bash
 __appname__="archboot"
-__version__="v2.8.3"
-__branch__="master"
+__version__="v2.8.4"
+__branch__="dev"
 __author__="@grm34"
 __license__="Apache v2.0 License"
 
@@ -199,10 +199,10 @@ case ${confirm} in
         _wget ${_url}/src/arch/base            # to install Base system
         _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
         _wget ${_url}/src/arch/firmware        # to define partitions settings
-        _wget ${_url}/src/arch/mirrorlist      # to sort mirrors according user
+        _wget ${_url}/src/arch/mirrorlist      # to sort mirrorlist & timezone
         _wget ${_url}/src/arch/mounting        # to mount partitions & swap
         _wget ${_url}/src/arch/partition       # to create table & partitions
-        _wget ${_url}/src/arch/user            # to ask user informations
+        _wget ${_url}/src/arch/user            # to get user informations
         _wget ${_url}/src/apps/system_apps     # to load system apps
         _wget ${_url}/conf/language            # to get language code
         _wget ${_url}/conf/timezone            # to get region code
@@ -243,7 +243,7 @@ if [[ ! -z ${desktop+x} ]]; then
 fi
 
 # Prepare the system
-_clock; _logs; _firmware; _mirrorlist
+_firmware; _mirrorlist; _timezone; _clock; _logs
 
 # Manage partitions
 _note "WARNING! Enter NO only if partitions properly created and formated"
@@ -259,7 +259,7 @@ esac
 unset confirm
 
 # Mount partitions
-_mounting
+_mount_partitions
 
 _note "system ready! Partitions mounted & swap activated."
 

@@ -7,7 +7,7 @@
 # documentation:
 # https://wiki.archlinux.org/index.php/File_systems#Mount_a_file_system
 
-_mounting() {
+_mount_partitions() {
 
     _info "Mounting partitions & swap"
 
