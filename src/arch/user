@@ -37,10 +37,10 @@ _ask_user_informations() {
     done
 
     # Mirrorlist
-    _info "Checking for country code"
+    _info "Setting country code"
     country=$(curl -s ipinfo.io/ | grep "country" | grep -o '[A-Z][^ ]')
     if [[ $country =~ ^[A-Z]{2}+$ ]]; then
-        _info "Setting mirrorlist for: ${country}"
+        _info "Updating ${country} mirrorlist"
         mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
         curl -s \
 "https://www.archlinux.org/mirrorlist/?country=${country}\
