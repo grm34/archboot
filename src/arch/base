@@ -37,10 +37,6 @@ _base() {
     _info "Setting hostname"
     echo "${HOST_name}" > /mnt/etc/hostname
 
-    # initramfs
-    #_info "Setting initramfs"
-    #_chroot "mkinitcpio -p linux"
-
     # root passwd
     _info "Setting root password"
     _chroot "echo 'root:${ROOT_passwd}' | chpasswd"
