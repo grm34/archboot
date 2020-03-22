@@ -136,7 +136,7 @@ _partition() {
     export _home="/dev/${_disk}${part_order[4]}"
 }
 
-custom_partition() {
+_custom_partition() {
 
     _info "Listing disk and partitions"
 
