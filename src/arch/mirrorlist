@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# MIRRORLIST SORTING
+# ============================================================================
+# Here we detect from wich country user is to properly sort mirrorlist
+# for fastest packages downloads during archboot installation.
+# More informations on mirrors are available in the official
+# documentation: https://wiki.archlinux.org/index.php/Mirrors
+
+_mirrorlist() {
+
+    # Automatic mirrorlist sorting according user's country
+    _info "Setting country code"
+    country=$(curl -s ipinfo.io/ | grep "country" | grep -o '[A-Z][^ ]')
+    if [[ $country =~ ^[A-Z]{2}+$ ]]; then
+        _info "Updating ${country} mirrorlist"
+        mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+        curl -s \
+"https://www.archlinux.org/mirrorlist/?country=${country}\
+&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' \
+> /etc/pacman.d/mirrorlist
+        cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
+        rm /etc/pacman.d/mirrorlist.backup
+    fi
+}

@@ -27,7 +27,7 @@ _ask_user_informations() {
         _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
         read -r language
     done
-    keymap_code=$(echo ${language} | cut -d'_' -f 1)
+    export keymap_code=$(echo ${language} | cut -d'_' -f 1)
 
     # TimeZone
     until grep -Fxq "${timezone}" ./timezone; do
@@ -152,6 +152,6 @@ _ask_user_informations() {
     fi
 
     # Export required vars
-    export language; export keymap_code; export timezone
-    export HOST_name; export ROOT_passwd; export USER_name; export USER_passwd
+    export language; export timezone; export HOST_name
+    export ROOT_passwd; export USER_name; export USER_passwd
 }
