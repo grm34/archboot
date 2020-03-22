@@ -37,6 +37,7 @@ _timezone() {
 $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
     if grep -Fxq ${tzone} ./timezone ]]; then
+        _info "Updating ${tzone} timezone"
         export timezone=${tzone}
     
     # Ask timezone to user
