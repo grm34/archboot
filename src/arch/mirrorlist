@@ -15,7 +15,8 @@ _mirrorlist() {
     # Automatic mirrorlist sorting according user's country
     _info "Setting country code"
     country=\
-$(curl -s ipinfo.io/ | grep "country" | sed 's/"country": "//' | sed 's/",//')
+$(curl -s ipinfo.io/ | grep "country" | \
+sed 's/  "country": "//' | sed 's/",//')
     if [[ ${country} =~ ^[A-Z]{2}+$ ]]; then
         _info "Updating ${country} mirrorlist"
         mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
@@ -33,7 +34,8 @@ _timezone() {
     # Automatic timezone
     _info "Setting timezone code"
     tzone=\
-$(curl -s ipinfo.io/ | grep "timezone" | sed 's/"timezone": "//' | sed 's/",//')
+$(curl -s ipinfo.io/ | grep "timezone" | \
+sed 's/  "timezone": "//' | sed 's/",//')
     if grep -Fxq ${tzone} ./timezone ]]; then
         export timezone=${tzone}
     
