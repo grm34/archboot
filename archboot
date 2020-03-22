@@ -198,7 +198,8 @@ case ${confirm} in
         _info "Downloading base sources"
         _wget ${_url}/src/arch/base            # to install Base system
         _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
-        _wget ${_url}/src/arch/firmware        # to prepare partitions & sort mirrorlist
+        _wget ${_url}/src/arch/firmware        # to define partitions settings
+        _wget ${_url}/src/arch/mirrorlist      # to sort mirrors according user
         _wget ${_url}/src/arch/mounting        # to mount partitions & swap
         _wget ${_url}/src/arch/partition       # to create table & partitions
         _wget ${_url}/src/arch/user            # to ask user informations
@@ -214,7 +215,7 @@ unset confirm
 
 # Import base sources
 _info "Importing base sources"
-source ./base; source ./bootloader; source ./firmware
+source ./base; source ./bootloader; source ./firmware; source ./mirrorlist
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
 # Ask for user informations [src/arch/user]
