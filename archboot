@@ -198,10 +198,10 @@ case ${confirm} in
         _info "Downloading base sources"
         _wget ${_url}/src/arch/base            # to install Base system
         _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
-        _wget ${_url}/src/arch/firmware        # to prepare partitions & mirrorlist sort
+        _wget ${_url}/src/arch/firmware        # to prepare partitions & sort mirrorlist
         _wget ${_url}/src/arch/mounting        # to mount partitions & swap
         _wget ${_url}/src/arch/partition       # to create table & partitions
-        _wget ${_url}/src/arch/user            # to ask user infos
+        _wget ${_url}/src/arch/user            # to ask user informations
         _wget ${_url}/src/apps/system_apps     # to load system apps
         _wget ${_url}/conf/language            # to get language code
         _wget ${_url}/conf/timezone            # to get region code
@@ -246,7 +246,7 @@ _clock; _logs; _firmware; _mirrorlist
 
 # Manage partitions
 _note "WARNING! Enter NO only if partitions properly created and formated"
-_confirm "Are you installing Arch Linux on a fresh disk?"
+_confirm "Are you installing Arch Linux on a dedicated disk?"
 case ${confirm} in
     y|Y)
         _partition
