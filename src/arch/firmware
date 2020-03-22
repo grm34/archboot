@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# FIRMWARE DETECTION & MIRRORLIST SORTING
+# FIRMWARE DETECTION
 # ============================================================================
 # Here we detect if system is running on UEFI or BIOS firmware to properly
 # define partitions order, type, table and filesystem.
@@ -25,22 +25,5 @@ _firmware() {
         export part_type="p\n"
         export boot_filesystem="ext4"
         _note "BIOS firmware detected."
-    fi
-}
-
-_mirrorlist() {
-
-    # Automatic mirrorlist sorting according user's country
-    _info "Setting country code"
-    country=$(curl -s ipinfo.io/ | grep "country" | grep -o '[A-Z][^ ]')
-    if [[ $country =~ ^[A-Z]{2}+$ ]]; then
-        _info "Updating ${country} mirrorlist"
-        mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
-        curl -s \
-"https://www.archlinux.org/mirrorlist/?country=${country}\
-&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' \
-> /etc/pacman.d/mirrorlist
-        cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
-        rm /etc/pacman.d/mirrorlist.backup
     fi
 }
