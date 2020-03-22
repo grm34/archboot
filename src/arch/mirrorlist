@@ -1,18 +1,23 @@
 #!/bin/bash
 
-# MIRRORLIST SORTING
+# MIRRORLIST SORTING & TIMEZONE
 # ============================================================================
 # Here we detect from wich country user is to properly sort mirrorlist
 # for fastest packages downloads during archboot installation.
 # More informations on mirrors are available in the official
 # documentation: https://wiki.archlinux.org/index.php/Mirrors
+# We also detect from wich timezone user is to properly set it.
+# In case of bad timezone detected we prompt user to set manualy.
+# List of available timezone code is in the archboot wiki.
 
 _mirrorlist() {
 
     # Automatic mirrorlist sorting according user's country
     _info "Setting country code"
-    country=$(curl -s ipinfo.io/ | grep "country" | grep -o '[A-Z][^ ]')
-    if [[ $country =~ ^[A-Z]{2}+$ ]]; then
+    country=\
+$(curl -s ipinfo.io/ | grep "country" | \
+sed 's/  "country": "//' | sed 's/",//')
+    if [[ ${country} =~ ^[A-Z]{2}+$ ]]; then
         _info "Updating ${country} mirrorlist"
         mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
         curl -s \
@@ -21,5 +26,27 @@ _mirrorlist() {
 > /etc/pacman.d/mirrorlist
         cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
         rm /etc/pacman.d/mirrorlist.backup
+    fi
+}
+
+_timezone() {
+
+    # Automatic timezone
+    _info "Setting timezone code"
+    tzone=\
+$(curl -s ipinfo.io/ | grep "timezone" | \
+sed 's/  "timezone": "//' | sed 's/",//')
+    if grep -Fxq ${tzone} ./timezone ]]; then
+        _info "Updating ${tzone} timezone"
+        export timezone=${tzone}
+    
+    # Ask timezone to user
+    else
+        until grep -Fxq "${timezone}" ./timezone; do
+            _note "list of available time zone code is in the archboot wiki"
+            _prompt "Enter time zone code:" "(e.g., Europe/Paris, Asia/Tokyo)"
+            read -r timezone
+        done
+        export timezone
     fi
 }

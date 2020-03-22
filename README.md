@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/logo.png">
 </a>
 
-[![version](https://img.shields.io/badge/version-v2.8.3-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE) [![telegram](https://img.shields.io/badge/Telegram-chat-red)](https://t.me/archboot) [![maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/grm34/archboot/pulse)
+[![version](https://img.shields.io/badge/version-v2.8.4-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE) [![telegram](https://img.shields.io/badge/Telegram-chat-red)](https://t.me/archboot) [![maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/grm34/archboot/pulse)
 
 [Arch Linux](https://www.archlinux.org/) is a light and fast distribution whose concept is to remain as simple as possible. In the same purpose, this script perform minimalist installation, it only install the required packages in order to give free choice to the user. Pretty simple, it just prompt for hostname, username, password, which disk to use, required partitions size, language, timezone and if you wish to install a desktop environment. According to the chosen one and in order to get complete support, additional packages may be required ([File System](https://wiki.archlinux.org/index.php/file_systems) - [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) - [Cups](https://wiki.archlinux.org/index.php/CUPS) - [Sane](https://wiki.archlinux.org/index.php/SANE) - [Samba](https://wiki.archlinux.org/index.php/Samba) - [Improving Performance](https://wiki.archlinux.org/index.php/improving_performance)).
 
@@ -20,7 +20,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](https://m
 
 **3.** For AZERTY keyboard run: `loqdkeys fr`
 
-**4.** Download and follow the instructions `wget tiny.cc/archboot; sh archboot`
+**4.** Download and follow the instructions `wget tiny.cc/archboot-dev; sh archboot-dev`
 
 ## Wiki
 
