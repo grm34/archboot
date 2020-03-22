@@ -243,7 +243,7 @@ if [[ ! -z ${desktop+x} ]]; then
 fi
 
 # Prepare the system
-_clock; _logs; _firmware; _mirrorlist; _timezone
+_firmware; _mirrorlist; _timezone; _clock; _logs
 
 # Manage partitions
 _note "WARNING! Enter NO only if partitions properly created and formated"
