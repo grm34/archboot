@@ -36,6 +36,20 @@ _ask_user_informations() {
         read -r timezone
     done
 
+    # Mirrorlist
+    _info "Checking for country code"
+    country=$(curl -s ipinfo.io/ | grep "country" | grep -o '[A-Z][^ ]')
+    if [[ $country =~ ^[A-Z]{2}+$ ]]; then
+        _info "Setting mirrorlist for: ${country}"
+        mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+        curl -s \
+"https://www.archlinux.org/mirrorlist/?country=${country}\
+&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' \
+> /etc/pacman.d/mirrorlist
+        cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
+        rm /etc/pacman.d/mirrorlist.backup
+    fi
+
     # Hostname
     until [[ ${#HOST_name} -ge 3 \
     && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
