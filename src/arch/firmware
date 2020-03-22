@@ -9,8 +9,9 @@
 
 _firmware() {
 
-    # Firmware Detection
     _info "Firmware detection"
+
+    # UEFI Firmware
     if [ -d /sys/firmware/efi/efivars ]; then
         export FIRMWARE="UEFI"
         export part_table="GPT"
@@ -18,6 +19,8 @@ _firmware() {
         export part_type=""
         export boot_filesystem="fat -F32"
         _note "UEFI firmware detected."
+
+    # BIOS Firmware
     else
         FIRMWARE="BIOS"
         export part_table="MBR"

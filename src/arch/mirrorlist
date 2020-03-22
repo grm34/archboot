@@ -12,18 +12,24 @@
 
 _mirrorlist() {
 
-    # Automatic mirrorlist sorting according user's country
+    # Automatic mirrorlist sorting according country
     _info "Setting country code"
     country=\
 $(curl -s ipinfo.io/ | grep "country" | \
 sed 's/  "country": "//' | sed 's/",//')
+
+    # Update mirrorlist if properly detected
     if [[ ${country} =~ ^[A-Z]{2}+$ ]]; then
         _info "Updating ${country} mirrorlist"
         mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+
+        # Get corresponding mirrors
         curl -s \
 "https://www.archlinux.org/mirrorlist/?country=${country}\
 &use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' \
 > /etc/pacman.d/mirrorlist
+
+        # Sort detected mirrors
         cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
         rm /etc/pacman.d/mirrorlist.backup
     fi
@@ -31,16 +37,18 @@ sed 's/  "country": "//' | sed 's/",//')
 
 _timezone() {
 
-    # Automatic timezone
+    # Automatic timezone according IP
     _info "Setting timezone code"
     tzone=\
 $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
+
+    # Update timezone if properly detected
     if grep -Fxq ${tzone} ./timezone ]]; then
         _info "Updating ${tzone} timezone"
         export timezone=${tzone}
     
-    # Ask timezone to user
+    # Otherwise ask timezone to user
     else
         until grep -Fxq "${timezone}" ./timezone; do
             _note "list of available time zone code is in the archboot wiki"
