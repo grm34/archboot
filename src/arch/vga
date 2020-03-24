@@ -13,9 +13,11 @@ _scan_vga_controller() {
 
 	_info "Scanning VGA Controller"
 	vga_number=$(lspci | grep -e VGA -e 3D | wc -l)
+
+	# Scan for intel+nvidia controllers
     lspci | grep -e VGA -e 3D | grep -ie nvidia | grep -i intel
 
-	# DUAL VGA CONTROLLER Intel & Nvidia >>> Bumblebee
+	# If true use Bumblebee
 	if [[ $? -eq 0 && ${vga_number} -ge "2" ]]; then
 
 		_note "System compatible to install Bumblebee."
@@ -34,7 +36,7 @@ _scan_vga_controller() {
 	    esac
 	    unset confirm
 
-	# SINGLE VGA CONTROLLER
+	# Otherwise detect appropriate drivers
 	else
 
 		# NVIDIA

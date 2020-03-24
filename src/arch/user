@@ -11,6 +11,7 @@
 #      Username.......: an username such as <bobby>
 #      User passwd....: secure password must be used
 #      User rights....: add user to all groups and ALL power in sudoers
+#      Linux kernel...: default - hardened - lts - zen
 #      Desktop Env....: Gnome - KDE - Deepin - Xfce - LXDE - Cinnamon
 #                       Budgie - Enlightenment - MATE - LXQt
 #      Display Man....: Gdm - LightDM - Sddm - Lxdm - Xdm
