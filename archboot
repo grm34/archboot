@@ -16,16 +16,15 @@ ${blue}
  Welcome in archboot, a script made with love by ${__author__}
 ${nc}
 Arch Linux is a light and fast distribution whose concept
-is to remain  as simple as  possible. In the same purpose
-this  script  perform  minimalist  installation,  it only
-install  the required  packages,  in order  to  give free
-choice to  the user.  Pretty simple,  it just  prompt for
-language, hostname, username, password, which disk to use
-required  partitions  size  and if  you wish  to  install
-a desktop  environment.  According to the  chosen one and
-in order  to get  complete  support, additional  packages
-may be  required. For more  informations, take a  look at
-the wiki.........: https://github.com/grm34/archboot/wiki
+is to remain  as simple  as possible. In the same purpose
+this  script  performs  minimalist  installation, it only
+install  the  required  packages, in order  to  give free
+choice  to the  user. Pretty simple,  it just  prompt for
+language, hostname, username, which disk to use, required
+partitions sizes  and if  you wish  to install  a desktop
+environment. According to the chosen one  and in order to
+get complete support, additional packages may be required
+For more  information, take a look  at the  archboot wiki
 """
 }
 
