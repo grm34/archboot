@@ -20,20 +20,25 @@ _scan_vga_controller() {
 	# If true use Bumblebee
 	if [[ $? -eq 0 && ${vga_number} -ge "2" ]]; then
 
-		_note "System compatible to install Bumblebee."
-		_confirm "Use Nvidia proprietary driver instead of open source?"
-	    case ${confirm} in
+		_confirm "Do you wish to install and activate Bumblebee?"
+		case ${confirm} in
             y|Y)
-		        export vga_driver="bumblebee_nvidia"
-		        export openGL="openGL_nvidia"
-				export hard_video="hard_video_nvidia"
-                ;;
-            *)
-		    	export vga_driver="bumblebee_nouveau"
-		    	export openGL="openGL_nouveau"
-				export hard_video="hard_video_nouveau"
-                ;;
-	    esac
+				unset confirm
+				_confirm "Use Nvidia proprietary drivers?"
+				case ${confirm} in
+					y|Y)
+						export vga_driver="bumblebee_nvidia"
+						export openGL="openGL_nvidia"
+						export hard_video="hard_video_nvidia"
+						;;
+					*)
+						export vga_driver="bumblebee_nouveau"
+						export openGL="openGL_nouveau"
+						export hard_video="hard_video_nouveau"
+						;;
+				esac
+				;;
+		esac
 	    unset confirm
 
 	# Otherwise detect appropriate drivers
@@ -43,7 +48,7 @@ _scan_vga_controller() {
 		nvidia_card=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
 		if [[ $? -eq 0 ]]; then
 			_note "${nvidia_card##*: } detected."
-			_confirm "Use Nvidia proprietary driver instead of open source?"
+			_confirm "Use Nvidia proprietary drivers?"
 		    case ${confirm} in
                 y|Y)
     		        export vga_driver="nvidia"
