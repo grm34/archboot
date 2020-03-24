@@ -20,7 +20,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](https://m
 
 **3.** For AZERTY keyboard run: `loqdkeys fr`
 
-**4.** Download and follow the instructions `wget tiny.cc/archboot; sh archboot`
+**4.** Download and follow the instructions `wget tiny.cc/archboot-dev; sh archboot-dev`
 
 ## Wiki
 
