@@ -219,8 +219,8 @@ _info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware; source ./mirrorlist
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
-# Ask for user information [src/arch/user]
-_ask_user_information
+# Ask user variables [src/arch/user]
+_ask_user_variables
 
 # If Desktop Environment
 if [[ ! -z ${desktop+x} ]]; then
