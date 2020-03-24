@@ -246,7 +246,7 @@ _firmware; _mirrorlist; _timezone; _clock; _logs
 
 # Manage partitions
 _note "WARNING! Enter NO only if partitions properly created and formated"
-_confirm "Are you installing Arch Linux on a dedicated disk?"
+_confirm "Do you wish to install Arch Linux on a dedicated disk?"
 case ${confirm} in
     y|Y)
         _partition
