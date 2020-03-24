@@ -10,7 +10,7 @@ Arch Linux is a light and fast distribution whose concept is to remain as simple
 
 The only thing you need is one **USB bootable device** of [Arch Linux](https://mir.archlinux.fr/iso/latest) (or any other way to boot on)
 
-* USB Boot instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR) or [Linux](https://debian-facile.org/doc:install:usb-boot)
+* USB Boot instruction for [Windows](https://rufus.ie/) or [Linux](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
 ## Usage
 
