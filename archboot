@@ -1,7 +1,7 @@
 #!/bin/bash
 __appname__="archboot"
 __version__="v2.8.4"
-__branch__="master"
+__branch__="dev"
 __author__="@grm34"
 __license__="Apache v2.0 License"
 
