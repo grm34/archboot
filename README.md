@@ -4,13 +4,13 @@
 
 [![version](https://img.shields.io/badge/version-v2.8.4-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE) [![telegram](https://img.shields.io/badge/Telegram-chat-red)](https://t.me/archboot) [![maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/grm34/archboot/pulse)
 
-[Arch Linux](https://www.archlinux.org/) is a light and fast distribution whose concept is to remain as simple as possible. In the same purpose, this script performs minimalist installation, it only install the required packages in order to give free choice to the user. Pretty simple, it just prompt for language, hostname, username,which disk to use, required partitions size and if you wish to install a desktop environment. According to the chosen one and in order to get complete support, additional packages may be required
+Arch Linux is a light and fast distribution whose concept is to remain as simple as possible. In the same purpose, this script performs minimalist installation, it only install the required packages in order to give free choice to the user. Pretty simple, it just prompt for language, hostname, username,which disk to use, required partitions size and if you wish to install a desktop environment. According to the chosen one and in order to get complete support, additional packages may be required.
 
 ## Requirements
 
 The only thing you need is one **USB bootable device** of [Arch Linux](https://mir.archlinux.fr/iso/latest) (or any other way to boot on)
 
-* USB Boot instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR) or for [Linux](https://debian-facile.org/doc:install:usb-boot)
+* USB Boot instructions for [Windows](https://rufus.akeo.ie/?locale=fr_FR) or [Linux](https://debian-facile.org/doc:install:usb-boot)
 
 ## Usage
 
@@ -53,7 +53,6 @@ Take a look at **/var/log/archboot** for logs: `cat /var/log/archboot/archboot*.
 * [Cups](https://wiki.archlinux.org/index.php/CUPS) (may be required if not included in DE)
 * [Sane](https://wiki.archlinux.org/index.php/SANE) (may be required if not included in DE)
 * [Samba](https://wiki.archlinux.org/index.php/Samba) (may be required if not included in DE)
-* [Improving Performance](https://wiki.archlinux.org/index.php/improving_performance)
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/for-you.svg)](https://forthebadge.com)
