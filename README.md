@@ -4,7 +4,7 @@
 
 [![version](https://img.shields.io/badge/version-v2.8.4-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=dev)](https://travis-ci.org/grm34/archboot) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/dev/LICENSE) [![telegram](https://img.shields.io/badge/Telegram-chat-red)](https://t.me/archboot) [![maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/grm34/archboot/pulse)
 
-[Arch Linux](https://www.archlinux.org/) is a light and fast distribution whose concept is to remain as simple as possible. In the same purpose, this script perform minimalist installation, it only install the required packages in order to give free choice to the user. Pretty simple, it just prompt for language, hostname, username, password, which disk to use, required partitions size and if you wish to install a desktop environment. According to the chosen one and in order to get complete support, additional packages may be required ([File System](https://wiki.archlinux.org/index.php/file_systems) - [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) - [Cups](https://wiki.archlinux.org/index.php/CUPS) - [Sane](https://wiki.archlinux.org/index.php/SANE) - [Samba](https://wiki.archlinux.org/index.php/Samba) - [Improving Performance](https://wiki.archlinux.org/index.php/improving_performance))
+[Arch Linux](https://www.archlinux.org/) is a light and fast distribution whose concept is to remain as simple as possible. In the same purpose, this script performs minimalist installation, it only install the required packages in order to give free choice to the user. Pretty simple, it just prompt for language, hostname, username,which disk to use, required partitions size and if you wish to install a desktop environment. According to the chosen one and in order to get complete support, additional packages may be required
 
 ## Requirements
 
@@ -47,7 +47,13 @@ Take a look at **/var/log/archboot** for logs: `cat /var/log/archboot/archboot*.
 
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) for the official documentation
 * [VGA Drivers](https://wiki.archlinux.org/index.php/Xorg#Driver_installation) open source and proprietary drivers support
-* [Bumblebee](https://wiki.archlinux.org/index.php/Bumblebee) support available in case of Intel+nVidia controller
+* [Bumblebee](https://wiki.archlinux.org/index.php/Bumblebee) available in case of Intel+nVidia controller
+* [File System](https://wiki.archlinux.org/index.php/file_systems) (may be required if not included in DE)
+* [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) (may be required if not included in DE)
+* [Cups](https://wiki.archlinux.org/index.php/CUPS) (may be required if not included in DE)
+* [Sane](https://wiki.archlinux.org/index.php/SANE) (may be required if not included in DE)
+* [Samba](https://wiki.archlinux.org/index.php/Samba) (may be required if not included in DE)
+* [Improving Performance](https://wiki.archlinux.org/index.php/improving_performance)
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/for-you.svg)](https://forthebadge.com)
