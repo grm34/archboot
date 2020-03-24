@@ -1,7 +1,4 @@
-# Test scripts
 *_test*
-
-# Vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

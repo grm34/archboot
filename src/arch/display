@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DISPLAY MANAGER
+#                           DISPLAY MANAGER
 # ============================================================================
 # Here we install and configure display manager. Default settings:
 #
@@ -10,8 +10,9 @@
 #     Lxdm.......: Xfce4 / Lxde / Lxqt
 #
 # User can also decide to install the display manager of his choice.
-# More informations on display manager are available in the official
-# documentation: https://wiki.archlinux.org/index.php/Display_manager
+# All steps are described in the official documentation:
+# https://wiki.archlinux.org/index.php/Display_manager
+# ============================================================================
 
 _display_manager() {
 
@@ -79,3 +80,6 @@ _display_manager() {
         chmod 700 /mnt/home/${USER_name}/.xsession
     fi
 }
+
+# archboot by grm34 under Apache v2.0 License.
+# ============================================================================
