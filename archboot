@@ -107,7 +107,7 @@ mounting|partition|user|vga|desktop_apps|display_apps|system_apps|vga_apps|\
     if [[ $? -eq 1 ]]; then
         umount -R /mnt
     fi
-    _note "you must reboot to prevent unreconized system changes."
+    _note "you must reboot to prevent unreconized system changes"
     sleep 2
     exit 1
 }
@@ -126,7 +126,7 @@ _reboot() {
 
 # Display error, cleanup and exit
 _error() {
-    echo -e "${red}Error: ${yellow}${1} Please try again.${nc}\n"
+    echo -e "${red}Error: ${yellow}${1} - Please try again!${nc}\n"
     _cleanup
 }
 
@@ -189,7 +189,7 @@ ping -c 1 archlinux.org >/dev/null 2>&1
 if [[ $? -eq 0 ]]; then
     _note "OK, you are connected to Internet"
 else
-    _error "you are not connected to Internet. Ethernet seems not plugged in."
+    _error "you are not connected to Internet. Ethernet seems not plugged in!"
 fi
 
 # Download base sources
