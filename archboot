@@ -18,7 +18,7 @@ ${nc}
 Arch Linux is a light and fast distribution whose concept
 is to remain  as simple  as possible. In the same purpose
 this  script  performs  minimalist  installation, it only
-install  the  required  packages, in order  to  give free
+installs the  required  packages, in order  to  give free
 choice  to the  user. Pretty simple,  it just  prompt for
 language, hostname, username, which disk to use, required
 partitions size  and  if  you wish  to install  a desktop
@@ -34,7 +34,7 @@ For more  information, take a look  at the  archboot wiki
 # Variables are pretty simple such as define needed url and colors.
 # Functions are used to display install steps, notes, errors or to do some
 # actions like cleanup after fatal error, execute cmd in chrooted environment,
-# select an option, ask some informations to the user or to get install logs.
+# select an option, ask some information to the user or to get install logs.
 # ============================================================================
 
 # Github url: ${_url} for sources and ${_gh_pages} for images
@@ -171,7 +171,7 @@ _end() {
     echo -ne "\n==> ${nc}"
 }
 
-#                       ARCHBOOT SYSTEM PROCESS
+#                        ARCHBOOT SYSTEM PROCESS
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications and scripts [src/apps & src/arch]
@@ -239,7 +239,7 @@ if [[ ! -z ${desktop+x} ]]; then
     source ./vga; source ./desktop; source ./display
     source ./vga_apps; source ./desktop_apps; source ./display_apps
 
-    # Scan VGA Controller and select appropriate driver [src/arch/vga]
+    # Scan VGA Controller and set appropriate driver [src/arch/vga]
     _scan_vga_controller
 fi
 
@@ -264,7 +264,7 @@ _mount_partitions
 
 _note "system is ready to rumble! Partitions mounted & swap activated!"
 
-#                    ARCHBOOT SYSTEM INSTALLATION
+#                     ARCHBOOT SYSTEM INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
 # user variables stored. We can start Arch Linux installation.
@@ -303,7 +303,7 @@ ${__appname__} ${__version__} by ${__author__} under ${__license__}"
 esac
 unset confirm
 
-#                      ARCHBOOT SYSTEM REBOOT
+#                       ARCHBOOT SYSTEM REBOOT
 # ============================================================================
 # And here we go! We could now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.

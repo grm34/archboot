@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#                   DESKTOP ENVIRONMENT PACKAGES
+#                     DESKTOP ENVIRONMENT PACKAGES
 # ============================================================================
 
 # Gnome
@@ -33,7 +33,7 @@ export _mate="mate mate-extra"
 # Lxqt
 export _lxqt="lxqt"
 
-#                        REQUIRED PACKAGES
+#                         REQUIRED PACKAGES
 # ============================================================================
 
 # Xorg
