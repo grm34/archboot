@@ -21,7 +21,7 @@ this  script  performs  minimalist  installation, it only
 install  the  required  packages, in order  to  give free
 choice  to the  user. Pretty simple,  it just  prompt for
 language, hostname, username, which disk to use, required
-partitions sizes  and if  you wish  to install  a desktop
+partitions size  and  if  you wish  to install  a desktop
 environment. According to the chosen one  and in order to
 get complete support, additional packages may be required
 For more  information, take a look  at the  archboot wiki
