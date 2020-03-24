@@ -28,15 +28,16 @@ For more  information, take a look  at the  archboot wiki
 """
 }
 
-# ARCHBOOT SYSTEM MANAGEMENT
+#                      ARCHBOOT SYSTEM MANAGEMENT
 # ============================================================================
 # Here we defined all required variables and functions to manage archboot.
 # Variables are pretty simple such as define needed url and colors.
 # Functions are used to display install steps, notes, errors or to do some
 # actions like cleanup after fatal error, execute cmd in chrooted environment,
 # select an option, ask some informations to the user or to get install logs.
+# ============================================================================
 
-# Github url: $_url for sources and $_gh_pages for images
+# Github url: ${_url} for sources and ${_gh_pages} for images
 _url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
 _gh_pages="https://raw.githubusercontent.com/grm34/archboot/gh-pages"
 
@@ -106,7 +107,7 @@ mounting|partition|user|vga|desktop_apps|display_apps|system_apps|vga_apps|\
     if [[ $? -eq 1 ]]; then
         umount -R /mnt
     fi
-    _note "you must reboot to prevent unreconized system changes."
+    _note "you must reboot to prevent unreconized system changes"
     sleep 2
     exit 1
 }
@@ -125,7 +126,7 @@ _reboot() {
 
 # Display error, cleanup and exit
 _error() {
-    echo -e "${red}Error: ${yellow}${1} Please try again.${nc}\n"
+    echo -e "${red}Error: ${yellow}${1} - Please try again!${nc}\n"
     _cleanup
 }
 
@@ -153,7 +154,7 @@ _confirm() {
     done
 }
 
-# Ask some informations
+# Ask some information
 _prompt() {
     lenth=${@}
     count=${#lenth}
@@ -162,7 +163,7 @@ _prompt() {
     _end
 }
 
-# Display the end of select(), _confirm() and _prompt() functions
+# Display the end of _select(), _confirm() and _prompt() functions
 _end() {
     for char in $(seq ${count}); do
         echo -ne "-"
@@ -170,13 +171,14 @@ _end() {
     echo -ne "\n==> ${nc}"
 }
 
-# ARCHBOOT SYSTEM PROCESS
+#                       ARCHBOOT SYSTEM PROCESS
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications and scripts [src/apps & src/arch]
-# Once done we could ask for user informations and stored them to run install.
-# In case of desktop environment, additionals sources will be imported and
-# scan of VGA controller(s) is done to select appropriate VGA Drivers.
+# Once done we could ask for user variables and stored them to run install.
+# In case of desktop environment, we import additional sources and we
+# scan for 3D VGA controller(s) to define appropriate drivers.
+# ============================================================================
 
 # Display archboot banner
 _archboot_banner
@@ -185,9 +187,9 @@ _archboot_banner
 _info "Check Internet Connection"
 ping -c 1 archlinux.org >/dev/null 2>&1
 if [[ $? -eq 0 ]]; then
-    _note "OK, you are connected to Internet."
+    _note "OK, you are connected to Internet"
 else
-    _error "you are not connected to Internet. Ethernet seems not plugged in."
+    _error "you are not connected to Internet. Ethernet seems not plugged in!"
 fi
 
 # Download base sources
@@ -197,12 +199,12 @@ case ${confirm} in
         _info "Downloading base sources"
         _wget ${_url}/src/arch/base            # to install Base system
         _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
-        _wget ${_url}/src/arch/firmware        # to define partitions settings
-        _wget ${_url}/src/arch/mirrorlist      # to sort mirrorlist & timezone
+        _wget ${_url}/src/arch/firmware        # to set partitions settings
+        _wget ${_url}/src/arch/mirrorlist      # to get mirrorlist & timezone
         _wget ${_url}/src/arch/mounting        # to mount partitions & swap
         _wget ${_url}/src/arch/partition       # to create table & partitions
-        _wget ${_url}/src/arch/user            # to get user informations
-        _wget ${_url}/src/apps/system_apps     # to load system apps
+        _wget ${_url}/src/arch/user            # to get user variables
+        _wget ${_url}/src/apps/system_apps     # to get system apps
         _wget ${_url}/conf/language            # to get language code
         _wget ${_url}/conf/timezone            # to get region code
         ;;
@@ -217,8 +219,8 @@ _info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware; source ./mirrorlist
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
-# Ask for user informations [src/arch/user]
-_ask_user_informations
+# Get required variables [src/arch/user]
+_ask_user_variables
 
 # If Desktop Environment
 if [[ ! -z ${desktop+x} ]]; then
@@ -228,9 +230,9 @@ if [[ ! -z ${desktop+x} ]]; then
     _wget ${_url}/src/arch/vga             # to scan/install VGA Controller
     _wget ${_url}/src/arch/desktop         # to install Desktop Environment
     _wget ${_url}/src/arch/display         # to install Display Manager
-    _wget ${_url}/src/apps/vga_apps        # to load VGA apps
-    _wget ${_url}/src/apps/desktop_apps    # to load Desktop apps
-    _wget ${_url}/src/apps/display_apps    # to load Display Manager apps
+    _wget ${_url}/src/apps/vga_apps        # to get VGA apps
+    _wget ${_url}/src/apps/desktop_apps    # to get Desktop apps
+    _wget ${_url}/src/apps/display_apps    # to get Display Manager apps
 
     # Import desktop sources
     _info "Importing desktop sources"
@@ -260,17 +262,18 @@ unset confirm
 # Mount partitions
 _mount_partitions
 
-_note "system ready! Partitions mounted & swap activated."
+_note "system is ready to rumble! Partitions mounted & swap activated!"
 
-# ARCHBOOT SYSTEM INSTALLATION
+#                    ARCHBOOT SYSTEM INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
-# user informations stored. We can start Arch Linux installation.
+# user variables stored. We can start Arch Linux installation.
 # First step is to install base system [src/arch/base] and 2nd to install Grub
 # bootloader [src/arch/bootloader]. We use <tee> to get logs of those steps.
 # In case of desktop environment we install VGA Drivers and Display Manager.
 # If system won't start desktop environment after reboot, check the logs and
 # open an issue on GitHub. Logs are availables in /var/log/archboot.
+# ============================================================================
 
 _confirm "Do you wish to install Arch Linux now?"
 case ${confirm} in
@@ -300,10 +303,12 @@ ${__appname__} ${__version__} by ${__author__} under ${__license__}"
 esac
 unset confirm
 
-# ARCHBOOT SYSTEM REBOOT
+#                      ARCHBOOT SYSTEM REBOOT
 # ============================================================================
 # And here we go! We could now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.
+# Telegram chat: t.me/archboot - Have fun, take care and give a star!
+# ============================================================================
 
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
@@ -317,3 +322,4 @@ case ${confirm} in
 esac
 
 # archboot by grm34 under Apache v2.0 License.
+# ============================================================================

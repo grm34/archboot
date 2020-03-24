@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# PARTITIONING SCHEME
+#                         PARTITIONING SCHEME
 # ============================================================================
 # Here we listing existing disk and partitions to select disk to use, format
 # it and create required partitions. Required onces are:
@@ -10,10 +10,13 @@
 #     SWAP........: no mount point
 #     HOME........: /mnt/home
 #
-# We use partprobe to inform system changes and add sleep 1s just after
+# We use partprobe to inform system changes and add sleep 1s
 # to prevent unreconized system changes.
-# More informations on partitioning are available in the official
-# documentation: https://wiki.archlinux.org/index.php/Partitioning
+# Since v2.8.1 custom partitioning is available, only mountpoints will be
+# asked to the user. Requires properly created and formated partitions.
+# All steps are described in the official documentation:
+# https://wiki.archlinux.org/index.php/Partitioning
+# ============================================================================
 
 _partition() {
 
@@ -35,7 +38,7 @@ _partition() {
 
     # Create MBR or GPT Table
     fdisk -l /dev/${_disk}
-    _note "WARNING! This will erase the entire drive."
+    _note "WARNING! This will erase the entire drive"
     _confirm "Setting ${part_table} partition table on /dev/${_disk}"
     if [[ ${confirm} == "y" ]]; then
         wipefs -fa /dev/${_disk}
@@ -168,7 +171,7 @@ _custom_partition() {
         read -r _hm
     done
 
-    # Export required vars
+    # Export required variables
     if [[ ${_bt} =~ "nvme0n" ]]; then
         export _disk=${_bt%p*}
     else
@@ -179,3 +182,6 @@ _custom_partition() {
     export _system="/dev/${_sys}"
     export _home="/dev/${_hm}"
 }
+
+# archboot by grm34 under Apache v2.0 License.
+# ============================================================================

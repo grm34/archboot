@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DISPLAY MANAGER PACKAGES
+#                       DISPLAY MANAGER PACKAGES
 # ============================================================================
 
 # GDM
@@ -17,3 +17,6 @@ export _lxdm="lxdm"
 
 # XDM
 export _xdm="xorg-xdm"
+
+# archboot by grm34 under Apache v2.0 License.
+# ============================================================================

@@ -1,29 +1,28 @@
 #!/bin/bash
 
-# USER INFORMATIONS
+#                         GET USER VARIABLES
 # ============================================================================
-# Here we prompt all required informations to the user and stored them.
-# Required informations:
+# Here we ask all required variables to the user and stored them.
 #
-#      Language.......: list of avalaible language code is in the wiki
-#      Hostname.......: a computer name such as <my-favorite-computer>
-#      Root passwd....: secure password must be used
-#      Username.......: an username such as <bobby>
-#      User passwd....: secure password must be used
-#      User rights....: add user to all groups and ALL power in sudoers
+# Required variables:
+#
+#      Language.......: list of languages codes is available in the wiki
+#      Hostname.......: computer name such as <my-favorite-computer>
+#      Root passwd....: should be at least 6 chars long with 1 letter & 1 digit
+#      Username.......: such as <bobby_is_not_a_loser>
+#      User passwd....: should be at least 6 chars long with 1 letter & 1 digit
+#      User rights....: added to all groups and ALL power in sudoers
 #      Linux kernel...: default - hardened - lts - zen
 #      Desktop Env....: Gnome - KDE - Deepin - Xfce - LXDE - Cinnamon
 #                       Budgie - Enlightenment - MATE - LXQt
 #      Display Man....: Gdm - LightDM - Sddm - Lxdm - Xdm
-#
-# More informations on installation steps are available in the wiki:
-# https://github.com/grm34/archboot/wiki/Installation-step-by-step
+# ============================================================================
 
-_ask_user_informations() {
+_ask_user_variables() {
 
     # Language
     until grep -Fxq "${language}" ./language; do
-        _note "list of available language code is in the archboot wiki"
+        _note "list of languages codes is available in the wiki"
         _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
         read -r language
     done
@@ -37,16 +36,16 @@ _ask_user_informations() {
     done
 
     # Root Password
-    until [[ ${#a} -ge 8 && "${a}" == *[a-z]* && "${a}" == *[0-9]* ]]; do
+    until [[ ${#a} -ge 6 && "${a}" == *[a-z]* && "${a}" == *[0-9]* ]]; do
         _note \
-"password should be at least 8 chars long with 1 letter and 1 digit"
-        _prompt "Enter password for root:"
+"should be at least 6 chars long with 1 letter & 1 digit"
+        _prompt "Enter root password:"
         read -rs a
     done
     echo
 
     # Confirm Root Password
-    _prompt "Confirm password for root:"
+    _prompt "Confirm root password:"
     read -rs ROOT_passwd
     if [[ ${ROOT_passwd} != "${a}" ]]; then
         _error "passwords does not match!"
@@ -61,9 +60,9 @@ _ask_user_informations() {
     done
 
     # User Password
-    until [[ ${#b} -ge 8 && "${b}" == *[a-z]* && "${b}" == *[0-9]* ]]; do
+    until [[ ${#b} -ge 6 && "${b}" == *[a-z]* && "${b}" == *[0-9]* ]]; do
         _note \
-"password should be at least 8 chars long with 1 letter and 1 digit"
+"should be at least 6 chars long with 1 letter & 1 digit"
         _prompt "Enter password for user ${USER_name}:"
         read -rs b
     done
@@ -144,8 +143,11 @@ _ask_user_informations() {
         unset confirm
     fi
 
-    # Export required vars
+    # Export required variables
     export language
     export HOST_name; export ROOT_passwd
     export USER_name; export USER_passwd
 }
+
+# archboot by grm34 under Apache v2.0 License.
+# ============================================================================
