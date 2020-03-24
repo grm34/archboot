@@ -18,7 +18,7 @@
 #      Display Man....: Gdm - LightDM - Sddm - Lxdm - Xdm
 # ============================================================================
 
-_ask_user_information() {
+_ask_user_variables() {
 
     # Language
     until grep -Fxq "${language}" ./language; do
