@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ARCH LINUX PACKAGES
+#                         ARCH LINUX PACKAGES
 # ============================================================================
 
 # Arch Linux
@@ -21,3 +21,6 @@ iw wpa_supplicant wireless_tools git"
 
 # Bootloader
 export _bootapps="grub os-prober gptfdisk efibootmgr"
+
+# archboot by grm34 under Apache v2.0 License.
+# ============================================================================

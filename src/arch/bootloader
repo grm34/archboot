@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# BOOTLOADER
+#                             BOOTLOADER
 # ============================================================================
 # Here we install and configure Grub bootloader, all steps are described in
 # official documentation: https://wiki.archlinux.org/index.php/GRUB
 # We also install additional themes for beautifull OS selection menu.
+#
 
 _bootloader() {
 
@@ -43,3 +44,6 @@ _bootloader() {
     _info "Setting Grub for ${FIRMWARE} firmware"
     _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 }
+
+# archboot by grm34 under Apache v2.0 License.
+# ============================================================================
