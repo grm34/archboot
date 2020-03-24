@@ -4,8 +4,8 @@
 # ============================================================================
 # Here we scan for 3D VGA Controller(s) to install appropriate drivers
 # with OpenGL and Hardware Acceleration support.
-# In case of dual controllers (intel+nvidia) Bumblebee is available.
-# User can choose to install proprietary drivers instead of open source ones.
+# In case of dual controller system (intel+nvidia) Bumblebee is available.
+# User can choose to install proprietary drivers instead of open source.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Xorg#Driver_installation
 # ============================================================================
@@ -15,7 +15,7 @@ _scan_vga_controller() {
     _info "Scanning 3D VGA Controller"
     vga_number=$(lspci | grep -e VGA -e 3D | wc -l)
 
-    # Scan for intel+nvidia controllers
+    # Scan for intel+nvidia controller
     lspci | grep -e VGA -e 3D | grep -ie nvidia | grep -i intel
 
     # If true use Bumblebee
