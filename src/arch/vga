@@ -98,7 +98,7 @@ _install_vga_controller() {
     _info "Installing VGA Driver"
     install_vga="_${vga_driver}"
     _chroot "pacman --noconfirm -S ${!install_vga}"
-    if [[ ${vga_driver} == "bumblebee" ]]; then
+    if [[ ${vga_driver} =~ [^bumblebee_]* ]]; then
         _note "Enabling Bumblebee service"
         _chroot "systemctl enable bumblebeed"
     fi
