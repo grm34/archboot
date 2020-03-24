@@ -163,7 +163,7 @@ _prompt() {
     _end
 }
 
-# Display the end of select(), _confirm() and _prompt() functions
+# Display the end of _select(), _confirm() and _prompt() functions
 _end() {
     for char in $(seq ${count}); do
         echo -ne "-"
@@ -171,7 +171,7 @@ _end() {
     echo -ne "\n==> ${nc}"
 }
 
-#                      ARCHBOOT SYSTEM PROCESS
+#                       ARCHBOOT SYSTEM PROCESS
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications and scripts [src/apps & src/arch]
@@ -219,7 +219,7 @@ _info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware; source ./mirrorlist
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
-# Ask user variables [src/arch/user]
+# Get required variables [src/arch/user]
 _ask_user_variables
 
 # If Desktop Environment
@@ -264,7 +264,7 @@ _mount_partitions
 
 _note "system is ready to rumble! Partitions mounted & swap activated!"
 
-#                   ARCHBOOT SYSTEM INSTALLATION
+#                    ARCHBOOT SYSTEM INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
 # user variables stored. We can start Arch Linux installation.
