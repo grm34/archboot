@@ -2,17 +2,17 @@
 
 #                        ARCH LINUX BASE SYSTEM
 # ============================================================================
-# Here we install base system with the chosen kernel of the user.
+# Here we install base system with the kernel chosen by user.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Installation_guide
 # In case of Intel CPU we install intel microcode to enable microcode updates.
-# Then we create a new user with his previously defined password.
+# User account will be created with previously defined password.
 # ============================================================================
 
 _base() {
 
     # Base System
-    _info "Installing base with ${user-kernel} kernel"
+    _info "Installing base with ${user_kernel} kernel"
     user_kernel="_${kernel}"
     yes '' | pacstrap /mnt ${_arch} ${!user_kernel}
 

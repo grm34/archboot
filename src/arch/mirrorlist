@@ -3,8 +3,8 @@
 #                        GET MIRRORS & TIMEZONE
 # ============================================================================
 # Here we use curl to get user country and timezone from ipinfo.io API (json)
-# Country code is used to get corresponding mirrors for fastest packages
-# download during Arch Linux installation.
+# Country code is used to get corresponding mirrors from archlinux.org
+# for fastest packages download during  Arch Linux installation.
 # To prevent error we check if timezone is in available list,
 # otherwise we prompt user to set it manualy.
 # ============================================================================
@@ -12,14 +12,14 @@
 _mirrorlist() {
 
     # Get user country code from ipinfo.io API
-    _info "Setting country code"
+    _info "Search for country code"
     country=\
 $(curl -s ipinfo.io/ | grep "country" | \
 sed 's/  "country": "//' | sed 's/",//')
 
     # Update mirrorlist if country code properly detected
     if [[ ${country} =~ ^[A-Z]{2}+$ ]]; then
-        _info "Updating ${country} mirrorlist"
+        _info "Setting mirrors priority to ${country}"
         mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 
         # Get corresponding mirrors from archlinux.org
@@ -37,20 +37,20 @@ sed 's/  "country": "//' | sed 's/",//')
 _timezone() {
 
     # Get user timezone from ipinfo.io API
-    _info "Setting timezone code"
+    _info "Search for timezone code"
     tzone=\
 $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
 
     # Update timezone if properly detected
     if grep -Fxq ${tzone} ./timezone ]]; then
-        _info "Updating ${tzone} timezone"
+        _info "Setting timezone to ${tzone}"
         export timezone=${tzone}
 
     # Otherwise ask timezone to user
     else
         until grep -Fxq "${timezone}" ./timezone; do
-            _note "list of timezones codes is available in the wiki"
+            _note "timezone not found! Full list is available in the wiki"
             _prompt "Enter timezone code:" "(e.g., Europe/Paris, Asia/Tokyo)"
             read -r timezone
         done

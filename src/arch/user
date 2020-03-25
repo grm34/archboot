@@ -17,14 +17,14 @@
 #                       Budgie - Enlightenment - MATE - LXQt
 #      Display Man....: Gdm - LightDM - Sddm - Lxdm - Xdm
 #
-# Then we manage user rights, ALL power in sudoers and add him to all groups.
+# Then we manage user rights: ALL power in sudoers and added to all groups.
 # ============================================================================
 
 _ask_user_variables() {
 
     # Language
     until grep -Fxq "${language}" ./language; do
-        _note "list of languages codes is available in the wiki"
+        _note "full list is available in the wiki"
         _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
         read -r language
     done
@@ -119,7 +119,7 @@ _ask_user_variables() {
     # Display Manager
     if [[ ! -z ${desktop+x} ]]; then
 
-        _confirm "Use default Display Manager?"
+        _confirm "Do you wish to use ${desktop} default Display Manager?"
         case ${confirm} in
 
             # Custom display manager
@@ -154,7 +154,7 @@ _ask_user_variables() {
 _user_power() {
 
     # give ALL power to user in sudoers
-    _info "Setting user ${USER_name} rights"
+    _info "Setting rights for user ${USER_name}"
     echo "${USER_name} ALL=(ALL) ALL" >> /mnt/etc/sudoers
 
     # add user to all groups
