@@ -93,13 +93,14 @@ _check() {
     return ${status}
 }
 
-# Cleanup archboot: delete sources, umount partitions and exit
+# Cleanup: delete sources - umount partitions - exit
 _cleanup() {
     echo -e "\nCleaning up archboot..."
     for source in *; do
-        if [[ ${source} =~ ^(base|bootloader|desktop|display|firmware|\
-mounting|partition|user|vga|desktop_apps|display_apps|system_apps|vga_apps|\
-00-keyboard|language|timezone|xprofile|background.png|Grub2-themes)$ ]]; then
+        if [[ ${source} =~ ^(base|bootloader|desktop|display|\
+firmware|mirrorlist|mounting|partition|user|vga|desktop_apps|\
+display_apps|system_apps|vga_apps|00-keyboard|language|\
+timezone|xprofile|background.png|Grub2-themes)$ ]]; then
             rm -rf ${source}
         fi
     done
