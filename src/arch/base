@@ -33,7 +33,7 @@ _base() {
     echo "LANG=${language}.UTF-8" > /mnt/etc/locale.conf
 
     # keyboard
-    _info "Setting ${keymap_code} vconsole"
+    _info "Setting ${keymap_code} keyboard"
     echo "KEYMAP=${keymap_code}" > /mnt/etc/vconsole.conf
 
     # hostname
