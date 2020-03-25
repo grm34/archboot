@@ -18,7 +18,7 @@ _scan_vga_controller() {
     # Scan for intel+nvidia controller
     lspci | grep -e VGA -e 3D | grep -ie nvidia | grep -i intel
 
-    # If true use Bumblebee
+    # If true ask for Bumblebee
     if [[ $? -eq 0 && ${vga_number} -ge "2" ]]; then
 
         _note "Nvidia + Intel Controller detected!"
