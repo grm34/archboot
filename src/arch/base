@@ -34,6 +34,7 @@ _base() {
 
     # vconsole
     _info "Setting ${keymap_code} virtual console"
+    echo "KEYMAP=${keymap_code}" > /mnt/etc/vconsole.conf
 
     # hostname
     _info "Setting hostname ${HOST_name}"
