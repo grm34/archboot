@@ -278,12 +278,19 @@ _note "system is ready to rumble! Partitions mounted & swap activated!"
 _confirm "Do you wish to install Arch Linux now?"
 case ${confirm} in
     y|Y)
+
+        # Install Arch Linux base system
         (_base; _bootloader) 2>&1 | tee -a ${log}
 
         # Install desktop environment
         if [[ ! -z ${desktop+x} ]]; then
             (_install_vga_controller; _install_desktop_environment; \
             _display_manager; _desktop_settings) 2>&1 | tee -a ${log}
+        fi
+
+        # User rights
+        if [[ ! -z ${power+x} ]]; then
+            (_user_power) 2>&1 | tee -a ${log}
         fi
 
         # Logfile path

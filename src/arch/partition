@@ -10,8 +10,8 @@
 #     SWAP........: no mount point
 #     HOME........: /mnt/home
 #
-# We use partprobe to inform system changes and add sleep 1s
-# to prevent unreconized system changes.
+# We use partprobe to inform system changes and
+# add sleep 1s to prevent unreconized system changes.
 # Since v2.8.1 custom partitioning is available, only mountpoints will be
 # asked to the user. Requires properly created and formated partitions.
 # All steps are described in the official documentation:
