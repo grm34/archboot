@@ -9,9 +9,12 @@
 
 _bootloader() {
 
-    # Install Grub
-    _info "Installing Grub for ${FIRMWARE} firmware"
+    # Install Grub packages
+    _info "Installing Grub packages"
     _chroot "pacman --noconfirm -S ${_bootapps}"
+
+    # Install Grub according to firmware
+    _info "Installing Grub for ${FIRMWARE} firmware"
 
     # UEFI Firmware
     if [[ ${FIRMWARE} == "UEFI" ]]; then
