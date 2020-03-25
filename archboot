@@ -93,13 +93,14 @@ _check() {
     return ${status}
 }
 
-# Cleanup archboot: delete sources, umount partitions and exit
+# Cleanup: delete sources - umount partitions - exit
 _cleanup() {
     echo -e "\nCleaning up archboot..."
     for source in *; do
-        if [[ ${source} =~ ^(base|bootloader|desktop|display|firmware|\
-mounting|partition|user|vga|desktop_apps|display_apps|system_apps|vga_apps|\
-00-keyboard|language|timezone|xprofile|background.png|Grub2-themes)$ ]]; then
+        if [[ ${source} =~ ^(base|bootloader|desktop|display|\
+firmware|mirrorlist|mounting|partition|user|vga|desktop_apps|\
+display_apps|system_apps|vga_apps|00-keyboard|language|\
+timezone|xprofile|background.png|Grub2-themes)$ ]]; then
             rm -rf ${source}
         fi
     done
@@ -124,7 +125,7 @@ _reboot() {
     reboot
 }
 
-# Display error, cleanup and exit
+# Display error and cleanup
 _error() {
     echo -e "${red}Error: ${yellow}${1} - Please try again!${nc}\n"
     _cleanup
@@ -163,7 +164,7 @@ _prompt() {
     _end
 }
 
-# Display the end of _select(), _confirm() and _prompt() functions
+# Display end of _select(), _confirm() and _prompt() functions
 _end() {
     for char in $(seq ${count}); do
         echo -ne "-"
@@ -187,7 +188,7 @@ _archboot_banner
 _info "Check Internet Connection"
 ping -c 1 archlinux.org >/dev/null 2>&1
 if [[ $? -eq 0 ]]; then
-    _note "OK, you are connected to Internet"
+    _note "Congratulations, you are connected to Internet!"
 else
     _error "you are not connected to Internet. Ethernet seems not plugged in!"
 fi
