@@ -2,14 +2,16 @@
 
 #                           DISPLAY MANAGER
 # ============================================================================
-# Here we install and configure display manager. Default settings:
+# Here we install and configure display manager.
+#
+# Default settings:
 #
 #     Gdm........: Gnome / Budgie / Cinnamon / Mate
 #     LightDM....: Deepin / Enlightenment
 #     Sddm.......: KDE
 #     Lxdm.......: Xfce4 / Lxde / Lxqt
 #
-# User can also decide to install the display manager of his choice.
+# User is able to install the display manager of his choice.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Display_manager
 # ============================================================================
