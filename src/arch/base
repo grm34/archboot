@@ -12,7 +12,7 @@
 _base() {
 
     # Base System
-    _info "Installing base with ${user-kernel} kernel"
+    _info "Installing base with ${user_kernel} kernel"
     user_kernel="_${kernel}"
     yes '' | pacstrap /mnt ${_arch} ${!user_kernel}
 
