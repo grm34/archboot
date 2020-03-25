@@ -2,11 +2,11 @@
 
 #                        ARCH LINUX BASE SYSTEM
 # ============================================================================
-# Here we install base system with the chosen kernel of the user,
-# all steps are described in the official documentation:
+# Here we install base system with the chosen kernel of the user.
+# All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Installation_guide
 # In case of Intel CPU we install intel microcode to enable microcode updates.
-# If full rights given to user we add him to all groups & sudoers ALL power.
+# Then we create a new user with his previously defined password.
 # ============================================================================
 
 _base() {
@@ -60,9 +60,6 @@ _base() {
     _info "Setting user ${USER_name}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_name}
     echo '${USER_name}:${USER_passwd}' | chpasswd"
-    if [[ ! -z ${power+x} ]]; then
-        echo "${USER_name} ALL=(ALL) ALL" >> /mnt/etc/sudoers
-    fi
 }
 
 # archboot by grm34 under Apache v2.0 License.

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#                           GET USER VARIABLES
+#                           USER MANAGEMENT
 # ============================================================================
 # Here we ask all required variables to the user and stored them.
 #
@@ -16,6 +16,8 @@
 #      Desktop Env....: Gnome - KDE - Deepin - Xfce - LXDE - Cinnamon
 #                       Budgie - Enlightenment - MATE - LXQt
 #      Display Man....: Gdm - LightDM - Sddm - Lxdm - Xdm
+#
+# Then we manage user rights, ALL power in sudoers and add him to all groups.
 # ============================================================================
 
 _ask_user_variables() {
@@ -147,6 +149,22 @@ _ask_user_variables() {
     export language
     export HOST_name; export ROOT_passwd
     export USER_name; export USER_passwd
+}
+
+_user_power() {
+
+    # give ALL power to user in sudoers
+    _info "Setting user ${USER_name} rights"
+    echo "${USER_name} ALL=(ALL) ALL" >> /mnt/etc/sudoers
+
+    # add user to all groups
+    _info "Adding user ${USER_name} to all groups"
+    _chroot "yes | pwck"
+    _chroot "yes | grpck"
+    group_list=$(cut -d: -f1 /mnt/etc/group)
+    for group in ${group_list}; do
+        _chroot "gpasswd -a ${USER_name} ${group}"
+    done
 }
 
 # archboot by grm34 under Apache v2.0 License.
