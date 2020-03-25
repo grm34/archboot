@@ -3,7 +3,8 @@
 #                           DISPLAY MANAGER
 # ============================================================================
 # Here we install and configure display manager.
-# Default settings:
+#
+#     Default settings:
 #
 #     Gdm........: Gnome / Budgie / Cinnamon / Mate
 #     LightDM....: Deepin / Enlightenment
