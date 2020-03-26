@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#                           DEFAULT PACKAGES
+#                         DEFAULT DRIVER PACKAGES
 # ============================================================================
 
 # Default Driver
 export _default="xf86-video-vesa"
 
-#                            INTEL PACKAGES
+#                          INTEL DRIVER PACKAGES
 # ============================================================================
 
 # Driver Intel
@@ -16,7 +16,7 @@ export _intel="xf86-video-intel"
 export _openGL_intel="mesa"
 export _hard_video_intel="vulkan-intel libva-intel-driver libvdpau-va-gl"
 
-#                           ATI/AMD PACKAGES
+#                         ATI/AMD DRIVER PACKAGES
 # ============================================================================
 
 # Driver AMD (open source)
@@ -26,7 +26,7 @@ export _amd="xf86-video-ati xf86-video-amdgpu"
 export _openGL_amd="mesa"
 export _hard_video_amd="vulkan-radeon libva-mesa-driver mesa-vdpau"
 
-#                           NVIDIA PACKAGES
+#                         NVIDIA DRIVER PACKAGES
 # ============================================================================
 
 # Driver Nouveau (open source)
@@ -43,7 +43,7 @@ export _hard_video_nouveau="libva-vdpau-driver mesa-vdpau"
 export _openGL_nvidia="nvidia-utils"
 export _hard_video_nvidia="libva-vdpau-driver"
 
-#                          BUMBLEBEE PACKAGES
+#                        BUMBLEBEE DRIVER PACKAGES
 # ============================================================================
 
 # Driver Bumblebee (open source)
