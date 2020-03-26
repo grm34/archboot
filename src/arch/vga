@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#                       GET 3D VGA CONTROLLER(s)
+#                         3D VGA CONTROLLER(s)
 # ============================================================================
 # Here we scan for 3D VGA Controller(s) to install appropriate drivers
 # with OpenGL and Hardware Acceleration support.
