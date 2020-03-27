@@ -14,7 +14,7 @@ and in order to get complete support, additional packages may be required.
 
 The only thing you need is one **USB bootable device** of [Arch Linux](https://mir.archlinux.fr/iso/latest)
 
-* USB Boot instruction for [Windows](https://rufus.ie/) or [Linux](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
+* *USB Boot instruction for* [Windows](https://rufus.ie/) *or* [Linux](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
 ## Usage
 
@@ -22,9 +22,9 @@ The only thing you need is one **USB bootable device** of [Arch Linux](https://m
 
 **2.** On the install menu of Arch Linux, select Boot Arch Linux (x86_64)
 
-**3.** For AZERTY keyboard run: `loqdkeys fr`
+**3.** For AZERTY keyboard run: *`loqdkeys fr`*
 
-**4.** Download and run archboot: `wget tiny.cc/archboot-dev; sh archboot-dev`
+**4.** Download and run archboot: *`wget tiny.cc/archboot-dev; sh archboot-dev`*
 
 ## Wiki
 
@@ -39,7 +39,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](https://m
 
 ## Logs
 
-Take a look at **/var/log/archboot** for logs: `cat /var/log/archboot/archboot*.log`
+Take a look at **/var/log/archboot**: *`cat /var/log/archboot/archboot*.log`*
 
 ## Screenshot
 
@@ -48,11 +48,11 @@ Take a look at **/var/log/archboot** for logs: `cat /var/log/archboot/archboot*.
 ## Official Documentation
 
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
-* [File System](https://wiki.archlinux.org/index.php/file_systems) (may be required if not included in DE)
-* [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) (may be required if not included in DE)
-* [Cups](https://wiki.archlinux.org/index.php/CUPS) (may be required if not included in DE)
-* [Sane](https://wiki.archlinux.org/index.php/SANE) (may be required if not included in DE)
-* [Samba](https://wiki.archlinux.org/index.php/Samba) (may be required if not included in DE)
+* [File System](https://wiki.archlinux.org/index.php/file_systems) *(may be required if not included in DE)*
+* [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) *(may be required if not included in DE)*
+* [Cups](https://wiki.archlinux.org/index.php/CUPS) *(may be required if not included in DE)*
+* [Sane](https://wiki.archlinux.org/index.php/SANE) *(may be required if not included in DE)*
+* [Samba](https://wiki.archlinux.org/index.php/Samba) *(may be required if not included in DE)*
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/for-you.svg)](https://forthebadge.com)
