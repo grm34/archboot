@@ -179,6 +179,7 @@ _end() {
 # Once done we could ask for user variables and stored them to run install.
 # In case of desktop environment, we import additional sources and we
 # scan for 3D VGA controller(s) to define appropriate drivers.
+# User can choose not to install VGA driver and in this case modsetting used
 # ============================================================================
 
 # Display archboot banner
@@ -240,8 +241,17 @@ if [[ ! -z ${desktop+x} ]]; then
     source ./vga; source ./desktop; source ./display
     source ./vga_apps; source ./desktop_apps; source ./display_apps
 
-    # Scan VGA Controller and set appropriate driver [src/arch/vga]
-    _scan_vga_controller
+    # VGA Driver or MODSETTING
+    _note "select NO if you want to use modsetting"
+    _confirm "Do you wish to install VGA Driver?"
+    case ${confirm} in
+        y|Y)
+            # Scan VGA Controller and set appropriate driver [src/arch/vga]
+            _scan_vga_controller
+            modsetting="true"
+            ;;
+    esac
+    unset confirm
 fi
 
 # Prepare the system
@@ -283,7 +293,12 @@ case ${confirm} in
         # Install Arch Linux base system
         (_base; _bootloader) 2>&1 | tee -a ${log}
 
-        # Install desktop environment
+        # Install VGA Driver
+        if [[ ! -z ${modsetting+x} ]]; then
+            (_install_vga_driver) 2>&1 | tee -a ${log}
+        fi
+
+        # Install desktop environment & display manager
         if [[ ! -z ${desktop+x} ]]; then
             (_install_vga_controller; _install_desktop_environment; \
             _display_manager; _desktop_settings) 2>&1 | tee -a ${log}

@@ -60,7 +60,7 @@ _scan_vga_controller() {
     fi
 }
 
-_install_vga_controller() {
+_install_vga_driver() {
 
     # VGA Controller
     _info "Installing 3D VGA Driver"
