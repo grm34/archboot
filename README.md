@@ -39,7 +39,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](https://m
 
 ## Logs
 
-> Take a look at **/var/log/archboot**: *`cat /var/log/archboot/archboot*.log`*
+Take a look at **/var/log/archboot**: *`cat /var/log/archboot/archboot*.log`*
 
 ## Screenshot
 
