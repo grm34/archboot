@@ -20,7 +20,7 @@
 # Then we handle user rights: granted in sudoers and added to all groups.
 # ============================================================================
 
-_ask_user_variables() {
+_get_user_variables() {
 
     # Language
     until grep -Fxq "${language}" ./language; do
@@ -151,7 +151,7 @@ _ask_user_variables() {
     export USER_name; export USER_passwd
 }
 
-_user_power() {
+_grant_user_power() {
 
     # give ALL power to user in sudoers
     _info "Setting rights for user ${USER_name}"
