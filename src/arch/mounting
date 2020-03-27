@@ -9,7 +9,7 @@
 
 _mount_partitions() {
 
-    _info "Mounting partitions & swap"
+    _info "Mounting partitions and activating swap"
 
     # Mount system on /mnt
     _check mount ${_system} /mnt
