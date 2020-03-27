@@ -14,17 +14,17 @@ and in order to get complete support, additional packages may be required.
 
 The only thing you need is one **USB bootable device** of [Arch Linux](https://mir.archlinux.fr/iso/latest)
 
-* *USB Boot instruction for* [Windows](https://rufus.ie/) *or* [Linux](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
+> USB Boot instruction for [Windows](https://rufus.ie/) or [Linux](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
 ## Usage
 
-**1.** Reboot computer, open Boot Selection Menu and boot on the USB device
+> **1.** Reboot computer, open Boot Selection Menu and boot on the USB device
 
-**2.** On the install menu of Arch Linux, select Boot Arch Linux (x86_64)
+> **2.** On the install menu of Arch Linux, select Boot Arch Linux (x86_64)
 
-**3.** For AZERTY keyboard run: *`loqdkeys fr`*
+> **3.** For AZERTY keyboard run: *`loqdkeys fr`*
 
-**4.** Download and run archboot: *`wget tiny.cc/archboot-dev; sh archboot-dev`*
+> **4.** Download and run archboot: *`wget tiny.cc/archboot-dev; sh archboot-dev`*
 
 ## Wiki
 
@@ -39,7 +39,7 @@ The only thing you need is one **USB bootable device** of [Arch Linux](https://m
 
 ## Logs
 
-Take a look at **/var/log/archboot**: *`cat /var/log/archboot/archboot*.log`*
+> Take a look at **/var/log/archboot**: *`cat /var/log/archboot/archboot*.log`*
 
 ## Screenshot
 
