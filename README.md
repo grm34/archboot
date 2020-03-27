@@ -14,8 +14,6 @@ and in order to get complete support, additional packages may be required.
 
 The only thing you need is one **USB bootable device** of [Arch Linux](https://mir.archlinux.fr/iso/latest)
 
-> [USB flash installation media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
-
 ## Usage
 
 **1.** Reboot computer, open Boot Selection Menu and boot on the USB device
@@ -48,6 +46,7 @@ Take a look at **/var/log/archboot**: *`cat /var/log/archboot/archboot*.log`*
 ## Official Documentation
 
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
+* [USB flash installation media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 * [File System](https://wiki.archlinux.org/index.php/file_systems) *(may be required if not included in DE)*
 * [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) *(may be required if not included in DE)*
 * [Cups](https://wiki.archlinux.org/index.php/CUPS) *(may be required if not included in DE)*
