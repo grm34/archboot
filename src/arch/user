@@ -17,7 +17,7 @@
 #                       Budgie - Enlightenment - MATE - LXQt
 #      Display Man....: Gdm - LightDM - Sddm - Lxdm - Xdm
 #
-# Then we handle user rights: ALL power in sudoers and added to all groups.
+# Then we handle user rights: granted in sudoers and added to all groups.
 # ============================================================================
 
 _ask_user_variables() {
