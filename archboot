@@ -150,7 +150,7 @@ _select() {
 # Ask confirmation (Yes/No)
 _confirm() {
     count=$((${#1} + 6))
-    until [[ ${confirm} =~ ^(y|n|Y|N)$ ]]; do
+    until [[ ${confirm} =~ ^(y|n|Y|N|yes|no|Yes|No|YES|NO)$ ]]; do
         echo -ne "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}\n==> "
         _end
         read -r confirm
@@ -199,7 +199,7 @@ fi
 # Download base sources
 _confirm "Start downloading sources from github?"
 case ${confirm} in
-    y|Y)
+    y|Y|yes|Yes|YES)
         _info "Downloading base sources"
         _wget ${_url}/src/arch/base            # to install Base system
         _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
@@ -247,7 +247,7 @@ if [[ ! -z ${desktop+x} ]]; then
     _note "enter NO to activate kernel mode setting"
     _confirm "Do you wish to install VGA Driver?"
     case ${confirm} in
-        y|Y)
+        y|Y|yes|Yes|YES)
             # Get VGA Controller
             _get_vga_controller
             modsetting="true"
@@ -271,7 +271,7 @@ _firmware; _mirrorlist; _timezone; _clock; _logs
 _note "enter NO to activate custom partitioning"
 _confirm "Do you wish to install Arch Linux on a dedicated disk?"
 case ${confirm} in
-    y|Y)
+    y|Y|yes|Yes|YES)
         _default_partitioning
         ;;
     *)
@@ -298,7 +298,7 @@ _note "system is ready to rumble! Partitions mounted & swap activated!"
 
 _confirm "Do you wish to install Arch Linux now?"
 case ${confirm} in
-    y|Y)
+    y|Y|yes|Yes|YES)
 
         # Install Arch Linux base system
         (_install_base; _install_bootloader) 2>&1 | tee -a ${log}
@@ -345,7 +345,7 @@ unset confirm
 _note "${__appname__} ${__version__} by ${__author__} under ${__license__}"
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
-    y|Y)
+    y|Y|yes|Yes|YES)
         umount -R /mnt
         _reboot
         ;;

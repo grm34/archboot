@@ -43,7 +43,7 @@ _default_partitioning() {
     _note "WARNING! This will erase the entire drive"
     _confirm "Setting ${part_table} partition table on /dev/${_disk}?"
     case ${confirm} in
-        y|Y|yes|Yes)
+        y|Y|yes|Yes|YES)
             wipefs -fa /dev/${_disk}
             printf ${part_code}"\nw" | fdisk /dev/${_disk}
             partprobe /dev/${_disk}
@@ -97,7 +97,7 @@ _default_partitioning() {
     if [[ ${FIRMWARE} == "UEFI" ]]; then
         _confirm "Do you wish to use free space for home?"
         case ${confirm} in
-            y|Y|yes|Yes)
+            y|Y|yes|Yes|YES)
 
                 # Create HOME partition
                 _info "Creating home partition (free space)"
