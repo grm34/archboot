@@ -14,7 +14,7 @@ and in order to get complete support, additional packages may be required.
 
 The only thing you need is one **USB bootable device** of [Arch Linux](https://mir.archlinux.fr/iso/latest)
 
-> USB Boot instruction for [Windows](https://rufus.ie/) or [Linux](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
+> [USB flash installation media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
 ## Usage
 
