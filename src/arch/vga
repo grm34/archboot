@@ -19,7 +19,7 @@ _get_vga_controller() {
         _note "${nvidia_card##*: } detected!"
         _confirm "Use Nvidia proprietary drivers?"
         case ${confirm} in
-            y|Y)
+            y|Y|yes|Yes|YES)
                 export vga_driver="nvidia"
                 export openGL="openGL_nvidia"
                 export hard_video="hard_video_nvidia"

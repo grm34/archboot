@@ -80,13 +80,13 @@ _get_user_variables() {
 
     # User Rights
     _confirm "Give all rights to user ${USER_name}?"
-    case ${confirm} in y|Y) export power="yes";; esac
+    case ${confirm} in y|Y|yes|Yes|YES) export power="yes";; esac
     unset confirm
 
     # Linux Kernel
     _confirm "Do you wish to install custom Linux Kernel?"
     case ${confirm} in
-        y|Y)
+        y|Y|yes|Yes|YES)
             until [[ ${kern} =~ ^([1-9]|4)$ ]]; do
                 _select "Default" "Hardened" "LTS" "ZEN"
                 read -r kern
@@ -103,7 +103,7 @@ _get_user_variables() {
 
     # Desktop Environment
     _confirm "Do you wish to install Desktop Environment?"
-    case ${confirm} in y|Y)
+    case ${confirm} in y|Y|yes|Yes|YES)
         until [[ ${desk} =~ ^([1-9]|10)$ ]]; do
             _select "Gnome" "KDE" "MATE" "Xfce" \
 "LXDE" "LXQt" "Deepin" "Budgie" "Cinnamon" "Enlightenment"
