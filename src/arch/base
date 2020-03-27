@@ -12,7 +12,7 @@
 _install_base() {
 
     # Base System
-    _info "Installing base with ${user_kernel} kernel"
+    _info "Installing base system and ${user_kernel} kernel"
     user_kernel="_${kernel}"
     yes '' | pacstrap /mnt ${_arch} ${!user_kernel}
 
@@ -62,5 +62,5 @@ _install_base() {
     echo '${USER_name}:${USER_passwd}' | chpasswd"
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================

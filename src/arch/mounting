@@ -34,5 +34,5 @@ _mount_partitions() {
     _check mount ${_home} /mnt/home
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================

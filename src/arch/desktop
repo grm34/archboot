@@ -44,5 +44,5 @@ _configure_desktop_environment() {
     mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================

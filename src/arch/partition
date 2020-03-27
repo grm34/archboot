@@ -185,5 +185,5 @@ _custom_partitioning() {
     export _home="/dev/${_hm}"
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================

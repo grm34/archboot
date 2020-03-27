@@ -48,5 +48,5 @@ _install_bootloader() {
     _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================

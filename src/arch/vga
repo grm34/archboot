@@ -76,5 +76,5 @@ _install_vga_driver() {
     fi
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================
