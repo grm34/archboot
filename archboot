@@ -28,7 +28,7 @@ For more  information, take a look  at the  ${__appname__} wiki
 """
 }
 
-#                      ARCHBOOT SYSTEM MANAGEMENT
+#                       ARCHBOOT_SYSTEM SETTINGS
 # ============================================================================
 # Here we defined all required variables and functions to manage archboot.
 # Variables are pretty simple such as define needed url and colors.
@@ -174,7 +174,7 @@ _end() {
     echo -ne "\n==> ${nc}"
 }
 
-#                        ARCHBOOT SYSTEM SETTINGS
+#                      ARCHBOOT_SYSTEM MANAGEMENT
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications and scripts [src/apps & src/arch]
@@ -256,7 +256,7 @@ if [[ ! -z ${desktop+x} ]]; then
     unset confirm
 fi
 
-#                        ARCHBOOT SYSTEM PREPARE
+#                       ARCHBOOT_SYSTEM PREPARE
 # ============================================================================
 # Here we get user firmware to set partitions settings and other options.
 # Then we set mirrorlist, timezone, clock and logs.
@@ -285,7 +285,7 @@ _mount_partitions
 
 _note "system is ready to rumble! Partitions mounted & swap activated!"
 
-#                     ARCHBOOT SYSTEM INSTALLATION
+#                     ARCHBOOT_SYSTEM INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
 # user variables stored. We can start Arch Linux installation.
@@ -335,7 +335,7 @@ case ${confirm} in
 esac
 unset confirm
 
-#                       ARCHBOOT SYSTEM REBOOT
+#                       ARCHBOOT_SYSTEM REBOOT
 # ============================================================================
 # And here we go! We could now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.
