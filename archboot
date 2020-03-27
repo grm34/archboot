@@ -37,7 +37,7 @@ For more  information, take a look  at the  archboot wiki
 # select an option, ask some information to the user or to get install logs.
 # ============================================================================
 
-# Github url: ${_url} for sources and ${_gh_pages} for images
+# Github url for sources and images
 _url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
 _gh_pages="https://raw.githubusercontent.com/grm34/archboot/gh-pages"
 
@@ -56,7 +56,7 @@ _note() {
     echo -e "${red}\nNote: ${blue}${1}${nc}"
 }
 
-# DL show progress bar only
+# Download show progress bar only
 _wget() {
     wget ${1} -q --show-progress
 }
@@ -93,7 +93,7 @@ _check() {
     return ${status}
 }
 
-# Cleanup: delete sources - umount partitions - exit
+# Delete sources, umount partitions and exit
 _cleanup() {
     echo -e "\nCleaning up archboot..."
     for source in *; do
@@ -172,7 +172,7 @@ _end() {
     echo -ne "\n==> ${nc}"
 }
 
-#                        ARCHBOOT SYSTEM PROCESS
+#                        ARCHBOOT SYSTEM SETTINGS
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications and scripts [src/apps & src/arch]
@@ -224,7 +224,7 @@ source ./mounting; source ./partition; source ./user; source ./system_apps
 # Get required variables
 _get_user_variables
 
-# If Desktop Environment
+# Desktop Environment
 if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
@@ -254,10 +254,18 @@ if [[ ! -z ${desktop+x} ]]; then
     unset confirm
 fi
 
+#                        ARCHBOOT SYSTEM PREPARE
+# ============================================================================
+# Here we get user firmware to set partitions settings and other options.
+# Then we set mirrorlist, timezone, clock and logs.
+# We could now run partitioning scheme (default or custom).
+# And activate SWAP and mount the partitions.
+# ============================================================================
+
 # Prepare the system
 _firmware; _mirrorlist; _timezone; _clock; _logs
 
-# Manage partitions
+# Partitioning
 _note "WARNING! Enter NO only if partitions properly created and formated"
 _confirm "Do you wish to install Arch Linux on a dedicated disk?"
 case ${confirm} in
