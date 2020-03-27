@@ -43,14 +43,5 @@ export _hard_video_nouveau="libva-vdpau-driver mesa-vdpau"
 export _openGL_nvidia="nvidia-utils"
 export _hard_video_nvidia="libva-vdpau-driver"
 
-#                        BUMBLEBEE DRIVER PACKAGES
-# ============================================================================
-
-# Driver Bumblebee (open source)
-export _bumblebee_nvidia="bumblebee xf86-video-intel xf86-video-nouveau"
-
-# Driver Bumblebee (proprietary)
-export _bumblebee_nouveau="bumblebee xf86-video-intel xf86-video-nvidia"
-
 # archboot by grm34 under Apache v2.0 License.
 # ============================================================================
