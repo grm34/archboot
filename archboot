@@ -164,7 +164,7 @@ _prompt() {
     _end
 }
 
-# Display end of _select(), _confirm() and _prompt() functions
+# Display the end of select, confirm and prompt functions
 _end() {
     for char in $(seq ${count}); do
         echo -ne "-"
@@ -221,7 +221,7 @@ _info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware; source ./mirrorlist
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
-# Get required variables [src/arch/user]
+# Get required variables
 _get_user_variables
 
 # If Desktop Environment
@@ -241,12 +241,12 @@ if [[ ! -z ${desktop+x} ]]; then
     source ./vga; source ./desktop; source ./display
     source ./vga_apps; source ./desktop_apps; source ./display_apps
 
-    # VGA Driver or MODSETTING?
+    # VGA Driver or modsetting?
     _note "select NO if you want to use modsetting"
     _confirm "Do you wish to install VGA Driver?"
     case ${confirm} in
         y|Y)
-            # Get VGA Controller [src/arch/vga]
+            # Get VGA Controller
             _get_vga_controller
             modsetting="true"
             ;;
@@ -270,7 +270,7 @@ case ${confirm} in
 esac
 unset confirm
 
-# Mount partitions
+# Mount
 _mount_partitions
 
 _note "system is ready to rumble! Partitions mounted & swap activated!"
