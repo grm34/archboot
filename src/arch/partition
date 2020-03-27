@@ -9,7 +9,7 @@
 #
 #     SYSTEM......: /mnt
 #     BOOT........: /mnt/boot
-#     SWAP........: no mount point
+#     SWAP........: no mountpoint
 #     HOME........: /mnt/home
 #
 # We use partprobe to inform system changes and
