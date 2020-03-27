@@ -167,5 +167,5 @@ _grant_user_power() {
     done
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================
