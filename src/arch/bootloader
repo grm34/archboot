@@ -7,7 +7,7 @@
 # We also install additional themes for beautifull OS selection menu.
 # ============================================================================
 
-_bootloader() {
+_install_bootloader() {
 
     # Install Grub packages
     _info "Installing Grub packages"

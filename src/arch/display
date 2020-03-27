@@ -16,7 +16,7 @@
 # https://wiki.archlinux.org/index.php/Display_manager
 # ============================================================================
 
-_display_manager() {
+_install_display_manager() {
 
     # Install Display Manager
     _info "Installing ${display_man}"

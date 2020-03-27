@@ -9,7 +9,7 @@
 # User account will be created with previously defined password.
 # ============================================================================
 
-_base() {
+_install_base() {
 
     # Base System
     _info "Installing base with ${user_kernel} kernel"

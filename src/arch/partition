@@ -20,7 +20,7 @@
 # https://wiki.archlinux.org/index.php/Partitioning
 # ============================================================================
 
-_partition() {
+_default_partitioning() {
 
     _info "Listing disk and partitions"
 
@@ -141,7 +141,7 @@ _partition() {
     export _home="/dev/${_disk}${part_order[4]}"
 }
 
-_custom_partition() {
+_custom_partitioning() {
 
     _info "Listing disk and partitions"
 
