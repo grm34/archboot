@@ -148,28 +148,28 @@ _custom_partitioning() {
     # Select boot
     until [[ ${_bt} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
         fdisk -l
-        _prompt "Enter partition for boot:" "(e.g., sda2, nvme0n1p2)"
+        _prompt "Enter boot mountpoint:" "(e.g., sda2, nvme0n1p2)"
         read -r _bt
     done
 
     # Select swap
     until [[ ${_swp} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
         fdisk -l
-        _prompt "Enter partition for swap:" "(e.g., sda3, nvme0n1p3)"
+        _prompt "Enter swap mountpoint:" "(e.g., sda3, nvme0n1p3)"
         read -r _swp
     done
 
     # Select system
     until [[ ${_sys} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
         fdisk -l
-        _prompt "Enter partition for system:" "(e.g., sda1, nvme0n1p1)"
+        _prompt "Enter system mountpoint:" "(e.g., sda1, nvme0n1p1)"
         read -r _sys
     done
 
     # Select home
     until [[ ${_hm} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
         fdisk -l
-        _prompt "Enter partition for home:" "(e.g., sda4, nvme0n1p4)"
+        _prompt "Enter home mountpoint:" "(e.g., sda4, nvme0n1p4)"
         read -r _hm
     done
 
