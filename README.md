@@ -1,6 +1,6 @@
 # [![archboot](https://www.archboot.org/assets/images/logo.png)](https://www.archboot.org)
 
-[![version](https://img.shields.io/badge/version-v2.8.5-blue.svg?style=flat-square&logo=appveyor)](https://github.com/grm34/archboot/releases) [![author](https://img.shields.io/badge/author-grm34-red.svg?style=flat-square&logo=appveyor)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square&logo=appveyor)](https://github.com/grm34/archboot/blob/master/LICENSE) [![telegram](https://img.shields.io/badge/Telegram-chat-red?style=flat-square&logo=appveyor)](https://t.me/archboot) [![maintenance](https://img.shields.io/maintenance/yes/2020.svg?style=flat-square&logo=appveyor)](https://github.com/grm34/archboot/pulse)
+[![version](https://img.shields.io/badge/version-v2.8.5-blue.svg?style=flat&logo=appveyor)](https://github.com/grm34/archboot/releases) [![author](https://img.shields.io/badge/author-grm34-red.svg?style=flat&logo=appveyor)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat&logo=appveyor)](https://github.com/grm34/archboot/blob/master/LICENSE) [![telegram](https://img.shields.io/badge/Telegram-chat-red?style=flat&logo=appveyor)](https://t.me/archboot) [![maintenance](https://img.shields.io/maintenance/yes/2020.svg?style=flat&logo=appveyor)](https://github.com/grm34/archboot/pulse)
 
 Arch Linux is a light and fast distribution whose concept is to remain as
 simple as possible. In the same purpose, this script performs minimalist
