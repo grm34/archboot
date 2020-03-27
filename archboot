@@ -272,10 +272,10 @@ _note "enter NO to activate custom partitioning"
 _confirm "Do you wish to install Arch Linux on a dedicated disk?"
 case ${confirm} in
     y|Y|yes|Yes|YES)
-        _default_partitioning
+        _default_partitioning_scheme
         ;;
     *)
-        _custom_partitioning
+        _custom_partitioning_scheme
         ;;
 esac
 unset confirm

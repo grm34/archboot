@@ -20,7 +20,7 @@
 # https://wiki.archlinux.org/index.php/Partitioning
 # ============================================================================
 
-_default_partitioning() {
+_default_partitioning_scheme() {
 
     _info "Listing disk and partitions"
 
@@ -56,7 +56,7 @@ _default_partitioning() {
 
     # Get BOOT partition size
     until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1}+$ ]]; do
-        _note "Partition size {M,G} (e.g., 512M)"
+        _note "partition size {M,G} (e.g., 512M)"
         _prompt "Boot partition size:"
         read -r boot_size
     done
@@ -69,7 +69,7 @@ _default_partitioning() {
 
     # Get SWAP partition size
     until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1}+$ ]]; do
-        _note "Partition size {M,G} (e.g., 2G)"
+        _note "partition size {M,G} (e.g., 2G)"
         _prompt "Swap partition size:"
         read -r swap_size
     done
@@ -82,7 +82,7 @@ _default_partitioning() {
 
     # Get SYSTEM partiton size
     until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1}+$ ]]; do
-        _note "Partition size {G,T,P} (e.g., 25G)"
+        _note "partition size {G,T,P} (e.g., 25G)"
         _prompt "System partition size:"
         read -r sys_size
     done
@@ -106,7 +106,7 @@ _default_partitioning() {
             *)
                 # Get HOME partiton size
                 until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1}+$ ]]; do
-                    _note "Partition size {G,T,P} (e.g., 100G)"
+                    _note "partition size {G,T,P} (e.g., 100G)"
                     _prompt "Home partition size:"
                     read -r home_size
                 done
@@ -132,7 +132,7 @@ _default_partitioning() {
     export _home="/dev/${_disk}${part_order[4]}"
 }
 
-_custom_partitioning() {
+_custom_partitioning_scheme() {
 
     _info "Listing disk and partitions"
 
