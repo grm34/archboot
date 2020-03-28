@@ -6,13 +6,13 @@
 # Arch Linux
 export _arch="base base-devel linux-firmware"
 
-# Kernel
+# Kernel (the one you like)
 export _default_kernel="linux"
 export _hardened_kernel="linux-hardened"
 export _lts_kernel="linux-lts"
 export _zen_kernel="linux-zen"
 
-# Microcode (in case of Intel CPU)
+# Microcode (Intel CPU only)
 export _intel="intel-ucode"
 
 # Network
