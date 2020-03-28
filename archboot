@@ -281,7 +281,6 @@ unset confirm
 
 # Mount
 _mount_partitions
-
 _note "system is ready to rumble! Partitions mounted & swap activated!"
 
 #                     ARCHBOOT_SYSTEM INSTALLATION
