@@ -259,7 +259,7 @@ fi
 #                       ARCHBOOT_SYSTEM PREPARE
 # ============================================================================
 # Here we get user firmware to set partitions settings and other options.
-# Then we get mirrorlist, timezone, clock and logs and define them.
+# Then we get mirrorlist, timezone, clock, logs and properly define them.
 # We could now run partitioning scheme, activate SWAP and mount the partitions.
 # ============================================================================
 
@@ -288,11 +288,11 @@ _note "system is ready to rumble! Partitions mounted & swap activated!"
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
 # user variables stored. We can start Arch Linux installation.
-# First step is to install base system [src/arch/base] and 2nd to install Grub
-# bootloader [src/arch/bootloader]. We use <tee> to get logs of those steps.
+# First step is to install base system and second to install Grub bootloader.
 # In case of desktop environment we install VGA Drivers and Display Manager.
+# We use <tee> to get full installation logs of those steps.
 # If system won't start desktop environment after reboot, check the logs and
-# open an issue on GitHub. Logs are availables in /var/log/archboot.
+# open an issue on GitHub. Logs are availables at /var/log/archboot.
 # ============================================================================
 
 _confirm "Do you wish to install Arch Linux now?"

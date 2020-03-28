@@ -6,7 +6,7 @@
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Installation_guide
 # In case of Intel CPU we install intel microcode to enable microcode updates.
-# User account will be created with previously defined password.
+# Then user account will be created with previously defined password.
 # ============================================================================
 
 _install_base() {
