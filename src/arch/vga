@@ -3,7 +3,7 @@
 #                         3D VGA CONTROLLER(s)
 # ============================================================================
 # Here we scan for 3D VGA Controller(s) to install appropriate drivers
-# with OpenGL and Hardware Acceleration support.
+# with OpenGL and Hardware Acceleration if currently supported.
 # User can choose to install proprietary drivers instead of open source.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Xorg#Driver_installation
