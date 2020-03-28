@@ -22,18 +22,18 @@ _install_base() {
     cat /mnt/etc/fstab
 
     # TimeZone
-    _info "Setting ${timezone} timezone"
+    _info "Setting timezone to ${timezone}"
     ln -sf /usr/share/zoneinfo/${timezone} /mnt/etc/localtime
 
     # locale
-    _info "Setting ${language}.UTF-8 locale"
+    _info "Setting locale to ${language}.UTF-8"
     echo "${language}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
     _chroot "locale-gen
     export LANG=${language}.UTF-8"
     echo "LANG=${language}.UTF-8" > /mnt/etc/locale.conf
 
     # vconsole
-    _info "Setting ${keymap_code} virtual console"
+    _info "Setting virtual console to ${keymap_code^^}"
     echo "KEYMAP=${keymap_code}" > /mnt/etc/vconsole.conf
 
     # hostname
