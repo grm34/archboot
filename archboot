@@ -260,7 +260,7 @@ fi
 # ============================================================================
 # Here we get user firmware to set partitions settings and other options.
 # Then we get mirrorlist, timezone, clock, logs and properly define them.
-# We could now run partitioning scheme, activate SWAP and mount the partitions.
+# Now we could run partitioning, activate SWAP and mount the partitions.
 # ============================================================================
 
 # Prepare the system

@@ -13,7 +13,7 @@
 #     HOME........: /mnt/home
 #
 # We use <partprobe> to inform system changes and
-# add <sleep 1s> to prevent unreconized system changes.
+# add <sleep 2s> to prevent unreconized system changes.
 # Since v2.8.1 custom partitioning is available, only mountpoints will be
 # asked to the user (requires properly created and formated partitions).
 # All steps are described in the official documentation:
@@ -64,7 +64,7 @@ _default_partitioning_scheme() {
     # Create BOOT partition
     _info "Creating boot partition (${boot_size})"
     printf "n\n${part_type}\n\n+${boot_size}\nw" | fdisk /dev/${_disk}
-    partprobe /dev/${_disk} && sleep 1s
+    partprobe /dev/${_disk} && sleep 2s
     yes | _check mkfs.${boot_filesystem} /dev/${_disk}${part_order[1]}
 
     # Get SWAP partition size
@@ -77,7 +77,7 @@ _default_partitioning_scheme() {
     # Create SWAP partition
     _info "Creating swap partition (${swap_size})"
     printf "n\n${part_type}\n\n+${swap_size}\nw" | fdisk /dev/${_disk}
-    partprobe /dev/${_disk} && sleep 1s
+    partprobe /dev/${_disk} && sleep 2s
     yes | _check mkswap /dev/${_disk}${part_order[2]}
 
     # Get SYSTEM partiton size
@@ -90,7 +90,7 @@ _default_partitioning_scheme() {
     # Create SYSTEM partition
     _info "Creating system partition (${sys_size})"
     printf "n\n${part_type}\n\n+${sys_size}\nw" | fdisk /dev/${_disk}
-    partprobe /dev/${_disk} && sleep 1s
+    partprobe /dev/${_disk} && sleep 2s
     yes | _check mkfs.ext4 /dev/${_disk}${part_order[3]}
 
     # HOME partition
@@ -121,7 +121,7 @@ _default_partitioning_scheme() {
         _info "Creating home partition (free space)"
         printf "n\n${part_type}\n\nw" | fdisk /dev/${_disk}
     fi
-    partprobe /dev/${_disk} && sleep 1s
+    partprobe /dev/${_disk} && sleep 2s
     yes | _check mkfs.ext4 /dev/${_disk}${part_order[4]}
 
     # Export required vars

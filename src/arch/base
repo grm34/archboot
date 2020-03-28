@@ -5,7 +5,7 @@
 # Here we install base system with the kernel chosen by user.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Installation_guide
-# In case of Intel CPU we install intel microcode to enable microcode updates.
+# In case of Intel CPU we install <intel-ucode> to enable microcode updates.
 # Then user account will be created with previously defined password.
 # ============================================================================
 
