@@ -34,6 +34,8 @@ export _nouveau="xf86-video-nouveau"
 
 # Driver Nvidia (proprietary)
 export _nvidia="nvidia nvidia-settings"
+export _nvidia_lts="nvidia-lts nvidia-settings"
+export _nvidia_dkms="nvidia-dkms nvidia-settings"
 
 # OpenGL Nouveau (open source)
 export _openGL_nouveau="mesa"
