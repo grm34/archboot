@@ -16,7 +16,7 @@
 # https://wiki.archlinux.org/index.php/Display_manager
 # ============================================================================
 
-_display_manager() {
+_install_display_manager() {
 
     # Install Display Manager
     _info "Installing ${display_man}"
@@ -83,5 +83,5 @@ _display_manager() {
     fi
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================

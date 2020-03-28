@@ -9,7 +9,7 @@
 #
 #     SYSTEM......: /mnt
 #     BOOT........: /mnt/boot
-#     SWAP........: no mount point
+#     SWAP........: no mountpoint
 #     HOME........: /mnt/home
 #
 # We use partprobe to inform system changes and
@@ -20,7 +20,7 @@
 # https://wiki.archlinux.org/index.php/Partitioning
 # ============================================================================
 
-_partition() {
+_default_partitioning_scheme() {
 
     _info "Listing disk and partitions"
 
@@ -41,93 +41,84 @@ _partition() {
     # Create MBR or GPT Table
     fdisk -l /dev/${_disk}
     _note "WARNING! This will erase the entire drive"
-    _confirm "Setting ${part_table} partition table on /dev/${_disk}"
-    if [[ ${confirm} == "y" ]]; then
-        wipefs -fa /dev/${_disk}
-        printf ${part_code}"\nw" | fdisk /dev/${_disk}
-        partprobe /dev/${_disk}
-    else
-        _error "aborted by user! HDD dedicated is required."
-    fi
+    _confirm "Setting ${part_table} partition table on /dev/${_disk}?"
+    case ${confirm} in
+        y|Y|yes|Yes|YES)
+            wipefs -fa /dev/${_disk}
+            printf ${part_code}"\nw" | fdisk /dev/${_disk}
+            partprobe /dev/${_disk}
+            ;;
+        *)
+            _error "aborted by user!"
+            ;;
+    esac
     unset confirm
 
     # Get BOOT partition size
-    until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1} \
-    || ${boot_size,,} == "y" ]]; do
-        _note "Partition size {M,G} [default: 512M]"
-        _prompt "Boot partition size:" "default [y]"
+    until [[ ${boot_size} =~ ^[0-9]{1,3}(M|G){1}+$ ]]; do
+        _note "partition size {M,G} (e.g., 512M)"
+        _prompt "Boot partition size:"
         read -r boot_size
     done
-    if [[ ${boot_size,,} == "y" ]]; then
-        boot_size="512M"
-    fi
 
-    # Create BOOT partition on /dev/xxx1
-    _info "Setting boot of ${boot_size} on /dev/${_disk}${part_order[1]}"
+    # Create BOOT partition
+    _info "Creating boot partition (${boot_size})"
     printf "n\n${part_type}\n\n+${boot_size}\nw" | fdisk /dev/${_disk}
     partprobe /dev/${_disk} && sleep 1s
     yes | _check mkfs.${boot_filesystem} /dev/${_disk}${part_order[1]}
 
     # Get SWAP partition size
-    until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1} \
-    || ${swap_size,,} == "y" ]]; do
-        _note "Partition size {M,G} [default: 2G]"
-        _prompt "Swap partition size:" "default [y]"
+    until [[ ${swap_size} =~ ^[0-9]{1,3}(M|G){1}+$ ]]; do
+        _note "partition size {M,G} (e.g., 2G)"
+        _prompt "Swap partition size:"
         read -r swap_size
     done
-    if [[ ${swap_size,,} == "y" ]]; then
-        swap_size="2G"
-    fi
 
-    # Create SWAP partition on /dev/xxx2
-    _info "Setting Swap of ${swap_size} on /dev/${_disk}${part_order[2]}"
+    # Create SWAP partition
+    _info "Creating swap partition (${swap_size})"
     printf "n\n${part_type}\n\n+${swap_size}\nw" | fdisk /dev/${_disk}
     partprobe /dev/${_disk} && sleep 1s
     yes | _check mkswap /dev/${_disk}${part_order[2]}
 
     # Get SYSTEM partiton size
-    until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1} \
-    || ${sys_size,,} == "y" ]]; do
-        _note "Partition size {G,T,P} [default: 25G]"
-        _prompt "System partition size:" "default [y]"
+    until [[ ${sys_size} =~ ^[0-9]{1,3}(G|T|P){1}+$ ]]; do
+        _note "partition size {G,T,P} (e.g., 25G)"
+        _prompt "System partition size:"
         read -r sys_size
     done
-    if [[ ${sys_size,,} == "y" ]]; then
-        sys_size="25G"
-    fi
 
-    # Create SYSTEM partition on /dev/xxx3
-    _info "Setting System of ${sys_size} on /dev/${_disk}${part_order[3]}"
+    # Create SYSTEM partition
+    _info "Creating system partition (${sys_size})"
     printf "n\n${part_type}\n\n+${sys_size}\nw" | fdisk /dev/${_disk}
     partprobe /dev/${_disk} && sleep 1s
     yes | _check mkfs.ext4 /dev/${_disk}${part_order[3]}
 
-    # HOME partiton
+    # HOME partition
     if [[ ${FIRMWARE} == "UEFI" ]]; then
+        _confirm "Do you wish to use free space for home?"
+        case ${confirm} in
+            y|Y|yes|Yes|YES)
 
-        # Get HOME partiton size
-        until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1} \
-        || ${home_size,,} == "y" ]]; do
-            _note "Partition size {G,T,P} [default: free space]"
-            _prompt "Home partition size:" "default [y]"
-            read -r home_size
-        done
+                # Create HOME partition
+                _info "Creating home partition (free space)"
+                printf "n\n${part_type}\n\nw" | fdisk /dev/${_disk}
+                ;;
+            *)
+                # Get HOME partiton size
+                until [[ ${home_size} =~ ^[0-9]{1,3}(G|T|P){1}+$ ]]; do
+                    _note "partition size {G,T,P} (e.g., 100G)"
+                    _prompt "Home partition size:"
+                    read -r home_size
+                done
 
-        # Define HOME partition size
-        if [[ ${home_size,,} == "y" ]]; then
-            part_size="free space"
-            home_size=""
-        else
-            part_size=${home_size}
-            home_size="+"${home_size}
-        fi
-
-        # Create HOME partition on /dev/xxx4
-        _info "Setting Home of ${part_size} on /dev/${_disk}${part_order[4]}"
-        printf "n\n\n\n${home_size}\nw" | fdisk /dev/${_disk}
+                # Create HOME partition
+                _info "Creating home partition (${home_size})"
+                printf "n\n\n\n+${home_size}\nw" | fdisk /dev/${_disk}
+                ;;
+        esac
     else
-        _note "Home partition will use all free space"
-        _info "Setting Home on /dev/${_disk}${part_order[4]}"
+        # Create HOME partition
+        _info "Creating home partition (free space)"
         printf "n\n${part_type}\n\nw" | fdisk /dev/${_disk}
     fi
     partprobe /dev/${_disk} && sleep 1s
@@ -141,35 +132,35 @@ _partition() {
     export _home="/dev/${_disk}${part_order[4]}"
 }
 
-_custom_partition() {
+_custom_partitioning_scheme() {
 
     _info "Listing disk and partitions"
 
     # Select boot
     until [[ ${_bt} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
         fdisk -l
-        _prompt "Enter partition for boot:" "(e.g., sda2, nvme0n1p2)"
+        _prompt "Enter boot mountpoint:" "(e.g., sda2, nvme0n1p2)"
         read -r _bt
     done
 
     # Select swap
     until [[ ${_swp} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
         fdisk -l
-        _prompt "Enter partition for swap:" "(e.g., sda3, nvme0n1p3)"
+        _prompt "Enter swap mountpoint:" "(e.g., sda3, nvme0n1p3)"
         read -r _swp
     done
 
     # Select system
     until [[ ${_sys} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
         fdisk -l
-        _prompt "Enter partition for system:" "(e.g., sda1, nvme0n1p1)"
+        _prompt "Enter system mountpoint:" "(e.g., sda1, nvme0n1p1)"
         read -r _sys
     done
 
     # Select home
     until [[ ${_hm} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
         fdisk -l
-        _prompt "Enter partition for home:" "(e.g., sda4, nvme0n1p4)"
+        _prompt "Enter home mountpoint:" "(e.g., sda4, nvme0n1p4)"
         read -r _hm
     done
 
@@ -185,5 +176,5 @@ _custom_partition() {
     export _home="/dev/${_hm}"
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================
