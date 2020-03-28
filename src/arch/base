@@ -12,7 +12,7 @@
 _install_base() {
 
     # Base System
-    _info "Installing base system and ${user_kernel} kernel"
+    _info "Installing base system and $(sed s/'_'/' '/g <<< ${kernel})"
     user_kernel="_${kernel}"
     yes '' | pacstrap /mnt ${_arch} ${!user_kernel}
 
