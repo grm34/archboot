@@ -2,8 +2,8 @@
 
 #                        GET MIRRORS & TIMEZONE
 # ============================================================================
-# Here we use curl to get user country and timezone from ipinfo.io API (json)
-# Country code is used to get corresponding mirrors from archlinux.org
+# Here we use <curl> to get user country and timezone from <ipinfo.io API>
+# Country code is used to get corresponding mirrors from <archlinux.org>
 # for fastest packages download during  Arch Linux installation.
 # To prevent error we check if timezone is in available list,
 # otherwise we prompt user to set it manualy.
