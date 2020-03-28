@@ -20,7 +20,12 @@ _get_vga_controller() {
         _confirm "Use Nvidia proprietary drivers?"
         case ${confirm} in
             y|Y|yes|Yes|YES)
-                export vga_driver="nvidia"
+                case ${kernel} in
+                    lts_kernel) export vga_driver="nvidia_lts";;
+                    hardened_kernel|zen_kernel)
+                        export vga_driver="nvidia_dkms";;
+                    default_kernel) export vga_driver="nvidia";;
+                esac
                 export openGL="openGL_nvidia"
                 export hard_video="hard_video_nvidia"
                 ;;
