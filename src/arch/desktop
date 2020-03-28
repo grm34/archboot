@@ -35,14 +35,14 @@ _install_desktop_environment() {
     _chroot "pacman --noconfirm -S ${!user_desktop}"
  }
 
-_desktop_settings() {
+_configure_desktop_environment() {
 
     # Keyboard layout
-    _info "Setting ${keymap_code} keyboard layout"
+    _info "Setting keyboard layout to ${keymap_code^^}"
     wget ${_url}/conf/00-keyboard.conf
     sed -i -e "s/keymap_code/${keymap_code}/g" 00-keyboard.conf
     mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================

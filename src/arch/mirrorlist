@@ -12,7 +12,7 @@
 _mirrorlist() {
 
     # Get user country code from ipinfo.io API
-    _info "Search for country code"
+    _info "Searching for country code"
     country=\
 $(curl -s ipinfo.io/ | grep "country" | \
 sed 's/  "country": "//' | sed 's/",//')
@@ -37,7 +37,7 @@ sed 's/  "country": "//' | sed 's/",//')
 _timezone() {
 
     # Get user timezone from ipinfo.io API
-    _info "Search for timezone code"
+    _info "Searching for timezone code"
     tzone=\
 $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
@@ -58,5 +58,5 @@ sed 's/  "timezone": "//' | sed 's/",//')
     fi
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================

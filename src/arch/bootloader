@@ -7,7 +7,7 @@
 # We also install additional themes for beautifull OS selection menu.
 # ============================================================================
 
-_bootloader() {
+_install_bootloader() {
 
     # Install Grub packages
     _info "Installing Grub packages"
@@ -48,5 +48,5 @@ _bootloader() {
     _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 }
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================

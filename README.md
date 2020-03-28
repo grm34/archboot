@@ -1,26 +1,28 @@
-<a href="https://grm34.github.io/archboot/">
-  <img src="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/logo.png">
-</a>
+[![archboot](https://www.archboot.org/assets/images/logo.png)](https://www.archboot.org)
 
-[![version](https://img.shields.io/badge/version-v2.8.5-blue.svg)](https://github.com/grm34/archboot/releases) [![Build Status](https://travis-ci.org/grm34/archboot.svg?branch=master)](https://travis-ci.org/grm34/archboot) [![author](https://img.shields.io/badge/author-grm34-red.svg)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/grm34/archboot/blob/master/LICENSE) [![telegram](https://img.shields.io/badge/Telegram-chat-red)](https://t.me/archboot) [![maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/grm34/archboot/pulse)
+[![version](https://img.shields.io/badge/version-v2.8.5-blue.svg?style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34/archboot/releases) [![maintenance](https://img.shields.io/maintenance/yes/2020.svg?&style=flat&logo=github&cacheSeconds=3600)](https://github.com/grm34/archboot/pulse) [![author](https://img.shields.io/badge/author-grm34-red.svg?&style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34/archboot/blob/master/LICENSE) [![telegram](https://img.shields.io/badge/Telegram-chat-red?style=flat&logo=telegram&cacheSeconds=3600)](https://t.me/archboot)
 
-Arch Linux is a light and fast distribution whose concept is to remain as simple as possible. In the same purpose, this script performs minimalist installation, it only installs the required packages in order to give free choice to the user. Pretty simple, it just prompts for language, hostname, username, which disk to use, required partitions size and if you wish to install a desktop environment. According to the chosen one and in order to get complete support, additional packages may be required.
+Arch Linux is a light and fast distribution whose concept is to remain as
+simple as possible. In the same purpose, this script performs minimalist
+installation, it only installs the required packages in order to give
+free choice to the user. Pretty simple, it just prompts for language,
+hostname, username, which disk to use, required partitions size and
+if you wish to install a desktop environment. According to the chosen one
+and in order to get complete support, additional packages may be required.
 
 ## Requirements
 
 The only thing you need is one **USB bootable device** of [Arch Linux](https://mir.archlinux.fr/iso/latest)
 
-* USB Boot instruction for [Windows](https://rufus.ie/) or [Linux](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
-
 ## Usage
 
-**1.** Reboot your computer, open Boot Selection Menu and boot on the USB device
+**1.** Reboot computer, open Boot Selection Menu and boot on the USB device
 
 **2.** On the install menu of Arch Linux, select Boot Arch Linux (x86_64)
 
-**3.** For AZERTY keyboard run: `loqdkeys fr`
+> For AZERTY keyboard run: *`loqdkeys fr`*
 
-**4.** Download and follow the instructions `wget tiny.cc/archboot; sh archboot`
+**3.** Download and run archboot: *`wget tiny.cc/archboot-dev; sh archboot-dev`*
 
 ## Wiki
 
@@ -35,24 +37,21 @@ The only thing you need is one **USB bootable device** of [Arch Linux](https://m
 
 ## Logs
 
-Take a look at **/var/log/archboot** for logs: `cat /var/log/archboot/archboot*.log`
+Take a look at **/var/log/archboot**: *`cat /var/log/archboot/archboot*.log`*
 
 ## Screenshot
 
-<a href="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/screenshot.png">
-  <img src="https://raw.githubusercontent.com/grm34/archboot/gh-pages/assets/images/screenshot.png">
-</a>
+[![screenchot](https://www.archboot.org/assets/images/screenshot.png)](https://www.archboot.org/assets/images/screenshot.png)
 
 ## Official Documentation
 
-* [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide) for the official documentation
-* [VGA Drivers](https://wiki.archlinux.org/index.php/Xorg#Driver_installation) open source and proprietary drivers support
-* [Bumblebee](https://wiki.archlinux.org/index.php/Bumblebee) available in case of Intel+nVidia controller
-* [File System](https://wiki.archlinux.org/index.php/file_systems) (may be required if not included in DE)
-* [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) (may be required if not included in DE)
-* [Cups](https://wiki.archlinux.org/index.php/CUPS) (may be required if not included in DE)
-* [Sane](https://wiki.archlinux.org/index.php/SANE) (may be required if not included in DE)
-* [Samba](https://wiki.archlinux.org/index.php/Samba) (may be required if not included in DE)
+* [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
+* [USB flash installation media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
+* [File System](https://wiki.archlinux.org/index.php/file_systems) *(may be required if not included in DE)*
+* [Multimedia](https://wiki.archlinux.org/index.php/List_of_applications/Multimedia) *(may be required if not included in DE)*
+* [Cups](https://wiki.archlinux.org/index.php/CUPS) *(may be required if not included in DE)*
+* [Sane](https://wiki.archlinux.org/index.php/SANE) *(may be required if not included in DE)*
+* [Samba](https://wiki.archlinux.org/index.php/Samba) *(may be required if not included in DE)*
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/for-you.svg)](https://forthebadge.com)

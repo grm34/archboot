@@ -1,9 +1,9 @@
 #!/bin/bash
 __appname__="archboot"
 __version__="v2.8.5"
-__branch__="master"
-__author__="@grm34"
-__license__="Apache v2.0 License"
+__branch__="dev"
+__author__="grm34"
+__license__="Apache License 2.0"
 
 _archboot_banner() {
     echo -e """${red}
@@ -13,7 +13,7 @@ _archboot_banner() {
    / ___ \| | | (__| | | | |_) | (_) | (_) | |_
   /_/   \_\_|  \___|_| |_|_.__/ \___/ \___/ \__|${green}${__version__}
 ${blue}
- Welcome in archboot, a script made with love by ${__author__}
+ Welcome in ${__appname__}, a script made with love by ${__author__}
 ${nc}
 Arch Linux is a light and fast distribution whose concept
 is to remain  as simple  as possible. In the same purpose
@@ -24,11 +24,11 @@ language, hostname, username, which disk to use, required
 partitions size  and  if  you wish  to install  a desktop
 environment. According to the chosen one  and in order to
 get complete support, additional packages may be required
-For more  information, take a look  at the  archboot wiki
+For more  information, take a look  at the  ${__appname__} wiki
 """
 }
 
-#                      ARCHBOOT SYSTEM MANAGEMENT
+#                       ARCHBOOT_SYSTEM SETTINGS
 # ============================================================================
 # Here we defined all required variables and functions to manage archboot.
 # Variables are pretty simple such as define needed url and colors.
@@ -37,9 +37,11 @@ For more  information, take a look  at the  archboot wiki
 # select an option, ask some information to the user or to get install logs.
 # ============================================================================
 
-# Github url: ${_url} for sources and ${_gh_pages} for images
-_url="https://raw.githubusercontent.com/grm34/archboot/${__branch__}"
-_gh_pages="https://raw.githubusercontent.com/grm34/archboot/gh-pages"
+# Github url for sources and images
+_url=\
+"https://raw.githubusercontent.com/${__author__}/${__appname__}/${__branch__}"
+_gh_pages=\
+"https://raw.githubusercontent.com/${__author__}/${__appname__}/gh-pages"
 
 # Shell colors
 red="\e[1;31m"; green="\e[1;32m"; yellow="\e[1;33m"
@@ -56,7 +58,7 @@ _note() {
     echo -e "${red}\nNote: ${blue}${1}${nc}"
 }
 
-# DL show progress bar only
+# Download show progress bar only
 _wget() {
     wget ${1} -q --show-progress
 }
@@ -70,7 +72,7 @@ EOF
 
 # Set logfile
 _logs() {
-    _info "Setting archboot log"
+    _info "Setting ${__appname__} log"
     datetime=$(date '+%d-%m-%Y')
     log="${__appname__}-${__version__}_${datetime}.log"
 }
@@ -93,9 +95,9 @@ _check() {
     return ${status}
 }
 
-# Cleanup: delete sources - umount partitions - exit
+# Delete sources, umount partitions and exit
 _cleanup() {
-    echo -e "\nCleaning up archboot..."
+    echo -e "\nCleaning up ${__appname__}..."
     for source in *; do
         if [[ ${source} =~ ^(base|bootloader|desktop|display|\
 firmware|mirrorlist|mounting|partition|user|vga|desktop_apps|\
@@ -127,7 +129,7 @@ _reboot() {
 
 # Display error and cleanup
 _error() {
-    echo -e "${red}Error: ${yellow}${1} - Please try again!${nc}\n"
+    echo -e "${red}Error: ${yellow}${1}${nc}\n"
     _cleanup
 }
 
@@ -148,7 +150,7 @@ _select() {
 # Ask confirmation (Yes/No)
 _confirm() {
     count=$((${#1} + 6))
-    until [[ ${confirm} =~ ^(y|n|Y|N)$ ]]; do
+    until [[ ${confirm} =~ ^(y|n|Y|N|yes|no|Yes|No|YES|NO)$ ]]; do
         echo -ne "${yellow}\n==> ${green}${1} ${red}[y/n]${yellow}\n==> "
         _end
         read -r confirm
@@ -164,7 +166,7 @@ _prompt() {
     _end
 }
 
-# Display end of _select(), _confirm() and _prompt() functions
+# Display the end of select, confirm and prompt functions
 _end() {
     for char in $(seq ${count}); do
         echo -ne "-"
@@ -172,42 +174,43 @@ _end() {
     echo -ne "\n==> ${nc}"
 }
 
-#                        ARCHBOOT SYSTEM PROCESS
+#                      ARCHBOOT_SYSTEM MANAGEMENT
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications and scripts [src/apps & src/arch]
 # Once done we could ask for user variables and stored them to run install.
 # In case of desktop environment, we import additional sources and we
-# scan for 3D VGA controller(s) to define appropriate drivers.
+# scan for 3D VGA controller(s) to select appropriate drivers.
+# Avaibility not to install VGA driver and fall back to kernel mode setting.
 # ============================================================================
 
 # Display archboot banner
 _archboot_banner
 
 # Check Internet Connection
-_info "Check Internet Connection"
+_info "Checking Internet connection"
 ping -c 1 archlinux.org >/dev/null 2>&1
 if [[ $? -eq 0 ]]; then
     _note "Congratulations, you are connected to Internet!"
 else
-    _error "you are not connected to Internet. Ethernet seems not plugged in!"
+    _error "you are not connected to Internet!"
 fi
 
 # Download base sources
 _confirm "Start downloading sources from github?"
 case ${confirm} in
-    y|Y)
+    y|Y|yes|Yes|YES)
         _info "Downloading base sources"
         _wget ${_url}/src/arch/base            # to install Base system
         _wget ${_url}/src/arch/bootloader      # to install Grub2 bootloader
-        _wget ${_url}/src/arch/firmware        # to set partitions settings
+        _wget ${_url}/src/arch/firmware        # to get user firmware
         _wget ${_url}/src/arch/mirrorlist      # to get mirrorlist & timezone
         _wget ${_url}/src/arch/mounting        # to mount partitions & swap
         _wget ${_url}/src/arch/partition       # to create table & partitions
         _wget ${_url}/src/arch/user            # to get user variables
         _wget ${_url}/src/apps/system_apps     # to get system apps
         _wget ${_url}/conf/language            # to get language code
-        _wget ${_url}/conf/timezone            # to get region code
+        _wget ${_url}/conf/timezone            # to get timezone
         ;;
     *)
         exit
@@ -220,10 +223,10 @@ _info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware; source ./mirrorlist
 source ./mounting; source ./partition; source ./user; source ./system_apps
 
-# Get required variables [src/arch/user]
-_ask_user_variables
+# Get required variables
+_get_user_variables
 
-# If Desktop Environment
+# Desktop Environment
 if [[ ! -z ${desktop+x} ]]; then
 
     # Download desktop sources
@@ -240,32 +243,49 @@ if [[ ! -z ${desktop+x} ]]; then
     source ./vga; source ./desktop; source ./display
     source ./vga_apps; source ./desktop_apps; source ./display_apps
 
-    # Scan VGA Controller and set appropriate driver [src/arch/vga]
-    _scan_vga_controller
+    # VGA Driver or kernel mode setting?
+    _note "enter NO to activate kernel mode setting"
+    _confirm "Do you wish to install VGA Driver?"
+    case ${confirm} in
+        y|Y|yes|Yes|YES)
+            # Get VGA Controller
+            _get_vga_controller
+            modsetting="true"
+            ;;
+    esac
+    unset confirm
 fi
+
+#                       ARCHBOOT_SYSTEM PREPARE
+# ============================================================================
+# Here we get user firmware to set partitions settings and other options.
+# Then we set mirrorlist, timezone, clock and logs.
+# We could now run partitioning scheme (default or custom).
+# And activate SWAP and mount the partitions.
+# ============================================================================
 
 # Prepare the system
 _firmware; _mirrorlist; _timezone; _clock; _logs
 
-# Manage partitions
-_note "WARNING! Enter NO only if partitions properly created and formated"
+# Partitioning
+_note "enter NO to activate custom partitioning"
 _confirm "Do you wish to install Arch Linux on a dedicated disk?"
 case ${confirm} in
-    y|Y)
-        _partition
+    y|Y|yes|Yes|YES)
+        _default_partitioning_scheme
         ;;
     *)
-        _custom_partition
+        _custom_partitioning_scheme
         ;;
 esac
 unset confirm
 
-# Mount partitions
+# Mount
 _mount_partitions
 
 _note "system is ready to rumble! Partitions mounted & swap activated!"
 
-#                     ARCHBOOT SYSTEM INSTALLATION
+#                     ARCHBOOT_SYSTEM INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
 # user variables stored. We can start Arch Linux installation.
@@ -278,30 +298,34 @@ _note "system is ready to rumble! Partitions mounted & swap activated!"
 
 _confirm "Do you wish to install Arch Linux now?"
 case ${confirm} in
-    y|Y)
+    y|Y|yes|Yes|YES)
 
         # Install Arch Linux base system
-        (_base; _bootloader) 2>&1 | tee -a ${log}
+        (_install_base; _install_bootloader) 2>&1 | tee -a ${log}
 
-        # Install desktop environment
+        # Install VGA Driver
+        if [[ ! -z ${modsetting+x} ]]; then
+            (_install_vga_driver) 2>&1 | tee -a ${log}
+        fi
+
+        # Install desktop environment & display manager
         if [[ ! -z ${desktop+x} ]]; then
-            (_install_vga_controller; _install_desktop_environment; \
-            _display_manager; _desktop_settings) 2>&1 | tee -a ${log}
+            (_install_desktop_environment; _install_display_manager; \
+            _configure_desktop_environment) 2>&1 | tee -a ${log}
         fi
 
         # User rights
         if [[ ! -z ${power+x} ]]; then
-            (_user_power) 2>&1 | tee -a ${log}
+            (_grant_user_power) 2>&1 | tee -a ${log}
         fi
 
         # Logfile path
         _info "Setting logfile path"
-        mkdir /mnt/var/log/archboot
-        cp "${log}" /mnt/var/log/archboot/
+        mkdir /mnt/var/log/${__appname__}
+        cp ${log} /mnt/var/log/${__appname__}/
 
         # Success notes
-        _note "installation successful! // \
-${__appname__} ${__version__} by ${__author__} under ${__license__}"
+        _note "Arch Linux installation successful!"
         ;;
 
     *)
@@ -311,16 +335,17 @@ ${__appname__} ${__version__} by ${__author__} under ${__license__}"
 esac
 unset confirm
 
-#                       ARCHBOOT SYSTEM REBOOT
+#                       ARCHBOOT_SYSTEM REBOOT
 # ============================================================================
 # And here we go! We could now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.
 # Telegram chat: t.me/archboot - Have fun, take care and give a star!
 # ============================================================================
 
+_note "${__appname__} ${__version__} by ${__author__} under ${__license__}"
 _confirm "Do you want to reboot your computer now?"
 case ${confirm} in
-    y|Y)
+    y|Y|yes|Yes|YES)
         umount -R /mnt
         _reboot
         ;;
@@ -329,5 +354,5 @@ case ${confirm} in
         ;;
 esac
 
-# archboot by grm34 under Apache v2.0 License.
+# archboot by grm34 under Apache License 2.0
 # ============================================================================
