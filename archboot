@@ -259,9 +259,8 @@ fi
 #                       ARCHBOOT_SYSTEM PREPARE
 # ============================================================================
 # Here we get user firmware to set partitions settings and other options.
-# Then we set mirrorlist, timezone, clock and logs.
-# We could now run partitioning scheme (default or custom).
-# And activate SWAP and mount the partitions.
+# Then we get mirrorlist, timezone, clock and logs and define them.
+# We could now run partitioning scheme, activate SWAP and mount the partitions.
 # ============================================================================
 
 # Prepare the system
