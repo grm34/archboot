@@ -34,7 +34,7 @@ _install_display_manager() {
 
     # GDM
     if [[ ${DISPLAY} == "GDM" ]]; then
-        wget ${URL}/conf/xprofile
+        wget "${URL}"/conf/xprofile
         mv xprofile /mnt/etc/xprofile
 
     # LIGHTDM
@@ -79,8 +79,8 @@ _install_display_manager() {
 
     # XDM
     elif [[ ${DISPLAY} == "XDM" ]]; then
-        echo ${SESSION} > /mnt/home/${USER_NAME}/.xsession
-        chmod 700 /mnt/home/${USER_NAME}/.xsession
+        echo ${SESSION} > /mnt/home/"${USER_NAME}"/.xsession
+        chmod 700 /mnt/home/"${USER_NAME}"/.xsession
     fi
 }
 
