@@ -20,7 +20,7 @@ _install_base() {
     genfstab -U -p /mnt >> /mnt/etc/fstab
     cat /mnt/etc/fstab
 
-    # TimeZone
+    # Timezone
     _info "Setting timezone to ${TIMEZONE}"
     ln -sf /usr/share/zoneinfo/${TIMEZONE} /mnt/etc/localtime
 

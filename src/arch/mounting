@@ -12,7 +12,7 @@ _mount_partitions() {
     _info "Mounting partitions and activating swap"
 
     # Mount system on /mnt
-    _check mount ${SYSTEM_POINT} /mnt
+    _check mount ${SYSTEM_MOUNTPOINT} /mnt
 
     # Create boot and home folders
     _check mkdir /mnt/{boot,home}
@@ -20,18 +20,18 @@ _mount_partitions() {
     # Mount UEFI Boot on /mnt/boot/efi
     if [[ ${FIRMWARE} == "UEFI" ]]; then
         _check mkdir -p /mnt/boot/efi/EFI
-        _check mount -t vfat ${BOOT_POINT} /mnt/boot/efi
+        _check mount -t vfat ${BOOT_MOUNTPOINT} /mnt/boot/efi
 
     # Mount BIOS Boot on /mnt/boot
     else
-        _check mount ${BOOT_POINT} /mnt/boot
+        _check mount ${BOOT_MOUNTPOINT} /mnt/boot
     fi
 
     # Activate swap
-    _check swapon ${SWAP_POINT}
+    _check swapon ${SWAP_MOUNTPOINT}
 
     # Mount home on /mnt/home
-    _check mount ${HOME_POINT} /mnt/home
+    _check mount ${HOME_MOUNTPOINT} /mnt/home
 }
 
 # archboot by grm34 under Apache License 2.0
