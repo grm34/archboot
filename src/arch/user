@@ -109,7 +109,7 @@ _get_user_variables() {
             export KERNEL="DEFAULT_KERNEL"
             ;;
     esac
-    export LINUX_KERNEL=${KERNEL//_/ }
+    export KERNEL_NAME=${KERNEL//_/ }
     unset CONFIRM
 
     # Desktop Environment
