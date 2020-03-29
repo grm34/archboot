@@ -38,14 +38,13 @@ _timezone() {
 
     # Get user timezone from ipinfo.io API
     _info "Searching for timezone code"
-    TZONE=\
+    TIMEZONE=\
 $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
 
     # Update timezone if properly detected
-    if grep -Fxq ${TZONE} ./timezone ]]; then
-        _info "Setting timezone to ${TZONE}"
-        export TIMEZONE=${TZONE}
+    if grep -Fxq ${TIMEZONE} ./timezone ]]; then
+        _info "Setting timezone to ${TIMEZONE}"
 
     # Otherwise ask timezone to user
     else
@@ -54,8 +53,8 @@ sed 's/  "timezone": "//' | sed 's/",//')
             _prompt "Enter timezone code:" "(e.g., Europe/Paris, Asia/Tokyo)"
             read -r TIMEZONE
         done
-        export TIMEZONE
     fi
+    export TIMEZONE
 }
 
 # archboot by grm34 under Apache License 2.0
