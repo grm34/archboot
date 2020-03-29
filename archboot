@@ -6,8 +6,8 @@ AUTHOR="grm34"
 LICENSE="Apache License 2.0"
 
 _archboot_banner() {
-    echo -e """${RED}
-      _             _     _                 _
+    echo -e """
+${RED}      _             _     _                 _
      / \   _ __  __| |__ | |__   ___   ___ | |_
     / _ \ | '__/ __| '_ \| '_ \ / _ \ / _ \| __|
    / ___ \| | | (__| | | | |_) | (_) | (_) | |_
@@ -38,9 +38,9 @@ For more  information, take a look  at the  ${APPNAME} wiki
 # ============================================================================
 
 # Github url for sources and images
-URL=\
+export URL=\
 "https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
-GHPAGES=\
+export GHPAGES=\
 "https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
 
 # Shell colors
@@ -60,7 +60,7 @@ _note() {
 
 # Download show progress bar only
 _wget() {
-    wget ${1} -q --show-progress
+    wget "${1}" -q --show-progress
 }
 
 # Execute action in chrooted environment
@@ -81,7 +81,7 @@ _logs() {
 _clock() {
     _info "Setting system clock"
     timedatectl set-ntp true
-    timedatectl set-timezone ${TIMEZONE}
+    timedatectl set-timezone "${TIMEZONE}"
     hwclock --systohc
 }
 
@@ -103,7 +103,7 @@ _cleanup() {
 firmware|mirrorlist|mounting|partition|user|vga|desktop_apps|\
 display_apps|system_apps|vga_apps|00-keyboard|language|\
 timezone|xprofile|background.png|Grub2-themes)$ ]]; then
-            rm -rf ${SOURCE}
+            rm -rf "${SOURCE}"
         fi
     done
     df | grep -q /mnt
@@ -137,12 +137,12 @@ _error() {
 _select() {
     COUNT=0
     echo -ne "${YELLOW}\n==> "
-    for ENTRY in ${@}; do
+    for ENTRY in "${@}"; do
         echo -ne "${RED}[$((++COUNT))] ${GREEN}${ENTRY} ${NC}"
     done
-    LENTH=${@}
+    LENTH=${*}
     NUMBER=$((${#*} * 4))
-    COUNT=$((${#LENTH} + ${NUMBER} + 1))
+    COUNT=$((${#LENTH} + NUMBER + 1))
     echo -ne "${YELLOW}\n==> "
     _end
 }
@@ -159,8 +159,8 @@ _confirm() {
 
 # Ask some information
 _prompt() {
-    LENTH=${@}
-    COUNT=${#lenth}
+    LENTH=${*}
+    COUNT=${#LENTH}
     echo -ne "\n${YELLOW}==> ${GREEN}${1} ${RED}${2}"
     echo -ne "${YELLOW}\n==> "
     _end
@@ -168,7 +168,7 @@ _prompt() {
 
 # Display the end of select, confirm and prompt functions
 _end() {
-    for char in $(seq ${COUNT}); do
+    for COUNT in $(seq "${COUNT}"); do
         echo -ne "-"
     done
     echo -ne "\n==> ${NC}"
@@ -189,8 +189,8 @@ _archboot_banner
 
 # Check Internet Connection
 _info "Checking Internet connection"
-ping -c 1 archlinux.org >/dev/null 2>&1
-if [[ $? -eq 0 ]]; then
+INTERNET=$(ping -c 1 archlinux.org >/dev/null 2>&1)
+if [[ ${INTERNET} -eq 0 ]]; then
     _note "congratulations, you are connected to Internet!"
 else
     _error "you are not connected to Internet!"
@@ -227,7 +227,7 @@ source ./mounting; source ./partition; source ./user; source ./system_apps
 _get_user_variables
 
 # Desktop Environment
-if [[ ! -z ${DESKTOP+x} ]]; then
+if [[ -n ${DESKTOP+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
@@ -297,31 +297,31 @@ case ${CONFIRM} in
     y|Y|yes|Yes|YES)
 
         # Install Arch Linux base system
-        (_install_base; _install_bootloader) 2>&1 | tee -a ${LOG}
+        (_install_base; _install_bootloader) 2>&1 | tee -a "${LOG}"
 
         # Install VGA Driver
-        if [[ ! -z ${VGA_DRIVER+x} ]]; then
-            (_install_vga_driver) 2>&1 | tee -a ${LOG}
+        if [[ -n ${VGA_DRIVER+x} ]]; then
+            (_install_vga_driver) 2>&1 | tee -a "${LOG}"
         fi
 
         # Install desktop environment & display manager
-        if [[ ! -z ${DESKTOP+x} ]]; then
+        if [[ -n ${DESKTOP+x} ]]; then
             (_install_desktop_environment; _install_display_manager; \
-            _configure_desktop_environment) 2>&1 | tee -a ${LOG}
+            _configure_desktop_environment) 2>&1 | tee -a "${LOG}"
         fi
 
         # User rights
-        if [[ ! -z ${POWER+x} ]]; then
-            (_enable_user_rights) 2>&1 | tee -a ${LOG}
+        if [[ -n ${POWER+x} ]]; then
+            (_enable_user_rights) 2>&1 | tee -a "${LOG}"
         fi
 
         # Success notes
-        (_note "Arch Linux installation successful!") | tee -a $[LOG]
+        (_note "Arch Linux installation successful!") | tee -a "${LOG}"
 
         # Logfile path
         _info "Setting logfile path"
         mkdir /mnt/var/log/${APPNAME}
-        cp ${LOG} /mnt/var/log/${APPNAME}/
+        cp "${LOG}" /mnt/var/log/${APPNAME}/
         ;;
     *)
         # Install aborted

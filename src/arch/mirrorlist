@@ -43,7 +43,7 @@ $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
 
     # Update timezone if properly detected
-    if grep -Fxq ${TIMEZONE} ./timezone ]]; then
+    if grep -Fxq "${TIMEZONE}" ./timezone; then
         _info "Setting timezone to ${TIMEZONE}"
 
     # Otherwise ask timezone to user

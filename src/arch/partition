@@ -30,7 +30,7 @@ _default_partitioning_scheme() {
         _prompt "Enter disk to use:" "(e.g., sda, nvme0n1)"
         read -r DISK
     done
-    export $DISK
+    export DISK
 
     # Define partition order
     if [[ ${DISK} =~ "nvme0n" ]]; then
