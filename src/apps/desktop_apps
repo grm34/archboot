@@ -13,7 +13,7 @@ export KDE="plasma kde-applications"
 export LXDE="lxde"
 
 # Xfce
-export XFCE="xfce4 xfce4-goodies"
+export XFCE4="xfce4 xfce4-goodies"
 
 # Deepin
 export DEEPIN="deepin deepin-extra"
