@@ -13,19 +13,19 @@ _firmware() {
     # UEFI Firmware
     if [ -d /sys/firmware/efi/efivars ]; then
         export FIRMWARE="UEFI"
-        export part_table="GPT"
-        export part_code="g"
-        export part_type=""
-        export boot_filesystem="fat -F32"
+        export PART_TABLE="GPT"
+        export PART_CODE="g"
+        export PART_TYPE=""
+        export BOOT_FILESYSTEM="fat -F32"
         _note "UEFI firmware detected!"
 
     # BIOS Firmware
     else
         FIRMWARE="BIOS"
-        export part_table="MBR"
-        export part_code="o"
-        export part_type="p\n"
-        export boot_filesystem="ext4"
+        export PART_TABLE="MBR"
+        export PART_CODE="o"
+        export PART_TYPE="p\n"
+        export BOOT_FILESYSTEM="ext4"
         _note "BIOS firmware detected!"
     fi
 }

@@ -4,23 +4,23 @@
 # ============================================================================
 
 # Arch Linux
-export _arch="base base-devel linux-firmware"
+export ARCH="base base-devel linux-firmware"
 
 # Kernel (the one you like)
-export _default_kernel="linux"
-export _hardened_kernel="linux-hardened"
-export _lts_kernel="linux-lts"
-export _zen_kernel="linux-zen"
+export DEFAULT_KERNEL="linux"
+export HARDENED_KERNEL="linux-hardened"
+export LTS_KERNEL="linux-lts"
+export ZEN_KERNEL="linux-zen"
 
 # Microcode (Intel CPU only)
-export _intel="intel-ucode"
+export INTEL_UCODE="intel-ucode"
 
 # Network
-export _netapps="ntp networkmanager wget nmap rp-pppoe dhclient \
+export NETAPPS="ntp networkmanager wget nmap rp-pppoe dhclient \
 iw wpa_supplicant wireless_tools git"
 
 # Bootloader
-export _bootapps="grub os-prober gptfdisk efibootmgr"
+export BOOTAPPS="grub os-prober gptfdisk efibootmgr"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================

@@ -12,19 +12,19 @@
 _mirrorlist() {
 
     # Get user country code from ipinfo.io API
-    _info "Searching for country code"
-    country=\
+    _info "Searching for fastest mirrors"
+    COUNTRY=\
 $(curl -s ipinfo.io/ | grep "country" | \
 sed 's/  "country": "//' | sed 's/",//')
 
     # Update mirrorlist if country code properly detected
-    if [[ ${country} =~ ^[A-Z]{2}+$ ]]; then
-        _info "Setting mirrors priority to ${country}"
+    if [[ ${COUNTRY} =~ ^[A-Z]{2}+$ ]]; then
+        _info "Setting mirrors priority to ${COUNTRY}"
         mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 
         # Get corresponding mirrors from archlinux.org
         curl -s \
-"https://www.archlinux.org/mirrorlist/?country=${country}\
+"https://www.archlinux.org/mirrorlist/?country=${COUNTRY}\
 &use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' \
 > /etc/pacman.d/mirrorlist
 
@@ -38,24 +38,23 @@ _timezone() {
 
     # Get user timezone from ipinfo.io API
     _info "Searching for timezone code"
-    tzone=\
+    TIMEZONE=\
 $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
 
     # Update timezone if properly detected
-    if grep -Fxq ${tzone} ./timezone ]]; then
-        _info "Setting timezone to ${tzone}"
-        export timezone=${tzone}
+    if grep -Fxq ${TIMEZONE} ./timezone ]]; then
+        _info "Setting timezone to ${TIMEZONE}"
 
     # Otherwise ask timezone to user
     else
-        until grep -Fxq "${timezone}" ./timezone; do
-            _note "timezone not found! Full list is available in the wiki"
+        until grep -Fxq "${TIMEZONE}" ./timezone; do
+            _note "timezone not found! Full list is available in the wiki."
             _prompt "Enter timezone code:" "(e.g., Europe/Paris, Asia/Tokyo)"
-            read -r timezone
+            read -r TIMEZONE
         done
-        export timezone
     fi
+    export TIMEZONE
 }
 
 # archboot by grm34 under Apache License 2.0
