@@ -13,7 +13,7 @@ _install_base() {
 
     # Base System
     _info "Installing base system and $(sed s/'_'/' '/g <<< ${KERNEL,,})"
-    yes '' | pacstrap /mnt ${ARCH} ${!KERNEL}
+    yes '' | pacstrap /mnt "${ARCH} ${!KERNEL}"
 
     # fstab
     _info "Setting file systems table"
@@ -22,7 +22,7 @@ _install_base() {
 
     # Timezone
     _info "Setting timezone to ${TIMEZONE}"
-    ln -sf /usr/share/zoneinfo/${TIMEZONE} /mnt/etc/localtime
+    ln -sf /usr/share/zoneinfo/"${TIMEZONE}" /mnt/etc/localtime
 
     # locale
     _info "Setting locale to ${LANGUAGE}.UTF-8"
@@ -49,8 +49,8 @@ _install_base() {
     systemctl enable NetworkManager"
 
     # Intel Microcode
-    lscpu | grep "Intel" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
+    MICROCODE=$(lscpu | grep "Intel" >/dev/null 2>&1)
+    if [[ ${MICROCODE} -eq 0 ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${INTEL_UCODE}"
     fi
