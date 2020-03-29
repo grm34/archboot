@@ -167,7 +167,7 @@ _grant_user_power() {
     _chroot "yes | pwck"
     _chroot "yes | grpck"
     GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
-    for GROUP in ${GOUPLIST}; do
+    for GROUP in ${GROUPLIST}; do
         _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
     done
 }
