@@ -108,7 +108,7 @@ _get_user_variables() {
             export KERNEL="DEFAULT_KERNEL"
             ;;
     esac
-    unset confirm
+    unset CONFIRM
 
     # Desktop Environment
     _confirm "Do you wish to install Desktop Environment?"
