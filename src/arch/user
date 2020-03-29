@@ -23,147 +23,151 @@
 _get_user_variables() {
 
     # Language
-    until grep -Fxq "${language}" ./language; do
+    until grep -Fxq "${LANGUAGE}" ./language; do
         _note "full list is available in the wiki"
         _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
-        read -r language
+        read -r LANGUAGE
     done
-    export keymap_code=$(echo ${language} | cut -d'_' -f 1)
+    export LANGUAGE
+    export KEYMAP=$(echo ${LANGUAGE} | cut -d'_' -f 1)
 
     # Hostname
-    until [[ ${#HOST_name} -ge 3 \
-    && ${HOST_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    until [[ ${#HOST_NAME} -ge 3 \
+    && ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter hostname:" "(e.g., my-favorite-computer)"
-        read -r HOST_name
+        read -r HOST_NAME
     done
+    export HOST_NAME
 
     # Root Password
-    until [[ ${#a} -ge 6 && "${a}" == *[a-z]* && "${a}" == *[0-9]* ]]; do
+    until [[ ${#A} -ge 6 && "${A}" == *[a-z]* && "${A}" == *[0-9]* ]]; do
         _note \
 "should be at least 6 chars long with 1 letter & 1 digit"
         _prompt "Enter root password:"
-        read -rs a
+        read -rs A
     done
     echo
 
     # Confirm Root Password
     _prompt "Confirm root password:"
-    read -rs ROOT_passwd
-    if [[ ${ROOT_passwd} != "${a}" ]]; then
+    read -rs ROOTPASSWD
+    if [[ ${ROOTPASSWD} != "${A}" ]]; then
         _error "passwords does not match!"
     fi
+    export ROOTPASSWD
     echo
 
     # Username
-    until [[ ${#USER_name} -ge 3 \
-    && ${USER_name} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    until [[ ${#USER_NAME} -ge 3 \
+    && ${USER_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter username:" "(e.g., johnny)"
-        read -r USER_name
+        read -r USER_NAME
     done
+    export USER_NAME
 
     # User Password
-    until [[ ${#b} -ge 6 && "${b}" == *[a-z]* && "${b}" == *[0-9]* ]]; do
+    until [[ ${#B} -ge 6 && "${B}" == *[a-z]* && "${B}" == *[0-9]* ]]; do
         _note \
 "should be at least 6 chars long with 1 letter & 1 digit"
-        _prompt "Enter password for user ${USER_name}:"
-        read -rs b
+        _prompt "Enter password for user ${USER_NAME}:"
+        read -rs B
     done
     echo
 
     # Confirm User Password
-    _prompt "Confirm password for user ${USER_name}:"
-    read -rs USER_passwd
-    if [[ ${USER_passwd} != "${b}" ]]; then
+    _prompt "Confirm password for user ${USER_NAME}:"
+    read -rs USERPASSWD
+    if [[ ${USERPASSWD} != "${B}" ]]; then
         _error "passwords does not match!"
     fi
+    export USERPASSWD
     echo
 
     # User Rights
-    _confirm "Give all rights to user ${USER_name}?"
-    case ${confirm} in y|Y|yes|Yes|YES) export power="yes";; esac
-    unset confirm
+    _confirm "Give all rights to user ${USER_NAME}?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            export POWER="yes"
+            ;;
+    esac
+    unset CONFIRM
 
     # Linux Kernel
     _confirm "Do you wish to install custom Linux Kernel?"
-    case ${confirm} in
+    case ${CONFIRM} in
         y|Y|yes|Yes|YES)
-            until [[ ${kern} =~ ^([1-9]|4)$ ]]; do
+            until [[ ${KERNEL} =~ ^([1-9]|4)$ ]]; do
                 _select "Default" "Hardened" "LTS" "ZEN"
-                read -r kern
+                read -r KERNEL
             done
-            kernel_choice=\
-(none default_kernel hardened_kernel lts_kernel zen_kernel)
-            export kernel=${kernel_choice[${kern}]}
+            KERNEL_CHOICE=\
+(NONE DEFAULT_KERNEL HARDENED_KERNEL LTS_KERNEL ZEN_KERNEL)
+            export KERNEL=${KERNEL_CHOICE[${KERNEL}]}
             ;;
         *)
-            export kernel="default_kernel"
+            export KERNEL="default_kernel"
             ;;
     esac
     unset confirm
 
     # Desktop Environment
     _confirm "Do you wish to install Desktop Environment?"
-    case ${confirm} in y|Y|yes|Yes|YES)
-        until [[ ${desk} =~ ^([1-9]|10)$ ]]; do
+    case ${CONIRM} in y|Y|yes|Yes|YES)
+        until [[ ${DESKTOP} =~ ^([1-9]|10)$ ]]; do
             _select "Gnome" "KDE" "MATE" "Xfce" \
 "LXDE" "LXQt" "Deepin" "Budgie" "Cinnamon" "Enlightenment"
-            read -r desk
+            read -r DESKTOP
         done
-        desktop_choice=\
-(none gnome kde mate xfce4 lxde lxqt deepin budgie cinnamon enlightenment)
-        export desktop=${desktop_choice[${desk}]}
+        DESKTOP_CHOICE=\
+(NONE GNOME KDE MATE XFCE4 LXDE LXQT DEEPIN BUDGIE CINNAMON ENLIGHTENMENT)
+        export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
         ;;
     esac
-    unset confirm
+    unset CONFIRM
 
     # Display Manager
-    if [[ ! -z ${desktop+x} ]]; then
+    if [[ ! -z ${DESKTOP+x} ]]; then
 
-        _confirm "Do you wish to use ${desktop} default Display Manager?"
-        case ${confirm} in
+        _confirm "Do you wish to use ${DESKTOP} default Display Manager?"
+        case ${CONFIRM} in
 
             # Custom display manager
             n|N)
-                until [[ ${disp} =~ ^([1-5])$ ]]; do
+                until [[ ${DISPLAY} =~ ^([1-5])$ ]]; do
                     _select "Gdm" "LightDM" "Sddm" "Lxdm" "Xdm"
-                    read -r disp
+                    read -r DISPLAY
                 done
-                display_choice=(none gdm lightdm sddm lxdm xdm)
-                export display_man=${display_choice[${disp}]}
+                DISPLAY_CHOICE=(NONE GDM LIGHTDM SDDM LXDM XDM)
+                export DISPLAY=${DISPLAY_CHOICE[${DISPLAY}]}
                 ;;
 
             # Default display manager
             *)
-                case ${desktop} in
-                    gnome|budgie|cinnamon|mate) export display_man="gdm";;
-                    kde) export display_man="sddm";;
-                    deepin|enlightenment) export display_man="lightdm";;
-                    xfce4|lxde|lxqt) export display_man="lxdm";;
+                case ${DESKTOP} in
+                    GNOME|BUDGIE|CINNAMON|MATE) export DISPLAY="GDM";;
+                    KDE) export DISPLAY="SDDM";;
+                    DEEPIN|ENLIGHTENMENT) export DISPLAY="LIGHTDM";;
+                    XFCE4|LXDE|LXQT) export DISPLAY="LXDM";;
                 esac
                 ;;
         esac
-        unset confirm
+        unset CONFIRM
     fi
-
-    # Export required variables
-    export language
-    export HOST_name; export ROOT_passwd
-    export USER_name; export USER_passwd
 }
 
 _grant_user_power() {
 
-    # give ALL power to user in sudoers
-    _info "Setting rights for user ${USER_name}"
-    echo "${USER_name} ALL=(ALL) ALL" >> /mnt/etc/sudoers
+    # Grant user in sudoers
+    _info "Granting user ${USER_NAME} in sudoers"
+    echo "${USER_NAME} ALL=(ALL) ALL" >> /mnt/etc/sudoers
 
     # add user to all groups
-    _info "Adding user ${USER_name} to all groups"
+    _info "Adding user ${USER_NAME} to all groups"
     _chroot "yes | pwck"
     _chroot "yes | grpck"
-    group_list=$(cut -d: -f1 /mnt/etc/group)
-    for group in ${group_list}; do
-        _chroot "gpasswd -a ${USER_name} ${group}"
+    GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
+    for GROUP in ${GOUPLIST}; do
+        _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
     done
 }
 

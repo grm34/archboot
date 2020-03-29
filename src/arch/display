@@ -19,67 +19,68 @@
 _install_display_manager() {
 
     # Install Display Manager
-    _info "Installing ${display_man}"
-    install_display="_${display_man}"
-    _chroot "pacman --noconfirm -S ${!install_display}; "
-    _chroot "systemctl enable ${display_man}"
+    _info "Installing ${DISPLAY,,}"
+    _chroot "pacman --noconfirm -S ${!DISPLAY}; "
+    _chroot "systemctl enable ${DISPLAY,,}"
 
     # Start command of each Desktop Environment
-    case ${desktop} in
-        gnome|mate|cinnamon) session="/usr/bin/${desktop}-session";;
-        kde|xfce4|lxde|lxqt) session="/usr/bin/start${desktop}";;
-        enlightenment) session="/usr/bin/enlightenment_start";;
-        budgie) session="/usr/bin/budgie-desktop";;
-        deepin) session="/usr/bin/startdde";;
+    case ${DESKTOP} in
+        GNOME|MATE|CINNAMON) SESSION="/usr/bin/${DESKTOP,,}-session";;
+        KDE|XFCE4|LXDE|LXQT) SESSION="/usr/bin/start${DESKTOP,,}";;
+        ENLIGHTENMENT) SESSION="/usr/bin/enlightenment_start";;
+        BUDGIE) SESSION="/usr/bin/budgie-desktop";;
+        DEEPIN) SESSION="/usr/bin/startdde";;
     esac
 
     # GDM
-    if [[ ${display_man} == "gdm" ]]; then
-        wget ${_url}/conf/xprofile
+    if [[ ${DISPLAY} == "GDM" ]]; then
+        wget ${URL}/conf/xprofile
         mv xprofile /mnt/etc/xprofile
 
     # LIGHTDM
-    elif [[ ${display_man} == "lightdm" ]]; then
+    elif [[ ${DISPLAY} == "LIGHTDM" ]]; then
 
         # Select Greeter
-        case ${desktop} in
-            deepin) greeter="deepin";;
-            kde) greeter="kde";;
-            *) greeter="gtk";;
+        case ${DESKTOP} in
+            DEEPIN) GREETER="deepin";;
+            KDE) GREETER="kde";;
+            *) GREETER="gtk";;
         esac
 
         # Install Greeter
-        if [[ ${desktop} != "deepin" ]]; then
-            _info "Installing lightdm-${greeter}-greeter"
-            _chroot "pacman --noconfirm -S lightdm-${greeter}-greeter"
+        if [[ ${DESKTOP} != "DEEPIN" ]]; then
+            _info "Installing lightdm-${GREETER}-greeter"
+            _chroot "pacman --noconfirm -S lightdm-${GREETER}-greeter"
         fi
 
         # Configure Greeter
-        default="#greeter-session=example-gtk-gnome"
-        session="greeter-session=lightdm-${greeter}-greeter"
-        num_on="greeter-setup-script=/usr/bin/numlockx on"
-        num_off="#greeter-setup-script="
-        sed -i -e "s|${default}|${session}|g" /mnt/etc/lightdm/lightdm.conf
-        sed -i -e "s|${num_off}|${num_on}|g" /mnt/etc/lightdm/lightdm.conf
+        DEFAULT_SESSION="#greeter-session=example-gtk-gnome"
+        SESSION="greeter-session=lightdm-${GREETER}-greeter"
+        NUMON="greeter-setup-script=/usr/bin/numlockx on"
+        NUMOFF="#greeter-setup-script="
+        sed -i -e \
+"s|${DEFAULT_SESSION}|${SESSION}|g" /mnt/etc/lightdm/lightdm.conf
+        sed -i -e "s|${NUMOFF}|${NUMON}|g" /mnt/etc/lightdm/lightdm.conf
 
     # SDDM
-    elif [[ ${display_man} == "sddm" ]]; then
+    elif [[ ${DISPLAY} == "SDDM" ]]; then
         _chroot "sddm --example-config > /etc/sddm.conf"
-        sed -i -e "s|Session=|Session=${session}|g" /mnt/etc/sddm.conf
+        sed -i -e "s|Session=|Session=${SESSION}|g" /mnt/etc/sddm.conf
         sed -i -e "s/Numlock=none/Numlock=on/g" /mnt/etc/sddm.conf
 
     # LXDM
-    elif [[ ${display_man} == "lxdm" ]]; then
-        default="# session=/usr/bin/startlxde"
-        sed -i -e "s|${default}|session=${session}|g" /mnt/etc/lxdm/lxdm.conf
+    elif [[ ${DISPLAY} == "LXDM" ]]; then
+        DEFAULT_SESSION="# session=/usr/bin/startlxde"
+        sed -i -e \
+"s|${DEFAULT_SESSION}|session=${SESSION}|g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/# numlock=0/numlock=1/g" /mnt/etc/lxdm/lxdm.conf
-        sed -i -e "s/white=/white=${USER_name}/g" /mnt/etc/lxdm/lxdm.conf
+        sed -i -e "s/white=/white=${USER_NAME}/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/black=/black=root/g" /mnt/etc/lxdm/lxdm.conf
 
     # XDM
-    elif [[ ${display_man} == "xdm" ]]; then
-        echo ${session} > /mnt/home/${USER_name}/.xsession
-        chmod 700 /mnt/home/${USER_name}/.xsession
+    elif [[ ${DISPLAY} == "XDM" ]]; then
+        echo ${SESSION} > /mnt/home/${USER_NAME}/.xsession
+        chmod 700 /mnt/home/${USER_NAME}/.xsession
     fi
 }
 
