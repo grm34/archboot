@@ -46,7 +46,7 @@ _default_partitioning_scheme() {
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             wipefs -fa /dev/"${DISK}"
-            printf ${PART_CODE}"\nw" | fdisk /dev/"${DISK}"
+            printf "${PART_CODE}\nw" | fdisk /dev/"${DISK}"
             partprobe /dev/"${DISK}"
             ;;
         *)

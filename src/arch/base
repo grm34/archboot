@@ -12,7 +12,7 @@
 _install_base() {
 
     # Base System
-    _info "Installing base system and $(sed s/'_'/' '/g <<< ${KERNEL,,})"
+    _info "Installing base system and $(sed s/'_'/' '/g <<< "${KERNEL,,}")"
     yes '' | pacstrap /mnt "${ARCH} ${!KERNEL}"
 
     # fstab
