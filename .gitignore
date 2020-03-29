@@ -1,5 +1,5 @@
 *
-!conf/
+!conf/*
 !src/apps/*
 !src/arch/*
 !archboot
