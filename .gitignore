@@ -1,6 +1,6 @@
-*_test*
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+*
+!conf/*
+!src/*
+!archboot
+!LICENSE
+!README.md
