@@ -4,51 +4,51 @@
 # ============================================================================
 
 # Gnome
-export _gnome="gnome gnome-extra"
+export GNOME="gnome gnome-extra"
 
 # Kde
-export _kde="plasma kde-applications"
+export KDE="plasma kde-applications"
 
 # Lxde
-export _lxde="lxde"
+export LXDE="lxde"
 
 # Xfce
-export _xfce4="xfce4 xfce4-goodies"
+export XFCE4="xfce4 xfce4-goodies"
 
 # Deepin
-export _deepin="deepin deepin-extra"
+export DEEPIN="deepin deepin-extra"
 
 # Cinnamon
-export _cinnamon="cinnamon"
+export CINNAMON="cinnamon"
 
 # Budgie
-export _budgie="budgie-desktop"
+export BUDGIE="budgie-desktop"
 
 # Enlightenment
-export _enlightenment="enlightenment"
+export ENLIGHTENMENT="enlightenment"
 
 # Mate
-export _mate="mate mate-extra"
+export MATE="mate mate-extra"
 
 # Lxqt
-export _lxqt="lxqt"
+export LXQT="lxqt"
 
 #                         REQUIRED PACKAGES
 # ============================================================================
 
 # Xorg
-export _xorg="xorg-server"
+export XORG="xorg-server"
 
 # Fonts
-export _fonts="xorg-fonts-type1 ttf-dejavu font-bh-ttf \
+export FONTS="xorg-fonts-type1 ttf-dejavu font-bh-ttf \
 font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
 ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
 
 # Numlock
-export _numlock="numlockx"
+export NUMLOCK="numlockx"
 
 # Terminal
-export _term="terminator"
+export TERMINAL="terminator"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================

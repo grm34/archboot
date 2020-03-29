@@ -1,65 +1,65 @@
 #!/bin/bash
 
-#                         3D VGA CONTROLLER(s)
+#                        VGA CONTROLLER DRIVERS
 # ============================================================================
-# Here we scan for 3D VGA Controller(s) to install appropriate drivers
+# Here we scan for 3D VGA Controller to install appropriate drivers
 # with OpenGL and Hardware Acceleration if currently supported.
 # User can choose to install proprietary drivers instead of open source.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Xorg#Driver_installation
 # ============================================================================
 
-_get_vga_controller() {
+_get_vga_driver() {
 
     _info "Scanning 3D VGA Controller"
 
     # NVIDIA
-    nvidia_card=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
+    NVIDIA_CARD=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
     if [[ $? -eq 0 ]]; then
-        _note "${nvidia_card##*: } detected!"
+        _note "${NVIDIA_CARD##*: } detected!"
         _confirm "Use Nvidia proprietary drivers?"
-        case ${confirm} in
+        case ${CONFIRM} in
             y|Y|yes|Yes|YES)
-                case ${kernel} in
-                    lts_kernel) export vga_driver="nvidia_lts";;
-                    hardened_kernel|zen_kernel)
-                        export vga_driver="nvidia_dkms";;
-                    default_kernel) export vga_driver="nvidia";;
+                case ${KERNEL} in
+                    LTS_KERNEL) export VGA_DRIVER="NVIDIA_LTS";;
+                    HARDENED_KERNEL|ZEN_KERNEL)
+                        export VGA_DRIVER="NVIDIA_DKMS";;
+                    DEFAULT_KERNEL) export VGA_DRIVER="NVIDIA_DRIVER";;
                 esac
-                export openGL="openGL_nvidia"
-                export hard_video="hard_video_nvidia"
+                export OPENGL="OPENGL_NVIDIA"
+                export HARDVIDEO="HARVIDEO_NVIDIA"
                 ;;
             *)
-                export vga_driver="nouveau"
-                export openGL="openGL_nouveau"
-                export hard_video="hard_video_nouveau"
+                export VGA_DRIVER="NOUVEAU_DRIVER"
+                export OPENGL="OPENGL_NOUVEAU"
+                export HARDVIDEO="HARDVIDEO_NOUVEAU"
                 ;;
         esac
-        unset confirm
+        unset CONFIRM
     else
 
         # AMD / ATI
-        amd_card=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
+        AMD_CARD=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
         if [[ $? -eq 0 ]]; then
-            _note "${amd_card##*: } detected!"
-            export vga_driver="amd"
-            export openGL="openGL_amd"
-            export hard_video="hard_video_amd"
+            _note "${AMD_CARD##*: } detected!"
+            export VGA_DRIVER="AMD_DRIVER"
+            export OPENGL="OPENGL_AMD"
+            export HARDVIDEO="HARDVIDEO_AMD"
 
         else
 
             # INTEL
-            intel_card=$(lspci | grep -e VGA -e 3D | grep -i intel)
+            INTEL_CARD=$(lspci | grep -e VGA -e 3D | grep -i intel)
             if [[ $? -eq 0 ]]; then
-                _note "${intel_card##*: } detected!"
-                export vga_driver="intel"
-                export openGL="openGL_intel"
-                export hard_video="hard_video_intel"
+                _note "${INTEL_CARD##*: } detected!"
+                export VGA_DRIVER="INTEL_DRIVER"
+                export OPENGL="OPENGL_INTEL"
+                export HARDVIDEO="HARDVIDEO_INTEL"
 
             # DEFAULT
             else
-                _note "Controller not found, default driver will be used"
-                export vga_driver="default"
+                _note "controller not found! Default driver will be used."
+                export VGA_DRIVER="DEFAULT_DRIVER"
             fi
         fi
     fi
@@ -69,15 +69,12 @@ _install_vga_driver() {
 
     # VGA Controller
     _info "Installing 3D VGA Driver"
-    install_vga="_${vga_driver}"
-    _chroot "pacman --noconfirm -S ${!install_vga}"
+    _chroot "pacman --noconfirm -S ${!VGA_DRIVER}"
 
     # OpenGL & Hardware Video Acceleration
-    if [[ ${vga_driver} != "default" ]]; then
+    if [[ ${VGA_DRIVER} != "DEFAULT_DRIVER" ]]; then
         _info "Installing OpenGL & Hardware Video Acceleration"
-        install_openGL="_${openGL}"
-        install_hard="_${hard_video}"
-        _chroot "pacman --noconfirm -S ${!install_openGL} ${!install_hard}"
+        _chroot "pacman --noconfirm -S ${!OPENGL} ${!HARDVIDEO}"
     fi
 }
 

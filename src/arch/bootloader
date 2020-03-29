@@ -2,16 +2,16 @@
 
 #                             BOOTLOADER
 # ============================================================================
-# Here we install and configure Grub bootloader, all steps are described in
-# official documentation: https://wiki.archlinux.org/index.php/GRUB
+# Here we install and configure Grub2 bootloader, all steps are described
+# in the official documentation: https://wiki.archlinux.org/index.php/GRUB
 # We also install additional themes for beautifull OS selection menu.
 # ============================================================================
 
 _install_bootloader() {
 
-    # Install Grub packages
-    _info "Installing Grub packages"
-    _chroot "pacman --noconfirm -S ${_bootapps}"
+    # Install bootloader packages
+    _info "Installing bootloader packages"
+    _chroot "pacman --noconfirm -S ${BOOTAPPS}"
 
     # Install Grub according to firmware
     _info "Installing Grub for ${FIRMWARE} firmware"
@@ -23,16 +23,16 @@ _install_bootloader() {
 
     # BIOS Firmware
     else
-        _chroot "grub-install --target=i386-pc /dev/${_disk}"
+        _chroot "grub-install --target=i386-pc /dev/${DISK}"
     fi
 
-    # Download Grub Themes
-    _info "Downloading Grub Themes"
-    _wget ${_gh_pages}/assets/images/background.png
+    # Download Grub2 Themes
+    _info "Downloading Grub2 Themes"
+    _wget ${GHPAGES}/assets/images/background.png
     _chroot "git clone git://github.com/Generator/Grub2-themes.git"
 
-    # Install Grub Themes
-    _info "Installing Grub Themes"
+    # Install Grub2 Themes
+    _info "Installing Grub2 Themes"
     _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
     sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
 /mnt/etc/default/grub
@@ -44,7 +44,7 @@ _install_bootloader() {
     rm -r /mnt/Grub2-themes
 
     # Config Grub
-    _info "Setting Grub for ${FIRMWARE} firmware"
+    _info "Configuring Grub2 for ${FIRMWARE} firmware"
     _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 }
 

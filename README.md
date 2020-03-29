@@ -1,6 +1,10 @@
 [![archboot](https://www.archboot.org/assets/images/logo.png)](https://www.archboot.org)
 
-[![version](https://img.shields.io/badge/version-v2.9.0-blue.svg?style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34/archboot/releases) [![maintenance](https://img.shields.io/maintenance/yes/2020.svg?&style=flat&logo=github&cacheSeconds=3600)](https://github.com/grm34/archboot/pulse) [![author](https://img.shields.io/badge/author-grm34-red.svg?&style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34) [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34/archboot/blob/master/LICENSE) [![telegram](https://img.shields.io/badge/Telegram-chat-red?style=flat&logo=telegram&cacheSeconds=3600)](https://t.me/archboot)
+[![version](https://img.shields.io/badge/version-v2.9.0-blue.svg?style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34/archboot/releases)
+[![maintenance](https://img.shields.io/maintenance/yes/2020.svg?&style=flat&logo=github&cacheSeconds=3600)](https://github.com/grm34/archboot/pulse)
+[![author](https://img.shields.io/badge/author-grm34-red.svg?&style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34)
+[![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34/archboot/blob/master/LICENSE)
+[![telegram](https://img.shields.io/badge/Telegram-chat-red?style=flat&logo=telegram&cacheSeconds=3600)](https://t.me/archboot)
 
 Arch Linux is a light and fast distribution whose concept is to remain as
 simple as possible. In the same purpose, this script performs minimalist
@@ -22,7 +26,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 > For AZERTY keyboard run *`loqdkeys fr`*
 
-**3.** Download and run **archboot** *`wget tiny.cc/archboot; sh archboot`*
+**3.** Download and run **archboot** *`wget tiny.cc/archboot-dev; sh archboot-dev`*
 
 ## Wiki
 
@@ -30,7 +34,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 * [Desktop Environment](https://github.com/grm34/archboot/wiki/Desktop-Environment)
 * [Display Manager](https://github.com/grm34/archboot/wiki/Display-Manager)
 * [Language code](https://github.com/grm34/archboot/wiki/Language-code)
-* [TimeZone code](https://github.com/grm34/archboot/wiki/TimeZone-code)
+* [Timezone code](https://github.com/grm34/archboot/wiki/Timezone-code)
 * [Custom Partitioning](https://github.com/grm34/archboot/wiki/Custom-Partitioning)
 * [Custom Linux Kernel](https://github.com/grm34/archboot/wiki/Custom-Linux-Kernel)
 * [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
@@ -41,13 +45,13 @@ Take a look at **/var/log/archboot** *`cat /var/log/archboot/archboot*.log`*
 
 ## Screenshot
 
-[![screenchot](https://www.archboot.org/assets/images/screenshot.png)](https://www.archboot.org/assets/images/screenshot.png)
+[![screenshot](https://www.archboot.org/assets/images/screenshot.png)](https://github.com/grm34/archboot/tree/dev#screenshot)
 
 ## Official Documentation
 
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
 * [USB Flash Installation Media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/for-you.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/its-not-a-lie-if-you-believe-it.svg)](https://forthebadge.com)
+[![footer](https://forthebadge.com/images/badges/built-with-love.svg)](https://github.com/grm34/archboot/tree/dev#official-documentation)
+[![footer](https://forthebadge.com/images/badges/for-you.svg)](https://github.com/grm34/archboot/tree/dev#official-documentation)
+[![footer](https://forthebadge.com/images/badges/its-not-a-lie-if-you-believe-it.svg)](https://github.com/grm34/archboot/tree/dev#official-documentation)
