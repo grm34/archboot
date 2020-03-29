@@ -97,7 +97,7 @@ _get_user_variables() {
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             until [[ ${KERNEL} =~ ^([1-9]|4)$ ]]; do
-                _select "Default" "Hardened" "LTS" "ZEN"
+                _select "DEFAULT" "HARDENED" "LTS" "ZEN"
                 read -r KERNEL
             done
             KERNEL_CHOICE=\
@@ -105,7 +105,7 @@ _get_user_variables() {
             export KERNEL=${KERNEL_CHOICE[${KERNEL}]}
             ;;
         *)
-            export KERNEL="default_kernel"
+            export KERNEL="DEFAULT_KERNEL"
             ;;
     esac
     unset confirm
@@ -114,8 +114,8 @@ _get_user_variables() {
     _confirm "Do you wish to install Desktop Environment?"
     case ${CONIRM} in y|Y|yes|Yes|YES)
         until [[ ${DESKTOP} =~ ^([1-9]|10)$ ]]; do
-            _select "Gnome" "KDE" "MATE" "Xfce" \
-"LXDE" "LXQt" "Deepin" "Budgie" "Cinnamon" "Enlightenment"
+            _select "GNOME" "KDE" "MATE" "XFCE" \
+"LXDE" "LXQT" "DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
             read -r DESKTOP
         done
         DESKTOP_CHOICE=\
@@ -134,7 +134,7 @@ _get_user_variables() {
             # Custom display manager
             n|N)
                 until [[ ${DISPLAY} =~ ^([1-5])$ ]]; do
-                    _select "Gdm" "LightDM" "Sddm" "Lxdm" "Xdm"
+                    _select "GDM" "LIGHTDM" "SDDM" "LXDM" "XDM"
                     read -r DISPLAY
                 done
                 DISPLAY_CHOICE=(NONE GDM LIGHTDM SDDM LXDM XDM)
