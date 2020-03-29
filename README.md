@@ -41,7 +41,7 @@ Take a look at **/var/log/archboot** *`cat /var/log/archboot/archboot*.log`*
 
 ## Screenshot
 
-[![screenchot](https://www.archboot.org/assets/images/screenshot.png)](https://www.archboot.org/assets/images/screenshot.png)
+![screenchot](https://www.archboot.org/assets/images/screenshot.png)
 
 ## Official Documentation
 
