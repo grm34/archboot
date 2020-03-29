@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#                         3D VGA CONTROLLER(s)
+#                        VGA CONTROLLER DRIVERS
 # ============================================================================
 # Here we scan for 3D VGA Controller(s) to install appropriate drivers
 # with OpenGL and Hardware Acceleration if currently supported.
@@ -9,7 +9,7 @@
 # https://wiki.archlinux.org/index.php/Xorg#Driver_installation
 # ============================================================================
 
-_get_vga_controller() {
+_get_vga_driver() {
 
     _info "Scanning 3D VGA Controller"
 
@@ -65,7 +65,7 @@ _get_vga_controller() {
     fi
 }
 
-_install_VGA_DRIVER() {
+_install_vga_driver() {
 
     # VGA Controller
     _info "Installing 3D VGA Driver"

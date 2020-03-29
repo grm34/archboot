@@ -248,7 +248,7 @@ if [[ ! -z ${DESKTOP+x} ]]; then
     _confirm "Do you wish to install VGA Driver?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
-            _get_vga_controller
+            _get_vga_driver
             ;;
     esac
     unset CONFIRM
