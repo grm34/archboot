@@ -67,6 +67,7 @@ _default_partitioning_scheme() {
     printf "n\n${PART_TYPE}\n\n+${BOOT_SIZE}\nw" | fdisk /dev/"${DISK}"
     partprobe /dev/"${DISK}" && sleep 2s
     yes | _check mkfs."${BOOT_FILESYSTEM}" /dev/"${DISK}${PART_ORDER[1]}"
+    export BOOT_PARTITION="/dev/${DISK}${PART_ORDER[1]}"
 
     # Get SWAP partition size
     until [[ ${SWAP_SIZE} =~ ^[0-9]{1,3}(M|G){1}+$ ]]; do
@@ -74,14 +75,13 @@ _default_partitioning_scheme() {
         _prompt "Swap partition size:"
         read -r SWAP_SIZE
     done
-    export BOOT_MOUNTPOINT="/dev/${DISK}${PART_ORDER[1]}"
 
     # Create SWAP partition
     _info "Creating swap partition (${SWAP_SIZE})"
     printf "n\n${PART_TYPE}\n\n+${SWAP_SIZE}\nw" | fdisk /dev/"${DISK}"
     partprobe /dev/"${DISK}" && sleep 2s
     yes | _check mkswap /dev/"${DISK}${PART_ORDER[2]}"
-    export SWAP_MOUNTPOINT="/dev/${DISK}${PART_ORDER[2]}"
+    export SWAP_PARTITION="/dev/${DISK}${PART_ORDER[2]}"
 
     # Get SYSTEM partiton size
     until [[ ${SYSTEM_SIZE} =~ ^[0-9]{1,3}(G|T|P){1}+$ ]]; do
@@ -95,7 +95,7 @@ _default_partitioning_scheme() {
     printf "n\n${PART_TYPE}\n\n+${SYSTEM_SIZE}\nw" | fdisk /dev/"${DISK}"
     partprobe /dev/"${DISK}" && sleep 2s
     yes | _check mkfs.ext4 /dev/"${DISK}${PART_ORDER[3]}"
-    export SYSTEM_MOUNTPOINT="/dev/${DISK}${PART_ORDER[3]}"
+    export SYSTEM_PARTITION="/dev/${DISK}${PART_ORDER[3]}"
 
     # HOME partition
     if [[ ${FIRMWARE} == "UEFI" ]]; then
@@ -128,7 +128,7 @@ _default_partitioning_scheme() {
     fi
     partprobe /dev/"${DISK}" && sleep 2s
     yes | _check mkfs.ext4 /dev/"${DISK}${PART_ORDER[4]}"
-    export HOME_MOUNTPOINT="/dev/${DISK}${PART_ORDER[4]}"
+    export HOME_PARTITION="/dev/${DISK}${PART_ORDER[4]}"
 }
 
 _custom_partitioning_scheme() {
@@ -136,43 +136,43 @@ _custom_partitioning_scheme() {
     _info "Listing disk and partitions"
 
     # Select boot
-    until [[ ${BOOT_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
+    until [[ ${BOOT_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
         fdisk -l
         _prompt "Enter boot mountpoint:" "(e.g., sda2, nvme0n1p2)"
-        read -r BOOT_MOUNTPOINT
+        read -r BOOT_PARTITION
     done
-    export BOOT_MOUNTPOINT="/dev/${BOOT_MOUNTPOINT}"
+    export BOOT_PARTITION="/dev/${BOOT_PARTITION}"
 
     # Define disk
-    if [[ ${BOOT_MOUNTPOINT} =~ "/dev/nvme0n" ]]; then
-        export DISK=${BOOT_MOUNTPOINT%p*}
+    if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
+        export DISK=${BOOT_PARTITION%p*}
     else
-        export DISK=${BOOT_MOUNTPOINT//[0-9]}
+        export DISK=${BOOT_PARTITION//[0-9]}
     fi
 
     # Select swap
-    until [[ ${SWAP_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
+    until [[ ${SWAP_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
         fdisk -l
         _prompt "Enter swap mountpoint:" "(e.g., sda3, nvme0n1p3)"
-        read -r SWAP_MOUNTPOINT
+        read -r SWAP_PARTITION
     done
-    export SWAP_MOUNTPOINT="/dev/${SWAP_MOUNTPOINT}"
+    export SWAP_PARTITION="/dev/${SWAP_PARTITION}"
 
     # Select system
-    until [[ ${SYSTEM_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
+    until [[ ${SYSTEM_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
         fdisk -l
         _prompt "Enter system mountpoint:" "(e.g., sda1, nvme0n1p1)"
-        read -r SYSTEM_MOUNTPOINT
+        read -r SYSTEM_PARTITION
     done
-    export SYSTEM_MOUNTPOINT="/dev/${SYSTEM_MOUNTPOINT}"
+    export SYSTEM_PARTITION="/dev/${SYSTEM_PARTITION}"
 
     # Select home
-    until [[ ${HOME_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
+    until [[ ${HOME_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
         fdisk -l
         _prompt "Enter home mountpoint:" "(e.g., sda4, nvme0n1p4)"
-        read -r HOME_MOUNTPOINT
+        read -r HOME_PARTITION
     done
-    export HOME_MOUNTPOINT="/dev/${HOME_MOUNTPOINT}"
+    export HOME_PARTITION="/dev/${HOME_PARTITION}"
 }
 
 # archboot by grm34 under Apache License 2.0
