@@ -48,6 +48,6 @@ Take a look at **/var/log/archboot** *`cat /var/log/archboot/archboot*.log`*
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
 * [USB Flash Installation Media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
-[forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)
-[forthebadge](https://forthebadge.com/images/badges/for-you.svg)
-[forthebadge](https://forthebadge.com/images/badges/its-not-a-lie-if-you-believe-it.svg)
+![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)
+![forthebadge](https://forthebadge.com/images/badges/for-you.svg)
+![forthebadge](https://forthebadge.com/images/badges/its-not-a-lie-if-you-believe-it.svg)
