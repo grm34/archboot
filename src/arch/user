@@ -6,18 +6,18 @@
 #
 #      Required variables:
 #
-#      Language.......: full list is available in the wiki
-#      Hostname.......: computer name such as <my-favorite-computer>
-#      Root passwd....: at least 6 chars long with 1 letter & 1 digit
-#      Username.......: such as <bobby_is_not_a_loser>
-#      User passwd....: at least 6 chars long with 1 letter & 1 digit
-#      User rights....: will be added to all groups and ALL power in sudoers
-#      Linux kernel...: default - hardened - lts - zen
-#      Desktop Env....: Gnome - KDE - Deepin - Xfce - LXDE - Cinnamon
-#                       Budgie - Enlightenment - MATE - LXQt
-#      Display Man....: Gdm - LightDM - Sddm - Lxdm - Xdm
+#      LANGUAGE.......: full list is available in the wiki
+#      HOST_NAME......: computer name such as <my-favorite-computer>
+#      ROOTPASSWD.....: at least 6 chars long with 1 letter & 1 digit
+#      USER_NAME......: such as <bobby_is_not_a_loser>
+#      USERPASSWD.....: at least 6 chars long with 1 letter & 1 digit
+#      POWER..........: to add user to all groups and granted him in sudoers
+#      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN
+#      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
+#                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
+#      DISPLAY........: GDM - LIGHTDM - SDDM - LXDM - XDM
 #
-# Then we handle user rights: granted in <sudoers> and added to all groups.
+# Then we handle user power: granted in <sudoers> and added to all groups.
 # ============================================================================
 
 _get_user_variables() {

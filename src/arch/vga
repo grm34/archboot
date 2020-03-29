@@ -2,7 +2,7 @@
 
 #                        VGA CONTROLLER DRIVERS
 # ============================================================================
-# Here we scan for 3D VGA Controller(s) to install appropriate drivers
+# Here we scan for 3D VGA Controller to install appropriate drivers
 # with OpenGL and Hardware Acceleration if currently supported.
 # User can choose to install proprietary drivers instead of open source.
 # All steps are described in the official documentation:
