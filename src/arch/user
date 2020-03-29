@@ -17,7 +17,7 @@
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #      DISPLAY........: GDM - LIGHTDM - SDDM - LXDM - XDM
 #
-# Then we handle user power: granted in <sudoers> and added to all groups.
+# Then we handle user rights: granted in <sudoers> and added to all groups.
 # ============================================================================
 
 _get_user_variables() {
