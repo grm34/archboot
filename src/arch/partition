@@ -136,7 +136,7 @@ _custom_partitioning_scheme() {
     _info "Listing disk and partitions"
 
     # Select boot
-    until [[ ${BOOT_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
+    until [[ ${BOOT_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
         fdisk -l
         _prompt "Enter boot mountpoint:" "(e.g., sda2, nvme0n1p2)"
         read -r BOOT_MOUNTPOINT
@@ -151,7 +151,7 @@ _custom_partitioning_scheme() {
     fi
 
     # Select swap
-    until [[ ${SWAP_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
+    until [[ ${SWAP_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
         fdisk -l
         _prompt "Enter swap mountpoint:" "(e.g., sda3, nvme0n1p3)"
         read -r SWAP_MOUNTPOINT
@@ -159,7 +159,7 @@ _custom_partitioning_scheme() {
     export SWAP_MOUNTPOINT="/dev/${SWAP_MOUNTPOINT}"
 
     # Select system
-    until [[ ${SYSTEM_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
+    until [[ ${SYSTEM_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
         fdisk -l
         _prompt "Enter system mountpoint:" "(e.g., sda1, nvme0n1p1)"
         read -r SYSTEM_MOUNTPOINT
@@ -167,7 +167,7 @@ _custom_partitioning_scheme() {
     export SYSTEM_MOUNTPOINT="/dev/${SYSTEM_MOUNTPOINT}"
 
     # Select home
-    until [[ ${HOME_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,3}$ ]]; do
+    until [[ ${HOME_MOUNTPOINT} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
         fdisk -l
         _prompt "Enter home mountpoint:" "(e.g., sda4, nvme0n1p4)"
         read -r HOME_MOUNTPOINT
