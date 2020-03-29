@@ -41,13 +41,13 @@ Take a look at **/var/log/archboot** *`cat /var/log/archboot/archboot*.log`*
 
 ## Screenshot
 
-[![screenhot](https://www.archboot.org/assets/images/screenshot.png)](#)
+[![screenhot](https://www.archboot.org/assets/images/screenshot.png)](https://github.com/grm34/archboot/tree/dev#screenshot)
 
 ## Official Documentation
 
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
 * [USB Flash Installation Media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
-[![footer](https://forthebadge.com/images/badges/built-with-love.svg)](#)
-[![footer](https://forthebadge.com/images/badges/for-you.svg)](#)
-[![footer](https://forthebadge.com/images/badges/its-not-a-lie-if-you-believe-it.svg)](#)
+[![footer](https://forthebadge.com/images/badges/built-with-love.svg)](https://github.com/grm34/archboot/tree/dev#official-documentation)
+[![footer](https://forthebadge.com/images/badges/for-you.svg)](https://github.com/grm34/archboot/tree/dev#official-documentation)
+[![footer](https://forthebadge.com/images/badges/its-not-a-lie-if-you-believe-it.svg)](https://github.com/grm34/archboot/tree/dev#official-documentation)
