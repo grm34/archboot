@@ -312,18 +312,17 @@ case ${CONFIRM} in
 
         # User rights
         if [[ ! -z ${POWER+x} ]]; then
-            (_grant_user_power) 2>&1 | tee -a ${LOG}
+            (_enable_user_rights) 2>&1 | tee -a ${LOG}
         fi
+
+        # Success notes
+        (_note "Arch Linux installation successful!") | tee -a $[LOG]
 
         # Logfile path
         _info "Setting logfile path"
         mkdir /mnt/var/log/${APPNAME}
         cp ${LOG} /mnt/var/log/${APPNAME}/
-
-        # Success notes
-        _note "Arch Linux installation successful!"
         ;;
-
     *)
         # Install aborted
         _error "installation aborted by user!"
