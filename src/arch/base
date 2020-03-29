@@ -12,9 +12,8 @@
 _install_base() {
 
     # Base System
-    _info "Installing base system and $(sed s/'_'/' '/g <<< ${kernel})"
-    user_kernel="_${kernel}"
-    yes '' | pacstrap /mnt ${_arch} ${!user_kernel}
+    _info "Installing base system and $(sed s/'_'/' '/g <<< ${KERNEL,,})"
+    yes '' | pacstrap /mnt ${ARCH} ${!KERNEL}
 
     # fstab
     _info "Setting file systems table"
@@ -22,44 +21,44 @@ _install_base() {
     cat /mnt/etc/fstab
 
     # TimeZone
-    _info "Setting timezone to ${timezone}"
-    ln -sf /usr/share/zoneinfo/${timezone} /mnt/etc/localtime
+    _info "Setting timezone to ${TIMEZONE}"
+    ln -sf /usr/share/zoneinfo/${TIMEZONE} /mnt/etc/localtime
 
     # locale
-    _info "Setting locale to ${language}.UTF-8"
-    echo "${language}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+    _info "Setting locale to ${LANGUAGE}.UTF-8"
+    echo "${LANGUAGE}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
     _chroot "locale-gen
-    export LANG=${language}.UTF-8"
-    echo "LANG=${language}.UTF-8" > /mnt/etc/locale.conf
+    export LANG=${LANGUAGE}.UTF-8"
+    echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
 
     # vconsole
-    _info "Setting virtual console to ${keymap_code^^}"
-    echo "KEYMAP=${keymap_code}" > /mnt/etc/vconsole.conf
+    _info "Setting virtual console to ${KEYMAP^^}"
+    echo "KEYMAP=${KEYMAP}" > /mnt/etc/vconsole.conf
 
     # hostname
-    _info "Setting hostname ${HOST_name}"
-    echo "${HOST_name}" > /mnt/etc/hostname
+    _info "Setting hostname ${HOST_NAME}"
+    echo "${HOST_NAME}" > /mnt/etc/hostname
 
     # root passwd
     _info "Setting root password"
-    _chroot "echo 'root:${ROOT_passwd}' | chpasswd"
+    _chroot "echo 'root:${ROOTPASSWD}' | chpasswd"
 
     # network
     _info "Installing network manager"
-    _chroot "pacman --noconfirm -S ${_netapps}
+    _chroot "pacman --noconfirm -S ${NETAPPS}
     systemctl enable NetworkManager"
 
     # Intel Microcode
     lscpu | grep "Intel" >/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         _info "Installing Intel CPU Microcode"
-        _chroot "pacman --noconfirm -S ${_intel}"
+        _chroot "pacman --noconfirm -S ${INTEL_UCODE}"
     fi
 
     # user
-    _info "Setting user ${USER_name}"
-    _chroot "useradd -g users -m -s /bin/bash ${USER_name}
-    echo '${USER_name}:${USER_passwd}' | chpasswd"
+    _info "Setting user ${USER_NAME}"
+    _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}
+    echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
 }
 
 # archboot by grm34 under Apache License 2.0

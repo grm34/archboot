@@ -4,19 +4,19 @@
 # ============================================================================
 
 # GDM
-export _gdm="gdm"
+export GDM="gdm"
 
 # LightDM
-export _lightdm="lightdm"
+export LIGHTDM="lightdm"
 
 # SDDM
-export _sddm="sddm"
+export SDDM="sddm"
 
 # LXDM
-export _lxdm="lxdm"
+export LXDM="lxdm"
 
 # XDM
-export _xdm="xorg-xdm"
+export XDM="xorg-xdm"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================
