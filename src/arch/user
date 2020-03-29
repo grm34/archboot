@@ -112,16 +112,17 @@ _get_user_variables() {
 
     # Desktop Environment
     _confirm "Do you wish to install Desktop Environment?"
-    case ${CONIRM} in y|Y|yes|Yes|YES)
-        until [[ ${DESKTOP} =~ ^([1-9]|10)$ ]]; do
-            _select "GNOME" "KDE" "MATE" "XFCE" \
-"LXDE" "LXQT" "DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
-            read -r DESKTOP
-        done
-        DESKTOP_CHOICE=\
-(NONE GNOME KDE MATE XFCE4 LXDE LXQT DEEPIN BUDGIE CINNAMON ENLIGHTENMENT)
-        export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
-        ;;
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            until [[ ${DESKTOP} =~ ^([1-9]|10)$ ]]; do
+                _select "GNOME" "KDE" "MATE" "XFCE" \
+    "LXDE" "LXQT" "DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
+                read -r DESKTOP
+            done
+            DESKTOP_CHOICE=\
+    (NONE GNOME KDE MATE XFCE4 LXDE LXQT DEEPIN BUDGIE CINNAMON ENLIGHTENMENT)
+            export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
+            ;;
     esac
     unset CONFIRM
 
@@ -132,7 +133,7 @@ _get_user_variables() {
         case ${CONFIRM} in
 
             # Custom display manager
-            n|N)
+            n|N|no|No|NO)
                 until [[ ${DISPLAY} =~ ^([1-5])$ ]]; do
                     _select "GDM" "LIGHTDM" "SDDM" "LXDM" "XDM"
                     read -r DISPLAY
