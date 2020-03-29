@@ -12,7 +12,7 @@
 _mirrorlist() {
 
     # Get user country code from ipinfo.io API
-    _info "Searching for country code"
+    _info "Searching for fastest mirrors"
     COUNTRY=\
 $(curl -s ipinfo.io/ | grep "country" | \
 sed 's/  "country": "//' | sed 's/",//')
@@ -49,7 +49,7 @@ sed 's/  "timezone": "//' | sed 's/",//')
     # Otherwise ask timezone to user
     else
         until grep -Fxq "${TIMEZONE}" ./timezone; do
-            _note "timezone not found! Full list is available in the wiki"
+            _note "timezone not found! Full list is available in the wiki."
             _prompt "Enter timezone code:" "(e.g., Europe/Paris, Asia/Tokyo)"
             read -r TIMEZONE
         done

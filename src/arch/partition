@@ -41,7 +41,7 @@ _default_partitioning_scheme() {
 
     # Create MBR or GPT Table
     fdisk -l /dev/${DISK}
-    _note "WARNING! This will erase the entire drive"
+    _note "WARNING: this will erase the entire drive!"
     _confirm "Setting ${PART_TABLE} partition table on /dev/${DISK}?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
@@ -50,7 +50,7 @@ _default_partitioning_scheme() {
             partprobe /dev/${DISK}
             ;;
         *)
-            _error "aborted by user!"
+            _error "installation aborted by user!"
             ;;
     esac
     unset CONFIRM

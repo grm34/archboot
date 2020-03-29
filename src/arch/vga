@@ -58,7 +58,7 @@ _get_vga_driver() {
 
             # DEFAULT
             else
-                _note "Controller not found, default driver will be used"
+                _note "controller not found! Default driver will be used."
                 export VGA_DRIVER="DEFAULT_DRIVER"
             fi
         fi

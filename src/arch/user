@@ -24,7 +24,7 @@ _get_user_variables() {
 
     # Language
     until grep -Fxq "${LANGUAGE}" ./language; do
-        _note "full list is available in the wiki"
+        _note "full list is available in the wiki."
         _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
         read -r LANGUAGE
     done

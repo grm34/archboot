@@ -90,7 +90,7 @@ _check() {
     "$@"
     local STATUS=$?
     if [[ ${STATUS} -ne 0 ]]; then
-        _error "with ${1}"
+        _error "${1}"
     fi
     return ${STATUS}
 }
@@ -110,7 +110,7 @@ timezone|xprofile|background.png|Grub2-themes)$ ]]; then
     if [[ $? -eq 1 ]]; then
         umount -R /mnt
     fi
-    _note "you must reboot to prevent unreconized system changes"
+    _note "you must reboot to prevent unreconized system changes."
     sleep 2
     exit 1
 }
@@ -191,7 +191,7 @@ _archboot_banner
 _info "Checking Internet connection"
 ping -c 1 archlinux.org >/dev/null 2>&1
 if [[ $? -eq 0 ]]; then
-    _note "Congratulations, you are connected to Internet!"
+    _note "congratulations, you are connected to Internet!"
 else
     _error "you are not connected to Internet!"
 fi
@@ -244,7 +244,7 @@ if [[ ! -z ${DESKTOP+x} ]]; then
     source ./vga_apps; source ./desktop_apps; source ./display_apps
 
     # VGA Driver or kernel mode setting?
-    _note "enter NO to use kernel mode setting"
+    _note "enter NO to use kernel mode setting."
     _confirm "Do you wish to install VGA Driver?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
@@ -265,7 +265,7 @@ fi
 _firmware; _mirrorlist; _timezone; _clock; _logs
 
 # Partitioning
-_note "enter NO to activate custom partitioning"
+_note "enter NO to activate custom partitioning."
 _confirm "Do you wish to install Arch Linux on a dedicated disk?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
@@ -279,7 +279,7 @@ unset CONFIRM
 
 # Mount
 _mount_partitions
-_note "system is ready to rumble! Partitions mounted & swap activated!"
+_note "system is ready to rumble! Partitions mounted & swap activated."
 
 #                     ARCHBOOT_SYSTEM INSTALLATION
 # ============================================================================
@@ -326,7 +326,7 @@ case ${CONFIRM} in
 
     *)
         # Install aborted
-        _error "aborted by user!"
+        _error "installation aborted by user!"
         ;;
 esac
 unset CONFIRM

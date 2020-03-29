@@ -30,7 +30,7 @@ _install_desktop_environment() {
     _chroot "pacman --noconfirm -S ${TERMINAL}"
 
     # Install Desktop Environment
-    _info "Installing ${DESKTOP,,}"
+    _info "Installing ${DESKTOP,,} desktop"
     _chroot "pacman --noconfirm -S ${!DESKTOP}"
  }
 
