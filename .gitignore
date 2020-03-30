@@ -1,7 +1,7 @@
 *
-!conf/*
-!src/apps/*
-!src/arch/*
-!archboot
-!LICENSE
-!README.md
+\!conf/*
+\!src/apps/*
+\!src/arch/*
+\!archboot
+\!LICENSE
+\!README.md
