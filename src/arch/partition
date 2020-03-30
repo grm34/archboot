@@ -135,44 +135,30 @@ _custom_partitioning_scheme() {
 
     _info "Listing disk and partitions"
 
-    # Select boot
-    until [[ ${BOOT_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
-        fdisk -l
-        _prompt "Enter boot mountpoint:" "(e.g., sda2, nvme0n1p2)"
-        read -r BOOT_PARTITION
-    done
-    export BOOT_PARTITION="/dev/${BOOT_PARTITION}"
+    # Required partitions
+    PARTITION=(BOOT_PARTITION SWAP_PARTITION SYSTEM_PARTITION HOME_PARTITION)
 
-    # Define disk
-    if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
-        export DISK=${BOOT_PARTITION%p*}
-    else
-        export DISK=${BOOT_PARTITION//[0-9]}
-    fi
+    # Get partitions mountpoints
+    for POINT in "${PARTITION[@]}"; do
+        echo && fdisk -l
+        PART_NAME=${POINT//_PARTITION/}
+        _prompt "Enter ${PART_NAME,,} mountpoint:" "(e.g., sda2, nvme0n1p12)"
+        read -r MOUNTPOINT
 
-    # Select swap
-    until [[ ${SWAP_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
-        fdisk -l
-        _prompt "Enter swap mountpoint:" "(e.g., sda3, nvme0n1p3)"
-        read -r SWAP_PARTITION
-    done
-    export SWAP_PARTITION="/dev/${SWAP_PARTITION}"
+        # Check if valid mountpoint
+        CHECK=$(partprobe -d -s /dev/${MOUNTPOINT})
 
-    # Select system
-    until [[ ${SYSTEM_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
-        fdisk -l
-        _prompt "Enter system mountpoint:" "(e.g., sda1, nvme0n1p1)"
-        read -r SYSTEM_PARTITION
-    done
-    export SYSTEM_PARTITION="/dev/${SYSTEM_PARTITION}"
+        # Otherwise ask again
+        until [[ ${CHECK} ]]; do
+            echo && sleep 2s && fdisk -l
+            _prompt "Enter valid ${PART_NAME,,} mountpoint:" "(e.g., sda1)"
+            read -r MOUNTPOINT
+            CHECK=$(partprobe -d -s /dev/${MOUNTPOINT})
+        done
 
-    # Select home
-    until [[ ${HOME_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
-        fdisk -l
-        _prompt "Enter home mountpoint:" "(e.g., sda4, nvme0n1p4)"
-        read -r HOME_PARTITION
+        # Return mountpoint
+        export ${POINT}="/dev/${MOUNTPOINT}"
     done
-    export HOME_PARTITION="/dev/${HOME_PARTITION}"
 }
 
 # archboot by grm34 under Apache License 2.0
