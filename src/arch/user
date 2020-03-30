@@ -23,13 +23,13 @@
 _get_user_variables() {
 
     # Language
-    until grep -Fxq "${LANGUAGE}" ./language; do
+    until grep -Fxq ${LANGUAGE} ./language; do
         _note "full list is available in the wiki."
         _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
         read -r LANGUAGE
     done
     export LANGUAGE
-    KEYMAP=$(echo "${LANGUAGE}" | cut -d'_' -f 1)
+    KEYMAP=$(echo ${LANGUAGE} | cut -d'_' -f 1)
     export KEYMAP
 
     # Hostname
@@ -41,7 +41,7 @@ _get_user_variables() {
     export HOST_NAME
 
     # Root Password
-    until [[ ${#A} -ge 6 && "${A}" == *[a-z]* && "${A}" == *[0-9]* ]]; do
+    until [[ ${#A} -ge 6 && ${A} == *[a-z]* && ${A} == *[0-9]* ]]; do
         _note \
 "should be at least 6 chars long with 1 letter & 1 digit"
         _prompt "Enter root password:"
@@ -52,7 +52,7 @@ _get_user_variables() {
     # Confirm Root Password
     _prompt "Confirm root password:"
     read -rs ROOTPASSWD
-    if [[ ${ROOTPASSWD} != "${A}" ]]; then
+    if [[ ${ROOTPASSWD} != ${A} ]]; then
         _error "passwords does not match!"
     fi
     export ROOTPASSWD
@@ -67,7 +67,7 @@ _get_user_variables() {
     export USER_NAME
 
     # User Password
-    until [[ ${#B} -ge 6 && "${B}" == *[a-z]* && "${B}" == *[0-9]* ]]; do
+    until [[ ${#B} -ge 6 && ${B} == *[a-z]* && ${B} == *[0-9]* ]]; do
         _note \
 "should be at least 6 chars long with 1 letter & 1 digit"
         _prompt "Enter password for user ${USER_NAME}:"
@@ -78,7 +78,7 @@ _get_user_variables() {
     # Confirm User Password
     _prompt "Confirm password for user ${USER_NAME}:"
     read -rs USERPASSWD
-    if [[ ${USERPASSWD} != "${B}" ]]; then
+    if [[ ${USERPASSWD} != ${B} ]]; then
         _error "passwords does not match!"
     fi
     export USERPASSWD
