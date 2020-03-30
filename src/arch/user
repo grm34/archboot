@@ -15,7 +15,7 @@
 #      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN
 #      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
-#      DISPLAY........: GDM - LIGHTDM - SDDM - LXDM - XDM
+#      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
 #
 # Then we enabling user rights in <sudoers> and we add him to all groups.
 # ============================================================================
@@ -136,21 +136,21 @@ _get_user_variables() {
 
             # Custom display manager
             n|N|no|No|NO)
-                until [[ ${DISPLAY} =~ ^([1-5])$ ]]; do
+                until [[ ${DISPLAY_MAN} =~ ^([1-5])$ ]]; do
                     _select "GDM" "LIGHTDM" "SDDM" "LXDM" "XDM"
-                    read -r DISPLAY
+                    read -r DISPLAY_MAN
                 done
                 DISPLAY_CHOICE=(NONE GDM LIGHTDM SDDM LXDM XDM)
-                export DISPLAY=${DISPLAY_CHOICE[${DISPLAY}]}
+                export DISPLAY_MAN=${DISPLAY_CHOICE[${DISPLAY_MAN}]}
                 ;;
 
             # Default display manager
             *)
                 case ${DESKTOP} in
-                    GNOME|BUDGIE|CINNAMON|MATE) export DISPLAY="GDM";;
-                    KDE) export DISPLAY="SDDM";;
-                    DEEPIN|ENLIGHTENMENT) export DISPLAY="LIGHTDM";;
-                    XFCE4|LXDE|LXQT) export DISPLAY="LXDM";;
+                    GNOME|BUDGIE|CINNAMON|MATE) export DISPLAY_MAN="GDM";;
+                    KDE) export DISPLAY_MAN="SDDM";;
+                    DEEPIN|ENLIGHTENMENT) export DISPLAY_MAN="LIGHTDM";;
+                    XFCE4|LXDE|LXQT) export DISPLAY_MAN="LXDM";;
                 esac
                 ;;
         esac
