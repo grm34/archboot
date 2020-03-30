@@ -6,7 +6,8 @@ AUTHOR="grm34"
 LICENSE="Apache License 2.0"
 
 _archboot_banner() {
-    echo -e """${RED}
+    echo -e """
+${RED}
       _             _     _                 _
      / \   _ __  __| |__ | |__   ___   ___ | |_
     / _ \ | '__/ __| '_ \| '_ \ / _ \ / _ \| __|
@@ -38,10 +39,8 @@ For more  information, take a look  at the  ${APPNAME} wiki
 # ============================================================================
 
 # Github url for sources and images
-URL=\
-"https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
-GHPAGES=\
-"https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
+URL="https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
+GHPAGES="https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
 
 # Shell colors
 RED="\e[1;31m"; GREEN="\e[1;32m"; YELLOW="\e[1;33m"
@@ -90,7 +89,7 @@ _check() {
     "$@"
     local STATUS=$?
     if [[ ${STATUS} -ne 0 ]]; then
-        _error "${1}"
+        _error "${@}"
     fi
     return ${STATUS}
 }
@@ -137,12 +136,12 @@ _error() {
 _select() {
     COUNT=0
     echo -ne "${YELLOW}\n==> "
-    for ENTRY in ${@}; do
+    for ENTRY in "${@}"; do
         echo -ne "${RED}[$((++COUNT))] ${GREEN}${ENTRY} ${NC}"
     done
-    LENTH=${@}
+    LENTH=${*}
     NUMBER=$((${#*} * 4))
-    COUNT=$((${#LENTH} + ${NUMBER} + 1))
+    COUNT=$((${#LENTH} + NUMBER + 1))
     echo -ne "${YELLOW}\n==> "
     _end
 }
@@ -159,8 +158,8 @@ _confirm() {
 
 # Ask some information
 _prompt() {
-    LENTH=${@}
-    COUNT=${#lenth}
+    LENTH=${*}
+    COUNT=${#LENTH}
     echo -ne "\n${YELLOW}==> ${GREEN}${1} ${RED}${2}"
     echo -ne "${YELLOW}\n==> "
     _end
@@ -168,7 +167,7 @@ _prompt() {
 
 # Display the end of select, confirm and prompt functions
 _end() {
-    for char in $(seq ${COUNT}); do
+    for COUNT in $(seq ${COUNT}); do
         echo -ne "-"
     done
     echo -ne "\n==> ${NC}"
@@ -189,8 +188,8 @@ _archboot_banner
 
 # Check Internet Connection
 _info "Checking Internet connection"
-ping -c 1 archlinux.org >/dev/null 2>&1
-if [[ $? -eq 0 ]]; then
+INTERNET=$(ping -c 1 archlinux.org)
+if [[ ${INTERNET} ]]; then
     _note "congratulations, you are connected to Internet!"
 else
     _error "you are not connected to Internet!"
@@ -227,7 +226,7 @@ source ./mounting; source ./partition; source ./user; source ./system_apps
 _get_user_variables
 
 # Desktop Environment
-if [[ ! -z ${DESKTOP+x} ]]; then
+if [[ -n ${DESKTOP+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
@@ -300,28 +299,28 @@ case ${CONFIRM} in
         (_install_base; _install_bootloader) 2>&1 | tee -a ${LOG}
 
         # Install VGA Driver
-        if [[ ! -z ${VGA_DRIVER+x} ]]; then
+        if [[ -n ${VGA_DRIVER+x} ]]; then
             (_install_vga_driver) 2>&1 | tee -a ${LOG}
         fi
 
         # Install desktop environment & display manager
-        if [[ ! -z ${DESKTOP+x} ]]; then
+        if [[ -n ${DESKTOP+x} ]]; then
             (_install_desktop_environment; _install_display_manager; \
-            _configure_desktop_environment) 2>&1 | tee -a ${LOG}
+_configure_desktop_environment) 2>&1 | tee -a ${LOG}
         fi
 
         # User rights
-        if [[ ! -z ${POWER+x} ]]; then
+        if [[ -n ${POWER+x} ]]; then
             (_enable_user_rights) 2>&1 | tee -a ${LOG}
         fi
-
-        # Success notes
-        (_note "Arch Linux installation successful!") | tee -a $[LOG]
 
         # Logfile path
         _info "Setting logfile path"
         mkdir /mnt/var/log/${APPNAME}
         cp ${LOG} /mnt/var/log/${APPNAME}/
+
+        # Success notes
+        _note "Arch Linux installation successful!"
         ;;
     *)
         # Install aborted

@@ -24,9 +24,9 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 **2.** On the install menu of Arch Linux, select **Boot Arch Linux (x86_64)**
 
-> For AZERTY keyboard run *`loqdkeys fr`*
+> *For AZERTY keyboard use `<loadkeys>` by running `loqdkeys fr`*
 
-**3.** Download and run **archboot** *`wget tiny.cc/archboot; sh archboot`*
+**3.** Download and run **archboot** *`wget tiny.cc/archboot-dev; sh archboot-dev`*
 
 ## Wiki
 
@@ -52,6 +52,6 @@ Take a look at **/var/log/archboot** *`cat /var/log/archboot/archboot*.log`*
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
 * [USB Flash Installation Media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
-[![footer](https://forthebadge.com/images/badges/built-with-love.svg)](https://github.com/grm34/archboot/tree/master#official-documentation)
-[![footer](https://forthebadge.com/images/badges/for-you.svg)](https://github.com/grm34/archboot/tree/master#official-documentation)
-[![footer](https://forthebadge.com/images/badges/its-not-a-lie-if-you-believe-it.svg)](https://github.com/grm34/archboot/tree/master#official-documentation)
+[![footer](https://forthebadge.com/images/badges/built-with-love.svg)](https://github.com/grm34/archboot/tree/dev#official-documentation)
+[![footer](https://forthebadge.com/images/badges/for-you.svg)](https://github.com/grm34/archboot/tree/dev#official-documentation)
+[![footer](https://forthebadge.com/images/badges/its-not-a-lie-if-you-believe-it.svg)](https://github.com/grm34/archboot/tree/dev#official-documentation)

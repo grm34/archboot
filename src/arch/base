@@ -12,7 +12,7 @@
 _install_base() {
 
     # Base System
-    _info "Installing base system and $(sed s/'_'/' '/g <<< ${KERNEL,,})"
+    _info "Installing base system with linux ${KERNEL_NAME,,}"
     yes '' | pacstrap /mnt ${ARCH} ${!KERNEL}
 
     # fstab
@@ -27,8 +27,8 @@ _install_base() {
     # locale
     _info "Setting locale to ${LANGUAGE}.UTF-8"
     echo "${LANGUAGE}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
-    _chroot "locale-gen
-    export LANG=${LANGUAGE}.UTF-8"
+    _chroot "locale-gen"
+    _chroot "export LANG=${LANGUAGE}.UTF-8"
     echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
 
     # vconsole
@@ -37,7 +37,7 @@ _install_base() {
 
     # hostname
     _info "Setting hostname ${HOST_NAME}"
-    echo "${HOST_NAME}" > /mnt/etc/hostname
+    echo ${HOST_NAME} > /mnt/etc/hostname
 
     # root passwd
     _info "Setting root password"
@@ -45,20 +45,20 @@ _install_base() {
 
     # network
     _info "Installing network manager"
-    _chroot "pacman --noconfirm -S ${NETAPPS}
-    systemctl enable NetworkManager"
+    _chroot "pacman --noconfirm -S ${NETAPPS}"
+    _chroot "systemctl enable NetworkManager"
 
     # Intel Microcode
-    lscpu | grep "Intel" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
+    MICROCODE=$(lscpu | grep "Intel" >/dev/null 2>&1)
+    if [[ ${MICROCODE} ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${INTEL_UCODE}"
     fi
 
     # user
     _info "Setting user ${USER_NAME}"
-    _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}
-    echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
+    _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
+    _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
 }
 
 # archboot by grm34 under Apache License 2.0

@@ -43,12 +43,12 @@ $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
 
     # Update timezone if properly detected
-    if grep -Fxq ${TIMEZONE} ./timezone ]]; then
+    if grep -Fxq ${TIMEZONE} ./timezone; then
         _info "Setting timezone to ${TIMEZONE}"
 
     # Otherwise ask timezone to user
     else
-        until grep -Fxq "${TIMEZONE}" ./timezone; do
+        until grep -Fxq ${TIMEZONE} ./timezone; do
             _note "timezone not found! Full list is available in the wiki."
             _prompt "Enter timezone code:" "(e.g., Europe/Paris, Asia/Tokyo)"
             read -r TIMEZONE
