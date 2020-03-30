@@ -7,10 +7,10 @@
 #
 #     Required partitions:
 #
-#     SYSTEM......: /mnt
-#     BOOT........: /mnt/boot
-#     SWAP........: no mountpoint
-#     HOME........: /mnt/home
+#     SYSTEM_PARTITION......: /mnt
+#     BOOT_PARTITION........: /mnt/boot
+#     SWAP_PARTITION........: no mountpoint
+#     HOME_PARTIION........: /mnt/home
 #
 # We use <partprobe> to inform system changes and
 # add <sleep 2s> to prevent unreconized system changes.
