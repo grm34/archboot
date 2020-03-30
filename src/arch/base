@@ -50,7 +50,7 @@ _install_base() {
 
     # Intel Microcode
     MICROCODE=$(lscpu | grep "Intel" >/dev/null 2>&1)
-    if [[ ${MICROCODE} -eq 0 ]]; then
+    if [[ ${MICROCODE} ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${INTEL_UCODE}"
     fi
