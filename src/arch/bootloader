@@ -23,7 +23,7 @@ _install_bootloader() {
 
     # BIOS Firmware
     else
-        _chroot "grub-install --target=i386-pc /dev/${DISK}"
+        _chroot "grub-install --target=i386-pc /dev/${DRIVE}"
     fi
 
     # Download Grub2 Themes
