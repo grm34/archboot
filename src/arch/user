@@ -34,7 +34,7 @@ _get_user_variables() {
 
     # Hostname
     until [[ ${#HOST_NAME} -ge 3 \
-    && ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+&& ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter hostname:" "(e.g., my-favorite-computer)"
         read -r HOST_NAME
     done
@@ -52,7 +52,7 @@ _get_user_variables() {
     # Confirm Root Password
     _prompt "Confirm root password:"
     read -rs ROOTPASSWD
-    if [[ ${ROOTPASSWD} != ${A} ]]; then
+    if [[ ${ROOTPASSWD} != "${A}" ]]; then
         _error "passwords does not match!"
     fi
     export ROOTPASSWD
@@ -60,7 +60,7 @@ _get_user_variables() {
 
     # Username
     until [[ ${#USER_NAME} -ge 3 \
-    && ${USER_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+&& ${USER_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter username:" "(e.g., johnny)"
         read -r USER_NAME
     done
@@ -78,7 +78,7 @@ _get_user_variables() {
     # Confirm User Password
     _prompt "Confirm password for user ${USER_NAME}:"
     read -rs USERPASSWD
-    if [[ ${USERPASSWD} != ${B} ]]; then
+    if [[ ${USERPASSWD} != "${B}" ]]; then
         _error "passwords does not match!"
     fi
     export USERPASSWD
@@ -118,7 +118,7 @@ _get_user_variables() {
         y|Y|yes|Yes|YES)
             until [[ ${DESKTOP} =~ ^([1-9]|10)$ ]]; do
                 _select "GNOME" "KDE" "MATE" "XFCE" \
-    "LXDE" "LXQT" "DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
+"LXDE" "LXQT" "DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
                 read -r DESKTOP
             done
             DESKTOP_CHOICE=\

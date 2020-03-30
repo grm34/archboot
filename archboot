@@ -89,7 +89,7 @@ _check() {
     "$@"
     local STATUS=$?
     if [[ ${STATUS} -ne 0 ]]; then
-        _error "${@}"
+        echo "${@}"
     fi
     return ${STATUS}
 }
@@ -306,7 +306,7 @@ case ${CONFIRM} in
         # Install desktop environment & display manager
         if [[ -n ${DESKTOP+x} ]]; then
             (_install_desktop_environment; _install_display_manager; \
-            _configure_desktop_environment) 2>&1 | tee -a ${LOG}
+_configure_desktop_environment) 2>&1 | tee -a ${LOG}
         fi
 
         # User rights

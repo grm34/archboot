@@ -27,8 +27,8 @@ _install_base() {
     # locale
     _info "Setting locale to ${LANGUAGE}.UTF-8"
     echo "${LANGUAGE}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
-    _chroot "locale-gen
-    export LANG=${LANGUAGE}.UTF-8"
+    _chroot "locale-gen"
+    _chroot "export LANG=${LANGUAGE}.UTF-8"
     echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
 
     # vconsole
@@ -45,8 +45,8 @@ _install_base() {
 
     # network
     _info "Installing network manager"
-    _chroot "pacman --noconfirm -S ${NETAPPS}
-    systemctl enable NetworkManager"
+    _chroot "pacman --noconfirm -S ${NETAPPS}"
+    _chroot "systemctl enable NetworkManager"
 
     # Intel Microcode
     MICROCODE=$(lscpu | grep "Intel" >/dev/null 2>&1)
@@ -57,8 +57,8 @@ _install_base() {
 
     # user
     _info "Setting user ${USER_NAME}"
-    _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}
-    echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
+    _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
+    _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
 }
 
 # archboot by grm34 under Apache License 2.0
