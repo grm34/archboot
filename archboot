@@ -315,13 +315,13 @@ case ${CONFIRM} in
             (_enable_user_rights) 2>&1 | tee -a "${LOG}"
         fi
 
-        # Success notes
-        (_note "Arch Linux installation successful!") | tee -a "${LOG}"
-
         # Logfile path
         _info "Setting logfile path"
         mkdir /mnt/var/log/${APPNAME}
         cp "${LOG}" /mnt/var/log/${APPNAME}/
+
+        # Success notes
+        _note "Arch Linux installation successful!"
         ;;
     *)
         # Install aborted
