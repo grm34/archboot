@@ -23,16 +23,24 @@
 _default_partitioning_scheme() {
 
     _info "Listing drives and partitions"
+    echo && fdisk
 
     # Select drive to use
-    until [[ ${DRIVE} =~ ^(sd|hd|nvme0n)[a-z0-9]{1}$ ]]; do
+    _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
+    read -r DRIVE
+
+    # Check if valid drive
+    CHECK=$(partprobe -d -s /dev/${DRIVE})
+
+    # Otherwise ask again
+    until [[ ${DRIVE} ]]; do
         fdisk -l
-        _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
+        _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
         read -r DRIVE
     done
     export DRIVE
 
-    # Define partition order
+    # Set partition order
     if [[ ${DRIVE} =~ "nvme0n" ]]; then
         export PART_ORDER=(0 p1 p2 p3 p4)
     else
