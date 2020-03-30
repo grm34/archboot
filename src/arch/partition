@@ -48,6 +48,7 @@ _default_partitioning_scheme() {
     fi
 
     # Create MBR or GPT Table
+    _info "Formatting ${DRIVE} drive"
     fdisk -l /dev/${DRIVE}
     _note "WARNING: this will erase the entire drive!"
     _confirm "Setting ${PART_TABLE} partition table on /dev/${DRIVE}"
