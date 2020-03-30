@@ -10,10 +10,10 @@
 #     SYSTEM_PARTITION......: /mnt
 #     BOOT_PARTITION........: /mnt/boot
 #     SWAP_PARTITION........: no mountpoint
-#     HOME_PARTIION........: /mnt/home
+#     HOME_PARTITION........: /mnt/home
 #
-# We use <partprobe> to inform system changes and
-# add <sleep 2s> to prevent unreconized system changes.
+# We use <partprobe> to inform system changes (and to check if drive exists)
+# and we add a <sleep 2s> to prevent unreconized system changes.
 # Since v2.8.1 custom partitioning is available, only drive id will be
 # asked to the user (requires properly created and formated partitions).
 # All steps are described in the official documentation:
