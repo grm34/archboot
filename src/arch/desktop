@@ -38,7 +38,7 @@ _configure_desktop_environment() {
 
     # Keyboard layout
     _info "Setting keyboard layout to ${KEYMAP^^}"
-    wget "${URL}"/conf/00-keyboard.conf
+    wget ${URL}/conf/00-keyboard.conf
     sed -i -e "s/keymap_code/${KEYMAP}/g" 00-keyboard.conf
     mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
 }
