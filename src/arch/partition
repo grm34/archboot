@@ -46,7 +46,7 @@ _default_partitioning_scheme() {
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             wipefs -fa /dev/"${DISK}"
-            printf "%s\nw" "${PART_CODE}" | fdisk /dev/"${DISK}"
+            printf "${PART_CODE}\nw" | fdisk /dev/"${DISK}"
             partprobe /dev/"${DISK}"
             ;;
         *)
@@ -64,8 +64,7 @@ _default_partitioning_scheme() {
 
     # Create BOOT partition
     _info "Creating boot partition (${BOOT_SIZE})"
-    printf \
-"n\n%s\n\n+%s\nw" "${PART_TYPE}" "${BOOT_SIZE}" | fdisk /dev/"${DISK}"
+    printf "n\n${PART_TYPE}\n\n+${BOOT_SIZE}\nw" | fdisk /dev/"${DISK}"
     partprobe /dev/"${DISK}" && sleep 2s
     yes | _check mkfs."${BOOT_FILESYSTEM}" /dev/"${DISK}${PART_ORDER[1]}"
     export BOOT_PARTITION="/dev/${DISK}${PART_ORDER[1]}"
@@ -79,8 +78,7 @@ _default_partitioning_scheme() {
 
     # Create SWAP partition
     _info "Creating swap partition (${SWAP_SIZE})"
-    printf \
-"n\n%s\n\n+%s\nw" "${PART_TYPE}" "${SWAP_SIZE}" | fdisk /dev/"${DISK}"
+    printf "n\n${PART_TYPE}\n\n+${SWAP_SIZE}\nw" | fdisk /dev/"${DISK}"
     partprobe /dev/"${DISK}" && sleep 2s
     yes | _check mkswap /dev/"${DISK}${PART_ORDER[2]}"
     export SWAP_PARTITION="/dev/${DISK}${PART_ORDER[2]}"
@@ -94,8 +92,7 @@ _default_partitioning_scheme() {
 
     # Create SYSTEM partition
     _info "Creating system partition (${SYSTEM_SIZE})"
-    printf \
-"n\n%s\n\n+%s\nw" "${PART_TYPE}" "${SYSTEM_SIZE}" | fdisk /dev/"${DISK}"
+    printf "n\n${PART_TYPE}\n\n+${SYSTEM_SIZE}\nw" | fdisk /dev/"${DISK}"
     partprobe /dev/"${DISK}" && sleep 2s
     yes | _check mkfs.ext4 /dev/"${DISK}${PART_ORDER[3]}"
     export SYSTEM_PARTITION="/dev/${DISK}${PART_ORDER[3]}"
@@ -108,7 +105,7 @@ _default_partitioning_scheme() {
 
                 # Create HOME partition
                 _info "Creating home partition (free space)"
-                printf "n\n%s\n\nw" "${PART_TYPE}" | fdisk /dev/"${DISK}"
+                printf "n\n${PART_TYPE}\n\nw" | fdisk /dev/"${DISK}"
                 ;;
             *)
                 # Get HOME partiton size
@@ -120,14 +117,14 @@ _default_partitioning_scheme() {
 
                 # Create HOME partition
                 _info "Creating home partition (${HOME_SIZE})"
-                printf "n\n\n\n+%s\nw" "${HOME_SIZE}" | fdisk /dev/"${DISK}"
+                printf "n\n\n\n+${HOME_SIZE}\nw" | fdisk /dev/"${DISK}"
                 ;;
         esac
         unset CONFIRM
     else
         # Create HOME partition
         _info "Creating home partition (free space)"
-        printf "n\n%s\n\nw" "${PART_TYPE}" | fdisk /dev/"${DISK}"
+        printf "n\n${PART_TYPE}\n\nw" | fdisk /dev/"${DISK}"
     fi
     partprobe /dev/"${DISK}" && sleep 2s
     yes | _check mkfs.ext4 /dev/"${DISK}${PART_ORDER[4]}"
