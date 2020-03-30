@@ -189,8 +189,8 @@ _archboot_banner
 
 # Check Internet Connection
 _info "Checking Internet connection"
-INTERNET=$(ping -c 1 archlinux.org >/dev/null 2>&1)
-if [[ ${INTERNET} -eq 0 ]]; then
+INTERNET=$(ping -c 1 archlinux.org)
+if [[ ${INTERNET} ]]; then
     _note "congratulations, you are connected to Internet!"
 else
     _error "you are not connected to Internet!"
