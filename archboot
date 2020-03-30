@@ -89,7 +89,7 @@ _check() {
     "$@"
     local STATUS=$?
     if [[ ${STATUS} -ne 0 ]]; then
-        _error "${1}"
+        _error "${@}"
     fi
     return ${STATUS}
 }
