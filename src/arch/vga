@@ -15,7 +15,7 @@ _get_vga_driver() {
 
     # NVIDIA
     NVIDIA_CARD=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
-    if [[ $? -eq 0 ]]; then
+    if [[ ${NVIDIA_CARD} ]]; then
         _note "${NVIDIA_CARD##*: } detected!"
         _confirm "Use Nvidia proprietary drivers?"
         case ${CONFIRM} in
@@ -40,7 +40,7 @@ _get_vga_driver() {
 
         # AMD / ATI
         AMD_CARD=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
-        if [[ $? -eq 0 ]]; then
+        if [[ ${AMD_CARD} ]]; then
             _note "${AMD_CARD##*: } detected!"
             export VGA_DRIVER="AMD_DRIVER"
             export OPENGL="OPENGL_AMD"
@@ -50,7 +50,7 @@ _get_vga_driver() {
 
             # INTEL
             INTEL_CARD=$(lspci | grep -e VGA -e 3D | grep -i intel)
-            if [[ $? -eq 0 ]]; then
+            if [[ ${INTEL_CARD} ]]; then
                 _note "${INTEL_CARD##*: } detected!"
                 export VGA_DRIVER="INTEL_DRIVER"
                 export OPENGL="OPENGL_INTEL"

@@ -15,7 +15,7 @@
 #      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN
 #      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
-#      DISPLAY........: GDM - LIGHTDM - SDDM - LXDM - XDM
+#      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
 #
 # Then we enabling user rights in <sudoers> and we add him to all groups.
 # ============================================================================
@@ -23,24 +23,25 @@
 _get_user_variables() {
 
     # Language
-    until grep -Fxq "${LANGUAGE}" ./language; do
+    until grep -Fxq ${LANGUAGE} ./language; do
         _note "full list is available in the wiki."
         _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
         read -r LANGUAGE
     done
     export LANGUAGE
-    export KEYMAP=$(echo ${LANGUAGE} | cut -d'_' -f 1)
+    KEYMAP=$(echo ${LANGUAGE} | cut -d'_' -f 1)
+    export KEYMAP
 
     # Hostname
     until [[ ${#HOST_NAME} -ge 3 \
-    && ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+&& ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter hostname:" "(e.g., my-favorite-computer)"
         read -r HOST_NAME
     done
     export HOST_NAME
 
     # Root Password
-    until [[ ${#A} -ge 6 && "${A}" == *[a-z]* && "${A}" == *[0-9]* ]]; do
+    until [[ ${#A} -ge 6 && ${A} == *[a-z]* && ${A} == *[0-9]* ]]; do
         _note \
 "should be at least 6 chars long with 1 letter & 1 digit"
         _prompt "Enter root password:"
@@ -59,14 +60,14 @@ _get_user_variables() {
 
     # Username
     until [[ ${#USER_NAME} -ge 3 \
-    && ${USER_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+&& ${USER_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter username:" "(e.g., johnny)"
         read -r USER_NAME
     done
     export USER_NAME
 
     # User Password
-    until [[ ${#B} -ge 6 && "${B}" == *[a-z]* && "${B}" == *[0-9]* ]]; do
+    until [[ ${#B} -ge 6 && ${B} == *[a-z]* && ${B} == *[0-9]* ]]; do
         _note \
 "should be at least 6 chars long with 1 letter & 1 digit"
         _prompt "Enter password for user ${USER_NAME}:"
@@ -108,6 +109,7 @@ _get_user_variables() {
             export KERNEL="DEFAULT_KERNEL"
             ;;
     esac
+    export KERNEL_NAME=${KERNEL//_/ }
     unset CONFIRM
 
     # Desktop Environment
@@ -116,7 +118,7 @@ _get_user_variables() {
         y|Y|yes|Yes|YES)
             until [[ ${DESKTOP} =~ ^([1-9]|10)$ ]]; do
                 _select "GNOME" "KDE" "MATE" "XFCE" \
-    "LXDE" "LXQT" "DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
+"LXDE" "LXQT" "DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
                 read -r DESKTOP
             done
             DESKTOP_CHOICE=\
@@ -127,28 +129,28 @@ _get_user_variables() {
     unset CONFIRM
 
     # Display Manager
-    if [[ ! -z ${DESKTOP+x} ]]; then
+    if [[ -n ${DESKTOP+x} ]]; then
 
         _confirm "Do you wish to use ${DESKTOP} default Display Manager?"
         case ${CONFIRM} in
 
             # Custom display manager
             n|N|no|No|NO)
-                until [[ ${DISPLAY} =~ ^([1-5])$ ]]; do
+                until [[ ${DISPLAY_MAN} =~ ^([1-5])$ ]]; do
                     _select "GDM" "LIGHTDM" "SDDM" "LXDM" "XDM"
-                    read -r DISPLAY
+                    read -r DISPLAY_MAN
                 done
                 DISPLAY_CHOICE=(NONE GDM LIGHTDM SDDM LXDM XDM)
-                export DISPLAY=${DISPLAY_CHOICE[${DISPLAY}]}
+                export DISPLAY_MAN=${DISPLAY_CHOICE[${DISPLAY_MAN}]}
                 ;;
 
             # Default display manager
             *)
                 case ${DESKTOP} in
-                    GNOME|BUDGIE|CINNAMON|MATE) export DISPLAY="GDM";;
-                    KDE) export DISPLAY="SDDM";;
-                    DEEPIN|ENLIGHTENMENT) export DISPLAY="LIGHTDM";;
-                    XFCE4|LXDE|LXQT) export DISPLAY="LXDM";;
+                    GNOME|BUDGIE|CINNAMON|MATE) export DISPLAY_MAN="GDM";;
+                    KDE) export DISPLAY_MAN="SDDM";;
+                    DEEPIN|ENLIGHTENMENT) export DISPLAY_MAN="LIGHTDM";;
+                    XFCE4|LXDE|LXQT) export DISPLAY_MAN="LXDM";;
                 esac
                 ;;
         esac
