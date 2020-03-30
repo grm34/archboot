@@ -158,6 +158,13 @@ _custom_partitioning_scheme() {
 
         # Return mountpoint
         export ${POINT}="/dev/${MOUNTPOINT}"
+
+        # Set boot drive
+        if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
+            export DISK=${BOOT_PARTITION%p*}
+        else
+            export DISK=${BOOT_PARTITION//[0-9]}
+        fi
     done
 }
 
