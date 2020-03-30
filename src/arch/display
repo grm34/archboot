@@ -20,8 +20,8 @@ _install_display_manager() {
 
     # Install Display Manager
     _info "Installing ${DISPLAY_MAN,,} display manager"
-    _chroot "pacman --noconfirm -S ${!DISPLAY_MAN}
-    systemctl enable ${DISPLAY_MAN,,}"
+    _chroot "pacman --noconfirm -S ${!DISPLAY_MAN}"
+    _chroot "systemctl enable ${DISPLAY_MAN,,}"
 
     # Start command of each Desktop Environment
     case ${DESKTOP} in
