@@ -142,12 +142,29 @@ _default_partitioning_scheme() {
 
 _custom_partitioning_scheme() {
 
-    _info "Listing drive and partitions"
-
     # Required partitions
-    PARTITION=(BOOT_PARTITION SWAP_PARTITION SYSTEM_PARTITION HOME_PARTITION)
+    PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
 
-    # Get partitions mountpoints
+    # SWAP partition
+    _confirm "Do you wish to use swap partition?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            PARTITION+=(SWAP_PARTITION)
+            ;;
+    esac
+    unset CONFIRM
+
+    # HOME partition
+    _confirm "Do you wish to use home partition?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            PARTITION+=(HOME_PARTITION)
+            ;;
+    esac
+    unset CONFIRM
+
+    # Get partitions drive ID
+    _info "Listing drive and partitions"
     for PART in "${PARTITION[@]}"; do
         echo && fdisk -l
         PART_NAME=${PART//_PARTITION/}

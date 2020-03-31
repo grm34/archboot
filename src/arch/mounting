@@ -28,10 +28,14 @@ _mount_partitions() {
     fi
 
     # Activate swap
-    _check swapon ${SWAP_PARTITION}
+    if [[ -n ${SWAP_PARTITION+x} ]]; then
+        _check swapon ${SWAP_PARTITION}
+    fi
 
     # Mount home on /mnt/home
-    _check mount ${HOME_PARTITION} /mnt/home
+    if [[ -n ${HOME_PARTITION+x} ]]; then
+        _check mount ${HOME_PARTITION} /mnt/home
+    fi
 }
 
 # archboot by grm34 under Apache License 2.0
