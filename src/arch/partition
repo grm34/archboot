@@ -45,6 +45,8 @@ _default_partitioning_scheme() {
         _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
         read -r DRIVE
     done
+
+    # Return selected drive
     export DRIVE="/dev/${DRIVE}"
 
     # Create MBR or GPT Table
@@ -82,6 +84,9 @@ _default_partitioning_scheme() {
                     ;;
             esac
             unset CONFIRM
+        elif [[ ${FIRMWARE} == "BIOS" ]]; then
+            FREE_SPACE="True"
+            PARTITION_SIZE="free space"
         fi
 
         # Ask partitions sizes
