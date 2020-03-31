@@ -150,29 +150,24 @@ _default_partitioning_scheme() {
 
 _custom_partitioning_scheme() {
 
-    # Required partitions
+    # Set required and extended partitions
     PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
+    EXTENDED=(SWAP_PARTITION HOME_PARTITION)
 
-    # SWAP partition
-    _confirm "Do you wish to use swap partition?"
-    case ${CONFIRM} in
-        y|Y|yes|Yes|YES)
-            PARTITION+=(SWAP_PARTITION)
-            ;;
-    esac
-    unset CONFIRM
-
-    # HOME partition
-    _confirm "Do you wish to use home partition?"
-    case ${CONFIRM} in
-        y|Y|yes|Yes|YES)
-            PARTITION+=(HOME_PARTITION)
-            ;;
-    esac
-    unset CONFIRM
+    # Get extended partitions
+    for EXT in "${EXTENDED[@]}"; do
+        EXT_NAME=${EXT//_PARTITION/}
+        _confirm "Do you wish to create ${EXT_NAME,,} partition?"
+        case ${CONFIRM} in
+            y|Y|yes|Yes|YES)
+                PARTITION+=("${EXT}")
+                ;;
+        esac
+        unset CONFIRM
+    done
 
     # Get partitions drive ID
-    _info "Listing drive and partitions"
+    _info "Listing drives and partitions"
     for PART in "${PARTITION[@]}"; do
         echo && fdisk -l
         PART_NAME=${PART//_PARTITION/}
@@ -192,14 +187,14 @@ _custom_partitioning_scheme() {
 
         # Return drive id
         export ${PART}="/dev/${DRIVE_ID}"
-
-        # Set boot drive
-        if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
-            export DRIVE=${BOOT_PARTITION%p*}
-        else
-            export DRIVE=${BOOT_PARTITION//[0-9]}
-        fi
     done
+
+    # Set boot drive
+    if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
+        export DRIVE=${BOOT_PARTITION%p*}
+    else
+        export DRIVE=${BOOT_PARTITION//[0-9]}
+    fi
 }
 
 # archboot by grm34 under Apache License 2.0
