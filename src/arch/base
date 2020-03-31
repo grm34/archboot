@@ -2,11 +2,11 @@
 
 #                        ARCH LINUX BASE SYSTEM
 # ============================================================================
-# Here we install base system with the kernel chosen by user.
+# Here we install Arch Linux base system with the chosen linux kernel.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Installation_guide
 # In case of Intel CPU we install <intel-ucode> to enable microcode updates.
-# Then user account will be created with previously defined password.
+# Then we create user account with the previously defined password.
 # ============================================================================
 
 _install_base() {

@@ -19,8 +19,8 @@ ${NC}
 Arch Linux is a light and fast distribution whose concept
 is to remain  as simple  as possible. In the same purpose
 this  script  performs  minimalist  installation, it only
-installs the  required  packages, in order  to  give free
-choice  to the  user. Pretty simple, it just prompts  for
+installs the  required  packages  in order  to  give free
+choice  to the  user.  Pretty  simple, it  just  asks for
 language, hostname, username, which disk to use, required
 partitions size  and  if  you wish  to install  a desktop
 environment. According to the chosen one  and in order to
@@ -31,11 +31,12 @@ For more  information, take a look  at the  ${APPNAME} wiki
 
 #                       ARCHBOOT_SYSTEM SETTINGS
 # ============================================================================
-# Here we defined all required variables and functions to manage archboot.
-# Variables are pretty simple such as define needed url and colors.
-# Functions are used to display install steps, notes, errors or to do some
-# actions like cleanup after fatal error, execute cmd in chrooted environment,
-# select an option, ask some information to the user or to get install logs.
+# Here we define all required variables and functions to manage archboot.
+# Variables are pretty simple such as define needed urls and colors.
+# Functions are used to display install steps, notes, errors or to do
+# some actions like to cleanup after fatal error, to execute cmd in
+# chrooted environment, to select an option, to ask some information
+# to the user or to get install logs.
 # ============================================================================
 
 # Github url for sources and images
@@ -177,10 +178,10 @@ _end() {
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications and scripts [src/apps & src/arch]
-# Once done we could ask for user variables and stored them to run install.
+# Once done we can ask for user variables and store them to run install.
 # In case of desktop environment, we import additional sources and we
-# scan for 3D VGA controller(s) to select appropriate drivers.
-# Avaibility not to install VGA driver and fall back to kernel mode setting.
+# scan for 3D VGA controller to select appropriate drivers.
+# Kernel mode setting support, in this case VGA Driver will not be installed.
 # ============================================================================
 
 # Display archboot banner
@@ -256,8 +257,8 @@ fi
 #                       ARCHBOOT_SYSTEM PREPARE
 # ============================================================================
 # Here we get user firmware to set partitions settings and other options.
-# Then we get mirrorlist, timezone, clock, logs and properly define them.
-# Now we could run partitioning, activate SWAP and mount the partitions.
+# Then we get fastest mirrors, timezone, clock, logs and we properly define
+# them. Now we could run partitioning, activate SWAP and mount the partitions.
 # ============================================================================
 
 # Prepare the system
