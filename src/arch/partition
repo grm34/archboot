@@ -7,7 +7,7 @@
 # The DRIVE variable is required by bootloader (in case of BIOS firmware).
 # The PARTITION variables are required by mounting (BOOT_PARTITION, etc).
 #
-#     Partitions scheme:
+#     Partitioning scheme:
 #
 #       SYSTEM_PARTITION......: /mnt            (required)
 #       BOOT_PARTITION........: /mnt/boot       (required)
