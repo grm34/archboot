@@ -2,19 +2,26 @@
 
 #                         PARTITIONING SCHEME
 # ============================================================================
-# Here we listing existing disk and partitions to select wich one to use,
-# to format it and to create required partitions.
+# Here we listing existing drive and partitions to select wich one to use.
+# Then we format it and we creating required partitions.
+# The DRIVE variable is required by bootloader (in case of BIOS firmware).
+# The PARTITION variables are required by mounting (BOOT_PARTITION, etc).
+#
+#     Recommended partitions:
+#
+#       SYSTEM_PARTITION......: /mnt
+#       BOOT_PARTITION........: /mnt/boot
+#       SWAP_PARTITION........: no mountpoint
+#       HOME_PARTITION........: /mnt/home
 #
 #     Required partitions:
 #
-#     SYSTEM_PARTITION......: /mnt
-#     BOOT_PARTITION........: /mnt/boot
-#     SWAP_PARTITION........: no mountpoint
-#     HOME_PARTIION........: /mnt/home
+#       SYSTEM_PARTITION......: /mnt
+#       BOOT_PARTITION........: /mnt/boot
 #
-# We use <partprobe> to inform system changes and
-# add <sleep 2s> to prevent unreconized system changes.
-# Since v2.8.1 custom partitioning is available, only mountpoints will be
+# We use <partprobe> to inform system changes (and to check if drive exists)
+# and we add a <sleep 2s> to prevent unreconized system changes.
+# Since v2.8.1 custom partitioning is available, only drive id will be
 # asked to the user (requires properly created and formated partitions).
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Partitioning
@@ -22,32 +29,41 @@
 
 _default_partitioning_scheme() {
 
-    _info "Listing disk and partitions"
+    _info "Listing drives and partitions"
+    echo && fdisk
 
-    # Select disk to use
-    until [[ ${DISK} =~ ^(sd|hd|nvme0n)[a-z0-9]{1}$ ]]; do
+    # Select drive to use
+    _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
+    read -r DRIVE
+
+    # Check if valid drive
+    CHECK=$(partprobe -d -s /dev/${DRIVE})
+
+    # Otherwise ask again
+    until [[ ${DRIVE} ]]; do
         fdisk -l
-        _prompt "Enter disk to use:" "(e.g., sda, nvme0n1)"
-        read -r DISK
+        _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
+        read -r DRIVE
     done
-    export DISK
+    export DRIVE
 
-    # Define partition order
-    if [[ ${DISK} =~ "nvme0n" ]]; then
+    # Set partition order
+    if [[ ${DRIVE} =~ "nvme0n" ]]; then
         export PART_ORDER=(0 p1 p2 p3 p4)
     else
         export PART_ORDER=(0 1 2 3 4)
     fi
 
     # Create MBR or GPT Table
-    fdisk -l /dev/${DISK}
+    _info "Formatting ${DRIVE} drive"
+    fdisk -l /dev/${DRIVE}
     _note "WARNING: this will erase the entire drive!"
-    _confirm "Setting ${PART_TABLE} partition table on /dev/${DISK}"
+    _confirm "Setting ${PART_TABLE} partition table on /dev/${DRIVE}"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
-            wipefs -fa /dev/${DISK}
-            printf ${PART_CODE}"\nw" | fdisk /dev/${DISK}
-            partprobe /dev/${DISK}
+            wipefs -fa /dev/${DRIVE}
+            printf ${PART_CODE}"\nw" | fdisk /dev/${DRIVE}
+            partprobe /dev/${DRIVE}
             ;;
         *)
             _error "installation aborted by user!"
@@ -64,10 +80,10 @@ _default_partitioning_scheme() {
 
     # Create BOOT partition
     _info "Creating boot partition (${BOOT_SIZE})"
-    printf "n\n${PART_TYPE}\n\n+${BOOT_SIZE}\nw" | fdisk /dev/${DISK}
-    partprobe /dev/${DISK} && sleep 2s
-    yes | _check mkfs.${BOOT_FILESYSTEM} /dev/${DISK}${PART_ORDER[1]}
-    export BOOT_PARTITION="/dev/${DISK}${PART_ORDER[1]}"
+    printf "n\n${PART_TYPE}\n\n+${BOOT_SIZE}\nw" | fdisk /dev/${DRIVE}
+    partprobe /dev/${DRIVE} && sleep 2s
+    yes | _check mkfs.${BOOT_FILESYSTEM} /dev/${DRIVE}${PART_ORDER[1]}
+    export BOOT_PARTITION="/dev/${DRIVE}${PART_ORDER[1]}"
 
     # Get SWAP partition size
     until [[ ${SWAP_SIZE} =~ ^[0-9]{1,3}(M|G){1}+$ ]]; do
@@ -78,10 +94,10 @@ _default_partitioning_scheme() {
 
     # Create SWAP partition
     _info "Creating swap partition (${SWAP_SIZE})"
-    printf "n\n${PART_TYPE}\n\n+${SWAP_SIZE}\nw" | fdisk /dev/${DISK}
-    partprobe /dev/${DISK} && sleep 2s
-    yes | _check mkswap /dev/${DISK}${PART_ORDER[2]}
-    export SWAP_PARTITION="/dev/${DISK}${PART_ORDER[2]}"
+    printf "n\n${PART_TYPE}\n\n+${SWAP_SIZE}\nw" | fdisk /dev/${DRIVE}
+    partprobe /dev/${DRIVE} && sleep 2s
+    yes | _check mkswap /dev/${DRIVE}${PART_ORDER[2]}
+    export SWAP_PARTITION="/dev/${DRIVE}${PART_ORDER[2]}"
 
     # Get SYSTEM partiton size
     until [[ ${SYSTEM_SIZE} =~ ^[0-9]{1,3}(G|T|P){1}+$ ]]; do
@@ -92,10 +108,10 @@ _default_partitioning_scheme() {
 
     # Create SYSTEM partition
     _info "Creating system partition (${SYSTEM_SIZE})"
-    printf "n\n${PART_TYPE}\n\n+${SYSTEM_SIZE}\nw" | fdisk /dev/${DISK}
-    partprobe /dev/${DISK} && sleep 2s
-    yes | _check mkfs.ext4 /dev/${DISK}${PART_ORDER[3]}
-    export SYSTEM_PARTITION="/dev/${DISK}${PART_ORDER[3]}"
+    printf "n\n${PART_TYPE}\n\n+${SYSTEM_SIZE}\nw" | fdisk /dev/${DRIVE}
+    partprobe /dev/${DRIVE} && sleep 2s
+    yes | _check mkfs.ext4 /dev/${DRIVE}${PART_ORDER[3]}
+    export SYSTEM_PARTITION="/dev/${DRIVE}${PART_ORDER[3]}"
 
     # HOME partition
     if [[ ${FIRMWARE} == "UEFI" ]]; then
@@ -105,7 +121,7 @@ _default_partitioning_scheme() {
 
                 # Create HOME partition
                 _info "Creating home partition (free space)"
-                printf "n\n${PART_TYPE}\n\nw" | fdisk /dev/${DISK}
+                printf "n\n${PART_TYPE}\n\nw" | fdisk /dev/${DRIVE}
                 ;;
             *)
                 # Get HOME partiton size
@@ -117,62 +133,72 @@ _default_partitioning_scheme() {
 
                 # Create HOME partition
                 _info "Creating home partition (${HOME_SIZE})"
-                printf "n\n\n\n+${HOME_SIZE}\nw" | fdisk /dev/${DISK}
+                printf "n\n\n\n+${HOME_SIZE}\nw" | fdisk /dev/${DRIVE}
                 ;;
         esac
         unset CONFIRM
     else
         # Create HOME partition
         _info "Creating home partition (free space)"
-        printf "n\n${PART_TYPE}\n\nw" | fdisk /dev/${DISK}
+        printf "n\n${PART_TYPE}\n\nw" | fdisk /dev/${DRIVE}
     fi
-    partprobe /dev/${DISK} && sleep 2s
-    yes | _check mkfs.ext4 /dev/${DISK}${PART_ORDER[4]}
-    export HOME_PARTITION="/dev/${DISK}${PART_ORDER[4]}"
+    partprobe /dev/${DRIVE} && sleep 2s
+    yes | _check mkfs.ext4 /dev/${DRIVE}${PART_ORDER[4]}
+    export HOME_PARTITION="/dev/${DRIVE}${PART_ORDER[4]}"
 }
 
 _custom_partitioning_scheme() {
 
-    _info "Listing disk and partitions"
+    # Required partitions
+    PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
 
-    # Select boot
-    until [[ ${BOOT_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
-        fdisk -l
-        _prompt "Enter boot mountpoint:" "(e.g., sda2, nvme0n1p2)"
-        read -r BOOT_PARTITION
+    # SWAP partition
+    _confirm "Do you wish to use swap partition?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            PARTITION+=(SWAP_PARTITION)
+            ;;
+    esac
+    unset CONFIRM
+
+    # HOME partition
+    _confirm "Do you wish to use home partition?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            PARTITION+=(HOME_PARTITION)
+            ;;
+    esac
+    unset CONFIRM
+
+    # Get partitions drive ID
+    _info "Listing drive and partitions"
+    for PART in "${PARTITION[@]}"; do
+        echo && fdisk -l
+        PART_NAME=${PART//_PARTITION/}
+        _prompt "Enter ${PART_NAME,,} drive id:" "(e.g., sda2, nvme0n1p12)"
+        read -r DRIVE_ID
+
+        # Check if valid partition
+        CHECK=$(partprobe -d -s /dev/${DRIVE_ID})
+
+        # Otherwise ask again
+        until [[ ${CHECK} ]]; do
+            echo && sleep 2s && fdisk -l
+            _prompt "Enter valid ${PART_NAME,,} drive id:" "(e.g., sda1)"
+            read -r DRIVE_ID
+            CHECK=$(partprobe -d -s /dev/${DRIVE_ID})
+        done
+
+        # Return drive id
+        export ${PART}="/dev/${DRIVE_ID}"
+
+        # Set boot drive
+        if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
+            export DRIVE=${BOOT_PARTITION%p*}
+        else
+            export DRIVE=${BOOT_PARTITION//[0-9]}
+        fi
     done
-    export BOOT_PARTITION="/dev/${BOOT_PARTITION}"
-
-    # Define disk
-    if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
-        export DISK=${BOOT_PARTITION%p*}
-    else
-        export DISK=${BOOT_PARTITION//[0-9]}
-    fi
-
-    # Select swap
-    until [[ ${SWAP_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
-        fdisk -l
-        _prompt "Enter swap mountpoint:" "(e.g., sda3, nvme0n1p3)"
-        read -r SWAP_PARTITION
-    done
-    export SWAP_PARTITION="/dev/${SWAP_PARTITION}"
-
-    # Select system
-    until [[ ${SYSTEM_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
-        fdisk -l
-        _prompt "Enter system mountpoint:" "(e.g., sda1, nvme0n1p1)"
-        read -r SYSTEM_PARTITION
-    done
-    export SYSTEM_PARTITION="/dev/${SYSTEM_PARTITION}"
-
-    # Select home
-    until [[ ${HOME_PARTITION} =~ ^(sd|hd|nvme0n)[a-z0-9]{1,4}$ ]]; do
-        fdisk -l
-        _prompt "Enter home mountpoint:" "(e.g., sda4, nvme0n1p4)"
-        read -r HOME_PARTITION
-    done
-    export HOME_PARTITION="/dev/${HOME_PARTITION}"
 }
 
 # archboot by grm34 under Apache License 2.0
