@@ -2,14 +2,14 @@
 
 #                           DISPLAY MANAGER
 # ============================================================================
-# Here we install and configure display manager.
+# Here we install and configure display manager to properly start desktop.
 #
 #     Default settings:
 #
-#     GDM........: Gnome / Budgie / Cinnamon / Mate
-#     LIGHTDM....: Deepin / Enlightenment
-#     SDDM.......: Kde
-#     LXDM.......: Xfce4 / Lxde / Lxqt
+#       GDM........: Gnome / Budgie / Cinnamon / Mate
+#       LIGHTDM....: Deepin / Enlightenment
+#       SDDM.......: Kde
+#       LXDM.......: Xfce4 / Lxde / Lxqt
 #
 # User is able to install the display manager of his choice.
 # All steps are described in the official documentation:

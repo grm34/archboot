@@ -4,7 +4,7 @@
 # ============================================================================
 # Here we ask all required variables to the user and stored them.
 #
-#      Required variables:
+#    Required variables:
 #
 #      LANGUAGE.......: full list is available in the wiki
 #      HOST_NAME......: computer name such as <my-favorite-computer>
@@ -169,7 +169,7 @@ _enable_user_rights() {
     _chroot "yes | pwck"
     _chroot "yes | grpck"
     GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
-    for GROUP in ${GROUPLIST}; do
+    for GROUP in "${GROUPLIST[@]}"; do
         _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
     done
 }

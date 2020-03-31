@@ -3,8 +3,8 @@
 #                       DESKTOP ENVIRONMENT
 # ============================================================================
 # Here we configure desktop environment and install required packages
-# such as display server, fonts to prevent issues in gtk apps on some DE,
-# terminal and <numlockx> to get numlock_ON on bootup.
+# such as display server, fonts to prevent issues in gtk apps on some
+# desktop environment, terminal and <numlockx> to get numlock_ON on bootup.
 # To prevent password issues on the login screen of the display manager
 # caused by wrong keyboard layout, we add keyboard.conf to xorg settings.
 # All steps are described in the official documentation:
