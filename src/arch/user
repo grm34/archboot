@@ -23,7 +23,7 @@
 _get_user_variables() {
 
     # Language
-    until grep -Fxq ${LANGUAGE} ./language; do
+    until grep -Fxq "${LANGUAGE}" ./language; do
         _note "full list is available in the wiki."
         _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
         read -r LANGUAGE
@@ -33,7 +33,8 @@ _get_user_variables() {
     export KEYMAP
 
     # Hostname
-    until [[ ${#HOST_NAME} -ge 3 && ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    until [[ ${#HOST_NAME} -ge 3 \
+&& ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter hostname:" "(e.g., my-favorite-computer)"
         read -r HOST_NAME
     done
@@ -57,7 +58,8 @@ _get_user_variables() {
     echo
 
     # Username
-    until [[ ${#USER_NAME} -ge 3 && ${USER_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+    until [[ ${#USER_NAME} -ge 3 && ${USER_NAME} \
+=~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter username:" "(e.g., johnny)"
         read -r USER_NAME
     done
@@ -97,7 +99,8 @@ _get_user_variables() {
                 _select "DEFAULT" "HARDENED" "LTS" "ZEN"
                 read -r KERNEL
             done
-            KERNEL_CHOICE=(NONE DEFAULT_KERNEL HARDENED_KERNEL LTS_KERNEL ZEN_KERNEL)
+            KERNEL_CHOICE=\
+(NONE DEFAULT_KERNEL HARDENED_KERNEL LTS_KERNEL ZEN_KERNEL)
             export KERNEL=${KERNEL_CHOICE[${KERNEL}]}
             ;;
         *)
@@ -112,17 +115,20 @@ _get_user_variables() {
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             until [[ ${DESKTOP} =~ ^([1-9]|10)$ ]]; do
-                _select "GNOME" "KDE" "MATE" "XFCE" "LXDE" "LXQT" "DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
+                _select \
+"GNOME" "KDE" "MATE" "XFCE" "LXDE" "LXQT" \
+"DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
                 read -r DESKTOP
             done
-            DESKTOP_CHOICE=(NONE GNOME KDE MATE XFCE4 LXDE LXQT DEEPIN BUDGIE CINNAMON ENLIGHTENMENT)
+            DESKTOP_CHOICE=\
+(NONE GNOME KDE MATE XFCE4 LXDE LXQT DEEPIN BUDGIE CINNAMON ENLIGHTENMENT)
             export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
             ;;
     esac
     unset CONFIRM
 
     # Display Manager
-    if [[ ! -z ${DESKTOP+x} ]]; then
+    if [[ -n ${DESKTOP+x} ]]; then
 
         _confirm "Do you wish to use ${DESKTOP} default Display Manager?"
         case ${CONFIRM} in
