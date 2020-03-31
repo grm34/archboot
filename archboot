@@ -348,6 +348,7 @@ case ${CONFIRM} in
         _cleanup
         ;;
 esac
+unset CONFIRM
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================
