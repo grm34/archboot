@@ -2,7 +2,7 @@
 
 #                           USER MANAGEMENT
 # ============================================================================
-# Here we ask all required variables to the user and stored them.
+# Here we ask all required variables to the user and store them.
 #
 #    Required variables:
 #
@@ -11,13 +11,13 @@
 #      ROOTPASSWD.....: at least 6 chars long with 1 letter & 1 digit
 #      USER_NAME......: such as <bobby_is_not_a_loser>
 #      USERPASSWD.....: at least 6 chars long with 1 letter & 1 digit
-#      POWER..........: add user to all groups and enabling rights in sudoers
+#      POWER..........: add user to all groups and enable rights in sudoers
 #      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN
 #      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
 #
-# Then we enabling user rights in <sudoers> and we add him to all groups.
+# Then we enable user rights in <sudoers> and we add him to all groups.
 # ============================================================================
 
 _get_user_variables() {

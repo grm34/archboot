@@ -2,8 +2,9 @@
 
 #                         PARTITIONING SCHEME
 # ============================================================================
-# Here we listing existing drive and partitions to select wich one to use.
-# Then we format it and we creating required partitions.
+# Here we listing existing drives and partitions to select wich ones to use.
+# Then we ask for optionals partitions and for desired partitions sizes.
+# Once done  we can format the selected drive and create the partitions.
 # The DRIVE variable is required by bootloader (in case of BIOS firmware).
 # The PARTITION variables are required by mounting (BOOT_PARTITION, etc).
 #
@@ -14,10 +15,10 @@
 #       SWAP_PARTITION........: no mountpoint   (optional)
 #       HOME_PARTITION........: /mnt/home       (optional)
 #
-# We use <partprobe> to inform system changes (and to check if drive exists)
-# and we add a <sleep 2s> to prevent unreconized system changes.
+# We use <partprobe> to inform changes to system (and check if drive exists),
+# and then we add a <sleep 2s> to prevent unreconized system changes.
 # Since v2.8.1 custom partitioning is available, only drive id will be
-# asked to the user (requires properly created and formated partitions).
+# asked (requires properly created and formated partitions).
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Partitioning
 # ============================================================================
