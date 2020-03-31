@@ -24,6 +24,7 @@
 # ============================================================================
 
 _default_partitioning_scheme() {
+    unset CONFIRM
 
     _info "Listing drives and partitions"
     echo && fdisk -l
@@ -154,6 +155,7 @@ _default_partitioning_scheme() {
 }
 
 _custom_partitioning_scheme() {
+    unset CONFIRM
 
     # Set required and extended partitions
     PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
