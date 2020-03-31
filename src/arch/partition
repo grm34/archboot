@@ -24,6 +24,7 @@
 # ============================================================================
 
 _default_partitioning_scheme() {
+    unset CONFIRM
 
     _info "Listing drives and partitions"
     echo && fdisk -l
@@ -65,6 +66,7 @@ _default_partitioning_scheme() {
     # Set required partitions sizes
     PART_SIZES=(BOOT_SIZE SWAP_SIZE SYSTEM_SIZE HOME_SIZE)
     SIZES=("512M" "2G" "25G" "100G")
+    INDEX=0
 
     # Get partitions sizes
     for PART in "${PART_SIZES[@]}"; do
@@ -87,21 +89,22 @@ _default_partitioning_scheme() {
 
         # Ask partitions sizes
         if [[ ! ${FREE_SPACE} ]]; then
-            _note "partition size {M,G,T,P} (e.g., ${SIZES[$PART]})"
+            _note "partition size {M,G,T,P} (e.g., ${SIZES[${INDEX}]})"
             _prompt "Enter ${PART_NAME} partition size:"
             read -r PARTITION_SIZE
 
             # Check if valid size and otherwise ask again
             until [[ ${PARTITION_SIZE} \
 =~ ^[1-9]{1}[[0-9]{0,2}(M|G|T|P){1}+$ ]]; do
-                _note "partition size {M,G,T,P} (e.g., ${SIZES[$PART]})"
+                _note "partition size {M,G,T,P} (e.g., ${SIZES[${INDEX}]})"
                 _prompt "Enter valid ${PART_NAME} partition size:"
                 read -r PARTITION_SIZE
             done
         fi
 
         # Return partitions sizes
-        ${PART}=${PARTITION_SIZE}
+        export ${PART}="${PARTITION_SIZE}"
+        INDEX=${INDEX}+1
     done
 
     # Set partition order
@@ -114,13 +117,14 @@ _default_partitioning_scheme() {
     # Set required partitions and sizes
     PARTITION=(BOOT_PARTITION SWAP_PARTITION SYSTEM_PARTITION HOME_PARTITION)
     SIZES=("${BOOT_SIZE}" "${SWAP_SIZE}" "${SYSTEM_SIZE}" "${HOME_SIZE}")
+    INDEX=0
 
     # Manage partitions
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART//_PARTITION/}
 
         # Create partitions
-        _info "Creating ${PART_NAME} partition (${SIZES[${PART}]})"
+        _info "Creating ${PART_NAME} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "HOME_PARTITION" ]]; then
             if [[ ${HOME_SIZE} == "free space" ]]; then
                 printf "n\n${PART_TYPE}\n\nw" | fdisk ${DRIVE}
@@ -128,28 +132,30 @@ _default_partitioning_scheme() {
                 printf "n\n\n\n+${HOME_SIZE}\nw" | fdisk ${DRIVE}
             fi
         else
-            printf "n\n${PART_TYPE}\n\n+${SIZES[${PART}]}\nw" | fdisk ${DRIVE}
+            printf "n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk ${DRIVE}
         fi
 
         # Inform changes to system
         partprobe ${DRIVE} && sleep 2s
 
         # Format partitions
-        _info "Formatting ${PART_NAME} partition (${SIZES[${PART}]})"
+        _info "Formatting ${PART_NAME} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
-            yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${ORDER[${PART}]}
+            yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${ORDER[${INDEX}]}
         elif [[ ${PART} == "SWAP_PARTITION" ]]; then
-            yes | _check mkswap ${DRIVE}${ORDER[${PART}]}
+            yes | _check mkswap ${DRIVE}${ORDER[${INDEX}]}
         else
-            yes | _check mkfs.ext4 ${DRIVE}${ORDER[${PART}]}
+            yes | _check mkfs.ext4 ${DRIVE}${ORDER[${INDEX}]}
         fi
 
         # Return partitions
-        export ${PART}=${DRIVE}${ORDER[${PART}]}
+        export ${PART}=${DRIVE}${ORDER[${INDEX}]}
+        INDEX=${INDEX}+1
     done
 }
 
 _custom_partitioning_scheme() {
+    unset CONFIRM
 
     # Set required and extended partitions
     PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
