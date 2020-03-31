@@ -107,7 +107,6 @@ _default_partitioning_scheme() {
         # Set partitions sizes
         ${PART}=${PARTITION_SIZE}
     done
-    unset PART
 
     # Set partition order
     if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then
@@ -161,12 +160,12 @@ _custom_partitioning_scheme() {
     EXTENDED=(SWAP_PARTITION HOME_PARTITION)
 
     # Get extended partitions
-    for EXT in "${EXTENDED[@]}"; do
-        EXT_NAME=${EXT//_PARTITION/}
-        _confirm "Do you wish to create ${EXT_NAME,,} partition?"
+    for PART in "${EXTENDED[@]}"; do
+        PART_NAME=${PART//_PARTITION/}
+        _confirm "Do you wish to create ${PART_NAME,,} partition?"
         case ${CONFIRM} in
             y|Y|yes|Yes|YES)
-                PARTITION+=("${EXT}")
+                PARTITION+=("${PART}")
                 ;;
         esac
         unset CONFIRM
