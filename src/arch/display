@@ -59,7 +59,7 @@ _install_display_manager() {
         NUMON="greeter-setup-script=/usr/bin/numlockx on"
         NUMOFF="#greeter-setup-script="
         sed -i -e \
-"s|${DEFAULT_SESSION}|${SESSION}|g" /mnt/etc/lightdm/lightdm.conf
+        "s|${DEFAULT_SESSION}|${SESSION}|g" /mnt/etc/lightdm/lightdm.conf
         sed -i -e "s|${NUMOFF}|${NUMON}|g" /mnt/etc/lightdm/lightdm.conf
 
     # SDDM
@@ -72,7 +72,7 @@ _install_display_manager() {
     elif [[ ${DISPLAY_MAN} == "LXDM" ]]; then
         DEFAULT_SESSION="# session=/usr/bin/startlxde"
         sed -i -e \
-"s|${DEFAULT_SESSION}|session=${SESSION}|g" /mnt/etc/lxdm/lxdm.conf
+        "s|${DEFAULT_SESSION}|session=${SESSION}|g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/# numlock=0/numlock=1/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/white=/white=${USER_NAME}/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/black=/black=root/g" /mnt/etc/lxdm/lxdm.conf
