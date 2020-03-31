@@ -30,7 +30,7 @@
 _default_partitioning_scheme() {
 
     _info "Listing drives and partitions"
-    echo && fdisk
+    echo && fdisk -l
 
     # Select drive to use
     _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
@@ -47,17 +47,10 @@ _default_partitioning_scheme() {
     done
     export DRIVE="/dev/${DRIVE}"
 
-    # Set partition order
-    if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then
-        export PART_ORDER=(0 p1 p2 p3 p4)
-    else
-        export PART_ORDER=(0 1 2 3 4)
-    fi
-
     # Create MBR or GPT Table
     _info "Formatting ${DRIVE} drive"
     fdisk -l ${DRIVE}
-    _note "WARNING: this will erase the entire drive!"
+    _note "WARNING: all data will be lost!"
     _confirm "Setting ${PART_TABLE} partition table on ${DRIVE}"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
@@ -71,81 +64,87 @@ _default_partitioning_scheme() {
     esac
     unset CONFIRM
 
-    # Get BOOT partition size
-    until [[ ${BOOT_SIZE} =~ ^[0-9]{1,3}(M|G){1}+$ ]]; do
-        _note "partition size {M,G} (e.g., 512M)"
-        _prompt "Boot partition size:"
-        read -r BOOT_SIZE
+    # Set required partitions sizes
+    PART_SIZES=(BOOT_SIZE SWAP_SIZE SYSTEM_SIZE HOME_SIZE)
+    SIZES=("512M" "2G" "25G" "100G")
+
+    # Get partitions sizes
+    for PART in "${PART_SIZES[@]}"; do
+        PART_NAME=${PART//_SIZE/}
+
+        # Free space for HOME?
+        if [[ ${PART} == "HOME_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
+            _confirm "Do you wish to use free space for home?"
+            case ${CONFIRM} in
+                y|Y|yes|Yes|YES)
+                    FREE_SPACE="True"
+                    PARTITION_SIZE="free space"
+                    ;;
+            esac
+            unset CONFIRM
+        fi
+
+        # Ask partitions sizes
+        if [[ ! ${FREE_SPACE} ]]; then
+            _note "partition size {M,G,T,P} (e.g., ${SIZES[$PART]})"
+            _prompt "Enter ${PART_NAME} partition size:"
+            read -r PARTITION_SIZE
+
+            # Check if valid size and otherwise ask again
+            until [[ ${PARTITION_SIZE} =~ ^[0-9]{1,3}(M|G|T|P){1}+$ ]]; do
+                _note "partition size {M,G,T,P} (e.g., ${SIZES[$PART]})"
+                _prompt "Enter valid ${PART_NAME} partition size:"
+                read -r PARTITION_SIZE
+            done
+        fi
+
+        # Return partitions sizes
+        export ${PART}=${PARTITION_SIZE}
     done
+    unset PART
 
-    # Create BOOT partition
-    _info "Creating boot partition (${BOOT_SIZE})"
-    printf "n\n${PART_TYPE}\n\n+${BOOT_SIZE}\nw" | fdisk ${DRIVE}
-    partprobe ${DRIVE} && sleep 2s
-    yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${PART_ORDER[1]}
-    export BOOT_PARTITION=${DRIVE}${PART_ORDER[1]}
-
-    # Get SWAP partition size
-    until [[ ${SWAP_SIZE} =~ ^[0-9]{1,3}(M|G){1}+$ ]]; do
-        _note "partition size {M,G} (e.g., 2G)"
-        _prompt "Swap partition size:"
-        read -r SWAP_SIZE
-    done
-
-    # Create SWAP partition
-    _info "Creating swap partition (${SWAP_SIZE})"
-    printf "n\n${PART_TYPE}\n\n+${SWAP_SIZE}\nw" | fdisk ${DRIVE}
-    partprobe ${DRIVE} && sleep 2s
-    yes | _check mkswap ${DRIVE}${PART_ORDER[2]}
-    export SWAP_PARTITION=${DRIVE}${PART_ORDER[2]}
-
-    # Get SYSTEM partiton size
-    until [[ ${SYSTEM_SIZE} =~ ^[0-9]{1,3}(G|T|P){1}+$ ]]; do
-        _note "partition size {G,T,P} (e.g., 25G)"
-        _prompt "System partition size:"
-        read -r SYSTEM_SIZE
-    done
-
-    # Create SYSTEM partition
-    _info "Creating system partition (${SYSTEM_SIZE})"
-    printf "n\n${PART_TYPE}\n\n+${SYSTEM_SIZE}\nw" | fdisk ${DRIVE}
-    partprobe ${DRIVE} && sleep 2s
-    yes | _check mkfs.ext4 ${DRIVE}${PART_ORDER[3]}
-    export SYSTEM_PARTITION=${DRIVE}${PART_ORDER[3]}
-
-    # Free space for HOME?
-    if [[ ${FIRMWARE} == "UEFI" ]]; then
-        _confirm "Do you wish to use free space for home?"
-        case ${CONFIRM} in
-            y|Y|yes|Yes|YES)
-                FREE_SPACE="True"
-                ;;
-        esac
-        unset CONFIRM
-    fi
-
-    # HOME partition
-    if [[ ${FIRMWARE} == "BIOS" || -n ${FREE_SPACE+x} ]]; then
-
-        # Create HOME partition
-        _info "Creating home partition (free space)"
-        printf "n\n${PART_TYPE}\n\nw" | fdisk ${DRIVE}
+    # Set partition order
+    if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then
+        ORDER=(p1 p2 p3 p4)
     else
-
-        # Get HOME partiton size
-        until [[ ${HOME_SIZE} =~ ^[0-9]{1,3}(G|T|P){1}+$ ]]; do
-            _note "partition size {G,T,P} (e.g., 100G)"
-            _prompt "Home partition size:"
-            read -r HOME_SIZE
-        done
-
-        # Create HOME partition
-        _info "Creating home partition (${HOME_SIZE})"
-        printf "n\n\n\n+${HOME_SIZE}\nw" | fdisk ${DRIVE}
+        ORDER=(1 2 3 4)
     fi
-    partprobe ${DRIVE} && sleep 2s
-    yes | _check mkfs.ext4 ${DRIVE}${PART_ORDER[4]}
-    export HOME_PARTITION=${DRIVE}${PART_ORDER[4]}
+
+    # Set required partitions and sizes
+    PARTITION=(BOOT_PARTITION SWAP_PARTITION SYSTEM_PARTITION HOME_PARTITION)
+    SIZES=("${BOOT_SIZE}" "${SWAP_SIZE}" "${SYSTEM_SIZE}" "${HOME_SIZE}")
+
+    # Manage partitions
+    for PART in "${PARTITION[@]}"; do
+        PART_NAME=${PART//_PARTITION/}
+
+        # Create partitions
+        _info "Creating ${PART_NAME} partition (${SIZES[${PART}]})"
+        if [[ ${PART} == "HOME_PARTITION" ]]; then
+            if [[ ${HOME_SIZE} == "free space" ]]; then
+                printf "n\n${PART_TYPE}\n\nw" | fdisk ${DRIVE}
+            else
+                printf "n\n\n\n+${HOME_SIZE}\nw" | fdisk ${DRIVE}
+            fi
+        else
+            printf "n\n${PART_TYPE}\n\n+${SIZES[${PART}]}\nw" | fdisk ${DRIVE}
+        fi
+
+        # Inform changes to system
+        partprobe ${DRIVE} && sleep 2s
+
+        # Format partitions
+        if [[ ${PART} == "BOOT_PARTITION" ]]; then
+            yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${ORDER[${PART}]}
+        elif [[ ${PART} == "SWAP_PARTITION" ]]; then
+            yes | _check mkswap ${DRIVE}${ORDER[${PART}]}
+        else
+            yes | _check mkfs.ext4 ${DRIVE}${ORDER[${PART}]}
+        fi
+
+        # Return partitions
+        export ${PART}=${DRIVE}${ORDER[${PART}]}
+    done
 }
 
 _custom_partitioning_scheme() {
