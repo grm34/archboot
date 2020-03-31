@@ -71,7 +71,7 @@ _default_partitioning_scheme() {
         PART_NAME=${PART//_SIZE/}
 
         # Free space for HOME?
-        if [[ ${FIRMWARE} == "UEFI" && ${PART} == "HOME_PARTITION" ]]; then
+        if [[ ${FIRMWARE} == "UEFI" && ${PART} == "HOME_SIZE" ]]; then
             _confirm "Do you wish to use free space for home?"
             case ${CONFIRM} in
                 y|Y|yes|Yes|YES)
@@ -80,7 +80,7 @@ _default_partitioning_scheme() {
                     ;;
             esac
             unset CONFIRM
-        elif [[ ${FIRMWARE} == "BIOS" && ${PART} == "HOME_PARTITION" ]]; then
+        elif [[ ${FIRMWARE} == "BIOS" && ${PART} == "HOME_SIZE" ]]; then
             FREE_SPACE="True"
             PARTITION_SIZE="free space"
         fi
@@ -172,6 +172,8 @@ _custom_partitioning_scheme() {
     for PART in "${PARTITION[@]}"; do
         echo && fdisk -l
         PART_NAME=${PART//_PARTITION/}
+
+        # Get drive ID
         _prompt "Enter ${PART_NAME,,} drive id:" "(e.g., sda2, nvme0n1p12)"
         read -r DRIVE_ID
 
