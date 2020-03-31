@@ -75,7 +75,7 @@ _default_partitioning_scheme() {
         PART_NAME=${PART//_SIZE/}
 
         # Free space for HOME?
-        if [[ ${PART} == "HOME_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
+        if [[ ${FIRMWARE} == "UEFI" && ${PART} == "HOME_PARTITION" ]]; then
             _confirm "Do you wish to use free space for home?"
             case ${CONFIRM} in
                 y|Y|yes|Yes|YES)
@@ -84,7 +84,7 @@ _default_partitioning_scheme() {
                     ;;
             esac
             unset CONFIRM
-        elif [[ ${FIRMWARE} == "BIOS" ]]; then
+        elif [[ ${FIRMWARE} == "BIOS" && ${PART} == "HOME_PARTITION" ]]; then
             FREE_SPACE="True"
             PARTITION_SIZE="free space"
         fi
@@ -104,8 +104,8 @@ _default_partitioning_scheme() {
             done
         fi
 
-        # Return partitions sizes
-        export ${PART}=${PARTITION_SIZE}
+        # Set partitions sizes
+        ${PART}=${PARTITION_SIZE}
     done
     unset PART
 
@@ -191,11 +191,11 @@ _custom_partitioning_scheme() {
             CHECK=$(partprobe -d -s /dev/${DRIVE_ID})
         done
 
-        # Return drive id
+        # Return partitions
         export ${PART}="/dev/${DRIVE_ID}"
     done
 
-    # Set boot drive
+    # Set & return boot drive
     if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
         export DRIVE=${BOOT_PARTITION%p*}
     else
