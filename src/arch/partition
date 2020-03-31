@@ -100,7 +100,7 @@ _default_partitioning_scheme() {
             done
         fi
 
-        # Set partitions sizes
+        # Return partitions sizes
         ${PART}=${PARTITION_SIZE}
     done
 
