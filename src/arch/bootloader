@@ -18,8 +18,8 @@ _install_bootloader() {
 
     # UEFI Firmware
     if [[ ${FIRMWARE} == "UEFI" ]]; then
-        _chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi \
-        --bootloader-id=arch"
+        _chroot "grub-install --target=x86_64-efi \
+--efi-directory=/boot/efi --bootloader-id=arch"
 
     # BIOS Firmware
     else
@@ -35,11 +35,11 @@ _install_bootloader() {
     _info "Installing Grub2 Themes"
     _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
     sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
-    /mnt/etc/default/grub
+/mnt/etc/default/grub
     echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
-    >> /mnt/etc/default/grub
+>> /mnt/etc/default/grub
     echo "desktop-image: \"background.png\"" \
-    >> /mnt/boot/grub/themes/Archlinux/theme.txt
+>> /mnt/boot/grub/themes/Archlinux/theme.txt
     mv background.png /mnt/boot/grub/themes/Archlinux/
     rm -r /mnt/Grub2-themes
 

@@ -48,7 +48,7 @@ sed 's/  "timezone": "//' | sed 's/",//')
 
     # Otherwise ask timezone to user
     else
-        until grep -Fxq ${TIMEZONE} ./timezone; do
+        until grep -Fxq "${TIMEZONE}" ./timezone; do
             _note "timezone not found! Full list is available in the wiki."
             _prompt "Enter timezone code:" "(e.g., Europe/Paris, Asia/Tokyo)"
             read -r TIMEZONE
