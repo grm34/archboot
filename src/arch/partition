@@ -45,8 +45,7 @@ _default_partitioning_scheme() {
         _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
         read -r DRIVE
     done
-    DRIVE="/dev/${DRIVE}"
-    export DRIVE
+    export DRIVE="/dev/${DRIVE}"
 
     # Set partition order
     if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then
