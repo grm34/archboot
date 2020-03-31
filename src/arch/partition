@@ -4,13 +4,20 @@
 # ============================================================================
 # Here we listing existing drive and partitions to select wich one to use.
 # Then we format it and we creating required partitions.
+# The DRIVE variable is required by bootloader (in case of BIOS firmware).
+# The PARTITION variables are required by mounting (BOOT_PARTITION, etc).
+#
+#     Recommended partitions:
+#
+#       SYSTEM_PARTITION......: /mnt
+#       BOOT_PARTITION........: /mnt/boot
+#       SWAP_PARTITION........: no mountpoint
+#       HOME_PARTITION........: /mnt/home
 #
 #     Required partitions:
 #
-#     SYSTEM_PARTITION......: /mnt
-#     BOOT_PARTITION........: /mnt/boot
-#     SWAP_PARTITION........: no mountpoint
-#     HOME_PARTITION........: /mnt/home
+#       SYSTEM_PARTITION......: /mnt
+#       BOOT_PARTITION........: /mnt/boot
 #
 # We use <partprobe> to inform system changes (and to check if drive exists)
 # and we add a <sleep 2s> to prevent unreconized system changes.

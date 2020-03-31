@@ -4,7 +4,7 @@
 # ============================================================================
 # Here we ask all required variables to the user and stored them.
 #
-#      Required variables:
+#    Required variables:
 #
 #      LANGUAGE.......: full list is available in the wiki
 #      HOST_NAME......: computer name such as <my-favorite-computer>
