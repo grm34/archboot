@@ -37,17 +37,18 @@ _default_partitioning_scheme() {
     CHECK=$(partprobe -d -s /dev/${DRIVE})
 
     # Otherwise ask again
-    until [[ ${DRIVE} ]]; do
+    until [[ ${CHECK} ]]; do
         fdisk -l
         _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
         read -r DRIVE
+        CHECK=$(partprobe -d -s /dev/${DRIVE})
     done
 
     # Return selected drive
     export DRIVE="/dev/${DRIVE}"
 
     # Create MBR or GPT Table
-    _info "Formatting ${DRIVE} drive"
+    _info "Listing ${DRIVE} drive"
     fdisk -l ${DRIVE}
     _note "WARNING: all data will be lost!"
     _confirm "Setting ${PART_TABLE} partition table on ${DRIVE}"
@@ -132,7 +133,8 @@ _default_partitioning_scheme() {
                 printf "n\n\n\n+${HOME_SIZE}\nw" | fdisk ${DRIVE}
             fi
         else
-            printf "n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk ${DRIVE}
+            printf \
+"n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk ${DRIVE}
         fi
 
         # Inform changes to system
