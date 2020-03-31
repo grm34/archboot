@@ -7,17 +7,12 @@
 # The DRIVE variable is required by bootloader (in case of BIOS firmware).
 # The PARTITION variables are required by mounting (BOOT_PARTITION, etc).
 #
-#     Recommended partitions:
+#     Partitioning scheme:
 #
-#       SYSTEM_PARTITION......: /mnt
-#       BOOT_PARTITION........: /mnt/boot
-#       SWAP_PARTITION........: no mountpoint
-#       HOME_PARTITION........: /mnt/home
-#
-#     Required partitions:
-#
-#       SYSTEM_PARTITION......: /mnt
-#       BOOT_PARTITION........: /mnt/boot
+#       SYSTEM_PARTITION......: /mnt            (required)
+#       BOOT_PARTITION........: /mnt/boot       (required)
+#       SWAP_PARTITION........: no mountpoint   (optional)
+#       HOME_PARTITION........: /mnt/home       (optional)
 #
 # We use <partprobe> to inform system changes (and to check if drive exists)
 # and we add a <sleep 2s> to prevent unreconized system changes.
