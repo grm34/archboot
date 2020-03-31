@@ -32,7 +32,7 @@ _install_desktop_environment() {
     # Install Desktop Environment
     _info "Installing ${DESKTOP,,} desktop"
     _chroot "pacman --noconfirm -S ${!DESKTOP}"
- }
+}
 
 _configure_desktop_environment() {
 
