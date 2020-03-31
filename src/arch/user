@@ -21,6 +21,7 @@
 # ============================================================================
 
 _get_user_variables() {
+    unset CONFIRM
 
     # Language
     until grep -Fxq "${LANGUAGE}" ./language; do
