@@ -97,7 +97,7 @@ _default_partitioning_scheme() {
 
             # Check if valid size and otherwise ask again
             until [[ ${PARTITION_SIZE} =~ \
-^[1-9]{1}[[0-9]{0,3}(M|G|T|P){1}+$ ]]; do
+^[1-9]{1}[[0-9]{0,2}(M|G|T|P){1}+$ ]]; do
                 _note "partition size {M,G,T,P} (e.g., ${SIZES[$PART]})"
                 _prompt "Enter valid ${PART_NAME} partition size:"
                 read -r PARTITION_SIZE
