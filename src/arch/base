@@ -42,6 +42,7 @@ _install_base() {
     # root passwd
     _info "Setting root password"
     _chroot "echo 'root:${ROOTPASSWD}' | chpasswd"
+    unset A ROOTPASSWD
 
     # network
     _info "Installing network manager"
@@ -59,6 +60,7 @@ _install_base() {
     _info "Setting user ${USER_NAME}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
     _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
+    unset B USERPASSWD
 }
 
 # archboot by grm34 under Apache License 2.0
