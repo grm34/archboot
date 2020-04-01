@@ -106,8 +106,7 @@ timezone|xprofile|background.png|Grub2-themes)$ ]]; then
             rm -rf ${SOURCE}
         fi
     done
-    df | grep -q /mnt
-    if [[ $? -eq 1 ]]; then
+    if mount | grep /mnt > /dev/null; then
         umount -R /mnt
     fi
     _note "you must reboot to prevent unreconized system changes."
@@ -129,7 +128,7 @@ _reboot() {
 
 # Display error and cleanup
 _error() {
-    echo -e "${RED}Error: ${YELLOW}${1}${NC}\n"
+    echo -e "${RED}Error: ${YELLOW}${*}${NC}\n"
     _cleanup
 }
 
