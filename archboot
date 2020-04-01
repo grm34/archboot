@@ -314,7 +314,7 @@ _configure_desktop_environment) 2>&1 | tee -a ${LOG}
             (_enable_user_rights) 2>&1 | tee -a ${LOG}
         fi
 
-        # Logfile path
+        # Set logs
         _info "Setting logs"
         mkdir /mnt/var/log/${APPNAME}
         cp ${LOG} /mnt/var/log/${APPNAME}/
