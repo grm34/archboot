@@ -33,7 +33,7 @@ _install_display_manager() {
     esac
 
     # Configure display manager
-    _info "Configuring ${DISPLAY_MAN} display manager"
+    _info "Configuring ${DISPLAY_MAN,,} display manager"
 
     # GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
