@@ -340,10 +340,17 @@ _note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
 _confirm "Do you want to reboot your computer now?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
-        umount -R /mnt
+        _cleanup
         _reboot
         ;;
     *)
+        unset CONFIRM
+        _confirm "Do you wish to show installation logs?"
+        case ${CONFIRM} in
+            y|Y|yes|Yes|YES)
+                cat /mnt/var/log/${APPNAME}/${APPNAME}*.log
+                ;;
+        esac
         _cleanup
         ;;
 esac
