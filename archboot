@@ -314,10 +314,12 @@ _configure_desktop_environment) 2>&1 | tee -a ${LOG}
             (_enable_user_rights) 2>&1 | tee -a ${LOG}
         fi
 
-        # Logfile path
-        _info "Setting logfile path"
+        # Set logs
+        _info "Setting logs"
         mkdir /mnt/var/log/${APPNAME}
         cp ${LOG} /mnt/var/log/${APPNAME}/
+        ( set -o posix ; set ) | less > \
+/mnt/var/log/${APPNAME}/${APPNAME}-${VERSION}_variables.txt
 
         # Success notes
         _note "Arch Linux installation successful!"
@@ -340,7 +342,7 @@ _note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
 _confirm "Do you want to reboot your computer now?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
-        umount -R /mnt
+        _cleanup
         _reboot
         ;;
     *)

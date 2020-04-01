@@ -50,7 +50,7 @@ _default_partitioning_scheme() {
     # Create MBR or GPT Table
     _info "Listing ${DRIVE} drive"
     fdisk -l ${DRIVE}
-    _note "WARNING: all data will be lost!"
+    _note "WARNING! all data will be lost!"
     _confirm "Setting ${PART_TABLE} partition table on ${DRIVE}"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
@@ -141,7 +141,7 @@ _default_partitioning_scheme() {
         partprobe ${DRIVE} && sleep 2s
 
         # Format partitions
-        _info "Formatting ${PART_NAME} partition (${SIZES[${INDEX}]})"
+        _info "Formating ${PART_NAME} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
             yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${ORDER[${INDEX}]}
         elif [[ ${PART} == "SWAP_PARTITION" ]]; then
