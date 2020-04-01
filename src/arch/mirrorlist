@@ -37,7 +37,7 @@ sed 's/  "country": "//' | sed 's/",//')
 _timezone() {
 
     # Get user timezone from ipinfo.io API
-    _info "Searching for timezone code"
+    _info "Searching for timezone"
     TIMEZONE=\
 $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
