@@ -49,7 +49,7 @@ _install_base() {
     _chroot "systemctl enable NetworkManager"
 
     # Intel Microcode
-    MICROCODE=$(lscpu | grep "Intel" >/dev/null 2>&1)
+    MICROCODE=$(lscpu | grep "Intel")
     if [[ ${MICROCODE} ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${INTEL_UCODE}"
