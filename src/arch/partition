@@ -64,12 +64,12 @@ _default_partitioning_scheme() {
     esac
     unset CONFIRM
 
-    # Set required partitions sizes
+    # Create list to get partitions size
     PART_SIZES=(BOOT_SIZE SWAP_SIZE SYSTEM_SIZE HOME_SIZE)
     SIZES=("512M" "2G" "25G" "100G")
     INDEX=0
 
-    # Get partitions sizes
+    # Get partitions size
     for PART in "${PART_SIZES[@]}"; do
         PART_NAME=${PART//_SIZE/}
 
@@ -88,7 +88,7 @@ _default_partitioning_scheme() {
             PARTITION_SIZE="free space"
         fi
 
-        # Ask partitions sizes
+        # Ask partitions size
         if [[ ! ${FREE_SPACE} ]]; then
             _note "partition size {M,G,T,P} (e.g., ${SIZES[${INDEX}]})"
             _prompt "Enter ${PART_NAME} partition size:"
@@ -103,7 +103,7 @@ _default_partitioning_scheme() {
             done
         fi
 
-        # Return partitions sizes
+        # Return partitions size
         export ${PART}="${PARTITION_SIZE}"
         INDEX=${INDEX}+1
     done
@@ -115,7 +115,7 @@ _default_partitioning_scheme() {
         ORDER=(1 2 3 4)
     fi
 
-    # Set required partitions and sizes
+    # Create list to assign size to partitions
     PARTITION=(BOOT_PARTITION SWAP_PARTITION SYSTEM_PARTITION HOME_PARTITION)
     SIZES=("${BOOT_SIZE}" "${SWAP_SIZE}" "${SYSTEM_SIZE}" "${HOME_SIZE}")
     INDEX=0

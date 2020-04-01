@@ -324,8 +324,8 @@ _configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
         # Move logs to system
         _info "Moving logs to system"
         mkdir /mnt/var/log/${APPNAME}
-        cp ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
-        cp ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
+        mv ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
+        mv ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
 
         # Success notes
         _note "Arch Linux installation successful!"
