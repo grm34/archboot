@@ -1,10 +1,10 @@
 [![archboot](https://www.archboot.org/assets/images/logo.png)](https://www.archboot.org)
 
-[![version](https://img.shields.io/badge/version-v2.9.2-blue.svg?style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34/archboot/releases)
-[![maintenance](https://img.shields.io/maintenance/yes/2020.svg?&style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34/archboot/pulse)
-[![author](https://img.shields.io/badge/author-grm34-red.svg?&style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34)
-[![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat&logo=github&?cacheSeconds=3600)](https://github.com/grm34/archboot/blob/master/LICENSE)
-[![telegram](https://img.shields.io/badge/Telegram-chat-red?style=flat&logo=telegram&?cacheSeconds=3600)](https://t.me/archboot)
+[![version](https://img.shields.io/badge/version-v2.9.2-blue.svg?style=flat&logo=github)](https://github.com/grm34/archboot/releases)
+[![maintenance](https://img.shields.io/maintenance/yes/2020.svg?&style=flat&logo=github)](https://github.com/grm34/archboot/pulse)
+[![author](https://img.shields.io/badge/author-grm34-red.svg?&style=flat&logo=github)](https://github.com/grm34)
+[![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat&logo=github)](https://github.com/grm34/archboot/blob/master/LICENSE)
+[![telegram](https://img.shields.io/badge/Telegram-chat-red?style=flat&logo=telegram)](https://t.me/archboot)
 
 Arch Linux is a light and fast distribution whose concept is to remain as
 simple as possible. In the same purpose, this script performs minimalist
