@@ -44,7 +44,7 @@ sed 's/  "timezone": "//' | sed 's/",//')
 
     # Update timezone if properly detected
     if grep -Fxq ${TIMEZONE} ./timezone; then
-        _note "${TIMEZONE} detected!"
+        _note "${TIMEZONE} timezone detected!"
 
     # Otherwise ask timezone to user
     else
