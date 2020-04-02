@@ -21,7 +21,7 @@ _firmware() {
 
     # BIOS Firmware
     else
-        FIRMWARE="BIOS"
+        export FIRMWARE="BIOS"
         export PART_TABLE="MBR"
         export PART_CODE="o"
         export PART_TYPE="p\n"
