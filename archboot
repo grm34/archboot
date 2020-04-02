@@ -320,7 +320,8 @@ _configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
 
         # Get user inputs logs
         _info "Adding user inputs to logs"
-        ( set -o posix ; set ) | less >> ${INPUTS_LOG}
+        printenv | less | grep -v "A\|B\|ROOTPASSWD\|USERPASSWD" \
+>> ${INPUTS_LOG}
 
         # Move logs to system
         _info "Moving logs to system"
