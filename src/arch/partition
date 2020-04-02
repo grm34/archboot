@@ -73,7 +73,7 @@ _default_partitioning_scheme() {
     for PART in "${PART_SIZES[@]}"; do
         PART_NAME=${PART//_SIZE/}
 
-        # Free space for HOME?
+        # HOME - UEFI Firmware
         if [[ ${FIRMWARE} == "UEFI" && ${PART} == "HOME_SIZE" ]]; then
             _confirm "Do you wish to use free space for home?"
             case ${CONFIRM} in
@@ -83,6 +83,8 @@ _default_partitioning_scheme() {
                     ;;
             esac
             unset CONFIRM
+
+        # HOME - BIOS Firmware
         elif [[ ${FIRMWARE} == "BIOS" && ${PART} == "HOME_SIZE" ]]; then
             FREE_SPACE="True"
             PARTITION_SIZE="free space"
