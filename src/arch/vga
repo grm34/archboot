@@ -18,7 +18,7 @@ _get_vga_driver() {
     NVIDIA_CARD=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
     if [[ ${NVIDIA_CARD} ]]; then
         _note "${NVIDIA_CARD##*: } detected!"
-        _confirm "Use Nvidia proprietary drivers?"
+        _select "Do you wish to install proprietary drivers?"
         case ${CONFIRM} in
             y|Y|yes|Yes|YES)
                 case ${KERNEL} in
