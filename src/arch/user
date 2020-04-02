@@ -137,7 +137,6 @@ _get_user_variables() {
 
     # Display Manager
     if [[ -n ${DESKTOP+x} ]]; then
-
         _confirm \
 "Do you wish to install ${DESKTOP,,} default Display Manager?"
         case ${CONFIRM} in
