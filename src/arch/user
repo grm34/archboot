@@ -84,7 +84,7 @@ _get_user_variables() {
     echo
 
     # User Rights
-    _confirm "Give all rights to user ${USER_NAME}?"
+    _confirm "Do you wish to give all rights to user ${USER_NAME}?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             export POWER="yes"
@@ -93,7 +93,7 @@ _get_user_variables() {
     unset CONFIRM
 
     # Linux Kernel
-    _confirm "Do you wish to install custom Linux Kernel?"
+    _confirm "Do you wish to install a custom Linux Kernel?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             until [[ ${KERNEL} =~ ^([1-9]|4)$ ]]; do
@@ -112,7 +112,7 @@ _get_user_variables() {
     unset CONFIRM
 
     # Desktop Environment
-    _confirm "Do you wish to install Desktop Environment?"
+    _confirm "Do you wish to install a Desktop Environment?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             until [[ ${DESKTOP} =~ ^([1-9]|10)$ ]]; do
@@ -131,7 +131,7 @@ _get_user_variables() {
     # Display Manager
     if [[ -n ${DESKTOP+x} ]]; then
 
-        _confirm "Do you wish to use ${DESKTOP} default Display Manager?"
+        _confirm "Do you wish to install ${DESKTOP} default Display Manager?"
         case ${CONFIRM} in
 
             # Custom display manager
