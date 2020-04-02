@@ -1,6 +1,4 @@
 #!/bin/bash
-(set -o posix; set) > ./vars.before
-
 APPNAME="archboot"
 VERSION="v2.9.2"
 BRANCH="dev"
