@@ -322,12 +322,9 @@ _configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
 
         # Get user inputs logs
         _info "Adding user inputs to logs"
-        (set -o posix; set) > ./vars.after
-        VARS=$(diff vars.before vars.after | grep "^>" | grep -v \
-"A\|B\|ROOTPASSWD\|USERPASSWD\|RED\|GREEN\|YELLOW\|BLUE\|CYAN\|NC")
-        echo ${VARS} >> ${INPUTS_LOG}
-        sed -i -e "s/ > /\n/g" ${INPUTS_LOG}
-        sed -i -e "s/> //g" ${INPUTS_LOG}
+        set | grep -v \
+"A=\|B=\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" \
+>> ${INPUTS_LOG}
 
         # Move logs to system
         _info "Moving logs to system"
