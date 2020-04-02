@@ -23,7 +23,7 @@ is to remain  as simple  as possible. In the same purpose
 this  script  performs  minimalist  installation, it only
 installs the  required  packages  in order  to  give free
 choice  to the  user.  Pretty  simple, it  just  asks for
-language, hostname, username, which disk to use, required
+language, hostname, username, the drive  to use, required
 partitions size  and  if  you wish  to install  a desktop
 environment. According to the chosen one  and in order to
 get complete support, additional packages may be required
@@ -271,7 +271,7 @@ _firmware; _mirrorlist; _timezone; _clock; _logs
 
 # Partitioning
 _note "enter NO to activate custom partitioning."
-_confirm "Do you wish to install Arch Linux on a dedicated disk?"
+_confirm "Do you wish to install Arch Linux on a dedicated drive?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
         _default_partitioning_scheme
