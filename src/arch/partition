@@ -27,7 +27,7 @@ _default_partitioning_scheme() {
     unset CONFIRM
 
     _info "Listing drives and partitions"
-    echo && fdisk -l
+    fdisk -l
 
     # Select drive to use
     _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
