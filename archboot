@@ -352,7 +352,7 @@ unset CONFIRM
 # Telegram chat: t.me/archboot - Have fun, take care and give a star!
 # ============================================================================
 
-_confirm "Do you want to reboot your computer now?"
+_confirm "Do you wish to reboot your computer now?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
         _cleanup
