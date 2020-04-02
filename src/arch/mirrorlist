@@ -19,7 +19,7 @@ sed 's/  "country": "//' | sed 's/",//')
 
     # Update mirrorlist if country code properly detected
     if [[ ${COUNTRY} =~ ^[A-Z]{2}+$ ]]; then
-        _info "Setting mirrors priority to ${COUNTRY}"
+        _note "${COUNTRY} mirrors priority detected!"
         mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 
         # Get corresponding mirrors from archlinux.org
@@ -44,7 +44,7 @@ sed 's/  "timezone": "//' | sed 's/",//')
 
     # Update timezone if properly detected
     if grep -Fxq ${TIMEZONE} ./timezone; then
-        _note "${TIMEZONE} detected!"
+        _note "${TIMEZONE} timezone detected!"
 
     # Otherwise ask timezone to user
     else
