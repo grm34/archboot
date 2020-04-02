@@ -10,7 +10,7 @@ Arch Linux is a light and fast distribution whose concept is to remain as
 simple as possible. In the same purpose, this script performs minimalist
 installation, it only installs the required packages in order to give
 free choice to the user. Pretty simple, it just asks for language,
-hostname, username, which disk to use, required partitions size and
+hostname, username, the drive to use, required partitions size and
 if you wish to install a desktop environment. According to the chosen one
 and in order to get complete support, additional packages may be required.
 
