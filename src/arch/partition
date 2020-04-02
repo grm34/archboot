@@ -180,7 +180,7 @@ _custom_partitioning_scheme() {
     # Get partitions drive ID
     _info "Listing drives and partitions"
     for PART in "${PARTITION[@]}"; do
-        echo && fdisk -l
+        fdisk -l
         PART_NAME=${PART//_PARTITION/}
 
         # Get drive ID
