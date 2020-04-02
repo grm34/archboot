@@ -51,7 +51,7 @@ _default_partitioning_scheme() {
     _info "Listing ${DRIVE} drive"
     fdisk -l ${DRIVE}
     _note "WARNING! all data will be lost!"
-    _confirm "Setting ${PART_TABLE} partition table on ${DRIVE}"
+    _confirm "Creating ${PART_TABLE} partition table on ${DRIVE}"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             wipefs -fa ${DRIVE}
