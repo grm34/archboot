@@ -62,7 +62,7 @@ _get_user_variables() {
     echo
 
     # Username
-    until [[ ${#USER_NAME} -ge 3 && ${USER_NAME} \
+    until [[ ${#USER_NAME} -ge 2 && ${USER_NAME} \
 =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
         _prompt "Enter username:" "(e.g., johnny)"
         read -r USER_NAME
