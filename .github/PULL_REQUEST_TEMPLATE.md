@@ -9,11 +9,13 @@
   - Limit the first line to 72 characters or less
   - Reference issues and pull requests liberally after the first line
 
+<!-- You can erase any parts of this template not applicable to your Pull Request. -->
+
+<!-- Delete everything above here before submitting -->
+
 # Description
 
-<!--
-Please include a summary of the changes and which issue will be addressed.
--->
+<!-- Please include a summary of the changes and which issue will be addressed. -->
 
 # Checklist
 
@@ -23,3 +25,4 @@ Please include a summary of the changes and which issue will be addressed.
 - [ ] My changes follow the coding style of this project
 - [ ] My changes build without any errors or warnings
 - [ ] My changes have been formatted and linted
+- [ ] I have checked if wiki update required
