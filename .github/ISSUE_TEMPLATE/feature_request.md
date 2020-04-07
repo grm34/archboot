@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an idea for archboot
 title: ''
-labels: 'type: feature'
+labels: feature
 assignees: ''
 ---
 
