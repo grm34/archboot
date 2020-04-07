@@ -2,8 +2,9 @@
 name: Feature request
 about: Suggest an idea for archboot
 title: ''
-labels: 'type: feature'
+labels: feature
 assignees: ''
+
 ---
 
 <!-- Please search existing issues to avoid creating duplicates. -->
