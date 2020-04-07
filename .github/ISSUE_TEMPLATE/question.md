@@ -2,8 +2,9 @@
 name: Question
 about: Ask a question about archboot
 title: ''
-labels: 'type: question'
+labels: question
 assignees: ''
+
 ---
 
 <!-- Please search existing issues to avoid creating duplicates. -->
