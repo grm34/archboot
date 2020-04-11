@@ -142,7 +142,10 @@ _default_partitioning_scheme() {
         # Format partitions
         _info "Formating ${PART_NAME} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
-            printf "t\n1\nef\nw" | fdisk ${DRIVE}
+            if [[ ${FIRMWARE} == "UEFI" ]]; then
+                printf "t\n1\nef\nw" | fdisk ${DRIVE}
+                partprobe ${DRIVE} && sleep 2s
+            fi
             yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${ORDER[${INDEX}]}
         elif [[ ${PART} == "SWAP_PARTITION" ]]; then
             yes | _check mkswap ${DRIVE}${ORDER[${INDEX}]}
