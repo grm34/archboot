@@ -2,9 +2,15 @@
 
 #                             BOOTLOADER
 # ============================================================================
-# Here we install and configure Grub2 bootloader, all steps are described
-# in the official documentation: https://wiki.archlinux.org/index.php/GRUB
-# We also install additional themes for beautifull OS selection menu.
+# Here we install and configure bootloader, systemd-boot for UEFI firmware
+# and Grub2 for BIOS firmware.
+#
+# All steps are described in the official documentation:
+#
+#     UEFI...: https://wiki.archlinux.org/index.php/Systemd-boot
+#     BIOS...: https://wiki.archlinux.org/index.php/GRUB
+#
+# BIOS only: install of  additional themes for beautifull OS selection menu.
 # ============================================================================
 
 _install_bootloader() {
