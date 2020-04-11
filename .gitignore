@@ -1,6 +1,7 @@
 *
 \!conf/00-keyboard.conf
 \!conf/language
+\!conf/reflector
 \!conf/timezone
 \!conf/xprofile
 \!src/apps/desktop_apps

@@ -27,6 +27,7 @@ _install_bootloader() {
         fi
         echo "initrd /initramfs-linux.img" >> ${BOOTCONF}
         echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
+        _chroot "bootctl list"
 
     # BIOS Firmware - GRUB2
     else
