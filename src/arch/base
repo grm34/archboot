@@ -53,6 +53,7 @@ _install_base() {
     if [[ ${MICROCODE} ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${INTEL_UCODE}"
+        export MICROCODE="True"
     fi
 
     # user

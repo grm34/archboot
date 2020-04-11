@@ -18,7 +18,15 @@ _install_bootloader() {
     # UEFI Firmware - systemd-boot
     if [[ ${FIRMWARE} == "UEFI" ]]; then
         _info "Installing systemd-boot on ${BOOT_PARTITION}"
-       _chroot "bootctl --path=\"/boot/efi/\" install"
+        _chroot "bootctl --path=\"/boot\" install"
+        BOOTCONF="/mnt/boot/loader/entries/arch.conf"
+        echo "title Arch Linux" > ${BOOTCONF}
+        echo "linux /vmlinuz-linux" >> ${BOOTCONF}
+        if [[ ${MICROCODE} == "True" ]]; then
+            echo "initrd /intel-ucode.img" >> ${BOOTCONF}
+        fi
+        echo "initrd /initramfs-linux.img" >> ${BOOTCONF}
+        echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
 
     # BIOS Firmware - GRUB2
     else
