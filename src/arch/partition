@@ -128,12 +128,9 @@ _default_partitioning_scheme() {
 
         # Create partitions
         _info "Creating ${PART_NAME} partition (${SIZES[${INDEX}]})"
-        if [[ ${PART} == "HOME_PARTITION" ]]; then
-            if [[ ${HOME_SIZE} == "free space" ]]; then
-                printf "n\n${PART_TYPE}\n\nw" | fdisk ${DRIVE}
-            else
-                printf "n\n\n\n+${HOME_SIZE}\nw" | fdisk ${DRIVE}
-            fi
+        if [[ ${PART} == "HOME_PARTITION" \
+&& ${HOME_SIZE} == "free space" ]]; then
+            printf "n\n${PART_TYPE}\n\n\nw" | fdisk ${DRIVE}
         else
             printf \
 "n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk ${DRIVE}
