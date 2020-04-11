@@ -136,16 +136,18 @@ _default_partitioning_scheme() {
 "n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk ${DRIVE}
         fi
 
+        # EFI partition type for boot
+        if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
+            _info "Setting EFI partiton type on ${DRIVE}${ORDER[${INDEX}]}"
+            printf "t\n1\nef\nw" | fdisk ${DRIVE}
+        fi
+
         # Inform changes to system
         partprobe ${DRIVE} && sleep 2s
 
         # Format partitions
         _info "Formating ${PART_NAME} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
-            if [[ ${FIRMWARE} == "UEFI" ]]; then
-                printf "t\n1\nef\nw" | fdisk ${DRIVE}
-                partprobe ${DRIVE} && sleep 2s
-            fi
             yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${ORDER[${INDEX}]}
         elif [[ ${PART} == "SWAP_PARTITION" ]]; then
             yes | _check mkswap ${DRIVE}${ORDER[${INDEX}]}
