@@ -19,7 +19,7 @@ _mount_partitions() {
 
     # Mount UEFI Boot on /mnt/boot/efi
     if [[ ${FIRMWARE} == "UEFI" ]]; then
-        _check mkdir -p /mnt/boot/efi/EFI
+        _check mkdir /mnt/boot/efi
         _check mount -t vfat ${BOOT_PARTITION} /mnt/boot/efi
 
     # Mount BIOS Boot on /mnt/boot

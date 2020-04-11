@@ -9,44 +9,44 @@
 
 _install_bootloader() {
 
-    # Install bootloader packages
-    _info "Installing bootloader packages"
-    _chroot "pacman --noconfirm -S ${BOOTAPPS}"
-
-    # Install Grub according to firmware
-    _info "Installing Grub for ${FIRMWARE} firmware"
-
-    # UEFI Firmware
+    # UEFI Firmware - systemd-boot
     if [[ ${FIRMWARE} == "UEFI" ]]; then
-        _chroot "grub-install --target=x86_64-efi \
---efi-directory=/boot/efi --bootloader-id=arch"
+        _info "Installing systemd-boot on ${BOOT_PARTITION}"
+       _chroot "bootctl --path=\"/boot/efi/\" install"
 
-    # BIOS Firmware
+    # BIOS Firmware - GRUB2
     else
+
+        # Install bootloader packages
+        _info "Installing bootloader packages"
+        _chroot "pacman --noconfirm -S ${BOOTAPPS}"
+
+        # Install Grub2
+        _info "Installing Grub2 bootloader on ${DRIVE}"
         _chroot "grub-install --target=i386-pc ${DRIVE}"
+
+        # Download Grub2 Themes
+        _info "Downloading Grub2 Themes"
+        _wget ${GHPAGES}/assets/images/background.png
+        _chroot "git clone git://github.com/Generator/Grub2-themes.git"
+        echo
+
+        # Install Grub2 Themes
+        _info "Installing Grub2 Themes"
+        _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
+        sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
+    /mnt/etc/default/grub
+        echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
+    >> /mnt/etc/default/grub
+        echo "desktop-image: \"background.png\"" \
+    >> /mnt/boot/grub/themes/Archlinux/theme.txt
+        mv background.png /mnt/boot/grub/themes/Archlinux/
+        rm -r /mnt/Grub2-themes
+
+        # Config Grub2
+        _info "Configuring Grub2 bootloader"
+        _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
     fi
-
-    # Download Grub2 Themes
-    _info "Downloading Grub2 Themes"
-    _wget ${GHPAGES}/assets/images/background.png
-    _chroot "git clone git://github.com/Generator/Grub2-themes.git"
-    echo
-
-    # Install Grub2 Themes
-    _info "Installing Grub2 Themes"
-    _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
-    sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
-/mnt/etc/default/grub
-    echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
->> /mnt/etc/default/grub
-    echo "desktop-image: \"background.png\"" \
->> /mnt/boot/grub/themes/Archlinux/theme.txt
-    mv background.png /mnt/boot/grub/themes/Archlinux/
-    rm -r /mnt/Grub2-themes
-
-    # Config Grub
-    _info "Configuring Grub2 for ${FIRMWARE} firmware"
-    _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 }
 
 # archboot by grm34 under Apache License 2.0
