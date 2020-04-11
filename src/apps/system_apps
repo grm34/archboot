@@ -19,7 +19,7 @@ export INTEL_UCODE="intel-ucode"
 export NETAPPS="ntp networkmanager wget nmap rp-pppoe dhclient \
 iw wpa_supplicant wireless_tools git"
 
-# Bootloader
+# Bootloader (BIOS only)
 export BOOTAPPS="grub os-prober gptfdisk efibootmgr"
 
 # archboot by grm34 under Apache License 2.0
