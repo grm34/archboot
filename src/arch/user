@@ -96,11 +96,11 @@ _get_user_variables() {
     unset CONFIRM
 
     # Linux Kernel
-    _confirm "Do you wish to install a custom Linux Kernel?"
+    _confirm "Do you wish to install default Linux Kernel?"
     case ${CONFIRM} in
 
         # Custom kernel
-        y|Y|yes|Yes|YES)
+        n|N|no|No|NO)
             until [[ ${KERNEL} =~ ^[1-4]$ ]]; do
                 _select "DEFAULT" "HARDENED" "LTS" "ZEN"
                 read -r KERNEL
