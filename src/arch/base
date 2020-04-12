@@ -50,7 +50,7 @@ _install_base() {
     _chroot "systemctl enable NetworkManager"
 
     # reflector
-    _info "Installing reflector"
+    _info "Installing reflector service"
     _chroot "pacman --noconfirm -S ${REFLECTOR}"
     mv reflector /mnt/etc/systemd/system/reflector.service
     _chroot "systemctl enable reflector.service"
