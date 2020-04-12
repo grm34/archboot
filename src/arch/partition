@@ -59,7 +59,7 @@ _default_partitioning_scheme() {
         y|Y|yes|Yes|YES)
             wipefs -fa ${DRIVE}
             printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
-            partprobe ${DRIVE}
+            partprobe ${DRIVE} > /dev/null 2>&1
             ;;
         *)
             _error "installation aborted by user!"
@@ -146,7 +146,7 @@ _default_partitioning_scheme() {
         fi
 
         # Inform changes to system
-        partprobe ${DRIVE} && sleep 2s
+        partprobe ${DRIVE} > /dev/null 2>&1 && sleep 2s
 
         # Format partitions
         _info "Formating ${PART_NAME} partition (${SIZES[${INDEX}]})"
