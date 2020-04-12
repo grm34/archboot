@@ -7,10 +7,10 @@
 export ARCH="base base-devel linux-firmware"
 
 # Kernel (the one you like)
-export DEFAULT_KERNEL="linux"
-export HARDENED_KERNEL="linux-hardened"
-export LTS_KERNEL="linux-lts"
-export ZEN_KERNEL="linux-zen"
+export LINUX="linux"
+export LINUX_HARDENED="linux-hardened"
+export LINUX_LTS="linux-lts"
+export LINUX_ZEN="linux-zen"
 
 # Microcode (Intel CPU only)
 export INTEL_UCODE="intel-ucode"
