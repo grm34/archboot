@@ -36,8 +36,8 @@ For more  information, take a look  at the  ${APPNAME} wiki
 # Here we define all required variables and functions to manage archboot.
 # Variables are pretty simple such as define needed urls and colors.
 # Functions are used to display install steps, notes, errors or to do
-# some actions like to cleanup after fatal error, to execute cmd in
-# chrooted environment, to select an option, to ask some information
+# some actions like to cleanup after fatal error, execute cmd in
+# chrooted environment, select an option, ask some information
 # to the user or to get install logs.
 # ============================================================================
 
@@ -182,11 +182,11 @@ _end() {
 #                      ARCHBOOT_SYSTEM MANAGEMENT
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
-# Sources are sorted by type: applications and scripts [src/apps & src/arch]
+# Sources are sorted by type: applications <src/apps> & scripts <src/arch>
 # Once done we can ask for user variables and store them to run install.
 # In case of desktop environment, we import additional sources and we
 # scan for 3D VGA controller to select appropriate drivers.
-# Kernel mode setting support, in this case VGA Driver will not be installed.
+# Kernel mode setting support: in this case VGA Driver will not be installed.
 # ============================================================================
 
 # Display archboot banner
@@ -264,7 +264,7 @@ fi
 # ============================================================================
 # Here we get user firmware to set partitions settings and other options.
 # Then we get fastest mirrors, timezone, clock, logs and we properly define
-# them. Now we could run partitioning, activate SWAP and mount the partitions.
+# them. We could now run partitioning, activate SWAP and mount the partitions.
 # ============================================================================
 
 # Prepare the system
@@ -291,7 +291,7 @@ _note "system is ready to rumble! Partitions mounted & swap activated."
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
 # user variables stored. We can start Arch Linux installation.
-# First step is to install base system and second to install Grub bootloader.
+# First step is to install base system and second to install bootloader.
 # In case of desktop environment we install VGA Drivers and Display Manager.
 # We use <tee> to get full installation logs of those steps.
 # If system won't start desktop environment after reboot, check the logs and

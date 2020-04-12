@@ -2,23 +2,26 @@
 
 #                         PARTITIONING SCHEME
 # ============================================================================
-# Here we listing existing drives and partitions to select wich ones to use.
-# Then we ask for optionals partitions and for desired partitions sizes.
-# Once done  we can format the selected drive and create the partitions.
-# The DRIVE variable is required by bootloader (in case of BIOS firmware).
-# The PARTITION variables are required by mounting (BOOT_PARTITION, etc).
+# DEFAULT PARTITIONING:
+#   In this mode a dedicated drive is required. We format it and create the
+#   right partition table according to firmware. Then we ask for partitions
+#   sizes to properly sort, create and format them.
 #
-#     Partitioning scheme:
+# CUSTOM PARTITIONING:
+#   In this mode we just ask for partitions drive ID. Partitions could
+#   be on differents drives but requires you to properly create and
+#   format them before running archboot.
+#   UEFI boot requires fat32 filesystem and EFI partition type (ef00)!
 #
-#       SYSTEM_PARTITION......: /mnt            (required)
-#       BOOT_PARTITION........: /mnt/boot       (required)
-#       SWAP_PARTITION........: no mountpoint   (optional in custom)
-#       HOME_PARTITION........: /mnt/home       (optional in custom)
+#   Partitioning scheme:
 #
-# We use <partprobe> to inform changes to system (and check if drive exists),
-# and then we add a <sleep 2s> to prevent unreconized system changes.
-# Since v2.8.1 custom partitioning is available, only drive id will be
-# asked (requires properly created and formated partitions).
+#     SYSTEM_PARTITION......: /mnt            (required)
+#     BOOT_PARTITION........: /mnt/boot       (required)
+#     SWAP_PARTITION........: no mountpoint   (optional in custom)
+#     HOME_PARTITION........: /mnt/home       (optional in custom)
+#
+# We use <partprobe> to inform changes to system and to check if drive exists.
+# We also add a <sleep 2s> to prevent unreconized system changes.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Partitioning
 # ============================================================================
@@ -73,7 +76,7 @@ _default_partitioning_scheme() {
     for PART in "${PART_SIZES[@]}"; do
         PART_NAME=${PART//_SIZE/}
 
-        # HOME - UEFI Firmware
+        # HOME > UEFI Firmware
         if [[ ${FIRMWARE} == "UEFI" && ${PART} == "HOME_SIZE" ]]; then
             _confirm "Do you wish to use free space for home?"
             case ${CONFIRM} in
@@ -84,7 +87,7 @@ _default_partitioning_scheme() {
             esac
             unset CONFIRM
 
-        # HOME - BIOS Firmware
+        # HOME > BIOS Firmware
         elif [[ ${FIRMWARE} == "BIOS" && ${PART} == "HOME_SIZE" ]]; then
             FREE_SPACE="True"
             PARTITION_SIZE="free space"

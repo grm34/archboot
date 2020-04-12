@@ -2,20 +2,19 @@
 
 #                             BOOTLOADER
 # ============================================================================
-# Here we install and configure bootloader, systemd-boot for UEFI firmware
-# and Grub2 for BIOS firmware.
+# Here we install and configure bootloader, systemd-boot for UEFI and
+# Grub2 (with additional themes for beautifull OS selection menu) for BIOS.
 #
 # All steps are described in the official documentation:
 #
 #     UEFI...: https://wiki.archlinux.org/index.php/Systemd-boot
 #     BIOS...: https://wiki.archlinux.org/index.php/GRUB
 #
-# BIOS only: install of  additional themes for beautifull OS selection menu.
 # ============================================================================
 
 _install_bootloader() {
 
-    # UEFI Firmware - systemd-boot
+    # UEFI Firmware > systemd-boot
     if [[ ${FIRMWARE} == "UEFI" ]]; then
         _info "Installing systemd-boot on ${BOOT_PARTITION}"
         _chroot "bootctl --path=\"/boot\" install"
@@ -31,21 +30,21 @@ _install_bootloader() {
         echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
         _chroot "bootctl list"
 
-    # BIOS Firmware - GRUB2
+    # BIOS Firmware > Grub2
     else
 
-        # Install Grub
+        # Install Grub2
         _info "Installing Grub bootloader"
         _chroot "pacman --noconfirm -S ${GRUB}"
         _chroot "grub-install --target=i386-pc ${DRIVE}"
 
-        # Download Grub Themes
+        # Download Themes
         _info "Downloading Grub Themes"
         _wget ${GHPAGES}/assets/images/background.png
         _chroot "git clone git://github.com/Generator/Grub2-themes.git"
         echo
 
-        # Install Grub Themes
+        # Install Themes
         _info "Installing Grub Themes"
         _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
         sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
@@ -57,7 +56,7 @@ _install_bootloader() {
         mv background.png /mnt/boot/grub/themes/Archlinux/
         rm -r /mnt/Grub2-themes
 
-        # Config Grub
+        # Configure Grub2
         _info "Configuring Grub bootloader"
         _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
     fi
