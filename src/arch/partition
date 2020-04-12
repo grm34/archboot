@@ -136,10 +136,10 @@ _default_partitioning_scheme() {
 "n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk ${DRIVE}
         fi
 
-        # EFI partition type for boot
+        # EFI partition type for bootq
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
             _info "Setting EFI partiton type on ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n1\nef\nw" | fdisk ${DRIVE}
+            printf "t\n1\nef00\nw" | gdisk ${DRIVE}
         fi
 
         # Inform changes to system
