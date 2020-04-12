@@ -13,7 +13,7 @@
 _install_base() {
 
     # Base System
-    _info "Installing base system with linux ${KERNEL_NAME,,}"
+    _info "Installing base system with ${KERNEL_NAME,,} kernel"
     yes '' | pacstrap /mnt ${ARCH} ${!KERNEL}
 
     # fstab

@@ -21,11 +21,11 @@ _install_bootloader() {
         _chroot "bootctl --path=\"/boot\" install"
         BOOTCONF="/mnt/boot/loader/entries/arch.conf"
         echo "title Arch Linux" > ${BOOTCONF}
-        echo "linux /vmlinuz-linux" >> ${BOOTCONF}
+        echo "linux /vmlinuz-${KERNEL_NAME,,}" >> ${BOOTCONF}
         if [[ ${MICROCODE} == "True" ]]; then
             echo "initrd /intel-ucode.img" >> ${BOOTCONF}
         fi
-        echo "initrd /initramfs-linux.img" >> ${BOOTCONF}
+        echo "initrd /initramfs-${!KERNEL_NAME,,}.img" >> ${BOOTCONF}
         echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
         _chroot "bootctl list"
 

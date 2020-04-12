@@ -105,17 +105,16 @@ _get_user_variables() {
                 _select "DEFAULT" "HARDENED" "LTS" "ZEN"
                 read -r KERNEL
             done
-            KERNEL_CHOICE=\
-(NONE DEFAULT_KERNEL HARDENED_KERNEL LTS_KERNEL ZEN_KERNEL)
+            KERNEL_CHOICE=(NONE LINUX LINUX_HARDENED LINUX_LTS LINUX_ZEN)
             export KERNEL=${KERNEL_CHOICE[${KERNEL}]}
             ;;
 
         # Default kernel
         *)
-            export KERNEL="DEFAULT_KERNEL"
+            export KERNEL="LINUX"
             ;;
     esac
-    export KERNEL_NAME=${KERNEL//_/ }
+    export KERNEL_NAME=${KERNEL//_/-}
     unset CONFIRM
 
     # Desktop Environment
