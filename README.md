@@ -30,7 +30,6 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 ## Wiki
 
-* [Installation step by step](https://github.com/grm34/archboot/wiki/Installation-step-by-step)
 * [Desktop Environment](https://github.com/grm34/archboot/wiki/Desktop-Environment)
 * [Display Manager](https://github.com/grm34/archboot/wiki/Display-Manager)
 * [Language code](https://github.com/grm34/archboot/wiki/Language-code)
