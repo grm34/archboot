@@ -12,8 +12,9 @@ export LINUX_HARDENED="linux-hardened"
 export LINUX_LTS="linux-lts"
 export LINUX_ZEN="linux-zen"
 
-# Microcode (Intel CPU only)
+# Microcode
 export INTEL_UCODE="intel-ucode"
+export AMD_UCODE="amd-ucode"
 
 # Network
 export NETAPPS="ntp networkmanager wget nmap rp-pppoe dhclient \

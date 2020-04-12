@@ -55,12 +55,19 @@ _install_base() {
     mv reflector /mnt/etc/systemd/system/reflector.service
     _chroot "systemctl enable reflector.service"
 
-    # Intel Microcode
+    # Microcode
     MICROCODE=$(lscpu | grep "Intel")
     if [[ ${MICROCODE} ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${INTEL_UCODE}"
-        export MICROCODE="True"
+        export MICROCODE="intel"
+    else
+        MICROCODE=$(lscpu | grep "AMD")
+        if [[ ${MICROCODE} ]]; then
+            _info "Installing AMD CPU Microcode"
+            _chroot "pacman --noconfirm -S ${AMD_UCODE}"
+            export MICROCODE="amd"
+        fi
     fi
 
     # user
