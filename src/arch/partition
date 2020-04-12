@@ -146,7 +146,8 @@ _default_partitioning_scheme() {
         fi
 
         # Inform changes to system
-        partprobe ${DRIVE} > /dev/null 2>&1 && sleep 2s
+        partprobe ${DRIVE} > /dev/null 2>&1
+        sleep 2s
 
         # Format partitions
         _info "Formating ${PART_NAME} partition (${SIZES[${INDEX}]})"
@@ -198,7 +199,7 @@ _custom_partitioning_scheme() {
 
         # Otherwise ask again
         until [[ ${CHECK} ]]; do
-            echo && sleep 2s && fdisk -l
+            echo; sleep 2s; fdisk -l
             _prompt "Enter valid ${PART_NAME,,} drive id:" "(e.g., sda1)"
             read -r DRIVE_ID
             CHECK=$(partprobe -d -s /dev/${DRIVE_ID})
