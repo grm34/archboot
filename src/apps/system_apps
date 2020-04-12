@@ -23,7 +23,7 @@ iw wpa_supplicant wireless_tools git"
 export REFLECTOR="reflector"
 
 # Bootloader (BIOS only)
-export BOOTAPPS="grub os-prober gptfdisk efibootmgr"
+export GRUB="grub os-prober ntfs-3g"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================
