@@ -17,15 +17,8 @@ _mount_partitions() {
     # Create boot and home folders
     _check mkdir /mnt/{boot,home}
 
-    # Mount UEFI Boot on /mnt/boot/efi
-    if [[ ${FIRMWARE} == "UEFI" ]]; then
-        _check mkdir -p /mnt/boot/efi/EFI
-        _check mount -t vfat ${BOOT_PARTITION} /mnt/boot/efi
-
-    # Mount BIOS Boot on /mnt/boot
-    else
-        _check mount ${BOOT_PARTITION} /mnt/boot
-    fi
+    # Mount boot on /mnt/boot
+    _check mount ${MOUNT_TYPE}${BOOT_PARTITION} /mnt/boot
 
     # Activate swap
     if [[ -n ${SWAP_PARTITION+x} ]]; then

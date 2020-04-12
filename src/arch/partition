@@ -12,8 +12,8 @@
 #
 #       SYSTEM_PARTITION......: /mnt            (required)
 #       BOOT_PARTITION........: /mnt/boot       (required)
-#       SWAP_PARTITION........: no mountpoint   (optional)
-#       HOME_PARTITION........: /mnt/home       (optional)
+#       SWAP_PARTITION........: no mountpoint   (optional in custom)
+#       HOME_PARTITION........: /mnt/home       (optional in custom)
 #
 # We use <partprobe> to inform changes to system (and check if drive exists),
 # and then we add a <sleep 2s> to prevent unreconized system changes.
@@ -134,6 +134,12 @@ _default_partitioning_scheme() {
         else
             printf \
 "n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk ${DRIVE}
+        fi
+
+        # EFI partition type for bootq
+        if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
+            _info "Setting EFI partiton type on ${DRIVE}${ORDER[${INDEX}]}"
+            printf "t\n1\nef00\nw" | gdisk ${DRIVE}
         fi
 
         # Inform changes to system

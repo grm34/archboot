@@ -5,6 +5,7 @@
 # Here we install Arch Linux base system with the chosen linux kernel.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Installation_guide
+# We use reflector service to automate mirrorlist sorting.
 # In case of Intel CPU we install <intel-ucode> to enable microcode updates.
 # Then we create user account with the previously defined password.
 # ============================================================================
@@ -48,11 +49,18 @@ _install_base() {
     _chroot "pacman --noconfirm -S ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
 
+    # reflector
+    _info "Installing reflector service"
+    _chroot "pacman --noconfirm -S ${REFLECTOR}"
+    mv reflector /mnt/etc/systemd/system/reflector.service
+    _chroot "systemctl enable reflector.service"
+
     # Intel Microcode
     MICROCODE=$(lscpu | grep "Intel")
     if [[ ${MICROCODE} ]]; then
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm -S ${INTEL_UCODE}"
+        export MICROCODE="True"
     fi
 
     # user

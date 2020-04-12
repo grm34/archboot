@@ -2,51 +2,63 @@
 
 #                             BOOTLOADER
 # ============================================================================
-# Here we install and configure Grub2 bootloader, all steps are described
-# in the official documentation: https://wiki.archlinux.org/index.php/GRUB
-# We also install additional themes for beautifull OS selection menu.
+# Here we install and configure bootloader, systemd-boot for UEFI firmware
+# and Grub2 for BIOS firmware.
+#
+# All steps are described in the official documentation:
+#
+#     UEFI...: https://wiki.archlinux.org/index.php/Systemd-boot
+#     BIOS...: https://wiki.archlinux.org/index.php/GRUB
+#
+# BIOS only: install of  additional themes for beautifull OS selection menu.
 # ============================================================================
 
 _install_bootloader() {
 
-    # Install bootloader packages
-    _info "Installing bootloader packages"
-    _chroot "pacman --noconfirm -S ${BOOTAPPS}"
-
-    # Install Grub according to firmware
-    _info "Installing Grub for ${FIRMWARE} firmware"
-
-    # UEFI Firmware
+    # UEFI Firmware - systemd-boot
     if [[ ${FIRMWARE} == "UEFI" ]]; then
-        _chroot "grub-install --target=x86_64-efi \
---efi-directory=/boot/efi --bootloader-id=arch"
+        _info "Installing systemd-boot on ${BOOT_PARTITION}"
+        _chroot "bootctl --path=\"/boot\" install"
+        BOOTCONF="/mnt/boot/loader/entries/arch.conf"
+        echo "title Arch Linux" > ${BOOTCONF}
+        echo "linux /vmlinuz-linux" >> ${BOOTCONF}
+        if [[ ${MICROCODE} == "True" ]]; then
+            echo "initrd /intel-ucode.img" >> ${BOOTCONF}
+        fi
+        echo "initrd /initramfs-linux.img" >> ${BOOTCONF}
+        echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
+        _chroot "bootctl list"
 
-    # BIOS Firmware
+    # BIOS Firmware - GRUB2
     else
+
+        # Install Grub
+        _info "Installing Grub bootloader"
+        _chroot "pacman --noconfirm -S ${GRUB}"
         _chroot "grub-install --target=i386-pc ${DRIVE}"
-    fi
 
-    # Download Grub2 Themes
-    _info "Downloading Grub2 Themes"
-    _wget ${GHPAGES}/assets/images/background.png
-    _chroot "git clone git://github.com/Generator/Grub2-themes.git"
-    echo
+        # Download Grub Themes
+        _info "Downloading Grub Themes"
+        _wget ${GHPAGES}/assets/images/background.png
+        _chroot "git clone git://github.com/Generator/Grub2-themes.git"
+        echo
 
-    # Install Grub2 Themes
-    _info "Installing Grub2 Themes"
-    _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
-    sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
+        # Install Grub Themes
+        _info "Installing Grub Themes"
+        _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
+        sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
 /mnt/etc/default/grub
-    echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
+        echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
 >> /mnt/etc/default/grub
-    echo "desktop-image: \"background.png\"" \
+        echo "desktop-image: \"background.png\"" \
 >> /mnt/boot/grub/themes/Archlinux/theme.txt
-    mv background.png /mnt/boot/grub/themes/Archlinux/
-    rm -r /mnt/Grub2-themes
+        mv background.png /mnt/boot/grub/themes/Archlinux/
+        rm -r /mnt/Grub2-themes
 
-    # Config Grub
-    _info "Configuring Grub2 for ${FIRMWARE} firmware"
-    _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+        # Config Grub
+        _info "Configuring Grub bootloader"
+        _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+    fi
 }
 
 # archboot by grm34 under Apache License 2.0
