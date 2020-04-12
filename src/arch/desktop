@@ -2,9 +2,9 @@
 
 #                       DESKTOP ENVIRONMENT
 # ============================================================================
-# Here we configure desktop environment and install required packages
-# such as display server, fonts to prevent issues in gtk apps on some
-# desktop environment, terminal and <numlockx> to get numlock_ON on bootup.
+# Here we install desktop environment with the required packages
+# such as display server, fonts (to prevent issues in gtk apps on
+# some DE), terminal, <numlockx> (to get numlock on bootup).
 # To prevent password issues on the login screen of the display manager
 # caused by wrong keyboard layout, we add keyboard.conf to xorg settings.
 # All steps are described in the official documentation:
@@ -13,23 +13,23 @@
 
 _install_desktop_environment() {
 
-    # Install Xorg
+    # Xorg
     _info "Installing xorg server"
     _chroot "pacman --noconfirm -S ${XORG}"
 
-    # Install Fonts
+    # Fonts
     _info "Installing fonts"
     _chroot "pacman --noconfirm -S ${FONTS}"
 
-    # Install Numlock
+    # Numlock
     _info "Installing numlock"
     _chroot "pacman --noconfirm -S ${NUMLOCK}"
 
-    # Install Terminal
+    # Terminal
     _info "Installing terminal"
     _chroot "pacman --noconfirm -S ${TERMINAL}"
 
-    # Install Desktop Environment
+    # Desktop Environment
     _info "Installing ${DESKTOP,,} desktop"
     _chroot "pacman --noconfirm -S ${!DESKTOP}"
 }
