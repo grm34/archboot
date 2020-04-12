@@ -38,7 +38,7 @@ _get_user_variables() {
 
     # Hostname
     until [[ ${#HOST_NAME} -ge 3 \
-&& ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+&& ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
         _prompt "Enter hostname:" "(e.g., my-favorite-computer)"
         read -r HOST_NAME
     done
@@ -63,7 +63,7 @@ _get_user_variables() {
 
     # Username
     until [[ ${#USER_NAME} -ge 2 && ${USER_NAME} \
-=~ ^[a-zA-Z0-9][-a-zA-Z0-9_]+$ ]]; do
+=~ ^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]]; do
         _prompt "Enter username:" "(e.g., johnny)"
         read -r USER_NAME
     done
