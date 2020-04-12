@@ -4,7 +4,7 @@
 # ============================================================================
 # Here we scan for 3D VGA Controller to install appropriate drivers
 # with OpenGL and Hardware Acceleration if currently supported.
-# User can choose to install proprietary drivers instead of open source.
+# In case of nvidia user can choose to install proprietary drivers.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Xorg#Driver_installation
 # ============================================================================
