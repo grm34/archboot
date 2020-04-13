@@ -102,16 +102,16 @@ _check() {
 # Delete sources, umount partitions and exit
 _cleanup() {
     echo -e "\nCleaning up ${APPNAME}..."
-    for SOURCE in *; do
-        if [[ ${SOURCE} =~ ^(base|bootloader|desktop|display|\
-firmware|mirrorlist|mounting|partition|user|vga|desktop_apps|\
-display_apps|system_apps|vga_apps|00-keyboard.conf|language|\
-reflector|timezone|xprofile|background.png|Grub2-themes)$ ]]; then
+    SRC=(base bootloader desktop display firmware mirrorlist mounting \
+partition user vga desktop_apps display_apps system_apps vga_apps \
+00-keyboard.conf language reflector timezone xprofile background.png \
+Grub2-themes archboot* *_vars.log)
+    for SOURCE in "${SRC[@]}"; do
+        if [[ -f ${SOURCE} ]]; then
             rm -rf ${SOURCE}
         fi
     done
-    rm archboot* ./*.log > /dev/null 2>&1
-    if mount | grep /mnt > /dev/null; then
+    if mount | grep /mnt; then
         umount -R /mnt
     fi
     _note "you must reboot to prevent unreconized system changes."
