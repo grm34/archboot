@@ -4,7 +4,8 @@
 # ============================================================================
 # Here we install Arch Linux base system with the chosen linux kernel.
 # We use reflector service to automate mirrorlist sorting.
-# We install and enable CPU microcode updates <intel-ucode> or <amd-ucode>.
+# If user decide to, we install yay AUR Helper.
+# Then we install CPU microcode updates <intel-ucode> or <amd-ucode>.
 # Then we create user account with the previously defined password.
 # All steps are described in the official documentation:
 # https://wiki.archlinux.org/index.php/Installation_guide
@@ -68,6 +69,12 @@ _install_base() {
             _chroot "pacman --noconfirm -S ${AMD_UCODE}"
             export MICROCODE="amd"
         fi
+    fi
+
+    # AUR Helper
+    if [[ -n ${AUR_HELPER+x} ]]; then
+        _chroot "git clone https://aur.archlinux.org/yay.git"
+        _chroot "cd yay && makepkg -si"
     fi
 
     # User
