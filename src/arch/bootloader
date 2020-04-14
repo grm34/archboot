@@ -26,7 +26,7 @@ _install_bootloader() {
                 echo "initrd /${MICROCODE}-ucode.img" >> ${BOOTCONF}
                 ;;
         esac
-        echo "initrd /initramfs-${!KERNEL_NAME,,}.img" >> ${BOOTCONF}
+        echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> ${BOOTCONF}
         echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
         _chroot "bootctl list"
 
