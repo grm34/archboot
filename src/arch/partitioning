@@ -72,8 +72,8 @@ _default_partitioning_scheme() {
     esac
     unset CONFIRM
 
-    # Get required partitions
-    _get_required_partitions
+    # Ask for optional partitions and set partition list
+    _get_user_partitions
 
     # Create list to store partitions sizes
     PART_SIZES=(BOOT_SIZE SYSTEM_SIZE)
@@ -189,8 +189,8 @@ _default_partitioning_scheme() {
 _custom_partitioning_scheme() {
     unset CONFIRM
 
-    # Get required partitions
-    _get_required_partitions
+    # Ask for optional partitions and set partitions list
+    _get_user_partitions
 
     # Get partitions drive ID
     _info "Listing drives and partitions"
@@ -225,14 +225,14 @@ _custom_partitioning_scheme() {
     fi
 }
 
-_get_required_partitions() {
+_get_user_partitions() {
 
-    # Set required and extended partitions
+    # Set required and optional partitions
     PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
-    EXTENDED=(SWAP_PARTITION HOME_PARTITION)
+    OPTIONAL=(SWAP_PARTITION HOME_PARTITION)
 
     # Get extended partitions
-    for PART in "${EXTENDED[@]}"; do
+    for PART in "${OPTIONAL[@]}"; do
         PART_NAME=${PART//_PARTITION/}
         _confirm "Do you wish to create ${PART_NAME,,} partition?"
         case ${CONFIRM} in
