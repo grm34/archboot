@@ -31,7 +31,7 @@ For more  information, take a look  at the  ${APPNAME} wiki
 """
 }
 
-#                       ARCHBOOT_SYSTEM SETTINGS
+#                      SHARED VARIABLES & FUNCTIONS
 # ============================================================================
 # Here we define all required variables and functions to manage archboot.
 # Variables are pretty simple such as define needed urls and colors.
@@ -178,13 +178,13 @@ _end() {
     echo -ne "\n==> ${NC}"
 }
 
-#                      ARCHBOOT_SYSTEM MANAGEMENT
+#             START SCRIPT - IMPORT SOURCES - GET USER VARIABLES
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications <src/apps> & scripts <src/arch>
-# Once done we can ask for user variables and store them to run install.
+# Then we can ask for user variables and store them to run install.
 # In case of desktop environment, we import additional sources and we
-# scan for 3D VGA controller to select appropriate drivers.
+# scan for 3D VGA controller to define appropriate drivers.
 # Kernel mode setting support: in this case VGA Driver will not be installed.
 # ============================================================================
 
@@ -259,7 +259,7 @@ if [[ -n ${DESKTOP+x} ]]; then
     unset CONFIRM
 fi
 
-#                       ARCHBOOT_SYSTEM PREPARE
+#               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
 # ============================================================================
 # Here we get user firmware to set partitions settings and other options.
 # Then we get fastest mirrors, timezone, clock, logs and we properly define
@@ -286,7 +286,7 @@ unset CONFIRM
 _mount_partitions
 _note "system is ready to rumble! Partitions mounted & swap activated."
 
-#                     ARCHBOOT_SYSTEM INSTALLATION
+#                         ARCH LINUX INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
 # user variables stored. We can start Arch Linux installation.
@@ -344,7 +344,7 @@ _configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
 esac
 unset CONFIRM
 
-#                       ARCHBOOT_SYSTEM REBOOT
+#                CLEANUP SOURCES - UMOUNT PARTITIONS - REBOOT
 # ============================================================================
 # And here we go! We could now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.
