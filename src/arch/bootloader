@@ -7,8 +7,8 @@
 #
 # All steps are described in the official documentation:
 #
-#     UEFI...: https://wiki.archlinux.org/index.php/Systemd-boot
-#     BIOS...: https://wiki.archlinux.org/index.php/GRUB
+#   UEFI...: https://wiki.archlinux.org/index.php/Systemd-boot
+#   BIOS...: https://wiki.archlinux.org/index.php/GRUB
 #
 # ============================================================================
 
