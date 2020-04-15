@@ -153,6 +153,7 @@ _select() {
 
 # Ask confirmation (Yes/No)
 _confirm() {
+    unset CONFIRM
     COUNT=$((${#1} + 6))
     until [[ ${CONFIRM} =~ ^(y|n|Y|N|yes|no|Yes|No|YES|NO)$ ]]; do
         echo -ne "${YELLOW}\n==> ${GREEN}${1} ${RED}[y/n]${YELLOW}\n==> "
@@ -221,7 +222,6 @@ case ${CONFIRM} in
         exit
         ;;
 esac
-unset CONFIRM
 
 # Import base sources
 _info "Importing base sources"
@@ -246,7 +246,7 @@ if [[ -n ${DESKTOP+x} ]]; then
     # Import desktop sources
     _info "Importing desktop sources"
     source ./desktop; source ./display; source ./gpu_driver
-    source ./desktop_apps; source ./display_apps; source gpu_apps
+    source ./desktop_apps; source ./display_apps; source ./gpu_apps
 
     # GPU Driver or kernel mode setting?
     _note "enter NO to use kernel mode setting."
@@ -256,7 +256,6 @@ if [[ -n ${DESKTOP+x} ]]; then
             _get_gpu_driver
             ;;
     esac
-    unset CONFIRM
 fi
 
 #               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
@@ -280,7 +279,6 @@ case ${CONFIRM} in
         _custom_partitioning_scheme
         ;;
 esac
-unset CONFIRM
 
 # Mount
 _mount_partitions
@@ -342,7 +340,6 @@ _configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
         _error "installation aborted by user!"
         ;;
 esac
-unset CONFIRM
 
 #                CLEANUP SOURCES - UMOUNT PARTITIONS - REBOOT
 # ============================================================================
@@ -361,7 +358,6 @@ case ${CONFIRM} in
         _cleanup
         ;;
 esac
-unset CONFIRM
 _note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
 
 # archboot by grm34 under Apache License 2.0

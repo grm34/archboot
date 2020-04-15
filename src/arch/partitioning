@@ -32,7 +32,6 @@
 # ============================================================================
 
 _default_partitioning_scheme() {
-    unset CONFIRM
 
     _info "Listing drives and partitions"
     fdisk -l
@@ -70,7 +69,6 @@ _default_partitioning_scheme() {
             _error "installation aborted by user!"
             ;;
     esac
-    unset CONFIRM
 
     # Get optional partitions and set partitions list
     _get_user_partitions
@@ -100,7 +98,6 @@ _default_partitioning_scheme() {
                     PARTITION_SIZE="free space"
                     ;;
             esac
-            unset CONFIRM
         fi
 
         # Otherwise ask partitions sizes
@@ -181,7 +178,6 @@ _default_partitioning_scheme() {
 }
 
 _custom_partitioning_scheme() {
-    unset CONFIRM
 
     # Get optional partitions and set partitions list
     _get_user_partitions
@@ -234,7 +230,6 @@ _get_user_partitions() {
                 PARTITION+=("${PART}")
                 ;;
         esac
-        unset CONFIRM
     done
 
     # Return partitions list

@@ -12,7 +12,6 @@
 # ============================================================================
 
 _get_gpu_driver() {
-    unset CONFIRM
 
     _info "Scanning 3D GPU Controller"
 
@@ -42,7 +41,6 @@ _get_gpu_driver() {
                 export HARDVIDEO="HARDVIDEO_NOUVEAU"
                 ;;
         esac
-        unset CONFIRM
     else
 
         # AMD / ATI
