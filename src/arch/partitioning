@@ -72,7 +72,7 @@ _default_partitioning_scheme() {
     esac
     unset CONFIRM
 
-    # Ask for optional partitions and set partition list
+    # Get optional partitions and set partitions list
     _get_user_partitions
 
     # Create list to store partitions sizes
@@ -189,7 +189,7 @@ _default_partitioning_scheme() {
 _custom_partitioning_scheme() {
     unset CONFIRM
 
-    # Ask for optional partitions and set partitions list
+    # Get optional partitions and set partitions list
     _get_user_partitions
 
     # Get partitions drive ID
@@ -217,7 +217,7 @@ _custom_partitioning_scheme() {
         export ${PART}="/dev/${DRIVE_ID}"
     done
 
-    # Set & return boot drive
+    # Set and return boot drive
     if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
         export DRIVE=${BOOT_PARTITION%p*}
     else
@@ -231,7 +231,7 @@ _get_user_partitions() {
     PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
     OPTIONAL=(SWAP_PARTITION HOME_PARTITION)
 
-    # Get extended partitions
+    # Get optional partitions
     for PART in "${OPTIONAL[@]}"; do
         PART_NAME=${PART//_PARTITION/}
         _confirm "Do you wish to create ${PART_NAME,,} partition?"
