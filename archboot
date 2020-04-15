@@ -31,7 +31,7 @@ For more  information, take a look  at the  ${APPNAME} wiki
 """
 }
 
-#                       ARCHBOOT_SYSTEM SETTINGS
+#                      SHARED VARIABLES & FUNCTIONS
 # ============================================================================
 # Here we define all required variables and functions to manage archboot.
 # Variables are pretty simple such as define needed urls and colors.
@@ -102,8 +102,8 @@ _check() {
 # Delete sources, umount partitions and exit
 _cleanup() {
     echo -e "\nCleaning up ${APPNAME}..."
-    SRC=(base bootloader desktop display firmware mirrorlist mounting \
-partition user vga desktop_apps display_apps system_apps vga_apps \
+    SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
+mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
 00-keyboard.conf language reflector timezone xprofile background.png \
 Grub2-themes archboot* *_vars.log)
     for SOURCE in "${SRC[@]}"; do
@@ -178,14 +178,14 @@ _end() {
     echo -ne "\n==> ${NC}"
 }
 
-#                      ARCHBOOT_SYSTEM MANAGEMENT
+#             START SCRIPT - IMPORT SOURCES - GET USER VARIABLES
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications <src/apps> & scripts <src/arch>
-# Once done we can ask for user variables and store them to run install.
+# Then we can ask for user variables and store them to run install.
 # In case of desktop environment, we import additional sources and we
-# scan for 3D VGA controller to select appropriate drivers.
-# Kernel mode setting support: in this case VGA Driver will not be installed.
+# scan for 3D GPU controller to define appropriate drivers.
+# Kernel mode setting support: in this case GPU Driver will not be installed.
 # ============================================================================
 
 # Display archboot banner
@@ -205,12 +205,12 @@ _confirm "Start downloading sources from github?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
         _info "Downloading base sources"
-        _wget ${URL}/src/arch/base            # to install Base system
-        _wget ${URL}/src/arch/bootloader      # to install Grub2 bootloader
-        _wget ${URL}/src/arch/firmware        # to get user firmware
+        _wget ${URL}/src/arch/base            # to install base system
+        _wget ${URL}/src/arch/bootloader      # to install bootloader
+        _wget ${URL}/src/arch/firmware        # to get firmware
         _wget ${URL}/src/arch/mirrorlist      # to get mirrorlist & timezone
         _wget ${URL}/src/arch/mounting        # to mount partitions & swap
-        _wget ${URL}/src/arch/partition       # to create table & partitions
+        _wget ${URL}/src/arch/partitioning    # to define/create partitions
         _wget ${URL}/src/arch/user            # to get user variables
         _wget ${URL}/src/apps/system_apps     # to get system apps
         _wget ${URL}/conf/language            # to get language code
@@ -226,7 +226,7 @@ unset CONFIRM
 # Import base sources
 _info "Importing base sources"
 source ./base; source ./bootloader; source ./firmware; source ./mirrorlist
-source ./mounting; source ./partition; source ./user; source ./system_apps
+source ./mounting; source ./partitioning; source ./user; source ./system_apps
 
 # Get required variables
 _get_user_variables
@@ -236,30 +236,30 @@ if [[ -n ${DESKTOP+x} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
-    _wget ${URL}/src/arch/vga             # to scan/install VGA Controller
     _wget ${URL}/src/arch/desktop         # to install Desktop Environment
     _wget ${URL}/src/arch/display         # to install Display Manager
-    _wget ${URL}/src/apps/vga_apps        # to get VGA apps
+    _wget ${URL}/src/arch/gpu_driver      # to scan/install GPU Driver
     _wget ${URL}/src/apps/desktop_apps    # to get Desktop apps
     _wget ${URL}/src/apps/display_apps    # to get Display Manager apps
+    _wget ${URL}/src/apps/gpu_apps        # to get GPU Driver apps
 
     # Import desktop sources
     _info "Importing desktop sources"
-    source ./vga; source ./desktop; source ./display
-    source ./vga_apps; source ./desktop_apps; source ./display_apps
+    source ./desktop; source ./display; source ./gpu_driver
+    source ./desktop_apps; source ./display_apps; source gpu_apps
 
-    # VGA Driver or kernel mode setting?
+    # GPU Driver or kernel mode setting?
     _note "enter NO to use kernel mode setting."
-    _confirm "Do you wish to install VGA Driver?"
+    _confirm "Do you wish to install GPU Driver?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
-            _get_vga_driver
+            _get_gpu_driver
             ;;
     esac
     unset CONFIRM
 fi
 
-#                       ARCHBOOT_SYSTEM PREPARE
+#               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
 # ============================================================================
 # Here we get user firmware to set partitions settings and other options.
 # Then we get fastest mirrors, timezone, clock, logs and we properly define
@@ -286,12 +286,12 @@ unset CONFIRM
 _mount_partitions
 _note "system is ready to rumble! Partitions mounted & swap activated."
 
-#                     ARCHBOOT_SYSTEM INSTALLATION
+#                         ARCH LINUX INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted and
 # user variables stored. We can start Arch Linux installation.
 # First step is to install base system and second to install bootloader.
-# In case of desktop environment we install VGA Drivers and Display Manager.
+# In case of desktop environment we install GPU Drivers and Display Manager.
 # We use <tee> to get full installation logs of those steps.
 # If system won't start desktop environment after reboot, check the logs and
 # open an issue on GitHub. Logs are availables at /var/log/archboot.
@@ -304,9 +304,9 @@ case ${CONFIRM} in
         # Install Arch Linux base system
         (_install_base; _install_bootloader) 2>&1 | tee -a ${INSTALL_LOG}
 
-        # Install VGA Driver
-        if [[ -n ${VGA_DRIVER+x} ]]; then
-            (_install_vga_driver) 2>&1 | tee -a ${INSTALL_LOG}
+        # Install GPU Driver
+        if [[ -n ${GPU_DRIVER+x} ]]; then
+            (_install_gpu_driver) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
         # Install desktop environment & display manager
@@ -344,7 +344,7 @@ _configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
 esac
 unset CONFIRM
 
-#                       ARCHBOOT_SYSTEM REBOOT
+#                CLEANUP SOURCES - UMOUNT PARTITIONS - REBOOT
 # ============================================================================
 # And here we go! We could now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.

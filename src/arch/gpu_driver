@@ -1,18 +1,20 @@
 #!/bin/bash
 
-#                        VGA CONTROLLER DRIVERS
+#                        GPU CONTROLLER DRIVER
 # ============================================================================
-# Here we scan for 3D VGA Controller to install appropriate drivers
+# Here we scan for 3D GPU Controller to install appropriate driver
 # with OpenGL and Hardware Acceleration if currently supported.
-# In case of nvidia user can choose to install proprietary drivers.
+#
 # All steps are described in the official documentation:
-# https://wiki.archlinux.org/index.php/Xorg#Driver_installation
+#
+#   https://wiki.archlinux.org/index.php/Xorg#Driver_installation
+#
 # ============================================================================
 
-_get_vga_driver() {
+_get_gpu_driver() {
     unset CONFIRM
 
-    _info "Scanning 3D VGA Controller"
+    _info "Scanning 3D GPU Controller"
 
     # NVIDIA
     NVIDIA_CARD=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
@@ -24,10 +26,10 @@ _get_vga_driver() {
             # Proprietary drivers
             y|Y|yes|Yes|YES)
                 case ${KERNEL} in
-                    LTS_KERNEL) export VGA_DRIVER="NVIDIA_LTS";;
+                    LTS_KERNEL) export GPU_DRIVER="NVIDIA_LTS";;
                     HARDENED_KERNEL|ZEN_KERNEL)
-                        export VGA_DRIVER="NVIDIA_DKMS";;
-                    DEFAULT_KERNEL) export VGA_DRIVER="NVIDIA_DRIVER";;
+                        export GPU_DRIVER="NVIDIA_DKMS";;
+                    DEFAULT_KERNEL) export GPU_DRIVER="NVIDIA_DRIVER";;
                 esac
                 export OPENGL="OPENGL_NVIDIA"
                 export HARDVIDEO="HARVIDEO_NVIDIA"
@@ -35,7 +37,7 @@ _get_vga_driver() {
 
             # Opensource drivers
             *)
-                export VGA_DRIVER="NOUVEAU_DRIVER"
+                export GPU_DRIVER="NOUVEAU_DRIVER"
                 export OPENGL="OPENGL_NOUVEAU"
                 export HARDVIDEO="HARDVIDEO_NOUVEAU"
                 ;;
@@ -47,7 +49,7 @@ _get_vga_driver() {
         AMD_CARD=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
         if [[ ${AMD_CARD} ]]; then
             _note "${AMD_CARD##*: } detected!"
-            export VGA_DRIVER="AMD_DRIVER"
+            export GPU_DRIVER="AMD_DRIVER"
             export OPENGL="OPENGL_AMD"
             export HARDVIDEO="HARDVIDEO_AMD"
 
@@ -57,27 +59,27 @@ _get_vga_driver() {
             INTEL_CARD=$(lspci | grep -e VGA -e 3D | grep -i intel)
             if [[ ${INTEL_CARD} ]]; then
                 _note "${INTEL_CARD##*: } detected!"
-                export VGA_DRIVER="INTEL_DRIVER"
+                export GPU_DRIVER="INTEL_DRIVER"
                 export OPENGL="OPENGL_INTEL"
                 export HARDVIDEO="HARDVIDEO_INTEL"
 
             # DEFAULT
             else
                 _note "controller not found! Default driver will be used."
-                export VGA_DRIVER="DEFAULT_DRIVER"
+                export GPU_DRIVER="DEFAULT_DRIVER"
             fi
         fi
     fi
 }
 
-_install_vga_driver() {
+_install_gpu_driver() {
 
-    # VGA Controller
-    _info "Installing 3D VGA Driver"
-    _chroot "pacman --noconfirm -S ${!VGA_DRIVER}"
+    # GPU Controller
+    _info "Installing 3D GPU Driver"
+    _chroot "pacman --noconfirm -S ${!GPU_DRIVER}"
 
     # OpenGL & Hardware Video Acceleration
-    if [[ ${VGA_DRIVER} != "DEFAULT_DRIVER" ]]; then
+    if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" ]]; then
         _info "Installing OpenGL & Hardware Video Acceleration"
         _chroot "pacman --noconfirm -S ${!OPENGL} ${!HARDVIDEO}"
     fi
