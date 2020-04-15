@@ -92,25 +92,19 @@ _default_partitioning_scheme() {
     for PART in "${PART_SIZES[@]}"; do
         PART_NAME=${PART//_SIZE/}
 
-        # Free space for home? (UEFI Firmware)
-        if [[ ${FIRMWARE} == "UEFI" && ${PART} == "HOME_SIZE" ]]; then
-            _confirm "Do you wish to use free space for home?"
+        # Free space for home?
+        if [[ ${PART} == "HOME_SIZE" ]]; then
+            _confirm "Do you wish to use free space for ${PART_NAME,,}?"
             case ${CONFIRM} in
                 y|Y|yes|Yes|YES)
-                    FREE_SPACE="True"
                     PARTITION_SIZE="free space"
                     ;;
             esac
             unset CONFIRM
-
-        # Auto free space for home (BIOS Firmware)
-        elif [[ ${FIRMWARE} == "BIOS" && ${PART} == "HOME_SIZE" ]]; then
-            FREE_SPACE="True"
-            PARTITION_SIZE="free space"
         fi
 
         # Otherwise ask partitions sizes
-        if [[ ! ${FREE_SPACE} ]]; then
+        if [[ ${PARTITION_SIZE} != "free space" ]]; then
             _note "partition size {M,G,T,P} (e.g., ${SIZES[${INDEX}]})"
             _prompt "Enter ${PART_NAME,,} partition size:"
             read -r PARTITION_SIZE
