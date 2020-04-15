@@ -15,12 +15,12 @@
 #
 #   < UEFI boot requires EFI partition type (ef00) with FAT32 filesystem >
 #
-#   Partitioning scheme:
+# PARTITIONING SCHEME:
 #
-#     SYSTEM_PARTITION......: /mnt            (required)
-#     BOOT_PARTITION........: /mnt/boot       (required)
-#     SWAP_PARTITION........: no mountpoint   (optional)
-#     HOME_PARTITION........: /mnt/home       (optional)
+#   SYSTEM_PARTITION......: /mnt            (required)
+#   BOOT_PARTITION........: /mnt/boot       (required)
+#   SWAP_PARTITION........: no mountpoint   (optional)
+#   HOME_PARTITION........: /mnt/home       (optional)
 #
 # We use <partprobe> to inform changes to system and to check if drive
 # exists. We also add a <sleep 2s> to prevent unreconized system changes.
