@@ -241,7 +241,7 @@ if [[ -n ${DESKTOP+x} ]]; then
     _wget ${URL}/src/arch/gpu_driver      # to scan/install GPU Driver
     _wget ${URL}/src/apps/desktop_apps    # to get Desktop apps
     _wget ${URL}/src/apps/display_apps    # to get Display Manager apps
-    _wget ${URL}/src/apps/gpu_apps        # to get GPU apps
+    _wget ${URL}/src/apps/gpu_apps        # to get GPU Driver apps
 
     # Import desktop sources
     _info "Importing desktop sources"
