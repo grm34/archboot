@@ -23,7 +23,6 @@
 # ============================================================================
 
 _get_user_variables() {
-    unset CONFIRM
 
     # Language
     until grep -Fxq "${LANGUAGE}" ./language; do
@@ -94,7 +93,7 @@ _get_user_variables() {
             export POWER="yes"
             ;;
     esac
-    unset CONFIRM
+
 
     # Linux Kernel
     _confirm "Do you wish to install default Linux Kernel?"
@@ -116,7 +115,6 @@ _get_user_variables() {
             ;;
     esac
     export KERNEL_NAME=${KERNEL//_/-}
-    unset CONFIRM
 
     # AUR Support > yay
     _confirm "Do you wish to install an AUR Helper (yay)?"
@@ -125,7 +123,6 @@ _get_user_variables() {
             AUR_HELPER="True"
             ;;
     esac
-    unset CONFIRM
 
     # Desktop Environment
     _confirm "Do you wish to install a Desktop Environment?"
@@ -142,7 +139,6 @@ _get_user_variables() {
             export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
             ;;
     esac
-    unset CONFIRM
 
     # Display Manager
     if [[ -n ${DESKTOP+x} ]]; then
@@ -170,7 +166,6 @@ _get_user_variables() {
                 esac
                 ;;
         esac
-        unset CONFIRM
     fi
 }
 
