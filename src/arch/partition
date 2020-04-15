@@ -11,14 +11,14 @@
 #   In this mode we just ask for partitions drive ID. Partitions could
 #   be on differents drives but requires you to properly create and
 #   format them before running archboot.
-#   UEFI boot requires fat32 filesystem and EFI partition type (ef00)!
+#   ! UEFI boot requires EFI partition type (ef00) with FAT32 filesystem !
 #
 #   Partitioning scheme:
 #
 #     SYSTEM_PARTITION......: /mnt            (required)
 #     BOOT_PARTITION........: /mnt/boot       (required)
-#     SWAP_PARTITION........: no mountpoint   (optional in custom)
-#     HOME_PARTITION........: /mnt/home       (optional in custom)
+#     SWAP_PARTITION........: no mountpoint   (optional)
+#     HOME_PARTITION........: /mnt/home       (optional)
 #
 # We use <partprobe> to inform changes to system and to check if drive exists.
 # We also add a <sleep 2s> to prevent unreconized system changes.
@@ -67,16 +67,27 @@ _default_partitioning_scheme() {
     esac
     unset CONFIRM
 
-    # Create list to get partitions size
-    PART_SIZES=(BOOT_SIZE SWAP_SIZE SYSTEM_SIZE HOME_SIZE)
-    SIZES=("512M" "2G" "25G" "100G")
+    # Get required partitions
+    _get_required_partitions
+
+    # Create list to store partition sizes
+    PART_SIZES=(BOOT_SIZE SYSTEM_SIZE)
+    SIZES=("512M" "25G")
+    if [[ ${PARTITION[*]} =~ "SWAP_PARTITION" ]]; then
+        PART_SIZES+=(SWAP_SIZE)
+        SIZES+=("2G")
+    fi
+    if [[ ${PARTITION[*]} =~ "HOME_PARTITION" ]]; then
+        PART_SIZES+=(HOME_SIZE)
+        SIZES+=("100G")
+    fi
     INDEX=0
 
-    # Get partitions size
+    # Get partition sizes
     for PART in "${PART_SIZES[@]}"; do
         PART_NAME=${PART//_SIZE/}
 
-        # HOME > UEFI Firmware
+        # Free space for home? (UEFI Firmware)
         if [[ ${FIRMWARE} == "UEFI" && ${PART} == "HOME_SIZE" ]]; then
             _confirm "Do you wish to use free space for home?"
             case ${CONFIRM} in
@@ -87,28 +98,28 @@ _default_partitioning_scheme() {
             esac
             unset CONFIRM
 
-        # HOME > BIOS Firmware
+        # Auto free space for home (BIOS Firmware)
         elif [[ ${FIRMWARE} == "BIOS" && ${PART} == "HOME_SIZE" ]]; then
             FREE_SPACE="True"
             PARTITION_SIZE="free space"
         fi
 
-        # Ask partitions size
+        # Otherwise ask partition sizes
         if [[ ! ${FREE_SPACE} ]]; then
             _note "partition size {M,G,T,P} (e.g., ${SIZES[${INDEX}]})"
-            _prompt "Enter ${PART_NAME} partition size:"
+            _prompt "Enter ${PART_NAME,,} partition size:"
             read -r PARTITION_SIZE
 
             # Check if valid size and otherwise ask again
             until [[ ${PARTITION_SIZE} \
 =~ ^[1-9]{1}[[0-9]{0,2}(M|G|T|P){1}$ ]]; do
                 _note "partition size {M,G,T,P} (e.g., ${SIZES[${INDEX}]})"
-                _prompt "Enter valid ${PART_NAME} partition size:"
+                _prompt "Enter valid ${PART_NAME,,} partition size:"
                 read -r PARTITION_SIZE
             done
         fi
 
-        # Return partitions size
+        # Return partition sizes
         export ${PART}="${PARTITION_SIZE}"
         INDEX=${INDEX}+1
     done
@@ -120,17 +131,22 @@ _default_partitioning_scheme() {
         ORDER=(1 2 3 4)
     fi
 
-    # Create list to assign size to partitions
-    PARTITION=(BOOT_PARTITION SWAP_PARTITION SYSTEM_PARTITION HOME_PARTITION)
-    SIZES=("${BOOT_SIZE}" "${SWAP_SIZE}" "${SYSTEM_SIZE}" "${HOME_SIZE}")
+    # Create list to assign partition sizes
+    SIZES=("${BOOT_SIZE}" "${SYSTEM_SIZE}")
+    if [[ ${PARTITION[*]} =~ "SWAP_PARTITION" ]]; then
+        SIZES+=("${SWAP_SIZE}")
+    fi
+    if [[ ${PARTITION[*]} =~ "HOME_PARTITION" ]]; then
+        SIZES+=("${HOME_SIZE}")
+    fi
     INDEX=0
 
-    # Manage partitions
+    # Create and format partitions
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART//_PARTITION/}
 
         # Create partitions
-        _info "Creating ${PART_NAME} partition (${SIZES[${INDEX}]})"
+        _info "Creating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "HOME_PARTITION" \
 && ${HOME_SIZE} == "free space" ]]; then
             printf "n\n${PART_TYPE}\n\n\nw" | fdisk ${DRIVE}
@@ -139,7 +155,7 @@ _default_partitioning_scheme() {
 "n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk ${DRIVE}
         fi
 
-        # EFI partition type for boot
+        # Set EFI partition type for boot (UEFI firmware only)
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
             _info "Setting EFI partiton type on ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n1\nef00\nw" | gdisk ${DRIVE}
@@ -150,7 +166,7 @@ _default_partitioning_scheme() {
         sleep 2s
 
         # Format partitions
-        _info "Formating ${PART_NAME} partition (${SIZES[${INDEX}]})"
+        _info "Formating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
             yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${ORDER[${INDEX}]}
         elif [[ ${PART} == "SWAP_PARTITION" ]]; then
@@ -159,7 +175,7 @@ _default_partitioning_scheme() {
             yes | _check mkfs.ext4 ${DRIVE}${ORDER[${INDEX}]}
         fi
 
-        # Return partitions
+        # Return partitions drive ID
         export ${PART}=${DRIVE}${ORDER[${INDEX}]}
         INDEX=${INDEX}+1
     done
@@ -168,21 +184,8 @@ _default_partitioning_scheme() {
 _custom_partitioning_scheme() {
     unset CONFIRM
 
-    # Set required and extended partitions
-    PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
-    EXTENDED=(SWAP_PARTITION HOME_PARTITION)
-
-    # Get extended partitions
-    for PART in "${EXTENDED[@]}"; do
-        PART_NAME=${PART//_PARTITION/}
-        _confirm "Do you wish to create ${PART_NAME,,} partition?"
-        case ${CONFIRM} in
-            y|Y|yes|Yes|YES)
-                PARTITION+=("${PART}")
-                ;;
-        esac
-        unset CONFIRM
-    done
+    # Get required partitions
+    _get_required_partitions
 
     # Get partitions drive ID
     _info "Listing drives and partitions"
@@ -205,7 +208,7 @@ _custom_partitioning_scheme() {
             CHECK=$(partprobe -d -s /dev/${DRIVE_ID})
         done
 
-        # Return partitions
+        # Return partitions drive ID
         export ${PART}="/dev/${DRIVE_ID}"
     done
 
@@ -215,6 +218,28 @@ _custom_partitioning_scheme() {
     else
         export DRIVE=${BOOT_PARTITION//[0-9]}
     fi
+}
+
+_get_required_partitions() {
+
+    # Set required and extended partitions
+    PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
+    EXTENDED=(SWAP_PARTITION HOME_PARTITION)
+
+    # Get extended partitions
+    for PART in "${EXTENDED[@]}"; do
+        PART_NAME=${PART//_PARTITION/}
+        _confirm "Do you wish to create ${PART_NAME,,} partition?"
+        case ${CONFIRM} in
+            y|Y|yes|Yes|YES)
+                PARTITION+=("${PART}")
+                ;;
+        esac
+        unset CONFIRM
+    done
+
+    # Return selected partitions
+    export PARTITION
 }
 
 # archboot by grm34 under Apache License 2.0
