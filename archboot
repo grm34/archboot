@@ -290,6 +290,7 @@ _note "system is ready to rumble! Partitions mounted & swap activated."
 # user variables stored. We can start Arch Linux installation.
 # First step is to install base system and second to install bootloader.
 # In case of desktop environment we install GPU Drivers and Display Manager.
+# And we enable user rights and install an AUR Helper (optional).
 # We use <tee> to get full installation logs of those steps.
 # If system won't start desktop environment after reboot, check the logs and
 # open an issue on GitHub. Logs are availables at /var/log/archboot.
