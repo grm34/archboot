@@ -19,7 +19,7 @@
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
 #
-# Then we enable user rights in <sudoers> and we add him to all groups.
+# We enable user rights in <sudoers> and add him to all groups (optional).
 # ============================================================================
 
 _get_user_variables() {
@@ -117,7 +117,7 @@ _get_user_variables() {
     export KERNEL_NAME=${KERNEL//_/-}
 
     # AUR Support > yay
-    _confirm "Do you wish to install an AUR Helper (yay)?"
+    _confirm "Do you wish to install yay AUR Helper?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             AUR_HELPER="True"

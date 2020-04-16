@@ -4,9 +4,9 @@
 # ============================================================================
 # Here we install Arch Linux base system with the chosen linux kernel.
 # We use reflector service to automate mirrorlist sorting.
-# In case of AUR Helper we clone and install yay.
-# We also install CPU microcode updates <intel-ucode> or <amd-ucode>.
-# Then we create user account with the previously defined password.
+# We install CPU microcode updates <intel-ucode> or <amd-ucode>.
+# We create user account with the previously defined password.
+# Then we install an AUR Helper: yay (optional).
 #
 # All steps are described in the official documentation:
 #
@@ -50,12 +50,12 @@ _install_base() {
 
     # Network
     _info "Installing network manager"
-    _chroot "pacman --noconfirm -S ${NETAPPS}"
+    _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
 
     # Reflector
     _info "Installing reflector service"
-    _chroot "pacman --noconfirm -S ${REFLECTOR}"
+    _chroot "pacman --noconfirm --needed -S ${REFLECTOR}"
     mv reflector /mnt/etc/systemd/system/reflector.service
     _chroot "systemctl enable reflector.service"
 
@@ -63,27 +63,27 @@ _install_base() {
     MICROCODE=$(lscpu | grep "Intel")
     if [[ ${MICROCODE} ]]; then
         _info "Installing Intel CPU Microcode"
-        _chroot "pacman --noconfirm -S ${INTEL_UCODE}"
+        _chroot "pacman --noconfirm --needed -S ${INTEL_UCODE}"
         export MICROCODE="intel"
     else
         MICROCODE=$(lscpu | grep "AMD")
         if [[ ${MICROCODE} ]]; then
             _info "Installing AMD CPU Microcode"
-            _chroot "pacman --noconfirm -S ${AMD_UCODE}"
+            _chroot "pacman --noconfirm --needed -S ${AMD_UCODE}"
             export MICROCODE="amd"
         fi
-    fi
-
-    # AUR Helper
-    if [[ -n ${AUR_HELPER+x} ]]; then
-        _chroot "git clone https://aur.archlinux.org/yay.git"
-        _chroot "cd yay && makepkg -si"
     fi
 
     # User
     _info "Setting user ${USER_NAME}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
     _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
+}
+
+_install_AUR_helper() {
+    _info "Installing yay AUR Helper"
+    _chroot "git clone https://aur.archlinux.org/yay.git && cd yay"
+    _chroot "su ${USER_NAME} && makepkg --noconfirm --needed -si"
 }
 
 # archboot by grm34 under Apache License 2.0
