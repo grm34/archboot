@@ -8,7 +8,6 @@
 # All steps are described in the official documentation:
 #
 #   https://wiki.archlinux.org/index.php/Xorg#Driver_installation
-#
 # ============================================================================
 
 _get_gpu_driver() {
