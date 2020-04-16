@@ -9,7 +9,6 @@
 #
 #   UEFI...: https://wiki.archlinux.org/index.php/Systemd-boot
 #   BIOS...: https://wiki.archlinux.org/index.php/GRUB
-#
 # ============================================================================
 
 _install_bootloader() {
