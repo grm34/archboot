@@ -35,7 +35,7 @@ _install_bootloader() {
 
         # Install Grub2
         _info "Installing Grub bootloader"
-        _chroot "pacman --noconfirm -S ${GRUB}"
+        _chroot "pacman --noconfirm --needed -S ${GRUB}"
         _chroot "grub-install --target=i386-pc ${DRIVE}"
 
         # Download Themes
