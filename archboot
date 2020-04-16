@@ -318,6 +318,11 @@ _configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
             (_enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
+        # AUR Helper
+        if [[ -n ${AUR_HELPER+x} ]]; then
+            (_install_AUR_helper) 2>&1 | tee -a ${INSTALL_LOG}
+        fi
+
         # Get user inputs logs
         _info "Adding user inputs to logs"
         set | grep -v \

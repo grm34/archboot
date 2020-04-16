@@ -19,7 +19,8 @@
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
 #
-# Then we enable user rights in <sudoers> and we add him to all groups.
+# Then we enable user rights in <sudoers>, we add him to all groups
+# and we install yay AUR Helper (all this steps are optionals).
 # ============================================================================
 
 _get_user_variables() {
@@ -183,6 +184,11 @@ _enable_user_rights() {
     for GROUP in ${GROUPLIST}; do
         _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
     done
+}
+
+_install_AUR_helper() {
+    _chroot "git clone https://aur.archlinux.org/yay.git && cd yay"
+    _chroot "su ${USER_NAME} && makepkg --noconfirm --needed -si"
 }
 
 # archboot by grm34 under Apache License 2.0
