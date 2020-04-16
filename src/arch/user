@@ -116,7 +116,7 @@ _get_user_variables() {
     esac
     export KERNEL_NAME=${KERNEL//_/-}
 
-    # AUR Support > yay
+    # yay AUR Helper
     _confirm "Do you wish to install yay AUR Helper?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
