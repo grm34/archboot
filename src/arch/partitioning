@@ -28,7 +28,6 @@
 # All steps are described in the official documentation:
 #
 #   https://wiki.archlinux.org/index.php/Partitioning
-#
 # ============================================================================
 
 _default_partitioning_scheme() {
