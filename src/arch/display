@@ -21,7 +21,7 @@ _install_display_manager() {
 
     # Install Display Manager
     _info "Installing ${DISPLAY_MAN,,} display manager"
-    _chroot "pacman --noconfirm -S ${!DISPLAY_MAN}"
+    _chroot "pacman --noconfirm --needed -S ${!DISPLAY_MAN}"
     _chroot "systemctl enable ${DISPLAY_MAN,,}"
 
     # Start command of each Desktop Environment
@@ -54,7 +54,8 @@ _install_display_manager() {
         # Install Greeter
         if [[ ${DESKTOP} != "DEEPIN" ]]; then
             _info "Installing lightdm ${GREETER} greeter"
-            _chroot "pacman --noconfirm -S lightdm-${GREETER}-greeter"
+            _chroot \
+"pacman --noconfirm --needed -S lightdm-${GREETER}-greeter"
         fi
 
         # Configure Greeter
