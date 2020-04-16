@@ -82,10 +82,9 @@ _install_base() {
 
 _install_AUR_helper() {
     _info "Installing yay AUR Helper"
-    _chroot "cd /home && git clone https://aur.archlinux.org/yay.git"
-    _chroot \
-"su ${USER_NAME} && cd /home/yay/ && makepkg --noconfirm --needed -si"
-    _chroot "rm -rf /home/yay"
+    _chroot "git clone https://aur.archlinux.org/yay.git"
+    _chroot "cd yay/ && su ${USER_NAME} && makepkg --noconfirm --needed -si"
+    _chroot "rm -rf yay"
 }
 
 # archboot by grm34 under Apache License 2.0
