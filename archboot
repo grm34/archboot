@@ -215,7 +215,7 @@ case ${CONFIRM} in
         _wget ${URL}/src/arch/user            # to get user variables
         _wget ${URL}/src/apps/system_apps     # to get system apps
         _wget ${URL}/conf/language            # to get language code
-        _wget ${URL}/conf/loader.conf         # to get bootloader config
+        _wget ${URL}/conf/loader.conf         # to get systemd-boot loader
         _wget ${URL}/conf/reflector           # to get reflector service
         _wget ${URL}/conf/timezone            # to get timezone
         ;;
