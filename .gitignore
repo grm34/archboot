@@ -1,6 +1,7 @@
 *
 \!conf/00-keyboard.conf
 \!conf/language
+\!conf/loader.conf
 \!conf/reflector
 \!conf/timezone
 \!conf/xprofile

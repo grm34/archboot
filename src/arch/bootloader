@@ -16,7 +16,13 @@ _install_bootloader() {
     # UEFI Firmware > systemd-boot
     if [[ ${FIRMWARE} == "UEFI" ]]; then
         _info "Installing systemd-boot on ${BOOT_PARTITION}"
-        _chroot "bootctl --path=\"/boot\" install"
+        _chroot "bootctl --path=/boot install"
+
+        # Replace loader.conf
+        rm /mnt/boot/loader/loader.conf
+        cp loader.conf /mnt/boot/loader/
+
+        # Create new boot entry
         BOOTCONF="/mnt/boot/loader/entries/arch.conf"
         echo "title Arch Linux" > ${BOOTCONF}
         echo "linux /vmlinuz-${KERNEL_NAME,,}" >> ${BOOTCONF}
@@ -27,7 +33,9 @@ _install_bootloader() {
         esac
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> ${BOOTCONF}
         echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
-        _chroot "bootctl list"
+
+        # Update bootloader
+        _chroot "bootctl --path=/boot update"
 
     # BIOS Firmware > Grub2
     else
