@@ -19,7 +19,7 @@ _install_bootloader() {
         _chroot "bootctl --path=/boot install"
 
         # Replace loader.conf
-        rm /mnt/boot/loader/loader.conf
+        mv /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
         cp loader.conf /mnt/boot/loader/
 
         # Create new boot entry
