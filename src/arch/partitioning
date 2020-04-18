@@ -33,7 +33,7 @@
 _default_partitioning_scheme() {
 
     # Select drive to use
-    _info "Listing available drives"
+    _info "Listing availables drives"
     lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
     _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
     read -r DRIVE
@@ -181,7 +181,7 @@ _custom_partitioning_scheme() {
     _get_user_partitions
 
     # Get partitions drive ID
-    _info "Listing drives"
+    _info "Listing availables drives"
     for PART in "${PARTITION[@]}"; do
         lsblk | grep "NAME\|disk\|part"
         PART_NAME=${PART//_PARTITION/}
