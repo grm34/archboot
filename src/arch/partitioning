@@ -32,8 +32,8 @@
 
 _default_partitioning_scheme() {
 
-    _info "Listing drives and partitions"
-    fdisk -l
+    _info "Listing drives"
+    lsblk
 
     # Select drive to use
     _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
@@ -44,7 +44,7 @@ _default_partitioning_scheme() {
 
     # Otherwise ask again
     until [[ ${CHECK} ]]; do
-        fdisk -l
+        lsblk
         _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
         read -r DRIVE
         CHECK=$(partprobe -d -s /dev/${DRIVE})
@@ -54,8 +54,8 @@ _default_partitioning_scheme() {
     export DRIVE="/dev/${DRIVE}"
 
     # Create MBR or GPT Table
-    _info "Listing ${DRIVE} drive"
-    fdisk -l ${DRIVE}
+    _info "Arch Linux will be installed on ${DRIVE}"
+    lsblk ${DRIVE}
     _note "WARNING! all data will be lost!"
     _confirm "Format ${DRIVE} and create ${PART_TABLE} partition table?"
     case ${CONFIRM} in
@@ -182,9 +182,9 @@ _custom_partitioning_scheme() {
     _get_user_partitions
 
     # Get partitions drive ID
-    _info "Listing drives and partitions"
+    _info "Listing drives"
     for PART in "${PARTITION[@]}"; do
-        fdisk -l
+        lsblk
         PART_NAME=${PART//_PARTITION/}
 
         # Get drive ID
@@ -196,7 +196,7 @@ _custom_partitioning_scheme() {
 
         # Otherwise ask again
         until [[ ${CHECK} ]]; do
-            echo; sleep 2s; fdisk -l
+            echo; sleep 2s; lsblk
             _prompt "Enter valid ${PART_NAME,,} drive id:" "(e.g., sda1)"
             read -r DRIVE_ID
             CHECK=$(partprobe -d -s /dev/${DRIVE_ID})
