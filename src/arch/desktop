@@ -62,14 +62,14 @@ _configure_desktop_environment() {
             _info "Setting keyboard layout to ${KEYMAP^^}"
             wget ${URL}/conf/00-keyboard.conf
             sed -i -e "s/keymap_code/${KEYMAP}/g" 00-keyboard.conf
-            mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
+            mv -v 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
             ;;
 
         AWESOME|I3|XMONAD|BSPWM|HERBSTLUFTWM)
 
             # start WM with xinit
             _info "Setting ${DESKTOP,,} xinit start command"
-            _chroot "cp /etc/X11/xinit/xinitrc /home/${USER_NAME}/.xinitrc"
+            _chroot "cp -v /etc/X11/xinit/xinitrc /home/${USER_NAME}/.xinitrc"
             echo "exec ${DESKTOP,,}" >> /mnt/home/${USER_NAME}/.xinitrc
             ;;
     esac

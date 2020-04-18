@@ -38,7 +38,7 @@ _install_display_manager() {
     # GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
         wget ${URL}/conf/xprofile
-        mv xprofile /mnt/etc/xprofile
+        mv -v xprofile /mnt/etc/xprofile
 
     # LIGHTDM
     elif [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then

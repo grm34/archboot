@@ -108,11 +108,11 @@ mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
 background.png Grub2-themes archboot* *_vars.log)
     for SOURCE in "${SRC[@]}"; do
         if [[ -f ${SOURCE} ]]; then
-            rm -rf ${SOURCE}
+            rm -rfv ${SOURCE}
         fi
     done
     if mount | grep /mnt; then
-        umount -R /mnt
+        umount -Rv /mnt
     fi
     _note "you must reboot to prevent unreconized system changes."
     sleep 2
@@ -347,9 +347,9 @@ CINNAMON|ENLIGHTENMENT)
 
         # Move logs to system
         _info "Moving logs to system"
-        mkdir /mnt/var/log/${APPNAME}
-        mv ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
-        mv ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
+        mkdir -v /mnt/var/log/${APPNAME}
+        mv -v ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
+        mv -v ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
 
         # Success notes
         _note "Arch Linux installation successful!"
