@@ -32,10 +32,9 @@
 
 _default_partitioning_scheme() {
 
-    _info "Listing drives"
-    lsblk
-
     # Select drive to use
+    _info "Listing available drives"
+    lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
     _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
     read -r DRIVE
 
@@ -44,7 +43,7 @@ _default_partitioning_scheme() {
 
     # Otherwise ask again
     until [[ ${CHECK} ]]; do
-        lsblk
+        lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
         _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
         read -r DRIVE
         CHECK=$(partprobe -d -s /dev/${DRIVE})
@@ -184,7 +183,7 @@ _custom_partitioning_scheme() {
     # Get partitions drive ID
     _info "Listing drives"
     for PART in "${PARTITION[@]}"; do
-        lsblk
+        lsblk | grep "NAME\|disk\|part"
         PART_NAME=${PART//_PARTITION/}
 
         # Get drive ID
@@ -196,7 +195,7 @@ _custom_partitioning_scheme() {
 
         # Otherwise ask again
         until [[ ${CHECK} ]]; do
-            echo; sleep 2s; lsblk
+            lsblk | grep "NAME\|disk\|part"
             _prompt "Enter valid ${PART_NAME,,} drive id:" "(e.g., sda1)"
             read -r DRIVE_ID
             CHECK=$(partprobe -d -s /dev/${DRIVE_ID})
