@@ -116,11 +116,14 @@ _get_user_variables() {
     esac
     export KERNEL_NAME=${KERNEL//_/-}
 
-    # yay AUR Helper
-    _confirm "Do you wish to install yay AUR Helper?"
+    # AUR Helper
+    _confirm "Do you wish to install an AUR Helper?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
-            AUR_HELPER="True"
+            until [[ ${DISPLAY_MAN} =~ ^[1-2]$ ]]; do
+                _select "YAY" "TRIZEN"
+                read -r AUR_HELPER
+            done
             ;;
     esac
 
