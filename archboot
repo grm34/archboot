@@ -99,7 +99,7 @@ _check() {
     return ${STATUS}
 }
 
-# Delete sources, umount partitions and exit
+# Delete sources and umount partitions
 _cleanup() {
     echo -e "\nCleaning up ${APPNAME}..."
     SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
@@ -112,11 +112,8 @@ background.png Grub2-themes archboot* *_vars.log)
         fi
     done
     if mount | grep /mnt; then
-        umount -Rv /mnt
+        umount -Rfv /mnt
     fi
-    _note "you must reboot to prevent unreconized system changes."
-    sleep 2
-    exit 1
 }
 
 # Cleanup on keyboard interrupt
@@ -124,17 +121,21 @@ trap _cleanup 1 2 3 6
 
 # Reboot with 10s timeout
 _reboot() {
-    for SECOND in $(seq 10 -1 1); do
+    for ((SECOND=10; SECOND>=1; SECOND--)); do
         echo -ne "\r\033[K${GREEN}System will reboot in ${SECOND}s...${NC}"
         sleep 1
     done
     reboot
+    exit 0
 }
 
 # Display error and cleanup
 _error() {
     echo -e "${RED}Error: ${YELLOW}${*}${NC}\n"
     _cleanup
+    _note "you must reboot to prevent unreconized system changes."
+    sleep 2
+    exit 1
 }
 
 # Select an option
@@ -220,7 +221,7 @@ case ${CONFIRM} in
         _wget ${URL}/conf/timezone            # to get timezone
         ;;
     *)
-        exit
+        exit 1
         ;;
 esac
 
