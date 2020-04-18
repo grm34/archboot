@@ -374,6 +374,7 @@ case ${CONFIRM} in
         ;;
     *)
         _cleanup
+        exit 0
         ;;
 esac
 _note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
