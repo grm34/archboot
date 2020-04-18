@@ -117,7 +117,7 @@ background.png Grub2-themes archboot* *_vars.log)
 }
 
 # Cleanup on keyboard interrupt
-trap "_cleanup; exit 1" 1 2 3 6
+trap '_error "keyboard interrupt"' 1 2 3 6
 
 # Reboot with 10s timeout
 _reboot() {
@@ -131,9 +131,9 @@ _reboot() {
 
 # Display error and cleanup
 _error() {
-    echo -e "${RED}Error: ${YELLOW}${*}${NC}\n"
+    echo -e "\n${RED}Error: ${YELLOW}${*}${NC}"
     _cleanup
-    _note "you must reboot to prevent unreconized system changes."
+    _note "you must reboot to prevent unreconized system changes.\n"
     sleep 2
     exit 1
 }
