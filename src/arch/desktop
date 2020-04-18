@@ -52,7 +52,7 @@ _configure_desktop_environment() {
     # Start WM with xinit
     case ${DESKTOP} in
         AWESOME|I3|XMONAD|BSPWM|HERBSTLUFTWM)
-            _info "Setting ${DESKTOP,,} xinit start command"
+            _info "Setting ${DESKTOP,,} start command"
             _chroot "cp -v /etc/X11/xinit/xinitrc /home/${USER_NAME}/.xinitrc"
             echo "exec ${DESKTOP,,}" >> /mnt/home/${USER_NAME}/.xinitrc
             ;;
