@@ -174,7 +174,7 @@ _prompt() {
 
 # Display the end of select, confirm and prompt functions
 _end() {
-    for COUNT in $(seq ${COUNT}); do
+    for ((CHAR=1; CHAR<=COUNT; CHAR++)); do
         echo -ne "-"
     done
     echo -ne "\n==> ${NC}"
