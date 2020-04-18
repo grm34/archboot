@@ -169,10 +169,9 @@ _get_user_variables() {
                 esac
                 ;;
         esac
-    fi
 
     # Window Manager
-    if [[ -z ${DESKTOP+x} ]]; then
+    else
         _confirm "Do you wish to install a Window Manager?"
         case ${CONFIRM} in
             y|Y|yes|Yes|YES)
