@@ -309,10 +309,8 @@ case ${CONFIRM} in
             (_install_gpu_driver) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
-        # Desktop Environment
+        # Install desktop env or window manager
         if [[ -n ${DESKTOP+x} ]]; then
-
-            # Install desktop env or window manager
             (_install_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
 
             # Install display manager
@@ -322,7 +320,7 @@ CINNAMON|ENLIGHTENMENT)
                 ;;
             esac
 
-            # Desktop env or window manager settings
+            # DE/WM Settings
             (_configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
