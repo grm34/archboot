@@ -15,7 +15,7 @@
 
 _install_desktop_environment() {
 
-    # Xorg
+    # Xorg server
     _info "Installing xorg server"
     _chroot "pacman --noconfirm --needed -S ${XORG}"
 
@@ -31,18 +31,48 @@ _install_desktop_environment() {
     _info "Installing terminal"
     _chroot "pacman --noconfirm --needed -S ${TERMINAL}"
 
-    # Desktop Environment
-    _info "Installing ${DESKTOP,,} desktop"
-    _chroot "pacman --noconfirm --needed -S ${!DESKTOP}"
+    case ${DESKTOP} in
+
+        # Desktop Environment
+        GNOME|KDE|MATE|XFCE4|LXDE|LXQT|DEEPIN|BUDGIE|CINNAMON|ENLIGHTENMENT)
+            _info "Installing ${DESKTOP,,} desktop"
+            _chroot "pacman --noconfirm --needed -S ${!DESKTOP}"
+            ;;
+
+        # Window Manager
+        AWESOME|I3|XMONAD|BSPWM|HERBSTLUFTWM)
+
+            # Xorg xinit
+            _info "Installing xorg xinit"
+            _chroot "pacman --noconfirm --needed -S ${XORG_XINIT}"
+
+            # Install WM
+            _info "Installing ${DESKTOP,,} window manager"
+            _chroot "pacman --noconfirm --needed -S ${!DESKTOP}"
+            ;;
+    esac
 }
 
 _configure_desktop_environment() {
 
-    # Keyboard layout
-    _info "Setting keyboard layout to ${KEYMAP^^}"
-    wget ${URL}/conf/00-keyboard.conf
-    sed -i -e "s/keymap_code/${KEYMAP}/g" 00-keyboard.conf
-    mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
+    case ${DESKTOP} in
+        GNOME|KDE|MATE|XFCE4|LXDE|LXQT|DEEPIN|BUDGIE|CINNAMON|ENLIGHTENMENT)
+
+            # Keyboard layout
+            _info "Setting keyboard layout to ${KEYMAP^^}"
+            wget ${URL}/conf/00-keyboard.conf
+            sed -i -e "s/keymap_code/${KEYMAP}/g" 00-keyboard.conf
+            mv 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
+            ;;
+
+        AWESOME|I3|XMONAD|BSPWM|HERBSTLUFTWM)
+
+            # start WM with xinit
+            _info "Setting ${DESKTOP,,} xinit start command"
+            _chroot "cp /etc/X11/xinit/xinitrc /home/${USER_NAME}/.xinitrc"
+            echo "exec ${DESKTOP,,}" >> /mnt/home/${USER_NAME}/.xinitrc
+            ;;
+    esac
 }
 
 # archboot by grm34 under Apache License 2.0

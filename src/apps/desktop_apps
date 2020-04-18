@@ -33,11 +33,30 @@ export MATE="mate mate-extra"
 # Lxqt
 export LXQT="lxqt"
 
+#                       WINDOW MANAGER PACKAGES
+# ============================================================================
+
+# awesome
+export AWESOME="awesome"
+
+# i3
+export I3="i3-wm"
+
+# xmonad
+export XMONAD="xmonad xmonad-contrib"
+
+# bspwm
+export BSPWM="bspwm"
+
+# herbstluftwm
+export HERBSTLUFTWM="herbstluftwm"
+
 #                         REQUIRED PACKAGES
 # ============================================================================
 
 # Xorg
 export XORG="xorg-server"
+export XORG_XINIT="xorg-xinit"
 
 # Fonts
 export FONTS="xorg-fonts-type1 ttf-dejavu font-bh-ttf \

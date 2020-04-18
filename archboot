@@ -309,13 +309,25 @@ case ${CONFIRM} in
             (_install_gpu_driver) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
-        # Install desktop environment & display manager
+        # Desktop Environment
         if [[ -n ${DESKTOP+x} ]]; then
-            (_install_desktop_environment; _install_display_manager; \
-_configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
+
+            # Install desktop env or window manager
+            (_install_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
+
+            # Install display manager
+            case ${DESKTOP} in GNOME|KDE|MATE|XFCE4|LXDE|LXQT|DEEPIN|BUDGIE|\
+CINNAMON|ENLIGHTENMENT)
+                (_install_display_manager) 2>&1 | tee -a ${INSTALL_LOG}
+                ;;
+            esac
+
+            # Desktop env or window manager settings
+            (_configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
         # User rights
+        chown -R ${USER_NAME}:users /home/${USER_NAME}
         if [[ -n ${POWER+x} ]]; then
             (_enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
         fi

@@ -167,6 +167,21 @@ _get_user_variables() {
                 ;;
         esac
     fi
+
+    # Window Manager
+    if [[ -z ${DESKTOP+x} ]]; then
+        _confirm "Do you wish to install a Window Manager?"
+        case ${CONFIRM} in
+            y|Y|yes|Yes|YES)
+                until [[ ${DESKTOP} =~ ^[1-5]$ ]]; do
+                    _select "AWESOME" "I3" "XMONAD" "BSPWM" "HERBSTLUFTWM"
+                    read -r DESKTOP
+                done
+                DESKTOP_CHOICE=(NONE AWESOME I3 XMONAD BSPWM HERBSTLUFTWM)
+                export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
+                ;;
+        esac
+    fi
 }
 
 _enable_user_rights() {
