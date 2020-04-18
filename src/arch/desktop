@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#                       DESKTOP ENVIRONMENT
+#                 DESKTOP ENVIRONMENT / WINDOW MANAGER
 # ============================================================================
-# Here we install desktop environment with the required packages
+# Here we install desktop environment (or WM) with the required packages
 # such as display server, fonts (to prevent issues in gtk apps on
 # some DE), <terminator> and <numlockx> (to get numlock on bootup).
 # To prevent password issues on the login screen of the display manager
@@ -11,6 +11,7 @@
 # All steps are described in the official documentation:
 #
 #   https://wiki.archlinux.org/index.php/Desktop_environment
+#   https://wiki.archlinux.org/index.php/Window_manager
 # ============================================================================
 
 _install_desktop_environment() {
