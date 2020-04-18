@@ -117,7 +117,7 @@ background.png Grub2-themes archboot* *_vars.log)
 }
 
 # Cleanup on keyboard interrupt
-trap _cleanup 1 2 3 6
+trap "_cleanup; exit 1" 1 2 3 6
 
 # Reboot with 10s timeout
 _reboot() {
