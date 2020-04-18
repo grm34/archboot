@@ -84,7 +84,7 @@ _install_AUR_helper() {
     _chroot "cd /home/${USER_NAME}/ && \
 sudo -u ${USER_NAME} git clone https://aur.archlinux.org/yay.git && \
 cd yay/ && sudo -u ${USER_NAME} makepkg --noconfirm --needed -si"
-    _chroot "rm -rfv /home/${USER_NAME}/yay"
+    rm -rfv /mnt/home/${USER_NAME}/yay
 }
 
 # archboot by grm34 under Apache License 2.0
