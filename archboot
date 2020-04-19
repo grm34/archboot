@@ -117,7 +117,7 @@ background.png Grub2-themes archboot* *_vars.log)
 }
 
 # Cleanup on keyboard interrupt
-trap '_error "keyboard interrupt"' 1 2 3 6
+trap '_error "keyboard interrupt!"' 1 2 3 6
 
 # Reboot with 10s timeout
 _reboot() {
