@@ -62,7 +62,7 @@ _install_base() {
     MICROCODE=$(lscpu | grep "Intel")
     if [[ ${MICROCODE} ]]; then
         _info "Installing Intel CPU Microcode"
-        _chroot "_check ${INTEL_UCODE}"
+        _chroot "_install ${INTEL_UCODE}"
         export MICROCODE="intel"
     else
         MICROCODE=$(lscpu | grep "AMD")
