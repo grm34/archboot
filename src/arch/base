@@ -50,7 +50,7 @@ _install_base() {
     # Network
     _info "Installing network manager"
     _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
-    _chroot "_check systemctl enable NetworkManager"
+    _chroot "systemctl enable NetworkManager"
 
     # Reflector
     _info "Installing reflector service"
