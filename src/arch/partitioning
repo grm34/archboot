@@ -63,7 +63,8 @@ _default_partitioning_scheme() {
             if mount | grep ${DRIVE}; then
                 _error "${DRIVE} is mounted!"
             else
-                dd if=/dev/zero of=${DRIVE} bs=512 count=1 status=progress
+                _check dd if=/dev/zero of=${DRIVE} \
+bs=512 count=1 conv=notrunc status=progress
                 _check wipefs -fa ${DRIVE}
                 printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
                 partprobe ${DRIVE} && sleep 1
