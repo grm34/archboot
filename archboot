@@ -51,7 +51,7 @@ BLUE="\e[1;34m"; CYAN="\e[1;36m"; NC="\e[0m"
 # Display install steps
 _info() {
     echo -e "${YELLOW}\n==> ${CYAN}${1}...${NC}"
-    sleep 2s
+    sleep 1s
 }
 
 # Display some notes
