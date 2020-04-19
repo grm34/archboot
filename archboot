@@ -71,36 +71,6 @@ _chroot() {
 EOF
 }
 
-# Set logfile
-_logs() {
-    _info "Setting ${APPNAME} logs"
-    DATETIME=$(_check date '+%d-%m-%Y_%Hh%M')
-    INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
-    INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
-    _archboot_banner > ${INSTALL_LOG}
-    _archboot_banner > ${INPUTS_LOG}
-}
-
-# Set system clock
-_clock() {
-    _info "Setting system clock"
-    _check timedatectl set-timezone ${TIMEZONE}
-    _check timedatectl set-ntp true
-    _check ntpd -qg
-    _check hwclock --systohc
-    timedatectl show
-}
-
-# Check and return command status
-_check() {
-    "$@"
-    local STATUS=$?
-    if [[ ${STATUS} -ne 0 ]]; then
-        _error "${@}"
-    fi
-    return ${STATUS}
-}
-
 # Delete sources and umount partitions
 _cleanup() {
     echo -e "\nCleaning up ${APPNAME}..."
@@ -118,6 +88,25 @@ background.png Grub2-themes archboot* *_vars.log)
     fi
 }
 
+# Display error and cleanup
+_error() {
+    echo -e "\n${RED}Error: ${YELLOW}${*}${NC}"
+    _cleanup
+    _note "you must reboot to prevent unreconized system changes.\n"
+    sleep 1
+    exit 1
+}
+
+# Check and return command status
+_check() {
+    "$@"
+    local STATUS=$?
+    if [[ ${STATUS} -ne 0 ]]; then
+        _error "${@}"
+    fi
+    return ${STATUS}
+}
+
 # Cleanup on keyboard interrupt
 trap '_error "keyboard interrupt!"' 1 2 3 6
 
@@ -131,13 +120,24 @@ _reboot() {
     exit 0
 }
 
-# Display error and cleanup
-_error() {
-    echo -e "\n${RED}Error: ${YELLOW}${*}${NC}"
-    _cleanup
-    _note "you must reboot to prevent unreconized system changes.\n"
-    sleep 1
-    exit 1
+# Set system clock
+_clock() {
+    _info "Setting system clock"
+    _check timedatectl set-timezone ${TIMEZONE}
+    _check timedatectl set-ntp true
+    _check ntpd -qg
+    _check hwclock --systohc
+    timedatectl show
+}
+
+# Set logfile
+_logs() {
+    _info "Setting ${APPNAME} logs"
+    DATETIME=$(_check date '+%d-%m-%Y_%Hh%M')
+    INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
+    INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
+    _archboot_banner > ${INSTALL_LOG}
+    _archboot_banner > ${INPUTS_LOG}
 }
 
 # Select an option
