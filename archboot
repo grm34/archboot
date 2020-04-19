@@ -269,12 +269,15 @@ fi
 
 #               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
 # ============================================================================
+# Here we first update the system to ensure we are on latest version.
 # Here we get user firmware to set partitions settings and other options.
 # Then we get fastest mirrors, timezone, clock, logs and we properly define
 # them. We could now run partitioning, activate SWAP and mount the partitions.
 # ============================================================================
 
 # Prepare the system
+_info "Updating system"
+pacman --noconfirm --needed -Sy
 _firmware; _mirrorlist; _timezone; _clock; _logs
 
 # Partitioning
