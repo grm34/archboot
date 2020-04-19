@@ -88,7 +88,6 @@ _logs() {
 # Set system clock
 _clock() {
     _info "Setting system clock"
-    pacman --noconfirm --needed -S ntp
     timedatectl set-timezone ${TIMEZONE}
     timedatectl set-ntp true
     ntpd -qg
