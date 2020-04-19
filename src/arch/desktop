@@ -21,6 +21,7 @@ _install_desktop_environment() {
     _chroot "pacman --noconfirm --needed -S ${XORG}"
     case ${DESKTOP} in
         AWESOME|I3|XMONAD|BSPWM|HERBSTLUFTWM)
+            _info "Installing xorg xinit"
             _chroot "pacman --noconfirm --needed -S ${XORG_XINIT}"
             ;;
     esac

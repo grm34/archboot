@@ -67,7 +67,7 @@ ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
 export NUMLOCK="numlockx"
 
 # Terminal
-export TERMINAL="terminator"
+export TERMINAL="xterm"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================
