@@ -59,18 +59,6 @@ _note() {
     echo -e "${RED}\nNote: ${BLUE}${1}${NC}"
 }
 
-# Download show progress bar only
-_wget() {
-    wget ${1} -q --show-progress
-}
-
-# Execute action in chrooted environment
-_chroot() {
-    arch-chroot /mnt /bin/bash <<EOF
-    ${1}
-EOF
-}
-
 # Delete sources and umount partitions
 _cleanup() {
     echo -e "\nCleaning up ${APPNAME}..."
@@ -138,6 +126,22 @@ _logs() {
     INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
     _archboot_banner > ${INSTALL_LOG}
     _archboot_banner > ${INPUTS_LOG}
+}
+
+# Download show progress bar only
+_wget() {
+    wget ${1} -q --show-progress
+}
+
+# Execute action in chrooted environment
+_chroot() {
+    arch-chroot /mnt /bin/bash <<EOF
+    ${1}
+EOF
+}
+
+_install() {
+    _check pacman --noconfirm --needed -S "${@}"
 }
 
 # Select an option
@@ -229,8 +233,10 @@ esac
 
 # Import base sources
 _info "Importing base sources"
-source ./base; source ./bootloader; source ./firmware; source ./mirrorlist
-source ./mounting; source ./partitioning; source ./user; source ./system_apps
+_check source ./base; _check source ./bootloader
+_check source ./firmware; _check source ./mirrorlist
+_check source ./mounting; _check source ./partitioning
+_check source ./user; _check source ./system_apps
 
 # Get required variables
 _get_user_variables
@@ -249,8 +255,9 @@ if [[ -n ${DESKTOP+x} ]]; then
 
     # Import desktop sources
     _info "Importing desktop sources"
-    source ./desktop; source ./display; source ./gpu_driver
-    source ./desktop_apps; source ./display_apps; source ./gpu_apps
+    _check source ./desktop; _check source ./display
+    _check source ./gpu_driver; _check source ./desktop_apps
+    _check source ./display_apps; _check source ./gpu_apps
 
     # GPU Driver or kernel mode setting?
     _note "enter NO to use kernel mode setting."
@@ -272,7 +279,7 @@ fi
 
 # Prepare the system
 _info "Updating system"
-pacman --noconfirm --needed -Sy
+_check pacman --noconfirm --needed -Sy ntp
 _firmware; _mirrorlist; _timezone; _clock; _logs
 
 # Partitioning
@@ -346,14 +353,14 @@ CINNAMON|ENLIGHTENMENT)
         set | grep -v \
 "A=\|B=\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" \
 > new_vars.log
-        diff old_vars.log new_vars.log | grep "^>" >> ${INPUTS_LOG}
-        sed -i -e "s/> _='Adding user inputs to logs'//g" ${INPUTS_LOG}
+        _check diff old_vars.log new_vars.log | grep "^>" >> ${INPUTS_LOG}
+        _check sed -i -e "s/> _='Adding user inputs to logs'//g" ${INPUTS_LOG}
 
         # Move logs to system
         _info "Moving logs to system"
-        mkdir -v /mnt/var/log/${APPNAME}
-        mv -v ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
-        mv -v ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
+        _check mkdir -v /mnt/var/log/${APPNAME}
+        _check mv -v ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
+        _check mv -v ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
 
         # Success notes
         _note "Arch Linux installation successful!"

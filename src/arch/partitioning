@@ -64,7 +64,7 @@ _default_partitioning_scheme() {
                 _error "${DRIVE} is mounted!"
             else
                 dd if=/dev/zero of=${DRIVE} bs=512 count=1 status=progress
-                wipefs -fa ${DRIVE}
+                _check wipefs -fa ${DRIVE}
                 printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
                 partprobe ${DRIVE} && sleep 1
             fi
