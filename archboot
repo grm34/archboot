@@ -85,16 +85,6 @@ _error() {
     exit 1
 }
 
-# Check and return command status
-_check() {
-    "$@"
-    local STATUS=$?
-    if [[ ${STATUS} -ne 0 ]]; then
-        _error "${@}"
-    fi
-    return ${STATUS}
-}
-
 # Cleanup on keyboard interrupt
 trap '_error "keyboard interrupt!"' 1 2 3 6
 
@@ -106,6 +96,16 @@ _reboot() {
     done
     reboot
     exit 0
+}
+
+# Check and return command status
+_check() {
+    "$@"
+    local STATUS=$?
+    if [[ ${STATUS} -ne 0 ]]; then
+        _error "${@}"
+    fi
+    return ${STATUS}
 }
 
 # Set system clock
@@ -140,6 +140,7 @@ _chroot() {
 EOF
 }
 
+# Install packages and return status
 _install() {
     _check pacman --noconfirm --needed -S "${@}"
 }
