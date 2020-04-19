@@ -79,9 +79,9 @@ background.png Grub2-themes archboot* *_vars.log)
 # Display error and cleanup
 _error() {
     echo -e "\n${RED}Error: ${YELLOW}${*}${NC}"
+    sleep 1
     _cleanup
     _note "you must reboot to prevent unreconized system changes.\n"
-    sleep 1
     exit 1
 }
 
