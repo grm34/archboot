@@ -6,7 +6,7 @@
 # We use reflector service to automate mirrorlist sorting.
 # We install CPU microcode updates <intel-ucode> or <amd-ucode>.
 # We create user account with the previously defined password.
-# Then we install an AUR Helper: yay (optional).
+# Then we install an AUR Helper (optional). Support yay and trizen.
 #
 # All steps are described in the official documentation:
 #
