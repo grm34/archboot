@@ -81,7 +81,7 @@ _error() {
     echo -e "\n${RED}Error: ${YELLOW}${*}${NC}"
     sleep 1; _cleanup
     _note "you must reboot to prevent unreconized system changes.\n"
-    exit 1; kill -9 $$
+    kill -9 $$
 }
 
 # Cleanup on keyboard interrupt
