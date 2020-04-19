@@ -138,11 +138,6 @@ _chroot() {
 EOF
 }
 
-# Install packages and return status
-_install() {
-    _check pacman --noconfirm --needed -S "${@}"
-}
-
 # Select an option
 _select() {
     COUNT=0
@@ -226,7 +221,7 @@ case ${CONFIRM} in
         _wget ${URL}/conf/timezone            # to get timezone
         ;;
     *)
-        exit 1
+        _cleanup; exit 0
         ;;
 esac
 
@@ -277,8 +272,6 @@ fi
 # ============================================================================
 
 # Prepare the system
-_info "Updating system"
-_check pacman --noconfirm --needed -Sy ntp
 _firmware; _mirrorlist; _timezone; _clock; _logs
 
 # Partitioning
@@ -352,14 +345,14 @@ CINNAMON|ENLIGHTENMENT)
         set | grep -v \
 "A=\|B=\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" \
 > new_vars.log
-        _check diff old_vars.log new_vars.log | grep "^>" >> ${INPUTS_LOG}
-        _check sed -i -e "s/> _='Adding user inputs to logs'//g" ${INPUTS_LOG}
+        diff old_vars.log new_vars.log | grep "^>" >> ${INPUTS_LOG}
+        sed -i -e "s/> _='Adding user inputs to logs'//g" ${INPUTS_LOG}
 
         # Move logs to system
         _info "Moving logs to system"
-        _check mkdir -v /mnt/var/log/${APPNAME}
-        _check mv -v ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
-        _check mv -v ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
+        mkdir -v /mnt/var/log/${APPNAME}
+        mv -v ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
+        mv -v ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
 
         # Success notes
         _note "Arch Linux installation successful!"
