@@ -98,7 +98,7 @@ _reboot() {
 
 # Check and return command status
 _check() {
-    "$@"
+    "${@}"
     local STATUS=$?
     if [[ ${STATUS} -ne 0 ]]; then
         _error "${@}"
