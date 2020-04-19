@@ -74,15 +74,11 @@ EOF
 # Set logfile
 _logs() {
     _info "Setting ${APPNAME} logs"
-    DATETIME=$(date '+%d-%m-%Y_%Hh%M')
-    if [[ ${DATETIME} ]]; then
-        INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
-        INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
-        _archboot_banner > ${INSTALL_LOG}
-        _archboot_banner > ${INPUTS_LOG}
-    else
-        _error "system time error!"
-    fi
+    DATETIME=$(_check date '+%d-%m-%Y_%Hh%M')
+    INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
+    INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
+    _archboot_banner > ${INSTALL_LOG}
+    _archboot_banner > ${INPUTS_LOG}
 }
 
 # Set system clock
