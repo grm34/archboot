@@ -43,6 +43,7 @@ _default_partitioning_scheme() {
 
     # Otherwise ask again
     until [[ ${CHECK} ]]; do
+        _info "Listing availables drives"
         lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
         _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
         read -r DRIVE
@@ -195,6 +196,7 @@ _custom_partitioning_scheme() {
 
         # Otherwise ask again
         until [[ ${CHECK} ]]; do
+            _info "Listing availables drives"
             lsblk | grep "NAME\|disk\|part"
             _prompt "Enter valid ${PART_NAME,,} drive id:" "(e.g., sda1)"
             read -r DRIVE_ID
