@@ -62,10 +62,12 @@ _default_partitioning_scheme() {
         y|Y|yes|Yes|YES)
             if mount | grep ${DRIVE}; then
                 _error "${DRIVE} is mounted!"
+            else
+                dd if=/dev/zero of=${DRIVE} bs=512 count=1 status=progress
+                wipefs -fa ${DRIVE}
+                printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
+                partprobe ${DRIVE} && sleep 1s
             fi
-            dd if=/dev/zero of=${DRIVE} bs=512 count=1 status=progress
-            wipefs -fa ${DRIVE}
-            printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
             ;;
         *)
             _error "installation aborted by user!"
@@ -158,6 +160,9 @@ _default_partitioning_scheme() {
             _info "Setting EFI partiton type on ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n1\nef00\nw" | gdisk ${DRIVE}
         fi
+
+        # Inform changes to system
+        partprobe ${DRIVE} && sleep 1s
 
         # Format partitions
         _info "Formating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
