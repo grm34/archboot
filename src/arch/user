@@ -120,7 +120,7 @@ _get_user_variables() {
     _confirm "Do you wish to install an AUR Helper?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
-            until [[ ${DISPLAY_MAN} =~ ^[1-2]$ ]]; do
+            until [[ ${AUR_HELPER} =~ ^[1-2]$ ]]; do
                 _select "YAY" "TRIZEN"
                 read -r AUR_HELPER
             done

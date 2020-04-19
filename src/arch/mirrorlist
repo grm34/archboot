@@ -30,6 +30,10 @@ sed 's/  "country": "//' | sed 's/",//')
 
         # Sort detected mirrors first
         cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
+
+    # Defaults mirrors if not detected
+    else
+        _note "mirrors not detected, defaults will be used!"
     fi
 }
 

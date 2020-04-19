@@ -75,18 +75,25 @@ EOF
 _logs() {
     _info "Setting ${APPNAME} logs"
     DATETIME=$(date '+%d-%m-%Y_%Hh%M')
-    INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
-    INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
-    _archboot_banner > ${INSTALL_LOG}
-    _archboot_banner > ${INPUTS_LOG}
+    if [[ ${DATETIME} ]]; then
+        INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
+        INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
+        _archboot_banner > ${INSTALL_LOG}
+        _archboot_banner > ${INPUTS_LOG}
+    else
+        _error "system time error!"
+    fi
 }
 
 # Set system clock
 _clock() {
     _info "Setting system clock"
-    timedatectl set-ntp true
+    pacman --noconfirm --needed -S ntp
     timedatectl set-timezone ${TIMEZONE}
+    timedatectl set-ntp true
+    ntpd -qg
     hwclock --systohc
+    timedatectl show
 }
 
 # Check and return command status
