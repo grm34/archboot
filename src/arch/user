@@ -124,6 +124,8 @@ _get_user_variables() {
                 _select "YAY" "TRIZEN"
                 read -r AUR_HELPER
             done
+            AUR_CHOICE=(NONE YAY TRIZEN)
+            export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
             ;;
     esac
 
