@@ -67,7 +67,6 @@ _default_partitioning_scheme() {
 bs=512 count=1 conv=notrunc status=progress
                 _check wipefs -fa ${DRIVE}
                 printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
-                partprobe ${DRIVE} && sleep 1
             fi
             ;;
         *)
@@ -162,11 +161,9 @@ bs=512 count=1 conv=notrunc status=progress
             printf "t\n1\nef00\nw" | gdisk ${DRIVE}
         fi
 
-        # Inform changes to system
-        partprobe ${DRIVE} && sleep 1
-
         # Format partitions
         _info "Formating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
+        sleep 1
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
             yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${ORDER[${INDEX}]}
         elif [[ ${PART} == "SWAP_PARTITION" ]]; then
