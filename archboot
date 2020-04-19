@@ -330,7 +330,7 @@ CINNAMON|ENLIGHTENMENT)
         fi
 
         # User rights
-        chown -R ${USER_NAME}:users /home/${USER_NAME}
+        chown -R ${USER_NAME} /home/${USER_NAME}
         if [[ -n ${POWER+x} ]]; then
             (_enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
         fi

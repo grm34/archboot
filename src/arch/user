@@ -192,7 +192,7 @@ _enable_user_rights() {
 
     # Enable user in sudoers
     _info "Enabling user ${USER_NAME} in sudoers"
-    printf "\n## ${USER_NAME} privilege specification" >> /mnt/etc/sudoers
+    printf "\n## ${USER_NAME} privilege specification\n" >> /mnt/etc/sudoers
     echo "${USER_NAME} ALL=(ALL) ALL" >> /mnt/etc/sudoers
 
     # Add user to all groups

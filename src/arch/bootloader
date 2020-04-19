@@ -64,7 +64,7 @@ _install_bootloader() {
         echo "desktop-image: \"background.png\"" \
 >> /mnt/boot/grub/themes/Archlinux/theme.txt
         mv -v background.png /mnt/boot/grub/themes/Archlinux/
-        rm -rv /mnt/Grub2-themes
+        rm -rf /mnt/Grub2-themes
 
         # Configure Grub2
         _info "Configuring Grub bootloader"
