@@ -51,7 +51,7 @@ BLUE="\e[1;34m"; CYAN="\e[1;36m"; NC="\e[0m"
 # Display install steps
 _info() {
     echo -e "${YELLOW}\n==> ${CYAN}${1}...${NC}"
-    sleep 1s
+    sleep 1
 }
 
 # Display some notes
@@ -88,10 +88,10 @@ _logs() {
 # Set system clock
 _clock() {
     _info "Setting system clock"
-    timedatectl set-timezone ${TIMEZONE}
-    timedatectl set-ntp true
-    ntpd -qg
-    hwclock --systohc
+    _check timedatectl set-timezone ${TIMEZONE}
+    _check timedatectl set-ntp true
+    _check ntpd -qg
+    _check hwclock --systohc
     timedatectl show
 }
 
@@ -140,7 +140,7 @@ _error() {
     echo -e "\n${RED}Error: ${YELLOW}${*}${NC}"
     _cleanup
     _note "you must reboot to prevent unreconized system changes.\n"
-    sleep 2
+    sleep 1
     exit 1
 }
 
