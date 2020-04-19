@@ -14,7 +14,7 @@
 #      USERPASSWD.....: at least 6 chars long with 1 letter & 1 digit
 #      POWER..........: add user to all groups and enable rights in sudoers
 #      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN
-#      AUR_HELPER.....: yay Arch User Repository  Helper
+#      AUR_HELPER.....: YAY - TRIZEN
 #      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
