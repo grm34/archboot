@@ -73,12 +73,12 @@ _install_gpu_driver() {
 
     # GPU Controller
     _info "Installing 3D GPU Driver"
-    _chroot "_install ${!GPU_DRIVER}"
+    _chroot "pacman --noconfirm --needed -S ${!GPU_DRIVER}"
 
     # OpenGL & Hardware Video Acceleration
     if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" ]]; then
         _info "Installing OpenGL & Hardware Video Acceleration"
-        _chroot "_install ${!OPENGL} ${!HARDVIDEO}"
+        _chroot "pacman --noconfirm --needed -S ${!OPENGL} ${!HARDVIDEO}"
     fi
 }
 
