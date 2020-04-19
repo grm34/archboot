@@ -17,66 +17,66 @@ _install_base() {
 
     # Base System
     _info "Installing base system with ${KERNEL_NAME,,} kernel"
-    yes '' | pacstrap /mnt ${ARCH} ${!KERNEL}
+    yes '' | _check pacstrap /mnt ${ARCH} ${!KERNEL}
 
     # Fstab
     _info "Setting file systems table"
-    genfstab -U -p /mnt >> /mnt/etc/fstab
+    _check genfstab -U -p /mnt >> /mnt/etc/fstab
     cat /mnt/etc/fstab
 
     # Timezone
     _info "Setting timezone to ${TIMEZONE}"
-    ln -sfv /usr/share/zoneinfo/${TIMEZONE} /mnt/etc/localtime
+    _check ln -sfv /usr/share/zoneinfo/${TIMEZONE} /mnt/etc/localtime
 
     # Locale
     _info "Setting locale to ${LANGUAGE}.UTF-8"
-    echo "${LANGUAGE}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
-    _chroot "locale-gen"
-    _chroot "export LANG=${LANGUAGE}.UTF-8"
-    echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
+    _check echo "${LANGUAGE}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+    _chroot "_check locale-gen"
+    _chroot "_check export LANG=${LANGUAGE}.UTF-8"
+    _check echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
 
     # Vconsole
     _info "Setting virtual console to ${KEYMAP^^}"
-    echo "KEYMAP=${KEYMAP}" > /mnt/etc/vconsole.conf
+    _check echo "KEYMAP=${KEYMAP}" > /mnt/etc/vconsole.conf
 
     # Hostname
     _info "Setting hostname ${HOST_NAME}"
-    echo ${HOST_NAME} > /mnt/etc/hostname
+    _check echo ${HOST_NAME} > /mnt/etc/hostname
 
     # Root passwd
     _info "Setting root password"
-    _chroot "echo 'root:${ROOTPASSWD}' | chpasswd"
+    _chroot "_check echo 'root:${ROOTPASSWD}' | chpasswd"
 
     # Network
     _info "Installing network manager"
-    _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
-    _chroot "systemctl enable NetworkManager"
+    _chroot "_install ${NETAPPS}"
+    _chroot "_check systemctl enable NetworkManager"
 
     # Reflector
     _info "Installing reflector service"
-    _chroot "pacman --noconfirm --needed -S ${REFLECTOR}"
-    mv -v reflector /mnt/etc/systemd/system/reflector.service
-    _chroot "systemctl enable reflector.service"
+    _chroot "_install ${REFLECTOR}"
+    _check mv -v reflector /mnt/etc/systemd/system/reflector.service
+    _chroot "_check systemctl enable reflector.service"
 
     # Microcode
     MICROCODE=$(lscpu | grep "Intel")
     if [[ ${MICROCODE} ]]; then
         _info "Installing Intel CPU Microcode"
-        _chroot "pacman --noconfirm --needed -S ${INTEL_UCODE}"
+        _chroot "_check ${INTEL_UCODE}"
         export MICROCODE="intel"
     else
         MICROCODE=$(lscpu | grep "AMD")
         if [[ ${MICROCODE} ]]; then
             _info "Installing AMD CPU Microcode"
-            _chroot "pacman --noconfirm --needed -S ${AMD_UCODE}"
+            _chroot "_install ${AMD_UCODE}"
             export MICROCODE="amd"
         fi
     fi
 
     # User
     _info "Setting user ${USER_NAME}"
-    _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
-    _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
+    _chroot "_check useradd -g users -m -s /bin/bash ${USER_NAME}"
+    _chroot "_check echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
 }
 
 _install_AUR_helper() {
@@ -84,8 +84,8 @@ _install_AUR_helper() {
     _chroot "cd /home/${USER_NAME}/ && \
 sudo -u ${USER_NAME} git clone https://aur.archlinux.org/${AUR_HELPER,,}.git \
 && cd ${AUR_HELPER,,}/ && \
-sudo -u ${USER_NAME} makepkg --noconfirm --needed -si"
-    rm -rfv /mnt/home/${USER_NAME}/${AUR_HELPER}
+_check sudo -u ${USER_NAME} makepkg --noconfirm --needed -si"
+    _check rm -rfv /mnt/home/${USER_NAME}/${AUR_HELPER}
 }
 
 # archboot by grm34 under Apache License 2.0
