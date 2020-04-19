@@ -50,12 +50,13 @@ _install_bootloader() {
         # Download Themes
         _info "Downloading Grub Themes"
         _wget ${GHPAGES}/assets/images/background.png
-        _check git clone git://github.com/Generator/Grub2-themes.git
+        _chroot "_check git clone git://github.com/Generator/Grub2-themes.git"
         echo
 
         # Install Themes
         _info "Installing Grub Themes"
-        _check cp -rv Grub2-themes/{Archlinux,Archxion} /mnt/boot/grub/themes/
+        _check cp -rv /mnt/Grub2-themes/{Archlinux,Archxion} \
+/mnt/boot/grub/themes/
         _check sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
 /mnt/etc/default/grub
         _check echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
