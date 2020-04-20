@@ -31,7 +31,7 @@ _install_display_manager() {
         ENLIGHTENMENT) SESSION="/usr/bin/enlightenment_start";;
         BUDGIE) SESSION="/usr/bin/budgie-desktop";;
         DEEPIN) SESSION="/usr/bin/startdde";;
-        *) SESSION="/home/${USER_NAME}/.xinitrc";;
+        *) SESSION="/usr/bin/${DESKTOP,,}";;
     esac
 
     # Configure display manager
@@ -55,7 +55,8 @@ _install_display_manager() {
         # Install Greeter
         if [[ ${DESKTOP} != "DEEPIN" ]]; then
             _info "Installing lightdm ${GREETER} greeter"
-            _chroot "pacman --noconfirm --needed -S lightdm-${GREETER}-greeter"
+            _chroot \
+"pacman --noconfirm --needed -S lightdm-${GREETER}-greeter"
         fi
 
         # Configure Greeter
@@ -89,11 +90,6 @@ _install_display_manager() {
         echo ${SESSION} > /mnt/home/${USER_NAME}/.xsession
         chmod 770 /mnt/home/${USER_NAME}/.xsession
     fi
-}
-
-_install_wm_session() {
-    _info "Installing Window Manager Session"
-    _chroot "sudo -u ${USER_NAME} yay --noconfirm --needed -S ${WM_SESSION}"
 }
 
 # archboot by grm34 under Apache License 2.0
