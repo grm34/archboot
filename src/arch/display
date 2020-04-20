@@ -30,6 +30,7 @@ _install_display_manager() {
         ENLIGHTENMENT) SESSION="/usr/bin/enlightenment_start";;
         BUDGIE) SESSION="/usr/bin/budgie-desktop";;
         DEEPIN) SESSION="/usr/bin/startdde";;
+        *) SESSION="/home/${USER_NAME}/.xinitrc";;
     esac
 
     # Configure display manager

@@ -131,9 +131,11 @@ _get_user_variables() {
         esac
     fi
 
-    # Desktop Environment
+    # Desktop Environment / Window Manager
     _confirm "Do you wish to install a Desktop Environment?"
     case ${CONFIRM} in
+
+        # DE
         y|Y|yes|Yes|YES)
             until [[ ${DESKTOP} =~ ^[1-9][0]?$ ]]; do
                 _select \
@@ -144,6 +146,21 @@ _get_user_variables() {
             DESKTOP_CHOICE=\
 (NONE GNOME KDE MATE XFCE4 LXDE LXQT DEEPIN BUDGIE CINNAMON ENLIGHTENMENT)
             export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
+            ;;
+
+        # WM
+        *)
+            _confirm "Do you wish to install a Window Manager?"
+            case ${CONFIRM} in
+                y|Y|yes|Yes|YES)
+                    until [[ ${DESKTOP} =~ ^[1-5]$ ]]; do
+                        _select "AWESOME" "I3" "XMONAD" "BSPWM" "HERBSTLUFTWM"
+                        read -r DESKTOP
+                    done
+                    DESKTOP_CHOICE=(NONE AWESOME I3 XMONAD BSPWM HERBSTLUFTWM)
+                    export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
+                    ;;
+            esac
             ;;
     esac
 
@@ -171,20 +188,6 @@ _get_user_variables() {
                     DEEPIN|ENLIGHTENMENT) export DISPLAY_MAN="LIGHTDM";;
                     XFCE4|LXDE) export DISPLAY_MAN="LXDM";;
                 esac
-                ;;
-        esac
-
-    # Window Manager
-    else
-        _confirm "Do you wish to install a Window Manager?"
-        case ${CONFIRM} in
-            y|Y|yes|Yes|YES)
-                until [[ ${DESKTOP} =~ ^[1-5]$ ]]; do
-                    _select "AWESOME" "I3" "XMONAD" "BSPWM" "HERBSTLUFTWM"
-                    read -r DESKTOP
-                done
-                DESKTOP_CHOICE=(NONE AWESOME I3 XMONAD BSPWM HERBSTLUFTWM)
-                export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
                 ;;
         esac
     fi
