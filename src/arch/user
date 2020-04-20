@@ -86,16 +86,6 @@ _get_user_variables() {
     export USERPASSWD
     echo
 
-    # User Rights
-    _note "required if you wish to install an AUR Helper."
-    _confirm "Do you wish to give all rights to user ${USER_NAME}?"
-    case ${CONFIRM} in
-        y|Y|yes|Yes|YES)
-            export POWER="yes"
-            ;;
-    esac
-
-
     # Linux Kernel
     _confirm "Do you wish to install default Linux Kernel?"
     case ${CONFIRM} in
@@ -116,6 +106,15 @@ _get_user_variables() {
             ;;
     esac
     export KERNEL_NAME=${KERNEL//_/-}
+
+    # User Rights
+    _note "required if you wish to install an AUR Helper."
+    _confirm "Do you wish to give all rights to user ${USER_NAME}?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            export POWER="yes"
+            ;;
+    esac
 
     # AUR Helper
     if [[ -n ${POWER+x} ]]; then
@@ -168,9 +167,9 @@ _get_user_variables() {
             *)
                 case ${DESKTOP} in
                     GNOME|BUDGIE|CINNAMON|MATE) export DISPLAY_MAN="GDM";;
-                    KDE) export DISPLAY_MAN="SDDM";;
+                    KDE|LXQT) export DISPLAY_MAN="SDDM";;
                     DEEPIN|ENLIGHTENMENT) export DISPLAY_MAN="LIGHTDM";;
-                    XFCE4|LXDE|LXQT) export DISPLAY_MAN="LXDM";;
+                    XFCE4|LXDE) export DISPLAY_MAN="LXDM";;
                 esac
                 ;;
         esac

@@ -26,17 +26,9 @@ _install_desktop_environment() {
             ;;
     esac
 
-    # Fonts
-    _info "Installing fonts"
-    _chroot "pacman --noconfirm --needed -S ${FONTS}"
-
     # Numlock
     _info "Installing numlock"
     _chroot "pacman --noconfirm --needed -S ${NUMLOCK}"
-
-    # Terminal
-    _info "Installing terminal"
-    _chroot "pacman --noconfirm --needed -S ${TERMINAL}"
 
     # Desktop Environment / Window Manager
     _info "Installing ${DESKTOP,,}"
