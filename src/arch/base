@@ -88,5 +88,14 @@ makepkg --noconfirm --needed -sic"
     rm -rf /mnt/home/${USER_NAME}/${AUR_HELPER,,}
 }
 
+_clean_dependencies() {
+    _info "Cleaning cache and unrequired dependencies"
+    UNREQUIRED_DEPENDENCIES=$(_chroot "pacman -Qdtq")
+    if [[ ${UNREQUIRED_DEPENDENCIES} ]]; then
+        _chroot "pacman --noconfirm -Rcsn ${UNREQUIRED_DEPENDENCIES}"
+    fi
+    _chroot "pacman --noconfirm -Sc"
+}
+
 # archboot by grm34 under Apache License 2.0
 # ============================================================================

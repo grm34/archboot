@@ -107,30 +107,6 @@ _get_user_variables() {
     esac
     export KERNEL_NAME=${KERNEL//_/-}
 
-    # User Rights
-    _note "required if you wish to install an AUR Helper."
-    _confirm "Do you wish to give all rights to user ${USER_NAME}?"
-    case ${CONFIRM} in
-        y|Y|yes|Yes|YES)
-            export POWER="yes"
-            ;;
-    esac
-
-    # AUR Helper
-    if [[ -n ${POWER+x} ]]; then
-        _confirm "Do you wish to install an AUR Helper?"
-        case ${CONFIRM} in
-            y|Y|yes|Yes|YES)
-                until [[ ${AUR_HELPER} =~ ^[1-2]$ ]]; do
-                    _select "YAY" "TRIZEN"
-                    read -r AUR_HELPER
-                done
-                AUR_CHOICE=(NONE YAY TRIZEN)
-                export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
-                ;;
-        esac
-    fi
-
     # Desktop Environment / Window Manager
     _confirm "Do you wish to install a Desktop Environment?"
     case ${CONFIRM} in
@@ -159,6 +135,7 @@ _get_user_variables() {
                     done
                     DESKTOP_CHOICE=(NONE AWESOME I3 XMONAD BSPWM HERBSTLUFTWM)
                     export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
+                    export WINDOW_MANAGER="True"
                     ;;
             esac
             ;;
@@ -187,10 +164,42 @@ _get_user_variables() {
                     KDE|LXQT) export DISPLAY_MAN="SDDM";;
                     DEEPIN|ENLIGHTENMENT) export DISPLAY_MAN="LIGHTDM";;
                     XFCE4|LXDE) export DISPLAY_MAN="LXDM";;
+                    *) export DISPLAY_MAN="XDM";;
                 esac
                 ;;
         esac
     fi
+
+    # Ask for AUR Helper (required if window manager)
+    if [[ -z ${WINDOW_MANAGER+x} ]]; then
+        _confirm "Do you wish to install an AUR Helper?"
+        case ${CONFIRM} in
+            y|Y|yes|Yes|YES)
+                AUR="True"
+                ;;
+        esac
+    else
+        _note "AUR Helper required, select the one you like."
+        AUR="True"
+    fi
+
+    # Select AUR Helper
+    if [[ -n ${AUR+x} ]]; then
+        until [[ ${AUR_HELPER} =~ ^[1-2]$ ]]; do
+            _select "YAY" "TRIZEN"
+            read -r AUR_HELPER
+        done
+        AUR_CHOICE=(NONE YAY TRIZEN)
+        export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
+    fi
+
+    # User Rights
+    _confirm "Do you wish to add user ${USER_NAME} to all groups?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            export POWER="yes"
+            ;;
+    esac
 }
 
 _enable_user_rights() {
@@ -202,13 +211,15 @@ _enable_user_rights() {
 >> /mnt/etc/sudoers
 
     # Add user to all groups
-    _info "Adding user ${USER_NAME} to all groups"
-    _chroot "yes | pwck"
-    _chroot "yes | grpck"
-    GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
-    for GROUP in ${GROUPLIST}; do
-        _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
-    done
+    if [[ -n ${POWER+x} ]]; then
+        _info "Adding user ${USER_NAME} to all groups"
+        _chroot "yes | pwck"
+        _chroot "yes | grpck"
+        GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
+        for GROUP in ${GROUPLIST}; do
+            _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
+        done
+    fi
 }
 
 # archboot by grm34 under Apache License 2.0

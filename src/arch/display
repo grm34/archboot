@@ -10,6 +10,7 @@
 #     LIGHTDM....: Deepin / Enlightenment
 #     SDDM.......: Kde / Lxqt
 #     LXDM.......: Xfce4 / Lxde
+#     XDM........: Awesome / i3 / Xmonad / Bspwm / Herbstluftwm
 #
 # All steps are described in the official documentation:
 #
@@ -88,6 +89,11 @@ _install_display_manager() {
         echo ${SESSION} > /mnt/home/${USER_NAME}/.xsession
         chmod 700 /mnt/home/${USER_NAME}/.xsession
     fi
+}
+
+_install_wm_session() {
+    _info "Installing Window Manager Session"
+    _chroot "sudo -u ${USER_NAME} yay --noconfirm --needed -S ${WM_SESSION}"
 }
 
 # archboot by grm34 under Apache License 2.0
