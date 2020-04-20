@@ -19,8 +19,9 @@ _install_bootloader() {
         _chroot "bootctl --path=/boot install"
 
         # Replace loader.conf
+        _wget ${URL}/conf/loader.conf
         mv -v /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
-        cp -v loader.conf /mnt/boot/loader/
+        mv -v loader.conf /mnt/boot/loader/
 
         # Create new boot entry
         BOOTCONF="/mnt/boot/loader/entries/arch.conf"
