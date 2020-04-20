@@ -8,8 +8,8 @@
 #
 #     GDM........: Gnome / Budgie / Cinnamon / Mate
 #     LIGHTDM....: Deepin / Enlightenment
-#     SDDM.......: Kde
-#     LXDM.......: Xfce4 / Lxde / Lxqt
+#     SDDM.......: Kde / Lxqt
+#     LXDM.......: Xfce4 / Lxde
 #
 # All steps are described in the official documentation:
 #

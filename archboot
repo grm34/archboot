@@ -370,6 +370,7 @@ esac
 # Telegram chat: t.me/archboot - Have fun, take care and give a star!
 # ============================================================================
 
+_note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
 _confirm "Do you wish to reboot your computer now?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
@@ -381,7 +382,6 @@ case ${CONFIRM} in
         exit 0
         ;;
 esac
-_note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================

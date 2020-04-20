@@ -81,10 +81,11 @@ _install_base() {
 
 _install_AUR_helper() {
     _info "Installing ${AUR_HELPER,,} AUR Helper"
-    _chroot "cd /home/${USER_NAME}/ && \
-sudo -u ${USER_NAME} git clone https://aur.archlinux.org/${AUR_HELPER,,}.git \
-&& cd ${AUR_HELPER,,}/ && makepkg --noconfirm --needed -sic"
-    rm -rfv /mnt/home/${USER_NAME}/${AUR_HELPER}
+    _chroot "cd /home/${USER_NAME} && sudo -u ${USER_NAME} git clone \
+https://aur.archlinux.org/${AUR_HELPER,,}.git"
+    _chroot "cd /home/${USER_NAME}/${AUR_HELPER} && sudo -u ${USER_NAME} \
+makepkg --noconfirm --needed -sic"
+    rm -rf /mnt/home/${USER_NAME}/${AUR_HELPER}
 }
 
 # archboot by grm34 under Apache License 2.0
