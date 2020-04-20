@@ -19,8 +19,7 @@ _install_bootloader() {
         _chroot "bootctl --path=/boot install"
 
         # Replace loader.conf
-        mv -v /mnt/boot/loader/loader.conf \
-/mnt/boot/loader/loader.backup
+        mv -v /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
         cp -v loader.conf /mnt/boot/loader/
 
         # Create new boot entry
@@ -33,8 +32,7 @@ _install_bootloader() {
                 ;;
         esac
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> ${BOOTCONF}
-        echo "options root=${SYSTEM_PARTITION} quiet splash rw" \
->> ${BOOTCONF}
+        echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
 
         # Update bootloader
         _chroot "bootctl --path=/boot update"
@@ -55,8 +53,7 @@ _install_bootloader() {
 
         # Install Themes
         _info "Installing Grub Themes"
-        _chroot "cp -rv Grub2-themes/{Archlinux,Archxion} \
-/boot/grub/themes/"
+        _chroot "cp -rv Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
         sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
 /mnt/etc/default/grub
         echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
