@@ -23,7 +23,7 @@
 #   HOME_PARTITION........: /mnt/home       (optional)
 #
 # We use <partprobe> to inform changes to system and to check if drive
-# exists. We also add a <sleep 2s> to prevent unreconized system changes.
+# exists. We also add a <sleep 1> to prevent unreconized system changes.
 #
 # All steps are described in the official documentation:
 #
@@ -32,10 +32,9 @@
 
 _default_partitioning_scheme() {
 
-    _info "Listing drives and partitions"
-    fdisk -l
-
     # Select drive to use
+    _info "Listing availables drives"
+    lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
     _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
     read -r DRIVE
 
@@ -44,7 +43,8 @@ _default_partitioning_scheme() {
 
     # Otherwise ask again
     until [[ ${CHECK} ]]; do
-        fdisk -l
+        _info "Listing availables drives"
+        lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
         _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
         read -r DRIVE
         CHECK=$(partprobe -d -s /dev/${DRIVE})
@@ -54,15 +54,21 @@ _default_partitioning_scheme() {
     export DRIVE="/dev/${DRIVE}"
 
     # Create MBR or GPT Table
-    _info "Listing ${DRIVE} drive"
-    fdisk -l ${DRIVE}
+    _info "Arch Linux will be installed on ${DRIVE}"
+    lsblk ${DRIVE}
     _note "WARNING! all data will be lost!"
     _confirm "Format ${DRIVE} and create ${PART_TABLE} partition table?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
-            wipefs -fa ${DRIVE}
-            printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
-            partprobe ${DRIVE}
+            if mount | grep ${DRIVE}; then
+                _error "${DRIVE} is mounted!"
+            else
+                _check dd if=/dev/zero of=${DRIVE} \
+bs=512 count=1 conv=notrunc status=progress
+                _check wipefs -fa ${DRIVE}
+                printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
+                partprobe ${DRIVE}; sleep 1
+            fi
             ;;
         *)
             _error "installation aborted by user!"
@@ -157,8 +163,7 @@ _default_partitioning_scheme() {
         fi
 
         # Inform changes to system
-        partprobe ${DRIVE}
-        sleep 2s
+        partprobe ${DRIVE}; sleep 1
 
         # Format partitions
         _info "Formating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
@@ -182,9 +187,9 @@ _custom_partitioning_scheme() {
     _get_user_partitions
 
     # Get partitions drive ID
-    _info "Listing drives and partitions"
+    _info "Listing availables drives"
     for PART in "${PARTITION[@]}"; do
-        fdisk -l
+        lsblk | grep "NAME\|disk\|part"
         PART_NAME=${PART//_PARTITION/}
 
         # Get drive ID
@@ -196,7 +201,8 @@ _custom_partitioning_scheme() {
 
         # Otherwise ask again
         until [[ ${CHECK} ]]; do
-            echo; sleep 2s; fdisk -l
+            _info "Listing availables drives"
+            lsblk | grep "NAME\|disk\|part"
             _prompt "Enter valid ${PART_NAME,,} drive id:" "(e.g., sda1)"
             read -r DRIVE_ID
             CHECK=$(partprobe -d -s /dev/${DRIVE_ID})

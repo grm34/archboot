@@ -6,7 +6,7 @@
 # We use reflector service to automate mirrorlist sorting.
 # We install CPU microcode updates <intel-ucode> or <amd-ucode>.
 # We create user account with the previously defined password.
-# Then we install an AUR Helper: yay (optional).
+# Then we install an AUR Helper (optional), yay and trizen supported.
 #
 # All steps are described in the official documentation:
 #
@@ -26,7 +26,7 @@ _install_base() {
 
     # Timezone
     _info "Setting timezone to ${TIMEZONE}"
-    ln -sf /usr/share/zoneinfo/${TIMEZONE} /mnt/etc/localtime
+    ln -sfv /usr/share/zoneinfo/${TIMEZONE} /mnt/etc/localtime
 
     # Locale
     _info "Setting locale to ${LANGUAGE}.UTF-8"
@@ -55,7 +55,7 @@ _install_base() {
     # Reflector
     _info "Installing reflector service"
     _chroot "pacman --noconfirm --needed -S ${REFLECTOR}"
-    mv reflector /mnt/etc/systemd/system/reflector.service
+    mv -v reflector /mnt/etc/systemd/system/reflector.service
     _chroot "systemctl enable reflector.service"
 
     # Microcode
@@ -80,11 +80,12 @@ _install_base() {
 }
 
 _install_AUR_helper() {
-    _info "Installing yay AUR Helper"
-    _chroot "cd /home/${USER_NAME}/ && \
-sudo -u ${USER_NAME} git clone https://aur.archlinux.org/yay.git && \
-cd yay/ && sudo -u ${USER_NAME} makepkg --noconfirm --needed -si"
-    _chroot "rm -rf /home/${USER_NAME}/yay"
+    _info "Installing ${AUR_HELPER,,} AUR Helper"
+    _chroot "cd /home/${USER_NAME} && sudo -u ${USER_NAME} git clone \
+https://aur.archlinux.org/${AUR_HELPER,,}.git"
+    _chroot "cd /home/${USER_NAME}/${AUR_HELPER,,} && sudo -u ${USER_NAME} \
+makepkg --noconfirm --needed -sic"
+    rm -rf /mnt/home/${USER_NAME}/${AUR_HELPER,,}
 }
 
 # archboot by grm34 under Apache License 2.0

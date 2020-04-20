@@ -19,8 +19,8 @@ _install_bootloader() {
         _chroot "bootctl --path=/boot install"
 
         # Replace loader.conf
-        mv /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
-        cp loader.conf /mnt/boot/loader/
+        mv -v /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
+        cp -v loader.conf /mnt/boot/loader/
 
         # Create new boot entry
         BOOTCONF="/mnt/boot/loader/entries/arch.conf"
@@ -61,7 +61,7 @@ _install_bootloader() {
         echo "desktop-image: \"background.png\"" \
 >> /mnt/boot/grub/themes/Archlinux/theme.txt
         mv background.png /mnt/boot/grub/themes/Archlinux/
-        rm -r /mnt/Grub2-themes
+        rm -rf /mnt/Grub2-themes
 
         # Configure Grub2
         _info "Configuring Grub bootloader"

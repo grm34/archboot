@@ -25,30 +25,41 @@ export CINNAMON="cinnamon"
 export BUDGIE="budgie-desktop"
 
 # Enlightenment
-export ENLIGHTENMENT="enlightenment"
+export ENLIGHTENMENT="enlightenment terminology"
 
 # Mate
 export MATE="mate mate-extra"
 
 # Lxqt
-export LXQT="lxqt"
+export LXQT="lxqt breeze-icons"
+
+#                       WINDOW MANAGER PACKAGES
+# ============================================================================
+
+# awesome
+export AWESOME="awesome"
+
+# i3
+export I3="i3-wm"
+
+# xmonad
+export XMONAD="xmonad xmonad-contrib"
+
+# bspwm
+export BSPWM="bspwm"
+
+# herbstluftwm
+export HERBSTLUFTWM="herbstluftwm"
 
 #                         REQUIRED PACKAGES
 # ============================================================================
 
 # Xorg
 export XORG="xorg-server"
-
-# Fonts
-export FONTS="xorg-fonts-type1 ttf-dejavu font-bh-ttf \
-font-bitstream-speedo gsfonts sdl_ttf ttf-bitstream-vera \
-ttf-liberation ttf-freefont ttf-arphic-uming ttf-baekmuk"
+export XORG_XINIT="xorg-xinit"
 
 # Numlock
 export NUMLOCK="numlockx"
-
-# Terminal
-export TERMINAL="terminator"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================

@@ -51,12 +51,79 @@ BLUE="\e[1;34m"; CYAN="\e[1;36m"; NC="\e[0m"
 # Display install steps
 _info() {
     echo -e "${YELLOW}\n==> ${CYAN}${1}...${NC}"
-    sleep 2s
+    sleep 1
 }
 
 # Display some notes
 _note() {
     echo -e "${RED}\nNote: ${BLUE}${1}${NC}"
+}
+
+# Delete sources and umount partitions
+_cleanup() {
+    echo -e "\nCleaning up ${APPNAME}..."
+    SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
+mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
+00-keyboard.conf language loader.conf reflector timezone xprofile \
+background.png Grub2-themes archboot* *_vars.log)
+    for SOURCE in "${SRC[@]}"; do
+        if [[ -f ${SOURCE} ]]; then
+            rm -rfv ${SOURCE}
+        fi
+    done
+    if mount | grep /mnt; then
+        umount -Rfv /mnt
+    fi
+}
+
+# Display error and cleanup
+_error() {
+    echo -e "\n${RED}Error: ${YELLOW}${*}${NC}"
+    sleep 1; _cleanup
+    _note "you must reboot to prevent unreconized system changes.\n"
+    kill -9 $$
+}
+
+# Cleanup on keyboard interrupt
+trap '_error "keyboard interrupt!"' 1 2 3 6
+
+# Reboot with 10s timeout
+_reboot() {
+    for ((SECOND=10; SECOND>=1; SECOND--)); do
+        echo -ne "\r\033[K${GREEN}System will reboot in ${SECOND}s...${NC}"
+        sleep 1
+    done
+    reboot; exit 0
+}
+
+# Check and return command status
+_check() {
+    "${@}"
+    local STATUS=$?
+    if [[ ${STATUS} -ne 0 ]]; then
+        _error "${@}"
+    fi
+    return ${STATUS}
+}
+
+# Set system clock
+_clock() {
+    _info "Setting system clock"
+    _check timedatectl set-timezone ${TIMEZONE}
+    _check timedatectl set-ntp true
+    _check ntpd -qg
+    _check hwclock --systohc
+    timedatectl show
+}
+
+# Set logfile
+_logs() {
+    _info "Setting ${APPNAME} logs"
+    DATETIME=$(_check date '+%d-%m-%Y_%Hh%M')
+    INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
+    INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
+    _archboot_banner > ${INSTALL_LOG}
+    _archboot_banner > ${INPUTS_LOG}
 }
 
 # Download show progress bar only
@@ -69,72 +136,6 @@ _chroot() {
     arch-chroot /mnt /bin/bash <<EOF
     ${1}
 EOF
-}
-
-# Set logfile
-_logs() {
-    _info "Setting ${APPNAME} logs"
-    DATETIME=$(date '+%d-%m-%Y_%Hh%M')
-    INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
-    INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
-    _archboot_banner > ${INSTALL_LOG}
-    _archboot_banner > ${INPUTS_LOG}
-}
-
-# Set system clock
-_clock() {
-    _info "Setting system clock"
-    timedatectl set-ntp true
-    timedatectl set-timezone ${TIMEZONE}
-    hwclock --systohc
-}
-
-# Check and return command status
-_check() {
-    "$@"
-    local STATUS=$?
-    if [[ ${STATUS} -ne 0 ]]; then
-        _error "${@}"
-    fi
-    return ${STATUS}
-}
-
-# Delete sources, umount partitions and exit
-_cleanup() {
-    echo -e "\nCleaning up ${APPNAME}..."
-    SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
-mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
-00-keyboard.conf language loader.conf reflector timezone xprofile \
-background.png Grub2-themes archboot* *_vars.log)
-    for SOURCE in "${SRC[@]}"; do
-        if [[ -f ${SOURCE} ]]; then
-            rm -rf ${SOURCE}
-        fi
-    done
-    if mount | grep /mnt; then
-        umount -R /mnt
-    fi
-    _note "you must reboot to prevent unreconized system changes."
-    sleep 2
-    exit 1
-}
-
-# Cleanup on keyboard interrupt
-trap _cleanup 1 2 3 6
-
-# Reboot with 10s timeout
-_reboot() {
-    for SECOND in $(seq 10 -1 1); do
-        echo -ne "\r\033[K${GREEN}System will reboot in ${SECOND}s...${NC}"
-        sleep 1
-    done
-    reboot
-}
-
-# Display error and cleanup
-_error() {
-    echo -e "${RED}Error: ${YELLOW}${*}${NC}\n"
-    _cleanup
 }
 
 # Select an option
@@ -173,7 +174,7 @@ _prompt() {
 
 # Display the end of select, confirm and prompt functions
 _end() {
-    for COUNT in $(seq ${COUNT}); do
+    for ((CHAR=1; CHAR<=COUNT; CHAR++)); do
         echo -ne "-"
     done
     echo -ne "\n==> ${NC}"
@@ -220,14 +221,16 @@ case ${CONFIRM} in
         _wget ${URL}/conf/timezone            # to get timezone
         ;;
     *)
-        exit
+        _cleanup; exit 0
         ;;
 esac
 
 # Import base sources
 _info "Importing base sources"
-source ./base; source ./bootloader; source ./firmware; source ./mirrorlist
-source ./mounting; source ./partitioning; source ./user; source ./system_apps
+_check source ./base; _check source ./bootloader
+_check source ./firmware; _check source ./mirrorlist
+_check source ./mounting; _check source ./partitioning
+_check source ./user; _check source ./system_apps
 
 # Get required variables
 _get_user_variables
@@ -246,8 +249,9 @@ if [[ -n ${DESKTOP+x} ]]; then
 
     # Import desktop sources
     _info "Importing desktop sources"
-    source ./desktop; source ./display; source ./gpu_driver
-    source ./desktop_apps; source ./display_apps; source ./gpu_apps
+    _check source ./desktop; _check source ./display
+    _check source ./gpu_driver; _check source ./desktop_apps
+    _check source ./display_apps; _check source ./gpu_apps
 
     # GPU Driver or kernel mode setting?
     _note "enter NO to use kernel mode setting."
@@ -261,6 +265,7 @@ fi
 
 #               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
 # ============================================================================
+# Here we first update the system to ensure we are on latest version.
 # Here we get user firmware to set partitions settings and other options.
 # Then we get fastest mirrors, timezone, clock, logs and we properly define
 # them. We could now run partitioning, activate SWAP and mount the partitions.
@@ -309,10 +314,19 @@ case ${CONFIRM} in
             (_install_gpu_driver) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
-        # Install desktop environment & display manager
+        # Install desktop env or window manager
         if [[ -n ${DESKTOP+x} ]]; then
-            (_install_desktop_environment; _install_display_manager; \
-_configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
+            (_install_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
+
+            # Install display manager
+            case ${DESKTOP} in GNOME|KDE|MATE|XFCE4|LXDE|LXQT|DEEPIN|BUDGIE|\
+CINNAMON|ENLIGHTENMENT)
+                (_install_display_manager) 2>&1 | tee -a ${INSTALL_LOG}
+                ;;
+            esac
+
+            # DE/WM Settings
+            (_configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
         # User rights
@@ -335,9 +349,9 @@ _configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
 
         # Move logs to system
         _info "Moving logs to system"
-        mkdir /mnt/var/log/${APPNAME}
-        mv ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
-        mv ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
+        mkdir -v /mnt/var/log/${APPNAME}
+        mv -v ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
+        mv -v ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
 
         # Success notes
         _note "Arch Linux installation successful!"
@@ -359,13 +373,14 @@ _confirm "Do you wish to reboot your computer now?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
         _cleanup
+        _note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
         _reboot
         ;;
     *)
         _cleanup
+        exit 0
         ;;
 esac
-_note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================
