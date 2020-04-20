@@ -12,12 +12,12 @@
 #      ROOTPASSWD.....: at least 6 chars long with 1 letter & 1 digit
 #      USER_NAME......: such as <bobby_is_not_a_loser>
 #      USERPASSWD.....: at least 6 chars long with 1 letter & 1 digit
-#      POWER..........: add user to all groups and enable rights in sudoers
 #      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN
-#      AUR_HELPER.....: YAY - TRIZEN (supported if user rights activated)
 #      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
+#      AUR_HELPER.....: YAY - TRIZEN (supported if user rights activated)
+#      POWER..........: add user to all groups
 #
 # We enable user rights in <sudoers> and add him to all groups (optional).
 # ============================================================================
@@ -129,13 +129,12 @@ _get_user_variables() {
             _confirm "Do you wish to install a Window Manager?"
             case ${CONFIRM} in
                 y|Y|yes|Yes|YES)
-                    until [[ ${DESKTOP} =~ ^[1-5]$ ]]; do
-                        _select "AWESOME" "I3" "XMONAD" "BSPWM" "HERBSTLUFTWM"
+                    until [[ ${DESKTOP} =~ ^[1-3]$ ]]; do
+                        _select "AWESOME" "I3" "XMONAD"
                         read -r DESKTOP
                     done
-                    DESKTOP_CHOICE=(NONE AWESOME I3 XMONAD BSPWM HERBSTLUFTWM)
+                    DESKTOP_CHOICE=(NONE AWESOME I3 XMONAD)
                     export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
-                    export WINDOW_MANAGER="True"
                     ;;
             esac
             ;;
@@ -170,28 +169,18 @@ _get_user_variables() {
         esac
     fi
 
-    # Ask for AUR Helper (required if window manager)
-    if [[ -z ${WINDOW_MANAGER+x} ]]; then
-        _confirm "Do you wish to install an AUR Helper?"
-        case ${CONFIRM} in
-            y|Y|yes|Yes|YES)
-                AUR="True"
-                ;;
-        esac
-    else
-        _note "AUR Helper required, select the one you like."
-        AUR="True"
-    fi
-
-    # Select AUR Helper
-    if [[ -n ${AUR+x} ]]; then
-        until [[ ${AUR_HELPER} =~ ^[1-2]$ ]]; do
-            _select "YAY" "TRIZEN"
-            read -r AUR_HELPER
-        done
-        AUR_CHOICE=(NONE YAY TRIZEN)
-        export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
-    fi
+    # AUR Helper
+    _confirm "Do you wish to install an AUR Helper?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            until [[ ${AUR_HELPER} =~ ^[1-2]$ ]]; do
+                _select "YAY" "TRIZEN"
+                read -r AUR_HELPER
+            done
+            AUR_CHOICE=(NONE YAY TRIZEN)
+            export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
+            ;;
+    esac
 
     # User Rights
     _confirm "Do you wish to add user ${USER_NAME} to all groups?"

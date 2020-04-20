@@ -323,11 +323,6 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
             (_install_AUR_helper) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
-        # Install WM Session
-        if [[ -n ${WINDOW_MANAGER+x} ]]; then
-            (_install_wm_session) 2>&1 | tee -a ${INSTALL_LOG}
-        fi
-
         # Clean cache and unrequired dependencies
         (_clean_dependencies) 2>&1 | tee -a ${INSTALL_LOG}
 

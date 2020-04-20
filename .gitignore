@@ -3,7 +3,6 @@
 \!conf/language
 \!conf/loader.conf
 \!conf/timezone
-\!conf/xinitrc
 \!conf/xprofile
 \!src/apps/desktop_apps
 \!src/apps/display_apps
