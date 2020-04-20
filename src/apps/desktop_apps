@@ -56,13 +56,11 @@ export HERBSTLUFTWM="herbstluftwm"
 
 # Xorg
 export XORG="xorg-server"
-export XORG_XINIT="xorg-xinit"
+export XORG_XINIT="xorg-xinit"          # WM only
+export WM_SESSION="xinit-xsession"      # WM only (AUR)
 
 # Numlock
 export NUMLOCK="numlockx"
-
-# Window Manager Session (AUR)
-export WM_SESSION="xinit-xsession"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================
