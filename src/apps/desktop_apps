@@ -40,7 +40,7 @@ export LXQT="lxqt breeze-icons"
 export AWESOME="awesome"
 
 # i3
-export I3="i3-wm"
+export I3="i3-wm xterm"
 
 # xmonad
 export XMONAD="xmonad xmonad-contrib"

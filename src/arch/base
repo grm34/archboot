@@ -53,12 +53,6 @@ _install_base() {
     _chroot "systemctl enable NetworkManager"
     _chroot "systemctl enable ntpd"
 
-    # Reflector
-    _info "Installing reflector service"
-    _chroot "pacman --noconfirm --needed -S ${REFLECTOR}"
-    mv -v reflector /mnt/etc/systemd/system/reflector.service
-    _chroot "systemctl enable reflector.service"
-
     # Microcode
     MICROCODE=$(lscpu | grep "Intel")
     if [[ ${MICROCODE} ]]; then

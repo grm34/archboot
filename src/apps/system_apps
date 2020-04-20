@@ -6,22 +6,19 @@
 # Arch Linux
 export ARCH="base base-devel linux-firmware"
 
-# Kernel (the one you like)
+# Kernel (optional)
 export LINUX="linux"
 export LINUX_HARDENED="linux-hardened"
 export LINUX_LTS="linux-lts"
 export LINUX_ZEN="linux-zen"
 
-# Microcode
+# Microcode (matching CPU)
 export INTEL_UCODE="intel-ucode"
 export AMD_UCODE="amd-ucode"
 
 # Network
 export NETAPPS="networkmanager ntp wget git \
 net-tools dhcpcd iw wpa_supplicant wireless_tools"
-
-# Reflector
-export REFLECTOR="reflector"
 
 # Bootloader (BIOS only)
 export GRUB="grub os-prober"
