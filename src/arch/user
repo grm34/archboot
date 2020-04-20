@@ -87,6 +87,7 @@ _get_user_variables() {
     echo
 
     # User Rights
+    _note "required if you wish to install an AUR Helper."
     _confirm "Do you wish to give all rights to user ${USER_NAME}?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
@@ -117,17 +118,19 @@ _get_user_variables() {
     export KERNEL_NAME=${KERNEL//_/-}
 
     # AUR Helper
-    _confirm "Do you wish to install an AUR Helper?"
-    case ${CONFIRM} in
-        y|Y|yes|Yes|YES)
-            until [[ ${AUR_HELPER} =~ ^[1-2]$ ]]; do
-                _select "YAY" "TRIZEN"
-                read -r AUR_HELPER
-            done
-            AUR_CHOICE=(NONE YAY TRIZEN)
-            export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
-            ;;
-    esac
+    if [[ -n ${POWER+x} ]]; then
+        _confirm "Do you wish to install an AUR Helper?"
+        case ${CONFIRM} in
+            y|Y|yes|Yes|YES)
+                until [[ ${AUR_HELPER} =~ ^[1-2]$ ]]; do
+                    _select "YAY" "TRIZEN"
+                    read -r AUR_HELPER
+                done
+                AUR_CHOICE=(NONE YAY TRIZEN)
+                export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
+                ;;
+        esac
+    fi
 
     # Desktop Environment
     _confirm "Do you wish to install a Desktop Environment?"
@@ -192,8 +195,9 @@ _enable_user_rights() {
 
     # Enable user in sudoers
     _info "Enabling user ${USER_NAME} in sudoers"
-    printf "\n## ${USER_NAME} privilege specification\n" >> /mnt/etc/sudoers
-    echo "${USER_NAME} ALL=(ALL) ALL" >> /mnt/etc/sudoers
+    printf \
+"\n## ${USER_NAME} privilege specification\n${USER_NAME} ALL=(ALL) ALL" \
+>> /mnt/etc/sudoers
 
     # Add user to all groups
     _info "Adding user ${USER_NAME} to all groups"
