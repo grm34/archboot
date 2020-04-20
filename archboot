@@ -330,7 +330,6 @@ CINNAMON|ENLIGHTENMENT)
         fi
 
         # User rights
-        chown -R ${USER_NAME} /home/${USER_NAME}
         if [[ -n ${POWER+x} ]]; then
             (_enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
         fi
@@ -370,11 +369,11 @@ esac
 # Telegram chat: t.me/archboot - Have fun, take care and give a star!
 # ============================================================================
 
-_note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
 _confirm "Do you wish to reboot your computer now?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
         _cleanup
+        _note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
         _reboot
         ;;
     *)
