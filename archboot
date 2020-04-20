@@ -64,7 +64,7 @@ _cleanup() {
     echo -e "\nCleaning up ${APPNAME}..."
     SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
 mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
-00-keyboard.conf language loader.conf timezone xprofile \
+00-keyboard.conf language loader.conf timezone xinitrc xprofile \
 background.png Grub2-themes archboot* *_vars.log)
     for SOURCE in "${SRC[@]}"; do
         if [[ -f ${SOURCE} ]]; then
@@ -216,7 +216,6 @@ case ${CONFIRM} in
         _wget ${URL}/src/arch/user            # to get user variables
         _wget ${URL}/src/apps/system_apps     # to get system apps
         _wget ${URL}/conf/language            # to get language code
-        _wget ${URL}/conf/loader.conf         # to get systemd-boot loader
         _wget ${URL}/conf/timezone            # to get timezone
         ;;
     *)
