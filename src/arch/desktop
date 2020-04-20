@@ -41,6 +41,17 @@ _configure_desktop_environment() {
     _wget ${URL}/conf/00-keyboard.conf
     sed -i -e "s/keymap_code/${KEYMAP}/g" 00-keyboard.conf
     mv -v 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/
+    
+    # Start WM with xinit
+    case ${DESKTOP} in
+        AWESOME|I3|XMONAD)
+            _info "Setting ${DESKTOP,,} start command"
+            _wget ${URL}/conf/xinitrc
+            mv -v xinitrc /mnt/home/${USER_NAME}/.xinitrc
+            echo "exec ${DESKTOP,,}" >> /mnt/home/${USER_NAME}/.xinitrc
+            chmod 770 /mnt/home/${USER_NAME}/.xinitrc
+            ;;
+    esac
 }
 
 # archboot by grm34 under Apache License 2.0
