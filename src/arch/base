@@ -77,10 +77,16 @@ _install_base() {
 
 _install_AUR_helper() {
     _info "Installing ${AUR_HELPER,,} AUR Helper"
+    sed -i -e \
+"s/${USER_NAME} ALL=(ALL) ALL/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/g" \
+/etc/sudoers
     _chroot "cd /home/${USER_NAME} && sudo -u ${USER_NAME} git clone \
 https://aur.archlinux.org/${AUR_HELPER,,}.git"
     _chroot "cd /home/${USER_NAME}/${AUR_HELPER,,} && sudo -u ${USER_NAME} \
 makepkg --noconfirm --needed -sic"
+    sed -i -e \
+"s/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/${USER_NAME} ALL=(ALL) ALL/g" \
+/etc/sudoers
     rm -rf /mnt/home/${USER_NAME}/${AUR_HELPER,,}
 }
 
