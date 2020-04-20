@@ -37,4 +37,4 @@ twm &
 # xterm -geometry 80x20+494-0 &
 #exec xterm -geometry 80x66+0
 
-# archboot start command
+# start window manager
