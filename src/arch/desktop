@@ -49,6 +49,7 @@ _configure_desktop_environment() {
             cp -v /mnt/etc/X11/xinit/xinitrc \
 /mnt/home/${USER_NAME}/.xinitrc
             echo "exec ${DESKTOP,,}" >> /mnt/home/${USER_NAME}/.xinitrc
+            chmod 700 /mnt/home/${USER_NAME}/.xinitrc
             ;;
     esac
 }
