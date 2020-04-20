@@ -10,7 +10,7 @@
 #     LIGHTDM....: Deepin / Enlightenment
 #     SDDM.......: Kde / Lxqt
 #     LXDM.......: Xfce4 / Lxde
-#     XDM........: Awesome / i3 / Xmonad / Bspwm / Herbstluftwm
+#     XDM........: Awesome / i3 / Xmonad
 #
 # All steps are described in the official documentation:
 #
