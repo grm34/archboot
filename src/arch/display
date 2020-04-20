@@ -87,7 +87,7 @@ _install_display_manager() {
     # XDM
     elif [[ ${DISPLAY_MAN} == "XDM" ]]; then
         echo ${SESSION} > /mnt/home/${USER_NAME}/.xsession
-        chmod 700 /mnt/home/${USER_NAME}/.xsession
+        chmod 770 /mnt/home/${USER_NAME}/.xsession
     fi
 }
 
