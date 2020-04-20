@@ -19,8 +19,8 @@ sed 's/  "country": "//' | sed 's/",//')
 
     # Update mirrorlist if country code properly detected
     if [[ ${COUNTRY} =~ ^[A-Z]{2}$ ]]; then
+        _check mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
         _note "${COUNTRY} mirrors priority detected!"
-        mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 
         # Get corresponding mirrors from archlinux.org
         curl -s \
@@ -29,7 +29,11 @@ sed 's/  "country": "//' | sed 's/",//')
 > /etc/pacman.d/mirrorlist
 
         # Sort detected mirrors first
-        cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
+        _check cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
+
+    # Defaults mirrors if not detected
+    else
+        _note "mirrors not detected, defaults will be used!"
     fi
 }
 

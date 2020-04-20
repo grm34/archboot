@@ -17,8 +17,8 @@ export INTEL_UCODE="intel-ucode"
 export AMD_UCODE="amd-ucode"
 
 # Network
-export NETAPPS="ntp networkmanager wget nmap rp-pppoe dhclient \
-iw wpa_supplicant wireless_tools git"
+export NETAPPS="ntp networkmanager wget nmap net-tools dhclient \
+dhcpcd iw wpa_supplicant wireless_tools git"
 
 # Reflector
 export REFLECTOR="reflector"

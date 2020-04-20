@@ -8,8 +8,8 @@
 #
 #     GDM........: Gnome / Budgie / Cinnamon / Mate
 #     LIGHTDM....: Deepin / Enlightenment
-#     SDDM.......: Kde
-#     LXDM.......: Xfce4 / Lxde / Lxqt
+#     SDDM.......: Kde / Lxqt
+#     LXDM.......: Xfce4 / Lxde
 #
 # All steps are described in the official documentation:
 #
@@ -38,7 +38,7 @@ _install_display_manager() {
     # GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
         wget ${URL}/conf/xprofile
-        mv xprofile /mnt/etc/xprofile
+        mv -v xprofile /mnt/etc/xprofile
 
     # LIGHTDM
     elif [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
@@ -53,8 +53,7 @@ _install_display_manager() {
         # Install Greeter
         if [[ ${DESKTOP} != "DEEPIN" ]]; then
             _info "Installing lightdm ${GREETER} greeter"
-            _chroot \
-"pacman --noconfirm --needed -S lightdm-${GREETER}-greeter"
+            _chroot "pacman --noconfirm --needed -S lightdm-${GREETER}-greeter"
         fi
 
         # Configure Greeter
@@ -64,7 +63,8 @@ _install_display_manager() {
         NUMOFF="#greeter-setup-script="
         sed -i -e \
 "s|${DEFAULT_SESSION}|${SESSION}|g" /mnt/etc/lightdm/lightdm.conf
-        sed -i -e "s|${NUMOFF}|${NUMON}|g" /mnt/etc/lightdm/lightdm.conf
+        sed -i -e \
+"s|${NUMOFF}|${NUMON}|g" /mnt/etc/lightdm/lightdm.conf
 
     # SDDM
     elif [[ ${DISPLAY_MAN} == "SDDM" ]]; then
@@ -78,7 +78,8 @@ _install_display_manager() {
         sed -i -e \
 "s|${DEFAULT_SESSION}|session=${SESSION}|g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/# numlock=0/numlock=1/g" /mnt/etc/lxdm/lxdm.conf
-        sed -i -e "s/white=/white=${USER_NAME}/g" /mnt/etc/lxdm/lxdm.conf
+        sed -i -e \
+"s/white=/white=${USER_NAME}/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/black=/black=root/g" /mnt/etc/lxdm/lxdm.conf
 
     # XDM
