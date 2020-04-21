@@ -3,11 +3,10 @@
 #                        ARCH LINUX BASE SYSTEM
 # ============================================================================
 # Here we install Arch Linux base system with the chosen linux kernel.
-# We use reflector service to automate mirrorlist sorting.
 # We install CPU microcode updates <intel-ucode> or <amd-ucode>.
 # We create user account with the previously defined password.
 # Then we install an AUR Helper (optional), yay and trizen supported.
-# Finally we clean pacman cache and remove unrequired dependencies.
+# Finally we remove unrequired dependencies and we clean pacman cache.
 #
 # All steps are described in the official documentation:
 #
