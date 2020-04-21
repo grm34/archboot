@@ -15,12 +15,15 @@ _install_bootloader() {
 
     # UEFI Firmware > systemd-boot
     if [[ ${FIRMWARE} == "UEFI" ]]; then
+
+        # Install systemd-boot
         _info "Installing systemd-boot on ${BOOT_PARTITION}"
         _chroot "bootctl --path=/boot install"
 
         # Replace loader.conf
+        _wget ${URL}/conf/loader.conf
         mv -v /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
-        cp -v loader.conf /mnt/boot/loader/
+        mv -v loader.conf /mnt/boot/loader/
 
         # Create new boot entry
         BOOTCONF="/mnt/boot/loader/entries/arch.conf"
@@ -34,7 +37,7 @@ _install_bootloader() {
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> ${BOOTCONF}
         echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
 
-        # Update bootloader
+        # Update systemd-boot
         _chroot "bootctl --path=/boot update"
 
     # BIOS Firmware > Grub2

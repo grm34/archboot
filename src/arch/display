@@ -10,6 +10,7 @@
 #     LIGHTDM....: Deepin / Enlightenment
 #     SDDM.......: Kde / Lxqt
 #     LXDM.......: Xfce4 / Lxde
+#     XDM........: Awesome / i3 / Xmonad
 #
 # All steps are described in the official documentation:
 #
@@ -23,13 +24,14 @@ _install_display_manager() {
     _chroot "pacman --noconfirm --needed -S ${!DISPLAY_MAN}"
     _chroot "systemctl enable ${DISPLAY_MAN,,}"
 
-    # Start command of each Desktop Environment
+    # Start command of each DE or WM
     case ${DESKTOP} in
         GNOME|MATE|CINNAMON) SESSION="/usr/bin/${DESKTOP,,}-session";;
         KDE|XFCE4|LXDE|LXQT) SESSION="/usr/bin/start${DESKTOP,,}";;
         ENLIGHTENMENT) SESSION="/usr/bin/enlightenment_start";;
         BUDGIE) SESSION="/usr/bin/budgie-desktop";;
         DEEPIN) SESSION="/usr/bin/startdde";;
+        *) SESSION="/home/${USER_NAME}/.xinitrc";;
     esac
 
     # Configure display manager
@@ -37,7 +39,7 @@ _install_display_manager() {
 
     # GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
-        wget ${URL}/conf/xprofile
+        _wget ${URL}/conf/xprofile
         mv -v xprofile /mnt/etc/xprofile
 
     # LIGHTDM
@@ -53,7 +55,8 @@ _install_display_manager() {
         # Install Greeter
         if [[ ${DESKTOP} != "DEEPIN" ]]; then
             _info "Installing lightdm ${GREETER} greeter"
-            _chroot "pacman --noconfirm --needed -S lightdm-${GREETER}-greeter"
+            _chroot \
+"pacman --noconfirm --needed -S lightdm-${GREETER}-greeter"
         fi
 
         # Configure Greeter
@@ -85,7 +88,7 @@ _install_display_manager() {
     # XDM
     elif [[ ${DISPLAY_MAN} == "XDM" ]]; then
         echo ${SESSION} > /mnt/home/${USER_NAME}/.xsession
-        chmod 700 /mnt/home/${USER_NAME}/.xsession
+        chmod 770 /mnt/home/${USER_NAME}/.xsession
     fi
 }
 

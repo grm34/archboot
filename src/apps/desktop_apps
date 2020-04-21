@@ -40,26 +40,23 @@ export LXQT="lxqt breeze-icons"
 export AWESOME="awesome"
 
 # i3
-export I3="i3-wm"
+export I3="i3"
 
 # xmonad
 export XMONAD="xmonad xmonad-contrib"
 
-# bspwm
-export BSPWM="bspwm"
-
-# herbstluftwm
-export HERBSTLUFTWM="herbstluftwm"
-
 #                         REQUIRED PACKAGES
 # ============================================================================
 
-# Xorg
+# Xorg (xinit WM only)
 export XORG="xorg-server"
 export XORG_XINIT="xorg-xinit"
 
 # Numlock
 export NUMLOCK="numlockx"
+
+# WM Dependencies (WM only)
+export WM_APPS="dmenu xterm"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================

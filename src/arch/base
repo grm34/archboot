@@ -7,6 +7,7 @@
 # We install CPU microcode updates <intel-ucode> or <amd-ucode>.
 # We create user account with the previously defined password.
 # Then we install an AUR Helper (optional), yay and trizen supported.
+# Finally we clean pacman cache and remove unrequired dependencies.
 #
 # All steps are described in the official documentation:
 #
@@ -51,20 +52,18 @@ _install_base() {
     _info "Installing network manager"
     _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
-
-    # Reflector
-    _info "Installing reflector service"
-    _chroot "pacman --noconfirm --needed -S ${REFLECTOR}"
-    mv -v reflector /mnt/etc/systemd/system/reflector.service
-    _chroot "systemctl enable reflector.service"
+    _chroot "systemctl enable ntpd"
 
     # Microcode
     MICROCODE=$(lscpu | grep "Intel")
     if [[ ${MICROCODE} ]]; then
+
+        # Intel CPU
         _info "Installing Intel CPU Microcode"
         _chroot "pacman --noconfirm --needed -S ${INTEL_UCODE}"
         export MICROCODE="intel"
     else
+        # AMD CPU
         MICROCODE=$(lscpu | grep "AMD")
         if [[ ${MICROCODE} ]]; then
             _info "Installing AMD CPU Microcode"
@@ -81,11 +80,40 @@ _install_base() {
 
 _install_AUR_helper() {
     _info "Installing ${AUR_HELPER,,} AUR Helper"
+
+    # Allow user to run sudo without passwd
+    sed -i -e \
+"s/${USER_NAME} ALL=(ALL) ALL/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/g" \
+/mnt/etc/sudoers
+
+    # Clone AUR Helper from aur.archlinux.org
     _chroot "cd /home/${USER_NAME} && sudo -u ${USER_NAME} git clone \
 https://aur.archlinux.org/${AUR_HELPER,,}.git"
+
+    # Install AUR Helper
     _chroot "cd /home/${USER_NAME}/${AUR_HELPER,,} && sudo -u ${USER_NAME} \
 makepkg --noconfirm --needed -sic"
+
+    # Deny user to run sudo without passwd
+    sed -i -e \
+"s/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/${USER_NAME} ALL=(ALL) ALL/g" \
+/mnt/etc/sudoers
+
+    # Clean AUR Helper sources
     rm -rf /mnt/home/${USER_NAME}/${AUR_HELPER,,}
+}
+
+_clean_dependencies() {
+    _info "Cleaning cache and unrequired dependencies"
+
+    # Remove unrequired dependencies
+    UNREQUIRED_DEPENDENCIES=$(_chroot "pacman -Qdtq")
+    if [[ ${UNREQUIRED_DEPENDENCIES} ]]; then
+        _chroot "pacman --noconfirm -Rcsn ${UNREQUIRED_DEPENDENCIES}"
+    fi
+
+    # Clean pacman cache
+    _chroot "pacman --noconfirm -Sc"
 }
 
 # archboot by grm34 under Apache License 2.0
