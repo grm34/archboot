@@ -216,7 +216,7 @@ case ${CONFIRM} in
         _wget ${URL}/src/arch/user            # to get user variables
         _wget ${URL}/src/apps/system_apps     # to get system apps
         _wget ${URL}/conf/language            # to get language code
-        _wget ${URL}/conf/timezone            # to get timezone
+        _wget ${URL}/conf/timezone            # to get timezone code
         ;;
     *)
         _cleanup; exit 0
@@ -263,10 +263,10 @@ fi
 
 #               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
 # ============================================================================
-# Here we first update the system to ensure we are on latest version.
-# Here we get user firmware to set partitions settings and other options.
-# Then we get fastest mirrors, timezone, clock, logs and we properly define
-# them. We could now run partitioning, activate SWAP and mount the partitions.
+# Here we get user firmware to set partitions required settings.
+# Then we get fastest mirrors and timezone and we properly define them.
+# Then we configure network time protocol and we create logfiles.
+# We could now run partitioning, activate SWAP and mount the partitions.
 # ============================================================================
 
 # Prepare the system
@@ -293,10 +293,10 @@ _note "system is ready to rumble! Partitions mounted & swap activated."
 # At this point system is ready, partitions are created, properly mounted and
 # user variables stored. We can start Arch Linux installation.
 # First step is to install base system and second to install bootloader.
-# In case of desktop environment we install GPU Drivers and Display Manager.
-# Then we install an AUR Helper (optional) and session for WM.
+# In case of desktop environment or window manager, we install GPU Drivers
+# and Display Manager. Then we install an AUR Helper (optional).
 # We use <tee> to get full installation logs of those steps.
-# If system won't start after reboot, check the logs and open an issue.
+# If system won't start DE/WM after reboot, check the logs and open an issue.
 # Take a look at /var/log/archboot for full installation logs.
 # ============================================================================
 
@@ -360,7 +360,8 @@ _confirm "Do you wish to reboot your computer now?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
         _cleanup
-        _note "${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}"
+        echo -e \
+"${BLUE}${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}${NC}"
         _reboot
         ;;
     *)
