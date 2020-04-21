@@ -53,19 +53,24 @@ _default_partitioning_scheme() {
     # Return selected drive
     export DRIVE="/dev/${DRIVE}"
 
-    # Create MBR or GPT Table
+    # Format the drive
     _info "Arch Linux will be installed on ${DRIVE}"
     lsblk ${DRIVE}
     _note "WARNING! all data will be lost!"
     _confirm "Format ${DRIVE} and create ${PART_TABLE} partition table?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
+
+            # Check if mounted
             if mount | grep ${DRIVE}; then
                 _error "${DRIVE} is mounted!"
             else
+                # Otherwise format
                 _check dd if=/dev/zero of=${DRIVE} \
 bs=512 count=1 conv=notrunc status=progress
                 _check wipefs -fa ${DRIVE}
+
+                # And create MBR or GPT partition table
                 printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
                 partprobe ${DRIVE}; sleep 1
             fi

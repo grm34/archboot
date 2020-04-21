@@ -2,8 +2,8 @@
 set > old_vars.log
 
 APPNAME="archboot"
-VERSION="v2.9.6"
-BRANCH="master"
+VERSION="v2.9.7"
+BRANCH="dev"
 AUTHOR="grm34"
 LICENSE="Apache License 2.0"
 
@@ -64,7 +64,7 @@ _cleanup() {
     echo -e "\nCleaning up ${APPNAME}..."
     SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
 mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
-00-keyboard.conf language loader.conf reflector timezone xprofile \
+00-keyboard.conf language loader.conf timezone xinitrc xprofile \
 background.png Grub2-themes archboot* *_vars.log)
     for SOURCE in "${SRC[@]}"; do
         if [[ -f ${SOURCE} ]]; then
@@ -216,8 +216,6 @@ case ${CONFIRM} in
         _wget ${URL}/src/arch/user            # to get user variables
         _wget ${URL}/src/apps/system_apps     # to get system apps
         _wget ${URL}/conf/language            # to get language code
-        _wget ${URL}/conf/loader.conf         # to get systemd-boot loader
-        _wget ${URL}/conf/reflector           # to get reflector service
         _wget ${URL}/conf/timezone            # to get timezone
         ;;
     *)
@@ -296,7 +294,7 @@ _note "system is ready to rumble! Partitions mounted & swap activated."
 # user variables stored. We can start Arch Linux installation.
 # First step is to install base system and second to install bootloader.
 # In case of desktop environment we install GPU Drivers and Display Manager.
-# And we enable user rights and install an AUR Helper (optional).
+# Then we install an AUR Helper (optional) and session for WM.
 # We use <tee> to get full installation logs of those steps.
 # If system won't start after reboot, check the logs and open an issue.
 # Take a look at /var/log/archboot for full installation logs.
@@ -314,30 +312,19 @@ case ${CONFIRM} in
             (_install_gpu_driver) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
-        # Install desktop env or window manager
+        # Install DE / WM / DM
         if [[ -n ${DESKTOP+x} ]]; then
-            (_install_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
-
-            # Install display manager
-            case ${DESKTOP} in GNOME|KDE|MATE|XFCE4|LXDE|LXQT|DEEPIN|BUDGIE|\
-CINNAMON|ENLIGHTENMENT)
-                (_install_display_manager) 2>&1 | tee -a ${INSTALL_LOG}
-                ;;
-            esac
-
-            # DE/WM Settings
-            (_configure_desktop_environment) 2>&1 | tee -a ${INSTALL_LOG}
+            (_install_desktop_environment; _configure_desktop_environment; \
+_install_display_manager; _enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
-        # User rights
-        if [[ -n ${POWER+x} ]]; then
-            (_enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
-        fi
-
-        # AUR Helper
+        # Install AUR Helper
         if [[ -n ${AUR_HELPER+x} ]]; then
             (_install_AUR_helper) 2>&1 | tee -a ${INSTALL_LOG}
         fi
+
+        # Clean cache and unrequired dependencies
+        (_clean_dependencies) 2>&1 | tee -a ${INSTALL_LOG}
 
         # Get user inputs logs
         _info "Adding user inputs to logs"

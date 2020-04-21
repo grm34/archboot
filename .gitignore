@@ -2,8 +2,8 @@
 \!conf/00-keyboard.conf
 \!conf/language
 \!conf/loader.conf
-\!conf/reflector
 \!conf/timezone
+\!conf/xinitrc
 \!conf/xprofile
 \!src/apps/desktop_apps
 \!src/apps/display_apps
