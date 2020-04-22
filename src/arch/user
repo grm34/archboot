@@ -12,14 +12,14 @@
 #      ROOTPASSWD.....: at least 6 chars long with 1 letter & 1 digit
 #      USER_NAME......: such as <bobby_is_not_a_loser>
 #      USERPASSWD.....: at least 6 chars long with 1 letter & 1 digit
-#      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN
+#      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN (optional)
 #      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
-#                       AWESOME - i3 - XMONAD
-#      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
+#                       AWESOME - i3 - XMONAD (optional)
+#      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM (optional)
 #      GREETER........: GTK DEEPIN PANTHEON WEBKIT LITARVAN (LightDM only)
-#      AUR_HELPER.....: YAY - TRIZEN (supported if user rights activated)
-#      POWER..........: add user to all groups
+#      AUR_HELPER.....: YAY - PAMAC-AUR - TRIZEN (optional)
+#      POWER..........: add user to all groups (optional)
 #
 # We enable user rights in <sudoers> and add him to all groups (optional).
 # ============================================================================
@@ -201,11 +201,11 @@ _get_user_variables() {
     _confirm "Do you wish to install an AUR Helper?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
-            until [[ ${AUR_HELPER} =~ ^[1-2]$ ]]; do
-                _select "YAY" "TRIZEN"
+            until [[ ${AUR_HELPER} =~ ^[1-3]$ ]]; do
+                _select "YAY" "PAMAC-AUR" "TRIZEN"
                 read -r AUR_HELPER
             done
-            AUR_CHOICE=(NONE YAY TRIZEN)
+            AUR_CHOICE=(NONE YAY PAMAC-AUR TRIZEN)
             export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
             ;;
     esac
