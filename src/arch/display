@@ -8,8 +8,8 @@
 #
 #     GDM........: Gnome / Budgie / Cinnamon / Mate
 #     LIGHTDM....: Deepin / Enlightenment
-#     SDDM.......: Kde / Lxqt
-#     LXDM.......: Xfce4 / Lxde
+#     SDDM.......: Kde
+#     LXDM.......: Xfce4 / Lxde / Lxqt
 #     XDM........: Awesome / i3 / Xmonad
 #
 # All steps are described in the official documentation:
@@ -22,7 +22,11 @@ _install_display_manager() {
     # Install Display Manager
     _info "Installing ${DISPLAY_MAN,,} display manager"
     _chroot "pacman --noconfirm --needed -S ${!DISPLAY_MAN}"
-    _chroot "systemctl enable ${DISPLAY_MAN,,}"
+    if [[ ${DISPLAY_MAN} == "XDM" ]]; then
+        _chroot "systemctl enable ${DISPLAY_MAN,,}-archlinux"
+    else
+        _chroot "systemctl enable ${DISPLAY_MAN,,}"
+    fi
 
     # Start command of each DE or WM
     case ${DESKTOP} in
@@ -45,23 +49,13 @@ _install_display_manager() {
     # LIGHTDM
     elif [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
 
-        # Select Greeter
-        case ${DESKTOP} in
-            DEEPIN) GREETER="deepin";;
-            KDE) GREETER="kde";;
-            *) GREETER="gtk";;
-        esac
-
         # Install Greeter
-        if [[ ${DESKTOP} != "DEEPIN" ]]; then
-            _info "Installing lightdm ${GREETER} greeter"
-            _chroot \
-"pacman --noconfirm --needed -S lightdm-${GREETER}-greeter"
-        fi
+        _info "Installing lightdm greeter"
+        _chroot "pacman --noconfirm --needed -S ${!GREETER}"
 
         # Configure Greeter
         DEFAULT_SESSION="#greeter-session=example-gtk-gnome"
-        SESSION="greeter-session=lightdm-${GREETER}-greeter"
+        SESSION="greeter-session=${!GREETER}"
         NUMON="greeter-setup-script=/usr/bin/numlockx on"
         NUMOFF="#greeter-setup-script="
         sed -i -e \

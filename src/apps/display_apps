@@ -6,9 +6,6 @@
 # GDM
 export GDM="gdm"
 
-# LightDM
-export LIGHTDM="lightdm"
-
 # SDDM
 export SDDM="sddm"
 
@@ -16,7 +13,17 @@ export SDDM="sddm"
 export LXDM="lxdm"
 
 # XDM
-export XDM="xorg-xdm"
+export XDM="xorg-xdm xdm-archlinux"
+
+# LightDM
+export LIGHTDM="lightdm"
+
+# LightDM Greeter
+export GTK_GR="lightdm-gtk-greeter"
+export DEEPIN_GR="deepin-session-ui"
+export PANTHEON_GR="lightdm-pantheon-greeter"
+export WEBKIT_GR="lightdm-webkit2-greeter"
+export LITARVAN_GR="lightdm-webkit-theme-litarvan"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================
