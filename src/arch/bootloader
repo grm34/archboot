@@ -3,7 +3,7 @@
 #                             BOOTLOADER
 # ============================================================================
 # Here we install and configure bootloader, systemd-boot for UEFI and
-# Grub2 (with additional themes for beautifull OS selection menu) for BIOS.
+# Grub2 for BIOS (with additional themes for beautifull OS selection menu).
 #
 # All steps are described in the official documentation:
 #
