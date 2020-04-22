@@ -181,6 +181,7 @@ _end() {
     echo -ne "\n==> ${NC}"
 }
 
+
 #             START SCRIPT - IMPORT SOURCES - GET USER VARIABLES
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
@@ -336,6 +337,7 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
 > new_vars.log
         diff old_vars.log new_vars.log | grep "^>" >> ${INPUTS_LOG}
         sed -i -e "s/> _='Adding user inputs to logs'//g" ${INPUTS_LOG}
+        echo "done"
 
         # Move logs to system
         _info "Moving logs to system"
@@ -363,7 +365,7 @@ _confirm "Do you wish to reboot your computer now?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
         _cleanup
-        echo -e \
+        echo && echo -e \
 "${BLUE}${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}${NC}"
         _reboot
         ;;

@@ -39,7 +39,9 @@ _install_display_manager() {
     esac
 
     # Configure display manager
-    _info "Setting ${DISPLAY_MAN,,} display manager"
+    if [[ ${DISPLAY_MAN} != "LIGHTDM" ]]; then
+        _info "Setting ${DISPLAY_MAN,,} display manager"
+    fi
 
     # GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
@@ -65,6 +67,7 @@ _install_display_manager() {
         esac
 
         # Configure Greeter
+        _info "Setting ${DISPLAY_MAN,,} greeter"
         DEFAULT_SESSION="#greeter-session=example-gtk-gnome"
         SESSION="greeter-session=${LIGHTDM_SESSION}"
         NUMON="greeter-setup-script=/usr/bin/numlockx on"
