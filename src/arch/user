@@ -17,7 +17,7 @@
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #                       AWESOME - i3 - XMONAD
 #      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
-#      GREETER........: GTK DEEPIN PANTHEON WEBKIT LITARVAN
+#      GREETER........: GTK DEEPIN PANTHEON WEBKIT LITARVAN (LightDM only)
 #      AUR_HELPER.....: YAY - TRIZEN (supported if user rights activated)
 #      POWER..........: add user to all groups
 #
