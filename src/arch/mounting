@@ -2,7 +2,7 @@
 
 #                   MOUNT PARTITIONS & ACTIVATE SWAP
 # ============================================================================
-# Here we mount all previously created partitions and activate swap.
+# Here we mount all previously created partitions and we activate swap.
 #
 # All steps are described in the official documentation:
 #

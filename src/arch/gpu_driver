@@ -3,7 +3,7 @@
 #                        GPU CONTROLLER DRIVER
 # ============================================================================
 # Here we scan for 3D GPU Controller to install appropriate driver
-# with OpenGL and Hardware Acceleration if currently supported.
+# with OpenGL and Hardware Acceleration (if currently supported).
 #
 # All steps are described in the official documentation:
 #

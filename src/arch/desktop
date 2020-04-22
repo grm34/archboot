@@ -2,8 +2,8 @@
 
 #                 DESKTOP ENVIRONMENT / WINDOW MANAGER
 # ============================================================================
-# Here we install desktop environment (or WM) with the required packages
-# such as display server, xinit and <numlockx> (to get numlock on bootup).
+# Here we install desktop environment (or WM) with the required packages such
+# as display server, <xorg-xinit> and <numlockx> (to get numlock on bootup).
 # To prevent password issues on the login screen of the display manager
 # caused by wrong keyboard layout, we add keyboard.conf to xorg settings.
 #

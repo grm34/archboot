@@ -2,7 +2,7 @@
 
 #                           DISPLAY MANAGER
 # ============================================================================
-# Here we install and configure display manager to properly start desktop.
+# Here we install and configure display manager to properly start DE/WM.
 #
 #   Default settings:
 #
