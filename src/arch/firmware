@@ -3,7 +3,7 @@
 #                        FIRMWARE DETECTION
 # ============================================================================
 # Here we detect if system is running on UEFI or BIOS firmware to properly
-# set partition order, type, table, filesystem and to store them.
+# set partition table, code, type, boot filesystem and to store them.
 # ============================================================================
 
 _firmware() {

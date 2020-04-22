@@ -184,9 +184,9 @@ _end() {
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
 # Sources are sorted by type: applications <src/apps> & scripts <src/arch>
-# Then we can ask for user variables and store them to run install.
+# Then we can ask for user variables and we store them to run install.
 # In case of desktop environment, we import additional sources and we
-# scan for 3D GPU controller to define appropriate drivers.
+# scan for 3D GPU controller to properly define appropriate drivers.
 # Kernel mode setting support: in this case GPU Driver will not be installed.
 # ============================================================================
 
@@ -264,9 +264,9 @@ fi
 #               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
 # ============================================================================
 # Here we get user firmware to set partitions required settings.
-# Then we get fastest mirrors and timezone and we properly define them.
-# Then we configure network time protocol and we create logfiles.
-# We could now run partitioning, activate SWAP and mount the partitions.
+# Then we get fastest mirrors, user timezone and we properly define them.
+# We could now configure network time protocol and we create logfiles.
+# Finally we run partitioning, we activate SWAP and we mount the partitions.
 # ============================================================================
 
 # Prepare the system
@@ -297,7 +297,7 @@ _note "system is ready to rumble! Partitions mounted & swap activated."
 # and Display Manager. Then we install an AUR Helper (optional).
 # We use <tee> to get full installation logs of those steps.
 # If system won't start DE/WM after reboot, check the logs and open an issue.
-# Take a look at /var/log/archboot for full installation logs.
+# Take a look at /var/log/archboot for the full installation logs.
 # ============================================================================
 
 _confirm "Do you wish to install Arch Linux now?"
