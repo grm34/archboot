@@ -39,12 +39,13 @@ _install_display_manager() {
     esac
 
     # Configure display manager
-    _info "Configuring ${DISPLAY_MAN,,} display manager"
+    _info "Setting ${DISPLAY_MAN,,} display manager"
 
     # GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
         _wget ${URL}/conf/xprofile
         mv -v xprofile /mnt/etc/xprofile
+        echo "done"
 
     # LIGHTDM
     elif [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
@@ -72,12 +73,14 @@ _install_display_manager() {
 "s|${DEFAULT_SESSION}|${SESSION}|g" /mnt/etc/lightdm/lightdm.conf
         sed -i -e \
 "s|${NUMOFF}|${NUMON}|g" /mnt/etc/lightdm/lightdm.conf
+        echo "done"
 
     # SDDM
     elif [[ ${DISPLAY_MAN} == "SDDM" ]]; then
         _chroot "sddm --example-config > /etc/sddm.conf"
         sed -i -e "s|Session=|Session=${SESSION}|g" /mnt/etc/sddm.conf
         sed -i -e "s/Numlock=none/Numlock=on/g" /mnt/etc/sddm.conf
+        echo "done"
 
     # LXDM
     elif [[ ${DISPLAY_MAN} == "LXDM" ]]; then
@@ -88,11 +91,13 @@ _install_display_manager() {
         sed -i -e \
 "s/white=/white=${USER_NAME}/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/black=/black=root/g" /mnt/etc/lxdm/lxdm.conf
+        echo "done"
 
     # XDM
     elif [[ ${DISPLAY_MAN} == "XDM" ]]; then
         echo ${SESSION} > /mnt/home/${USER_NAME}/.xsession
         chmod 770 /mnt/home/${USER_NAME}/.xsession
+        echo "done"
     fi
 }
 

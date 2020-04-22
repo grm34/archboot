@@ -27,6 +27,7 @@ _install_base() {
     # Timezone
     _info "Setting timezone to ${TIMEZONE}"
     ln -sfv /usr/share/zoneinfo/${TIMEZONE} /mnt/etc/localtime
+    echo "done"
 
     # Locale
     _info "Setting locale to ${LANGUAGE}.UTF-8"
@@ -34,18 +35,22 @@ _install_base() {
     _chroot "locale-gen"
     _chroot "export LANG=${LANGUAGE}.UTF-8"
     echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
+    echo "done"
 
     # Vconsole
     _info "Setting virtual console to ${KEYMAP^^}"
     echo "KEYMAP=${KEYMAP}" > /mnt/etc/vconsole.conf
+    echo "done"
 
     # Hostname
     _info "Setting hostname ${HOST_NAME}"
     echo ${HOST_NAME} > /mnt/etc/hostname
+    echo "done"
 
     # Root passwd
     _info "Setting root password"
     _chroot "echo 'root:${ROOTPASSWD}' | chpasswd"
+    echo "done"
 
     # Network
     _info "Installing network manager"
@@ -75,6 +80,7 @@ _install_base() {
     _info "Setting user ${USER_NAME}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
     _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
+    echo "done"
 }
 
 _install_AUR_helper() {

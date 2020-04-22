@@ -21,11 +21,14 @@ _install_bootloader() {
         _chroot "bootctl --path=/boot install"
 
         # Replace loader.conf
+        _info "Setting systemd-boot loader"
         _wget ${URL}/conf/loader.conf
         mv -v /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
         mv -v loader.conf /mnt/boot/loader/loader.conf
+        echo "done"
 
         # Create new boot entry
+        _info "Setting systemd-boot entry"
         BOOTCONF="/mnt/boot/loader/entries/arch.conf"
         echo "title Arch Linux" > ${BOOTCONF}
         echo "linux /vmlinuz-${KERNEL_NAME,,}" >> ${BOOTCONF}
@@ -36,8 +39,10 @@ _install_bootloader() {
         esac
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> ${BOOTCONF}
         echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
+        echo "done"
 
         # Update systemd-boot
+        _info "Updating systemd-boot config"
         _chroot "bootctl --path=/boot update"
 
     # BIOS Firmware > Grub2
@@ -50,7 +55,7 @@ _install_bootloader() {
 
         # Download Themes
         _info "Downloading Grub Themes"
-        _wget ${GHPAGES}/assets/images/background.png
+        _wget ${GHPAGES}/assets/images/background.png && echo
         _chroot "git clone git://github.com/Generator/Grub2-themes.git"
         echo
 
@@ -65,9 +70,10 @@ _install_bootloader() {
 >> /mnt/boot/grub/themes/Archlinux/theme.txt
         mv background.png /mnt/boot/grub/themes/Archlinux/background.png
         rm -rf /mnt/Grub2-themes
+        echo "done"
 
         # Configure Grub2
-        _info "Configuring Grub bootloader"
+        _info "Setting Grub bootloader"
         _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
     fi
 }
