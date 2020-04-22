@@ -230,6 +230,7 @@ _check source ./base; _check source ./bootloader
 _check source ./firmware; _check source ./mirrorlist
 _check source ./mounting; _check source ./partitioning
 _check source ./user; _check source ./system_apps
+echo "done"
 
 # Get required variables
 _get_user_variables
@@ -251,6 +252,7 @@ if [[ -n ${DESKTOP+x} ]]; then
     _check source ./desktop; _check source ./display
     _check source ./gpu_driver; _check source ./desktop_apps
     _check source ./display_apps; _check source ./gpu_apps
+    echo "done"
 
     # GPU Driver or kernel mode setting?
     _note "enter NO to use kernel mode setting."

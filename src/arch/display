@@ -51,7 +51,7 @@ _install_display_manager() {
     elif [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
 
         # Install Greeter
-        if [[ ${GREETER != "DEEPIN_GREETER"} ]]; then
+        if [[ ${GREETER} != "DEEPIN_GREETER" ]]; then
             _info "Installing lightdm greeter"
             _chroot "pacman --noconfirm --needed -S ${!GREETER}"
         fi
