@@ -57,7 +57,6 @@ _install_bootloader() {
         _info "Downloading Grub Themes"
         _wget ${GHPAGES}/assets/images/background.png && echo
         _chroot "git clone git://github.com/Generator/Grub2-themes.git"
-        echo
 
         # Install Themes
         _info "Installing Grub Themes"
