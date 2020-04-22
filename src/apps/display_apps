@@ -16,7 +16,7 @@ export SDDM="sddm"
 export LXDM="lxdm"
 
 # XDM
-export XDM="xorg-xdm"
+export XDM="xorg-xdm xdm-archlinux"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================

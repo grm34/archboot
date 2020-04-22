@@ -22,7 +22,11 @@ _install_display_manager() {
     # Install Display Manager
     _info "Installing ${DISPLAY_MAN,,} display manager"
     _chroot "pacman --noconfirm --needed -S ${!DISPLAY_MAN}"
-    _chroot "systemctl enable ${DISPLAY_MAN,,}"
+    if [[ ${DISPLAY_MAN} == "XDM" ]]; then
+        _chroot "systemctl enable ${DISPLAY_MAN,,}-archlinux"
+    else
+        _chroot "systemctl enable ${DISPLAY_MAN,,}"
+    fi
 
     # Start command of each DE or WM
     case ${DESKTOP} in
