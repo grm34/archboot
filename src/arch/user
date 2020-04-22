@@ -177,20 +177,20 @@ _get_user_variables() {
 
                 # Custom LightDM Greeter
                 n|N|no|No|NO)
-                    until [[ ${GREETER} =~ ^[1-5]$ ]]; do
-                        _select "GTK" "DEEPIN" "PANTHEON" "WEBKIT" "LITARVAN"
+                    until [[ ${GREETER} =~ ^[1-4]$ ]]; do
+                        _select "GTK" "PANTHEON" "WEBKIT" "LITARVAN"
                         read -r GREETER
                     done
                     GREETER_CHOICE=\
-(NONE GTK_GR DEEPIN_GR PANTHEON_GR WEBKIT_GR LITARVAN_GR)
+(NONE GTK_GREETER PANTHEON_GREETER WEBKIT_GREETER LITARVAN_GREETER)
                     export GREETER=${GREETER_CHOICE[${GREETER}]}
                     ;;
 
                 # Default LightDM Greeter
                 *)
                     case ${DESKTOP} in
-                        DEEPIN) export GREETER="DEEPIN_GR";;
-                        *) export GREETER="GTK_GR";;
+                        DEEPIN) export GREETER="DEEPIN_GREETER";;
+                        *) export GREETER="GTK_GREETER";;
                     esac
                     ;;
             esac
