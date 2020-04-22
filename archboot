@@ -34,7 +34,7 @@ For more  information, take a look  at the  ${APPNAME} wiki
 #                      SHARED VARIABLES & FUNCTIONS
 # ============================================================================
 # Here we define all required variables and functions to manage archboot.
-# Variables are pretty simple such as define needed urls and colors.
+# Variables are pretty simple such as define needed urls and shell colors.
 # Functions are used to display install steps, notes, errors or to do some
 # actions like to cleanup after fatal error, execute cmd in chrooted env,
 # select an option, ask some information to the user or to get install logs.
@@ -187,7 +187,7 @@ _end() {
 # Then we can ask for user variables and we store them to run install.
 # In case of desktop environment, we import additional sources and we
 # scan for 3D GPU controller to properly define appropriate drivers.
-# Kernel mode setting support: in this case GPU Driver will not be installed.
+# Kernel mode setting support: in this case no GPU Driver will be installed.
 # ============================================================================
 
 # Display archboot banner
@@ -265,7 +265,7 @@ fi
 # ============================================================================
 # Here we get user firmware to set partitions required settings.
 # Then we get fastest mirrors, user timezone and we properly define them.
-# We could now configure network time protocol and we create logfiles.
+# Now we can configure network time protocol and installation logfiles.
 # Finally we run partitioning, we activate SWAP and we mount the partitions.
 # ============================================================================
 
@@ -290,12 +290,12 @@ _note "system is ready to rumble! Partitions mounted & swap activated."
 
 #                         ARCH LINUX INSTALLATION
 # ============================================================================
-# At this point system is ready, partitions are created, properly mounted and
-# user variables stored. We can start Arch Linux installation.
+# At this point system is ready, partitions are created, properly mounted
+# and user variables stored so we can start Arch Linux installation.
 # First step is to install base system and second to install bootloader.
 # In case of desktop environment or window manager, we install GPU Drivers
 # and Display Manager. Then we install an AUR Helper (optional).
-# We use <tee> to get full installation logs of those steps.
+# We use <tee> to get full installation logs of all those steps.
 # If system won't start DE/WM after reboot, check the logs and open an issue.
 # Take a look at /var/log/archboot for the full installation logs.
 # ============================================================================
@@ -351,7 +351,7 @@ esac
 
 #                CLEANUP SOURCES - UMOUNT PARTITIONS - REBOOT
 # ============================================================================
-# And here we go! We could now cleanup sources, umount all partitions and
+# And here we go! We can now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.
 # Telegram chat: t.me/archboot - Have fun, take care and give a star!
 # ============================================================================
