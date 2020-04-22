@@ -247,6 +247,7 @@ if [[ -n ${DESKTOP+x} ]]; then
     _wget ${URL}/src/apps/desktop_apps    # to get Desktop apps
     _wget ${URL}/src/apps/display_apps    # to get Display Manager apps
     _wget ${URL}/src/apps/gpu_apps        # to get GPU Driver apps
+    _wget ${URL}/conf/00-keyboard.conf    # to set keyboard layout
 
     # Import desktop sources
     _info "Importing desktop sources"
