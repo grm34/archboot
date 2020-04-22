@@ -66,12 +66,12 @@ _default_partitioning_scheme() {
                 _error "${DRIVE} is mounted!"
             else
                 # Otherwise format
+                _check wipefs --force -all ${DRIVE}
                 _check dd if=/dev/zero of=${DRIVE} \
 bs=512 count=1 conv=notrunc status=progress
-                _check wipefs -fa ${DRIVE}
 
                 # And create MBR or GPT partition table
-                printf ${PART_CODE}"\nw" | fdisk ${DRIVE}
+                printf ${PART_CODE}"\nw" | fdisk --wipe=always ${DRIVE}
                 partprobe ${DRIVE}; sleep 1
             fi
             ;;
@@ -166,10 +166,10 @@ bs=512 count=1 conv=notrunc status=progress
         _info "Creating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "HOME_PARTITION" \
 && ${HOME_SIZE} == "free space" ]]; then
-            printf "n\n${PART_TYPE}\n\n\nw" | fdisk ${DRIVE}
+            printf "n\n${PART_TYPE}\n\n\nw" | fdisk --wipe=always ${DRIVE}
         else
             printf \
-"n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk ${DRIVE}
+"n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk --wipe=always ${DRIVE}
         fi
 
         # Set EFI partition type for boot (UEFI firmware only)
