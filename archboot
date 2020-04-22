@@ -124,6 +124,7 @@ _logs() {
     INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
     _archboot_banner > ${INSTALL_LOG}
     _archboot_banner > ${INPUTS_LOG}
+    echo "done"
 }
 
 # Download show progress bar only
