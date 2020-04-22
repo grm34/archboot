@@ -112,14 +112,14 @@ bs=512 count=1 conv=notrunc status=progress
 
         # Otherwise ask partitions sizes
         if [[ ${PARTITION_SIZE} != "free space" ]]; then
-            _note "partition size {M,G,T,P} (e.g., ${SIZES[${INDEX}]})"
+            _note "partition size {M,G,T} (e.g., ${SIZES[${INDEX}]})"
             _prompt "Enter ${PART_NAME,,} partition size:"
             read -r PARTITION_SIZE
 
             # Check if valid size and otherwise ask again
             until [[ ${PARTITION_SIZE} \
-=~ ^[1-9]{1}[[0-9]{0,2}(M|G|T|P){1}$ ]]; do
-                _note "partition size {M,G,T,P} (e.g., ${SIZES[${INDEX}]})"
+=~ ^[1-9]{1}[[0-9]{0,2}(M|G|T){1}$ ]]; do
+                _note "partition size {M,G,T} (e.g., ${SIZES[${INDEX}]})"
                 _prompt "Enter valid ${PART_NAME,,} partition size:"
                 read -r PARTITION_SIZE
             done
@@ -145,9 +145,20 @@ bs=512 count=1 conv=notrunc status=progress
     if [[ ${PARTITION[*]} =~ "HOME_PARTITION" ]]; then
         SIZES+=("${HOME_SIZE}")
     fi
-    INDEX=0
+
+    # Check partitions sizes
+    CHECK_SIZE=0
+    TOTAL_SIZE=$(lsblk -b --output SIZE -n -d ${DRIVE})
+    for SIZE in "${SIZES[@]}"; do
+        _dehumanise ${SIZE}
+        CHECK_SIZE=$((CHECK_SIZE+BYTES))
+    done
+    if [[ ${CHECK_SIZE} > ${TOTAL_SIZE} ]]; then
+        _error "you did not have enought disk space!"
+    fi
 
     # Create and format partitions
+    INDEX=0
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART//_PARTITION/}
 
@@ -244,6 +255,19 @@ _get_user_partitions() {
 
     # Return partitions list
     export PARTITION
+}
+
+_dehumanise() {
+
+    # Convert human readable to bytes
+    BYTES=$(echo ${1} | awk \
+        'BEGIN{IGNORECASE = 1}
+        function printpower(n,b,p) {printf "%u\n", n*b^p; next}
+        /[0-9]$/{print $1;next};
+        /M/{printpower($1, 2, 20)};
+        /G/{printpower($1, 2, 30)};
+        /T/{printpower($1, 2, 40)}'
+    )
 }
 
 # archboot by grm34 under Apache License 2.0
