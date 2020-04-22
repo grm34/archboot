@@ -167,6 +167,32 @@ _get_user_variables() {
                 esac
                 ;;
         esac
+
+        # LightDM Greeter
+        if [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
+            _confirm "Do you wish to install LightDM default greeter?"
+            case ${CONFIRM} in
+
+                # Custom LightDM Greeter
+                n|N|no|No|NO)
+                    until [[ ${GREETER} =~ ^[1-5]$ ]]; do
+                        _select "GTK" "DEEPIN" "PANTHEON" "WEBKIT" "LITARVAN"
+                        read -r GREETER
+                    done
+                    GREETER_CHOICE=\
+(NONE GTK_GR DEEPIN_GR PANTHEON_GR WEBKIT_GR LITARVAN_GR)
+                    export GREETER=${GREETER_CHOICE[${GREETER}]}
+                    ;;
+
+                # Default LightDM Greeter
+                *)
+                    case ${DESKTOP} in
+                        DEEPIN) export GREETER="DEEPIN_GR";;
+                        *) export GREETER="GTK_GR";;
+                    esac
+                    ;;
+            esac
+        fi
     fi
 
     # AUR Helper
