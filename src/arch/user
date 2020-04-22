@@ -15,7 +15,9 @@
 #      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN
 #      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
+#                       AWESOME - i3 - XMONAD
 #      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM
+#      GREETER........: GTK DEEPIN PANTHEON WEBKIT LITARVAN
 #      AUR_HELPER.....: YAY - TRIZEN (supported if user rights activated)
 #      POWER..........: add user to all groups
 #
@@ -160,9 +162,9 @@ _get_user_variables() {
             *)
                 case ${DESKTOP} in
                     GNOME|BUDGIE|CINNAMON|MATE) export DISPLAY_MAN="GDM";;
-                    KDE|LXQT) export DISPLAY_MAN="SDDM";;
+                    KDE) export DISPLAY_MAN="SDDM";;
                     DEEPIN|ENLIGHTENMENT) export DISPLAY_MAN="LIGHTDM";;
-                    XFCE4|LXDE) export DISPLAY_MAN="LXDM";;
+                    XFCE4|LXDE|LXQT) export DISPLAY_MAN="LXDM";;
                     *) export DISPLAY_MAN="XDM";;
                 esac
                 ;;
