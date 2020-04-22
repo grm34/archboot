@@ -1,6 +1,6 @@
 [![archboot](https://www.archboot.org/assets/images/logo.png)](https://www.archboot.org)
 
-[![version](https://img.shields.io/badge/version-v2.9.7-blue.svg?style=flat&logo=github)](https://github.com/grm34/archboot/releases)
+[![version](https://img.shields.io/badge/version-v2.9.8-blue.svg?style=flat&logo=github)](https://github.com/grm34/archboot/releases)
 [![maintenance](https://img.shields.io/maintenance/yes/2020.svg?&style=flat&logo=github)](https://github.com/grm34/archboot/pulse)
 [![author](https://img.shields.io/badge/author-grm34-red.svg?&style=flat&logo=github)](https://github.com/grm34)
 [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat&logo=github)](https://github.com/grm34/archboot/blob/master/LICENSE)
