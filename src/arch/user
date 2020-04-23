@@ -137,12 +137,12 @@ _get_user_variables() {
 
             # Additonals DE packages
             case ${DESKTOP} in
-                GNOME|KDE|MATE|XFCE4|DEEPIN)
+                GNOME|KDE|MATE|XFCE4|DEEPIN|LXQT)
                     _confirm \
 "Do you wish to install ${DESKTOP,,} additionals packages?"
                 case ${CONFIRM} in
                     y|Y|yes|Yes|YES)
-                        export DE_EXTRAS="${DESKTOP}_EXTRA"
+                        export DE_EXTRAS="${DESKTOP}_EXTRAS"
                         ;;
                 esac
                 ;;
