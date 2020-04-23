@@ -17,8 +17,11 @@ export INTEL_UCODE="intel-ucode"
 export AMD_UCODE="amd-ucode"
 
 # Network
-export NETAPPS="networkmanager ntp wget git \
+export NETAPPS="networkmanager wget git \
 net-tools dhcpcd iw wpa_supplicant wireless_tools"
+
+# Ntp (optional)
+export NTP="ntp"
 
 # Bootloader (BIOS only)
 export GRUB="grub os-prober"

@@ -17,7 +17,7 @@
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #                       AWESOME - i3 - XMONAD (optional)
 #      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM (optional)
-#      GREETER........: GTK DEEPIN PANTHEON WEBKIT LITARVAN (LightDM only)
+#      GREETER........: GTK PANTHEON WEBKIT LITARVAN (LightDM only)
 #      AUR_HELPER.....: YAY - PAMAC-AUR - TRIZEN (optional)
 #      POWER..........: add user to all groups (optional)
 #
@@ -87,6 +87,14 @@ _get_user_variables() {
     fi
     export USERPASSWD
     echo
+
+    # Network time protocol
+    _confirm "Do you wish to use Network Time Protocol?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            export NTPD="True"
+            ;;
+    esac
 
     # Linux Kernel
     _confirm "Do you wish to install default Linux Kernel?"

@@ -56,7 +56,13 @@ _install_base() {
     _info "Installing network manager"
     _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
-    _chroot "systemctl enable ntpd"
+
+    # NTP
+    if [[ -n ${NTPD} ]]; then
+        _info "Installing network time protocol"
+        _chroot "pacman --noconfirm --needed -S ${NTP}"
+        _chroot "systemctl enable ntpd"
+    fi
 
     # Microcode
     MICROCODE=$(lscpu | grep "Intel")
