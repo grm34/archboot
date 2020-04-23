@@ -4,19 +4,24 @@
 # ============================================================================
 
 # Gnome
-export GNOME="gnome gnome-extra"
+export GNOME="gnome"
+export GNOME_EXTRA="gnome-extra"
 
 # Kde
-export KDE="plasma kde-applications"
+export KDE="plasma"
+export KDE_EXTRA="kde-applications"
 
-# Lxde
-export LXDE="lxde"
+# Mate
+export MATE="mate"
+export MATE_EXTRA="mate-extra"
 
 # Xfce
-export XFCE4="xfce4 xfce4-goodies"
+export XFCE4="xfce4"
+export XFCE4_EXTRA="xfce4-goodies"
 
 # Deepin
-export DEEPIN="deepin deepin-extra"
+export DEEPIN="deepin"
+export DEEPIN_EXTRA="deepin-extra"
 
 # Cinnamon
 export CINNAMON="cinnamon"
@@ -27,11 +32,11 @@ export BUDGIE="budgie-desktop"
 # Enlightenment
 export ENLIGHTENMENT="enlightenment terminology"
 
-# Mate
-export MATE="mate mate-extra"
-
 # Lxqt
-export LXQT="lxqt breeze-icons"
+export LXQT="lxqt"
+
+# Lxde
+export LXDE="lxde"
 
 #                       WINDOW MANAGER PACKAGES
 # ============================================================================

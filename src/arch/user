@@ -115,6 +115,8 @@ _get_user_variables() {
 
         # DE
         y|Y|yes|Yes|YES)
+
+            # Select DE
             until [[ ${DESKTOP} =~ ^[1-9][0]?$ ]]; do
                 _select \
 "GNOME" "KDE" "MATE" "XFCE" "LXDE" "LXQT" \
@@ -124,6 +126,19 @@ _get_user_variables() {
             DESKTOP_CHOICE=\
 (NONE GNOME KDE MATE XFCE4 LXDE LXQT DEEPIN BUDGIE CINNAMON ENLIGHTENMENT)
             export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
+
+            # Additonals DE packages
+            case ${DESKTOP} in
+                GNOME|KDE|MATE|XFCE4|DEEPIN)
+                    _confirm \
+"Do you wish to install ${DESKTOP,,} additionals packages?"
+                case ${CONFIRM} in
+                    y|Y|yes|Yes|YES)
+                        export DE_EXTRAS="${DESKTOP}_EXTRA"
+                        ;;
+                esac
+                ;;
+            esac
             ;;
 
         # WM
