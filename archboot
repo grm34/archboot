@@ -74,6 +74,8 @@ background.png Grub2-themes archboot* *_vars.log)
     if mount | grep /mnt; then
         umount -Rfv /mnt
     fi
+    echo && echo -e \
+"${GREEN}${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}${NC}"
 }
 
 # Display error and cleanup
@@ -355,7 +357,7 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
         ;;
 esac
 
-#                CLEANUP SOURCES - UMOUNT PARTITIONS - REBOOT
+#               CLEANUP SOURCES - UMOUNT PARTITIONS - REBOOT
 # ============================================================================
 # And here we go! We can now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.
@@ -366,8 +368,6 @@ _confirm "Do you wish to reboot your computer now?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
         _cleanup
-        echo && echo -e \
-"${BLUE}${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}${NC}"
         _reboot
         ;;
     *)
