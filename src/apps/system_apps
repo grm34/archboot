@@ -4,7 +4,10 @@
 # ============================================================================
 
 # Arch Linux
-export ARCH="base linux-firmware"
+export ARCH="base linux-firmware sudo"
+
+# Base devel (AUR only)
+export BASE_DEVEL="base-devel"
 
 # Kernel (optional)
 export LINUX="linux"
