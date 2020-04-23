@@ -75,7 +75,7 @@ background.png Grub2-themes archboot* *_vars.log)
         umount -Rfv /mnt
     fi
     echo && echo -e \
-"${GREEN}${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}${NC}"
+"${RED}${APPNAME} ${VERSION} by ${AUTHOR} under ${LICENSE}${NC}"
 }
 
 # Display error and cleanup
@@ -118,7 +118,7 @@ _clock() {
     timedatectl show
 }
 
-# Set logfile
+# Set logfiles
 _logs() {
     _info "Setting ${APPNAME} logs"
     DATETIME=$(_check date '+%d-%m-%Y_%Hh%M')
