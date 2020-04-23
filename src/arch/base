@@ -6,7 +6,7 @@
 # the corresponding CPU microcode updates <intel-ucode> or <amd-ucode>.
 # Then we create user account with the previously defined password and
 # we install an AUR Helper (optional) YAY PAMAC-AUR TRIZEN supported.
-# Finally we remove unrequired dependencies and we clean pacman cache.
+# Finally we remove unused dependencies and we clean pacman cache.
 #
 # All steps are described in the official documentation:
 #
@@ -18,6 +18,10 @@ _install_base() {
     # Base System
     _info "Installing base system with ${KERNEL_NAME,,} kernel"
     yes '' | pacstrap /mnt ${ARCH} ${!KERNEL}
+    if [[ -n ${AUR_HELPER} ]]; then
+        _info "Installing base devel"
+        yes '' | pacstrap /mnt ${BASE_DEVEL}
+    fi
 
     # Fstab
     _info "Setting file systems table"
@@ -56,7 +60,13 @@ _install_base() {
     _info "Installing network manager"
     _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
-    _chroot "systemctl enable ntpd"
+
+    # NTP
+    if [[ -n ${NTPD} ]]; then
+        _info "Installing network time protocol"
+        _chroot "pacman --noconfirm --needed -S ${NTP}"
+        _chroot "systemctl enable ntpd"
+    fi
 
     # Microcode
     MICROCODE=$(lscpu | grep "Intel")
@@ -109,12 +119,12 @@ makepkg --noconfirm --needed -sic"
 }
 
 _clean_dependencies() {
-    _info "Cleaning cache and unrequired dependencies"
+    _info "Cleaning cache and unused dependencies"
 
-    # Remove unrequired dependencies
-    UNREQUIRED_DEPENDENCIES=$(_chroot "pacman -Qdtq")
-    if [[ ${UNREQUIRED_DEPENDENCIES} ]]; then
-        _chroot "pacman --noconfirm -Rcsn ${UNREQUIRED_DEPENDENCIES}"
+    # Remove unused dependencies
+    UNUSED_DEPENDENCIES=$(_chroot "pacman -Qdtq")
+    if [[ ${UNUSED_DEPENDENCIES} ]]; then
+        _chroot "pacman --noconfirm -Rcsn ${UNUSED_DEPENDENCIES}"
     fi
 
     # Clean pacman cache

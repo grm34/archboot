@@ -17,7 +17,7 @@
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #                       AWESOME - i3 - XMONAD (optional)
 #      DISPLAY_MAN....: GDM - LIGHTDM - SDDM - LXDM - XDM (optional)
-#      GREETER........: GTK DEEPIN PANTHEON WEBKIT LITARVAN (LightDM only)
+#      GREETER........: GTK PANTHEON WEBKIT LITARVAN (LightDM only)
 #      AUR_HELPER.....: YAY - PAMAC-AUR - TRIZEN (optional)
 #      POWER..........: add user to all groups (optional)
 #
@@ -88,6 +88,14 @@ _get_user_variables() {
     export USERPASSWD
     echo
 
+    # Network time protocol
+    _confirm "Do you wish to use Network Time Protocol?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            export NTPD="True"
+            ;;
+    esac
+
     # Linux Kernel
     _confirm "Do you wish to install default Linux Kernel?"
     case ${CONFIRM} in
@@ -115,6 +123,8 @@ _get_user_variables() {
 
         # DE
         y|Y|yes|Yes|YES)
+
+            # Select DE
             until [[ ${DESKTOP} =~ ^[1-9][0]?$ ]]; do
                 _select \
 "GNOME" "KDE" "MATE" "XFCE" "LXDE" "LXQT" \
@@ -124,6 +134,19 @@ _get_user_variables() {
             DESKTOP_CHOICE=\
 (NONE GNOME KDE MATE XFCE4 LXDE LXQT DEEPIN BUDGIE CINNAMON ENLIGHTENMENT)
             export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
+
+            # Additonals DE packages
+            case ${DESKTOP} in
+                GNOME|KDE|MATE|XFCE4|DEEPIN|LXQT)
+                    _confirm \
+"Do you wish to install ${DESKTOP,,} additionals packages?"
+                case ${CONFIRM} in
+                    y|Y|yes|Yes|YES)
+                        export DE_EXTRAS="${DESKTOP}_EXTRAS"
+                        ;;
+                esac
+                ;;
+            esac
             ;;
 
         # WM
