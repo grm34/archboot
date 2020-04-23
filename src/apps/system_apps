@@ -4,7 +4,7 @@
 # ============================================================================
 
 # Arch Linux
-export ARCH="base base-devel linux-firmware"
+export ARCH="base linux-firmware"
 
 # Kernel (optional)
 export LINUX="linux"
