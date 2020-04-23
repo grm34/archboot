@@ -146,14 +146,14 @@ bs=512 count=1 conv=notrunc status=progress
         SIZES+=("${HOME_SIZE}")
     fi
 
-    # Check partitions sizes
+    # Check disk space
     CHECK_SIZE=0
-    TOTAL_SIZE=$(lsblk -b --output SIZE -n -d ${DRIVE})
+    DISK_SPACE=$(lsblk -b --output SIZE -n -d ${DRIVE})
     for SIZE in "${SIZES[@]}"; do
         _dehumanise ${SIZE}
-        CHECK_SIZE=$((CHECK_SIZE+BYTES))
+        CHECK_SIZE=$((CHECK_SIZE + BYTES))
     done
-    if [[ ${CHECK_SIZE} > ${TOTAL_SIZE} ]]; then
+    if [[ ${CHECK_SIZE} > ${DISK_SPACE} ]]; then
         _error "you did not have enought disk space!"
     fi
 
