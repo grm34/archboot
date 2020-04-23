@@ -50,10 +50,15 @@ _default_partitioning_scheme() {
         CHECK=$(partprobe -d -s /dev/${DRIVE})
     done
 
+    # Check if drive is mounted
+    if mount | grep ${DRIVE}; then
+        _error "${DRIVE} is mounted!"
+    fi
+
     # Return selected drive
     export DRIVE="/dev/${DRIVE}"
 
-    # Format the drive
+    # Prepare the drive
     _info "Arch Linux will be installed on ${DRIVE}"
     lsblk ${DRIVE}
     _note "WARNING! all data will be lost!"
@@ -61,19 +66,14 @@ _default_partitioning_scheme() {
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
 
-            # Check if mounted
-            if mount | grep ${DRIVE}; then
-                _error "${DRIVE} is mounted!"
-            else
-                # Otherwise format
-                _check wipefs --force --all ${DRIVE}
-                _check dd if=/dev/zero of=${DRIVE} \
-bs=512 count=1 conv=notrunc status=progress
+            # Wipe and format
+            _check wipefs --force --all ${DRIVE}
+            _check dd if=/dev/zero of=${DRIVE} bs=512 count=1 conv=notrunc \
+status=progress
 
-                # And create MBR or GPT partition table
-                printf ${PART_CODE}"\nw" | fdisk --wipe=always ${DRIVE}
-                partprobe ${DRIVE}; sleep 1
-            fi
+            # Create MBR or GPT partition table
+            printf ${PART_CODE}"\nw" | fdisk --wipe=always ${DRIVE}
+            partprobe ${DRIVE}; sleep 1
             ;;
         *)
             _error "installation aborted by user!"
@@ -116,7 +116,7 @@ bs=512 count=1 conv=notrunc status=progress
             _prompt "Enter ${PART_NAME,,} partition size:"
             read -r PARTITION_SIZE
 
-            # Check if valid size and otherwise ask again
+            # Check if valid size (otherwise ask again)
             until [[ ${PARTITION_SIZE} \
 =~ ^[1-9]{1}[[0-9]{0,2}(M|G|T){1}$ ]]; do
                 _note "partition size {M,G,T} (e.g., ${SIZES[${INDEX}]})"
