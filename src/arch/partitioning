@@ -130,13 +130,6 @@ bs=512 count=1 conv=notrunc status=progress
         INDEX=${INDEX}+1
     done
 
-    # Set partition order
-    if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then
-        ORDER=(p1 p2 p3 p4)
-    else
-        ORDER=(1 2 3 4)
-    fi
-
     # Create list to assign partitions sizes
     SIZES=("${BOOT_SIZE}" "${SYSTEM_SIZE}")
     if [[ ${PARTITION[*]} =~ "SWAP_PARTITION" ]]; then
@@ -155,6 +148,13 @@ bs=512 count=1 conv=notrunc status=progress
     done
     if [[ ${CHECK_SIZE} > ${DISK_SPACE} ]]; then
         _error "you did not have enought disk space!"
+    fi
+
+    # Set partition order
+    if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then
+        ORDER=(p1 p2 p3 p4)
+    else
+        ORDER=(1 2 3 4)
     fi
 
     # Create and format partitions
