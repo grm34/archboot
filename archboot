@@ -330,7 +330,7 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
             (_install_AUR_helper) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
-        # Clean cache and unrequired dependencies
+        # Clean cache and remove unused dependencies
         (_clean_dependencies) 2>&1 | tee -a ${INSTALL_LOG}
 
         # Get user inputs logs
