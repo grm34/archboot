@@ -23,12 +23,12 @@ _mount_partitions() {
     _check mount -v ${MOUNT_TYPE}${BOOT_PARTITION} /mnt/boot
 
     # Activate swap
-    if [[ -n ${SWAP_PARTITION+x} ]]; then
+    if [[ -n ${SWAP_PARTITION} ]]; then
         _check swapon -v ${SWAP_PARTITION}
     fi
 
     # Mount home > /mnt/home
-    if [[ -n ${HOME_PARTITION+x} ]]; then
+    if [[ -n ${HOME_PARTITION} ]]; then
         _check mount -v ${HOME_PARTITION} /mnt/home
     fi
 }
