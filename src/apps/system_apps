@@ -16,8 +16,8 @@ export LINUX_LTS="linux-lts"
 export LINUX_ZEN="linux-zen"
 
 # Microcode (matching CPU)
-export INTEL_UCODE="intel-ucode"
-export AMD_UCODE="amd-ucode"
+export INTEL_CPU="intel-ucode"
+export AMD_CPU="amd-ucode"
 
 # Base devel (AUR only)
 export BASE_DEVEL="base-devel"
