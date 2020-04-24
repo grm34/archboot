@@ -9,9 +9,6 @@ export ARCH="base"
 # Firmware
 export FW="linux-firmware"
 
-# Base devel (AUR only)
-export BASE_DEVEL="base-devel"
-
 # Kernel (optional)
 export LINUX="linux"
 export LINUX_HARDENED="linux-hardened"
@@ -21,6 +18,9 @@ export LINUX_ZEN="linux-zen"
 # Microcode (matching CPU)
 export INTEL_UCODE="intel-ucode"
 export AMD_UCODE="amd-ucode"
+
+# Base devel (AUR only)
+export BASE_DEVEL="base-devel"
 
 # Sudo (grant user)
 export SUDO="sudo"
