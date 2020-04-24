@@ -239,7 +239,7 @@ echo "done"
 _get_user_variables
 
 # Desktop Environment
-if [[ -n ${DESKTOP+x} ]]; then
+if [[ -n ${DESKTOP} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
@@ -315,18 +315,18 @@ case ${CONFIRM} in
         (_install_base; _install_bootloader) 2>&1 | tee -a ${INSTALL_LOG}
 
         # Install GPU Driver
-        if [[ -n ${GPU_DRIVER+x} ]]; then
+        if [[ -n ${GPU_DRIVER} ]]; then
             (_install_gpu_driver) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
         # Install DE / WM / DM
-        if [[ -n ${DESKTOP+x} ]]; then
+        if [[ -n ${DESKTOP} ]]; then
             (_install_desktop_environment; _configure_desktop_environment; \
 _install_display_manager; _enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
         # Install AUR Helper
-        if [[ -n ${AUR_HELPER+x} ]]; then
+        if [[ -n ${AUR_HELPER} ]]; then
             (_install_AUR_helper) 2>&1 | tee -a ${INSTALL_LOG}
         fi
 
