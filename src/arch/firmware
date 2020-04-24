@@ -42,10 +42,11 @@ _cpu() {
             _note "${CPU} processor detected!"
             export MICROCODE="${CPU^^}_CPU"
             export UCODE=${CPU,,}
-        else
-            _note "unreconized CPU! Microcode updates will no be installed."
         fi
     done
+    if [[ ! ${MICROCODE} ]]; then
+        _note "unreconized CPU! Microcode updates will no be installed."
+    fi
 }
 
 # archboot by grm34 under Apache License 2.0
