@@ -52,6 +52,7 @@ _configure_desktop_environment() {
     case ${DESKTOP} in
         AWESOME|I3|XMONAD)
             _info "Setting xinitrc for ${DESKTOP,,}"
+            echo "downloading xinitrc..."
             _wget ${URL}/conf/xinitrc
             mv -v xinitrc /mnt/home/${USER_NAME}/.xinitrc
             echo "exec ${DESKTOP,,}" >> /mnt/home/${USER_NAME}/.xinitrc
