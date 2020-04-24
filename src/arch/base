@@ -72,7 +72,6 @@ _install_base() {
     if [[ ${MICROCODE} ]]; then
         _info "Installing ${MICROCODE/_/ } Microcode"
         _chroot "pacman --noconfirm --needed -S ${!MICROCODE}"
-
     fi
 
     # User
