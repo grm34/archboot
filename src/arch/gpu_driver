@@ -2,8 +2,10 @@
 
 #                        GPU CONTROLLER DRIVER
 # ============================================================================
-# Here we scan for 3D GPU Controller to install appropriate driver
-# with OpenGL and Hardware Acceleration (if currently supported).
+# Here we scan for 3D GPU Controller to install appropriate driver with
+# OpenGL and Hardware Acceleration (if currently supported). We don't use
+# FOR loop (wich can shorten the code) to prevent issues in case of dual
+# GPU and to ensure the integrated will not be installed as principal GPU.
 #
 # All steps are described in the official documentation:
 #

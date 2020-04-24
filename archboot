@@ -277,7 +277,7 @@ fi
 # ============================================================================
 
 # Prepare the system
-_firmware; _mirrorlist; _timezone; _clock; _logs
+_firmware; _cpu; _mirrorlist; _timezone; _clock; _logs
 
 # Partitioning
 _note "enter NO to activate custom partitioning."
