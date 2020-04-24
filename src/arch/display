@@ -62,7 +62,6 @@ _install_display_manager() {
         # Define Greeter Session
         case ${GREETER} in
             GTK_GREETER) LIGHTDM_SESSION="lightdm-gtk-greeter";;
-            PANTHEON_GREETER) LIGHTDM_SESSION="io.elementary.greeter";;
             DEEPIN_GREETER) LIGHTDM_SESSION="lightdm-deepin-greeter";;
             *) LIGHTDM_SESSION="lightdm-webkit2-greeter";;
         esac
