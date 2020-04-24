@@ -237,7 +237,7 @@ _get_user_variables() {
     _confirm "Do you wish to add user ${USER_NAME} to all groups?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
-            export POWER="yes"
+            export POWER="True"
             ;;
     esac
 }
