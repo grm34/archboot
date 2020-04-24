@@ -4,7 +4,10 @@
 # ============================================================================
 
 # Arch Linux
-export ARCH="base linux-firmware sudo"
+export ARCH="base"
+
+# Firmware
+export FW="linux-firmware"
 
 # Base devel (AUR only)
 export BASE_DEVEL="base-devel"
@@ -19,15 +22,18 @@ export LINUX_ZEN="linux-zen"
 export INTEL_UCODE="intel-ucode"
 export AMD_UCODE="amd-ucode"
 
-# Network
-export NETAPPS="networkmanager wget git \
-net-tools dhcpcd iw wpa_supplicant wireless_tools"
+# Sudo (grant user)
+export SUDO="sudo"
+
+# Bootloader (BIOS only)
+export GRUB="grub os-prober"
 
 # Ntp (optional)
 export NTP="ntp"
 
-# Bootloader (BIOS only)
-export GRUB="grub os-prober"
+# Network
+export NETAPPS="networkmanager wget git \
+net-tools dhcpcd iw wpa_supplicant wireless_tools"
 
 # archboot by grm34 under Apache License 2.0
 # ============================================================================

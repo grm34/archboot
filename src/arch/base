@@ -17,7 +17,7 @@ _install_base() {
 
     # Base System
     _info "Installing base system with ${KERNEL_NAME,,} kernel"
-    yes '' | pacstrap /mnt ${ARCH} ${!KERNEL}
+    yes '' | pacstrap /mnt ${ARCH} ${FW} ${!KERNEL} ${SUDO}
     if [[ ${AUR_HELPER} ]]; then
         _info "Installing base devel"
         yes '' | pacstrap /mnt ${BASE_DEVEL}
