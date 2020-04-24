@@ -53,7 +53,7 @@ _configure_desktop_environment() {
         AWESOME|I3|XMONAD)
             _info "Setting xinitrc for ${DESKTOP,,}"
             echo "downloading xinitrc..."
-            _wget ${URL}/conf/xinitrc
+            _wget ${URL}/conf/xinitrc && echo
             mv -v xinitrc /mnt/home/${USER_NAME}/.xinitrc
             echo "exec ${DESKTOP,,}" >> /mnt/home/${USER_NAME}/.xinitrc
             chmod 770 /mnt/home/${USER_NAME}/.xinitrc
