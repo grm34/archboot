@@ -34,6 +34,7 @@ _firmware() {
 }
 
 _cpu() {
+    _info "Processor detection"
     CPU_LIST=(Intel AMD)
     for CPU in "${CPU_LIST[@]}"; do
         CHECK_CPU=$(lscpu | grep "${CPU}")
@@ -43,6 +44,9 @@ _cpu() {
             export UCODE=${CPU,,}
         fi
     done
+    if [[ ! ${MICROCODE} ]]; then
+        _note "unreconized CPU! Microcode updates will no be installed."
+    fi
 }
 
 # archboot by grm34 under Apache License 2.0
