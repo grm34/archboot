@@ -202,12 +202,12 @@ _get_user_variables() {
 
                 # Custom LightDM Greeter
                 n|N|no|No|NO)
-                    until [[ ${GREETER} =~ ^[1-4]$ ]]; do
-                        _select "GTK" "PANTHEON" "WEBKIT" "LITARVAN"
+                    until [[ ${GREETER} =~ ^[1-3]$ ]]; do
+                        _select "GTK" "WEBKIT" "LITARVAN"
                         read -r GREETER
                     done
                     GREETER_CHOICE=\
-(NONE GTK_GREETER PANTHEON_GREETER WEBKIT_GREETER LITARVAN_GREETER)
+(NONE GTK_GREETER WEBKIT_GREETER LITARVAN_GREETER)
                     export GREETER=${GREETER_CHOICE[${GREETER}]}
                     ;;
 

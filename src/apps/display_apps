@@ -20,7 +20,6 @@ export LIGHTDM="lightdm"
 
 # LightDM Greeter
 export GTK_GREETER="lightdm-gtk-greeter"
-export PANTHEON_GREETER="lightdm-pantheon-greeter"
 export WEBKIT_GREETER="lightdm-webkit2-greeter"
 export LITARVAN_GREETER="lightdm-webkit-theme-litarvan"
 
