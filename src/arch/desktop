@@ -34,7 +34,7 @@ _install_desktop_environment() {
     # Install Desktop Environment / Window Manager
     _info "Installing ${DESKTOP,,}"
     _chroot "pacman --noconfirm --needed -S ${!DESKTOP}"
-    if [[ -n ${DE_EXTRAS} ]]; then
+    if [[ ${DE_EXTRAS} ]]; then
         _info "Installing ${DESKTOP,,} additionals packages"
         _chroot "pacman --noconfirm --needed -S ${!DE_EXTRAS}"
     fi

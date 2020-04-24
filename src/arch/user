@@ -166,7 +166,7 @@ _get_user_variables() {
     esac
 
     # Display Manager
-    if [[ -n ${DESKTOP} ]]; then
+    if [[ ${DESKTOP} ]]; then
         _confirm \
 "Do you wish to install ${DESKTOP,,} default Display Manager?"
         case ${CONFIRM} in
@@ -252,7 +252,7 @@ _enable_user_rights() {
     echo "done"
 
     # Add user to all groups
-    if [[ -n ${POWER} ]]; then
+    if [[ ${POWER} ]]; then
         _info "Adding user ${USER_NAME} to all groups"
         _chroot "yes | pwck"
         _chroot "yes | grpck"

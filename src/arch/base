@@ -18,7 +18,7 @@ _install_base() {
     # Base System
     _info "Installing base system with ${KERNEL_NAME,,} kernel"
     yes '' | pacstrap /mnt ${ARCH} ${!KERNEL}
-    if [[ -n ${AUR_HELPER} ]]; then
+    if [[ ${AUR_HELPER} ]]; then
         _info "Installing base devel"
         yes '' | pacstrap /mnt ${BASE_DEVEL}
     fi
@@ -62,7 +62,7 @@ _install_base() {
     _chroot "systemctl enable NetworkManager"
 
     # NTP
-    if [[ -n ${NTPD} ]]; then
+    if [[ ${NTPD} ]]; then
         _info "Installing network time protocol"
         _chroot "pacman --noconfirm --needed -S ${NTP}"
         _chroot "systemctl enable ntpd"
