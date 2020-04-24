@@ -184,10 +184,12 @@ _get_user_variables() {
             # Default display manager
             *)
                 case ${DESKTOP} in
-                    GNOME|BUDGIE|CINNAMON|MATE) export DISPLAY_MAN="GDM";;
+                    GNOME) export DISPLAY_MAN="GDM";;
                     KDE) export DISPLAY_MAN="SDDM";;
-                    DEEPIN|ENLIGHTENMENT) export DISPLAY_MAN="LIGHTDM";;
-                    XFCE4|LXDE|LXQT) export DISPLAY_MAN="LXDM";;
+                    DEEPIN|BUDGIE|CINNAMON|MATE)
+                        export DISPLAY_MAN="LIGHTDM";;
+                    XFCE4|LXDE|LXQT|ENLIGHTENMENT)
+                        export DISPLAY_MAN="LXDM";;
                     *) export DISPLAY_MAN="XDM";;
                 esac
                 ;;
