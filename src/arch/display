@@ -46,7 +46,7 @@ _install_display_manager() {
     # GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
         echo "downloading xprofile..."
-        _wget ${URL}/conf/xprofile
+        _wget ${URL}/conf/xprofile && echo
         mv -v xprofile /mnt/etc/xprofile
         echo "done"
 
