@@ -26,7 +26,7 @@ _install_base() {
     # Fstab
     _info "Setting file systems table"
     genfstab -U -p /mnt >> /mnt/etc/fstab
-    cat /mnt/etc/fstab
+    cat /mnt/etc/fstab | grep -v "Static information\|See fstab("
 
     # Timezone
     _info "Setting timezone to ${TIMEZONE}"
