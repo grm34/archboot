@@ -22,6 +22,7 @@ _install_bootloader() {
 
         # Replace loader.conf
         _info "Setting systemd-boot loader"
+        echo "downloading loader.conf..."
         _wget ${URL}/conf/loader.conf
         mv -v /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
         mv -v loader.conf /mnt/boot/loader/loader.conf
