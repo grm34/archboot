@@ -6,10 +6,10 @@
 #
 #   Default settings:
 #
-#     GDM........: Gnome / Budgie / Cinnamon / Mate
-#     LIGHTDM....: Deepin / Enlightenment
+#     GDM........: Gnome
 #     SDDM.......: Kde
-#     LXDM.......: Xfce4 / Lxde / Lxqt
+#     LIGHTDM....: Deepin / Budgie / Cinnamon / Mate
+#     LXDM.......: Xfce4 / Lxde / Lxqt / Enlightenment
 #     XDM........: Awesome / i3 / Xmonad
 #
 # All steps are described in the official documentation:
