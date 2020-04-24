@@ -34,6 +34,7 @@ _firmware() {
 }
 
 _cpu() {
+    _info "Processor detection"
     CPU_LIST=(Intel AMD)
     for CPU in "${CPU_LIST[@]}"; do
         CHECK_CPU=$(lscpu | grep "${CPU}")
@@ -41,6 +42,8 @@ _cpu() {
             _note "${CPU} processor detected!"
             export MICROCODE="${CPU^^}_CPU"
             export UCODE=${CPU,,}
+        else
+            _note "unreconized CPU! Microcode updates will no be installed."
         fi
     done
 }
