@@ -12,6 +12,7 @@
 #      ROOTPASSWD.....: at least 6 chars long with 1 letter & 1 digit
 #      USER_NAME......: such as <bobby_is_not_a_loser>
 #      USERPASSWD.....: at least 6 chars long with 1 letter & 1 digit
+#      LINUX_FW.......: firmware blobs for use with the Linux kernel
 #      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN (optional)
 #      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
@@ -93,6 +94,15 @@ _get_user_variables() {
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             export NTPD="True"
+            ;;
+    esac
+
+    # Linux Firmware
+    _note "RECOMMENDED: firmware blobs may be required by your system!"
+    _confirm "Do you wish to install Linux Firmware?"
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES)
+            export LINUX_FW="True"
             ;;
     esac
 
