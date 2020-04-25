@@ -4,7 +4,8 @@
 # ============================================================================
 # Here we detect if system is running on UEFI or BIOS firmware to properly
 # set partition table, code, type, boot filesystem and to store them.
-# Then we detect processor to properly define CPU microcode updates.
+# Then we detect processor to properly define CPU microcode updates and
+# we detect ntfs partition(s) to properly install ntfs support.
 # ============================================================================
 
 _firmware() {
