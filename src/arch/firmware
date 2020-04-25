@@ -57,7 +57,7 @@ _ntfs() {
         _note "NTFS detected! NTFS support will be installed"
         NTFS="True"
     else
-        _note "none detected! NTFS support will not be installed."
+        _note "NTFS not detected! NTFS support will not be installed."
     fi
 }
 
