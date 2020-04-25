@@ -28,6 +28,9 @@ _install_bootloader() {
         mv -v loader.conf /mnt/boot/loader/loader.conf
         echo "done"
 
+        # Get root partition UUID
+        ROOT_UUID=$(blkid -o value -s UUID ${SYSTEM_PARTITION})
+
         # Create new boot entry
         _info "Setting systemd-boot entry"
         BOOTCONF="/mnt/boot/loader/entries/arch.conf"
@@ -39,7 +42,7 @@ _install_bootloader() {
                 ;;
         esac
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> ${BOOTCONF}
-        echo "options root=${SYSTEM_PARTITION} quiet splash rw" >> ${BOOTCONF}
+        echo "options root=UUID=${ROOT_UUID} quiet splash rw" >> ${BOOTCONF}
         echo "done"
 
         # Update systemd-boot
