@@ -39,7 +39,7 @@ _default_partitioning_scheme() {
     read -r DRIVE
 
     # Check if valid drive
-    CHECK=$(partprobe -d -s /dev/${DRIVE})
+    CHECK=$(partprobe -d -s "/dev/${DRIVE}")
 
     # Otherwise ask again
     until [[ ${CHECK} ]]; do
@@ -47,11 +47,11 @@ _default_partitioning_scheme() {
         lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
         _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
         read -r DRIVE
-        CHECK=$(partprobe -d -s /dev/${DRIVE})
+        CHECK=$(partprobe -d -s "/dev/${DRIVE}")
     done
 
     # Check if drive is mounted
-    if mount | grep ${DRIVE}; then
+    if mount | grep "${DRIVE}"; then
         _error "${DRIVE} is mounted!"
     fi
 
@@ -60,20 +60,21 @@ _default_partitioning_scheme() {
 
     # Prepare the drive
     _info "Arch Linux will be installed on ${DRIVE}"
-    lsblk ${DRIVE}
+    lsblk "${DRIVE}"
     _note "WARNING! all data will be lost!"
     _confirm "Format ${DRIVE} and create ${PART_TABLE} partition table?"
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
 
             # Wipe and format
-            _check wipefs --force --all ${DRIVE}
-            _check dd if=/dev/zero of=${DRIVE} bs=512 count=1 conv=notrunc \
-status=progress
+            _check wipefs --force --all "${DRIVE}"
+            _check dd if=/dev/zero of="${DRIVE}" bs=512 count=1 \
+conv=notrunc status=progress
 
             # Create MBR or GPT partition table
-            printf ${PART_CODE}"\nw" | fdisk --wipe=always ${DRIVE}
-            partprobe ${DRIVE}; sleep 1
+            # shellcheck disable=SC2059
+            printf "${PART_CODE}\nw" | fdisk --wipe=always "${DRIVE}"
+            partprobe "${DRIVE}"; sleep 1
             ;;
         *)
             _error "installation aborted by user!"
@@ -126,7 +127,7 @@ status=progress
         fi
 
         # Return partitions sizes
-        export ${PART}="${PARTITION_SIZE}"
+        export PART="${PARTITION_SIZE}"
         INDEX=${INDEX}+1
     done
 
@@ -141,9 +142,9 @@ status=progress
 
     # Check disk space
     CHECK_SIZE=0
-    DISK_SPACE=$(lsblk -b --output SIZE -n -d ${DRIVE})
+    DISK_SPACE=$(lsblk -b --output SIZE -n -d "${DRIVE}")
     for SIZE in "${SIZES[@]}"; do
-        _dehumanise ${SIZE}
+        _dehumanise "${SIZE}"
         CHECK_SIZE=$((CHECK_SIZE + BYTES))
     done
     if [[ ${CHECK_SIZE} > ${DISK_SPACE} ]]; then
@@ -166,33 +167,36 @@ status=progress
         _info "Creating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "HOME_PARTITION" \
 && ${HOME_SIZE} == "free space" ]]; then
-            printf "n\n${PART_TYPE}\n\n\nw" | fdisk --wipe=always ${DRIVE}
+            # shellcheck disable=SC2059
+            printf "n\n${PART_TYPE}\n\n\nw" | fdisk --wipe=always "${DRIVE}"
         else
+            # shellcheck disable=SC2059
             printf \
-"n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk --wipe=always ${DRIVE}
+"n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk --wipe=always "${DRIVE}"
         fi
 
         # Set EFI partition type for boot (UEFI firmware only)
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
             _info "Setting EFI partiton type on ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n1\nef00\nw" | gdisk ${DRIVE}
+            printf "t\n1\nef00\nw" | gdisk "${DRIVE}"
         fi
 
         # Inform changes to system
-        partprobe ${DRIVE}; sleep 1
+        partprobe "${DRIVE}"; sleep 1
 
         # Format partitions
         _info "Formating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
-            yes | _check mkfs.${BOOT_FILESYSTEM} ${DRIVE}${ORDER[${INDEX}]}
+            yes | \
+_check mkfs."${BOOT_FILESYSTEM}" "${DRIVE}${ORDER[${INDEX}]}"
         elif [[ ${PART} == "SWAP_PARTITION" ]]; then
-            yes | _check mkswap ${DRIVE}${ORDER[${INDEX}]}
+            yes | _check mkswap "${DRIVE}${ORDER[${INDEX}]}"
         else
-            yes | _check mkfs.ext4 ${DRIVE}${ORDER[${INDEX}]}
+            yes | _check mkfs.ext4 "${DRIVE}${ORDER[${INDEX}]}"
         fi
 
         # Return partitions drive ID
-        export ${PART}=${DRIVE}${ORDER[${INDEX}]}
+        export PART="${DRIVE}${ORDER[${INDEX}]}"
         INDEX=${INDEX}+1
     done
 }
@@ -213,7 +217,7 @@ _custom_partitioning_scheme() {
         read -r DRIVE_ID
 
         # Check if valid partition
-        CHECK=$(partprobe -d -s /dev/${DRIVE_ID})
+        CHECK=$(partprobe -d -s "/dev/${DRIVE_ID}")
 
         # Otherwise ask again
         until [[ ${CHECK} ]]; do
@@ -221,11 +225,11 @@ _custom_partitioning_scheme() {
             lsblk | grep "NAME\|disk\|part"
             _prompt "Enter valid ${PART_NAME,,} drive id:" "(e.g., sda1)"
             read -r DRIVE_ID
-            CHECK=$(partprobe -d -s /dev/${DRIVE_ID})
+            CHECK=$(partprobe -d -s "/dev/${DRIVE_ID}")
         done
 
         # Return partitions drive ID
-        export ${PART}="/dev/${DRIVE_ID}"
+        export PART="/dev/${DRIVE_ID}"
     done
 
     # Set and return boot drive
@@ -260,7 +264,7 @@ _get_user_partitions() {
 _dehumanise() {
 
     # Convert human readable to bytes
-    BYTES=$(echo ${1} | awk \
+    BYTES=$(echo "${1}" | awk \
         'BEGIN{IGNORECASE = 1}
         function printpower(n,b,p) {printf "%u\n", n*b^p; next}
         /[0-9]$/{print $1;next};

@@ -17,28 +17,28 @@ _install_base() {
 
     # Base System
     _info "Installing base system with ${KERNEL_NAME,,} kernel"
-    yes '' | pacstrap /mnt ${ARCH} ${!KERNEL} ${SUDO}
+    yes '' | pacstrap /mnt "${ARCH}" "${!KERNEL}" "${SUDO}"
 
     # Linux Firmware
     if [[ ${LINUX_FW} ]]; then
         _info "Installing linux firmware"
-        yes '' | pacstrap /mnt ${FW}
+        yes '' | pacstrap /mnt "${FW}"
     fi
 
     # Base devel
     if [[ ${AUR_HELPER} ]]; then
         _info "Installing base devel"
-        yes '' | pacstrap /mnt ${BASE_DEVEL}
+        yes '' | pacstrap /mnt "${BASE_DEVEL}"
     fi
 
     # Fstab
     _info "Setting file systems table"
     genfstab -U -p /mnt >> /mnt/etc/fstab
-    cat /mnt/etc/fstab | grep -v "Static information\|See fstab("
+    cat < /mnt/etc/fstab | grep -v "Static information\|See fstab("
 
     # Timezone
     _info "Setting timezone to ${TIMEZONE}"
-    ln -sfv /usr/share/zoneinfo/${TIMEZONE} /mnt/etc/localtime
+    ln -sfv "/usr/share/zoneinfo/${TIMEZONE}" /mnt/etc/localtime
     echo "done"
 
     # Locale
@@ -56,7 +56,7 @@ _install_base() {
 
     # Hostname
     _info "Setting hostname ${HOST_NAME}"
-    echo ${HOST_NAME} > /mnt/etc/hostname
+    echo "${HOST_NAME}" > /mnt/etc/hostname
     echo "done"
 
     # Root passwd
@@ -117,7 +117,7 @@ makepkg --noconfirm --needed -sic"
 /mnt/etc/sudoers
 
     # Clean AUR Helper sources
-    rm -rf /mnt/home/${USER_NAME}/${AUR_HELPER,,}
+    rm -rf "/mnt/home/${USER_NAME}/${AUR_HELPER,,}"
 }
 
 _clean_dependencies() {

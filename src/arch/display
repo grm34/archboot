@@ -46,7 +46,7 @@ _install_display_manager() {
     # GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
         echo "downloading xprofile..."
-        _wget ${URL}/conf/xprofile && echo
+        _wget "${URL}/conf/xprofile" && echo
         mv -v xprofile /mnt/etc/xprofile
         echo "done"
 
@@ -99,8 +99,8 @@ _install_display_manager() {
 
     # XDM
     elif [[ ${DISPLAY_MAN} == "XDM" ]]; then
-        echo ${SESSION} > /mnt/home/${USER_NAME}/.xsession
-        chmod 770 /mnt/home/${USER_NAME}/.xsession
+        echo "${SESSION}" > "/mnt/home/${USER_NAME}/.xsession"
+        chmod 770 "/mnt/home/${USER_NAME}/.xsession"
         echo "done"
     fi
 }

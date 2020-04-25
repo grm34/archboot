@@ -36,7 +36,7 @@ _get_user_variables() {
     export LANGUAGE
 
     # Keymap
-    KEYMAP=$(echo ${LANGUAGE} | cut -d'_' -f 1)
+    KEYMAP=$(echo "${LANGUAGE}" | cut -d'_' -f 1)
     export KEYMAP
 
     # Hostname
@@ -258,9 +258,8 @@ _enable_user_rights() {
 
     # Enable user in sudoers
     _info "Enabling user ${USER_NAME} in sudoers"
-    printf \
-"\n## ${USER_NAME} privilege specification\n${USER_NAME} ALL=(ALL) ALL" \
->> /mnt/etc/sudoers
+    printf "\n## %s privilege specification\n%s ALL=(ALL) ALL" \
+"${USER_NAME}" "${USER_NAME}" >> /mnt/etc/sudoers
     echo "done"
 
     # Add user to all groups

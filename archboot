@@ -67,8 +67,8 @@ mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
 00-keyboard.conf language loader.conf timezone xinitrc xprofile \
 background.png Grub2-themes archboot* *_vars.log)
     for SOURCE in "${SRC[@]}"; do
-        if [[ -f ${SOURCE} ]]; then
-            rm -rfv ${SOURCE}
+        if [[ -f "${SOURCE}" ]]; then
+            rm -rfv "${SOURCE}"
         fi
     done
     if mount | grep /mnt; then
@@ -105,13 +105,13 @@ _check() {
     if [[ ${STATUS} -ne 0 ]]; then
         _error "${@}"
     fi
-    return ${STATUS}
+    return "${STATUS}"
 }
 
 # Set system clock
 _clock() {
     _info "Setting system clock"
-    _check timedatectl set-timezone ${TIMEZONE}
+    _check timedatectl set-timezone "${TIMEZONE}"
     _check timedatectl set-ntp true
     _check ntpd -qg
     _check hwclock --systohc
@@ -124,14 +124,14 @@ _logs() {
     DATETIME=$(_check date '+%d-%m-%Y_%Hh%M')
     INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
     INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
-    _archboot_banner > ${INSTALL_LOG}
-    _archboot_banner > ${INPUTS_LOG}
+    _archboot_banner > "${INSTALL_LOG}"
+    _archboot_banner > "${INPUTS_LOG}"
     echo "done"
 }
 
 # Download show progress bar only
 _wget() {
-    wget ${1} -q --show-progress
+    wget "${1}" -q --show-progress
 }
 
 # Execute action in chrooted environment
@@ -211,16 +211,16 @@ _confirm "Start downloading sources from github?"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
         _info "Downloading base sources"
-        _wget ${URL}/src/arch/base            # to install base system
-        _wget ${URL}/src/arch/bootloader      # to install bootloader
-        _wget ${URL}/src/arch/firmware        # to get firmware
-        _wget ${URL}/src/arch/mirrorlist      # to get mirrorlist & timezone
-        _wget ${URL}/src/arch/mounting        # to mount partitions & swap
-        _wget ${URL}/src/arch/partitioning    # to define/create partitions
-        _wget ${URL}/src/arch/user            # to get user variables
-        _wget ${URL}/src/apps/system_apps     # to get system apps
-        _wget ${URL}/conf/language            # to get language code
-        _wget ${URL}/conf/timezone            # to get timezone code
+        _wget "${URL}/src/arch/base"           # to install base system
+        _wget "${URL}/src/arch/bootloader"     # to install bootloader
+        _wget "${URL}/src/arch/firmware"       # to get firmware
+        _wget "${URL}/src/arch/mirrorlist"     # to get mirrorlist & timezone
+        _wget "${URL}/src/arch/mounting"       # to mount partitions & swap
+        _wget "${URL}/src/arch/partitioning"   # to define/create partitions
+        _wget "${URL}/src/arch/user"           # to get user variables
+        _wget "${URL}/src/apps/system_apps"    # to get system apps
+        _wget "${URL}/conf/language"           # to get language code
+        _wget "${URL}/conf/timezone"           # to get timezone code
         ;;
     *)
         _cleanup; exit 0
@@ -243,13 +243,13 @@ if [[ ${DESKTOP} ]]; then
 
     # Download desktop sources
     _info "Downloading desktop sources"
-    _wget ${URL}/src/arch/desktop         # to install Desktop Environment
-    _wget ${URL}/src/arch/display         # to install Display Manager
-    _wget ${URL}/src/arch/gpu_driver      # to scan/install GPU Driver
-    _wget ${URL}/src/apps/desktop_apps    # to get Desktop apps
-    _wget ${URL}/src/apps/display_apps    # to get Display Manager apps
-    _wget ${URL}/src/apps/gpu_apps        # to get GPU Driver apps
-    _wget ${URL}/conf/00-keyboard.conf    # to set keyboard layout
+    _wget "${URL}/src/arch/desktop"        # to install Desktop Environment
+    _wget "${URL}/src/arch/display"        # to install Display Manager
+    _wget "${URL}/src/arch/gpu_driver"     # to scan/install GPU Driver
+    _wget "${URL}/src/apps/desktop_apps"   # to get Desktop apps
+    _wget "${URL}/src/apps/display_apps"   # to get Display Manager apps
+    _wget "${URL}/src/apps/gpu_apps"       # to get GPU Driver apps
+    _wget "${URL}/conf/00-keyboard.conf"   # to set keyboard layout
 
     # Import desktop sources
     _info "Importing desktop sources"
@@ -313,41 +313,41 @@ case ${CONFIRM} in
     y|Y|yes|Yes|YES)
 
         # Install Arch Linux base system
-        (_install_base; _install_bootloader) 2>&1 | tee -a ${INSTALL_LOG}
+        (_install_base; _install_bootloader) 2>&1 | tee -a "${INSTALL_LOG}"
 
         # Install GPU Driver
         if [[ ${GPU_DRIVER} ]]; then
-            (_install_gpu_driver) 2>&1 | tee -a ${INSTALL_LOG}
+            (_install_gpu_driver) 2>&1 | tee -a "${INSTALL_LOG}"
         fi
 
         # Install DE / WM / DM
         if [[ ${DESKTOP} ]]; then
             (_install_desktop_environment; _configure_desktop_environment; \
-_install_display_manager; _enable_user_rights) 2>&1 | tee -a ${INSTALL_LOG}
+_install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
         fi
 
         # Install AUR Helper
         if [[ ${AUR_HELPER} ]]; then
-            (_install_AUR_helper) 2>&1 | tee -a ${INSTALL_LOG}
+            (_install_AUR_helper) 2>&1 | tee -a "${INSTALL_LOG}"
         fi
 
         # Clean cache and remove unused dependencies
-        (_clean_dependencies) 2>&1 | tee -a ${INSTALL_LOG}
+        (_clean_dependencies) 2>&1 | tee -a "${INSTALL_LOG}"
 
         # Get user inputs logs
         _info "Adding user inputs to logs"
         set | grep -v \
 "A=\|B=\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" \
 > new_vars.log
-        diff old_vars.log new_vars.log | grep "^>" >> ${INPUTS_LOG}
-        sed -i -e "s/> _='Adding user inputs to logs'//g" ${INPUTS_LOG}
+        diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
+        sed -i -e "s/> _='Adding user inputs to logs'//g" "${INPUTS_LOG}"
         echo "done"
 
         # Move logs to system
         _info "Moving logs to system"
-        mkdir -v /mnt/var/log/${APPNAME}
-        mv -v ${INSTALL_LOG} /mnt/var/log/${APPNAME}/
-        mv -v ${INPUTS_LOG} /mnt/var/log/${APPNAME}/
+        mkdir -v /mnt/var/log/"${APPNAME}"
+        mv -v "${INSTALL_LOG}" "/mnt/var/log/${APPNAME}/"
+        mv -v "${INPUTS_LOG}" "/mnt/var/log/${APPNAME}/"
 
         # Success notes
         _note "Arch Linux installation successful!"
