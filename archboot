@@ -270,8 +270,8 @@ fi
 
 #               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
 # ============================================================================
-# Here we get user firmware to set partitions required settings and
-# we detect processor to properly define CPU microcode updates.
+# Here we detect firmware, processor and ntfs partition(s) to properly
+# define partitions settings, cpu microcode updates and ntfs support.
 # Then we get fastest mirrors, user timezone and we properly define them.
 # Now we can configure network time protocol and installation logfiles.
 # Finally we run partitioning, we activate SWAP and we mount the partitions.
