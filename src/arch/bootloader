@@ -3,7 +3,7 @@
 #                             BOOTLOADER
 # ============================================================================
 # Here we install and configure bootloader, systemd-boot for UEFI and
-# Grub2 for BIOS (with additional themes for beautifull OS selection menu).
+# Grub for BIOS (with additional themes for beautifull OS selection menu).
 #
 # All steps are described in the official documentation:
 #
@@ -46,12 +46,15 @@ _install_bootloader() {
         _info "Updating systemd-boot config"
         _chroot "bootctl --path=/boot update"
 
-    # BIOS Firmware > Grub2
+    # BIOS Firmware > Grub
     else
 
-        # Install Grub2
+        # Install Grub
         _info "Installing Grub bootloader"
         _chroot "pacman --noconfirm --needed -S ${GRUB}"
+        if [[ ${NTFS} ]]; then
+            _chroot "pacman --noconfirm --needed -S ${GRUB_EXTRAS}"
+        fi
         _chroot "grub-install --target=i386-pc ${DRIVE}"
 
         # Download Themes
@@ -72,7 +75,7 @@ _install_bootloader() {
         rm -rf /mnt/Grub2-themes
         echo "done"
 
-        # Configure Grub2
+        # Configure Grub
         _info "Setting Grub bootloader"
         _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
     fi

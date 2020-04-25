@@ -74,6 +74,12 @@ _install_base() {
         _chroot "pacman --noconfirm --needed -S ${!MICROCODE}"
     fi
 
+    # NTFS
+    if [[ ${NTFS} ]]; then
+        _info "Installing NTFS filesystem support"
+        _chroot "pacman --noconfirm --needed -S ${NTFS_SUPPORT}"
+    fi
+
     # User
     _info "Setting user ${USER_NAME}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"

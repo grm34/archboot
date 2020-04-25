@@ -26,10 +26,14 @@ export BASE_DEVEL="base-devel"
 export SUDO="sudo"
 
 # Bootloader (BIOS only)
-export GRUB="grub os-prober"
+export GRUB="grub"
+export GRUB_EXTRAS="os-prober"
 
 # Ntp (optional)
 export NTP="ntp"
+
+# NTFS support (optional)
+export NTFS_SUPPORT="ntfs-3g"
 
 # Network
 export NETAPPS="networkmanager wget git \
