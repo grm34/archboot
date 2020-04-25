@@ -1,0 +1,18 @@
+# Sources
+source=archboot
+source-path=src/apps/*
+source-path=src/arch/*
+
+# Turn on warnings for unquoted variables with safe values
+enable=quote-safe-variables
+
+# Turn on warnings for unassigned uppercase variables
+enable=check-unassigned-uppercase
+
+# Disable unwanted warnings
+disable=SC2236
+disable=SC1091
+disable=SC2034
+disable=SC2059
+disable=SC2002
+disable=SC2086
