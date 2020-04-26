@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#                         ARCH LINUX PACKAGES
+# ============================================================================
+
+# Arch Linux
+export ARCH="base"
+
+# Firmware
+export FW="linux-firmware"
+
+# Kernel (optional)
+export LINUX="linux"
+export LINUX_HARDENED="linux-hardened"
+export LINUX_LTS="linux-lts"
+export LINUX_ZEN="linux-zen"
+
+# Microcode (matching CPU)
+export INTEL_CPU="intel-ucode"
+export AMD_CPU="amd-ucode"
+
+# Base devel (AUR only)
+export BASE_DEVEL="base-devel"
+
+# Sudo (grant user)
+export SUDO="sudo"
+
+# Bootloader (BIOS only)
+export GRUB="grub"
+export GRUB_EXTRAS="os-prober"
+
+# Ntp (optional)
+export NTP="ntp"
+
+# NTFS support (optional)
+export NTFS_SUPPORT="ntfs-3g"
+
+# Network
+export NETAPPS="networkmanager wget git \
+net-tools dhcpcd iw wpa_supplicant wireless_tools"
+
+# archboot by grm34 under Apache License 2.0
+# ============================================================================

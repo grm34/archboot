@@ -1,0 +1,68 @@
+#!/bin/bash
+
+#                     DESKTOP ENVIRONMENT PACKAGES
+# ============================================================================
+
+# Gnome
+export GNOME="gnome"
+export GNOME_EXTRAS="gnome-extra"
+
+# Kde
+export KDE="plasma konsole"
+export KDE_EXTRAS="kde-applications"
+
+# Mate
+export MATE="mate mate-terminal"
+export MATE_EXTRAS="mate-extra"
+
+# Xfce
+export XFCE4="xfce4"
+export XFCE4_EXTRAS="xfce4-goodies"
+
+# Deepin
+export DEEPIN="deepin deepin-terminal"
+export DEEPIN_EXTRAS="deepin-extra"
+
+# Lxqt
+export LXQT="lxqt"
+export LXQT_EXTRAS="breeze-icons"
+
+# Cinnamon
+export CINNAMON="cinnamon gnome-terminal"
+
+# Budgie
+export BUDGIE="budgie-desktop gnome-terminal"
+
+# Enlightenment
+export ENLIGHTENMENT="enlightenment terminology"
+
+# Lxde
+export LXDE="lxde"
+
+#                       WINDOW MANAGER PACKAGES
+# ============================================================================
+
+# awesome
+export AWESOME="awesome"
+
+# i3
+export I3="i3"
+
+# xmonad
+export XMONAD="xmonad xmonad-contrib"
+
+#                         REQUIRED PACKAGES
+# ============================================================================
+
+# Xorg (xinit WM only)
+export XORG="xorg-server"
+export XORG_XINIT="xorg-xinit"
+
+# Numlock
+export NUMLOCK="numlockx"
+
+# WM Dependencies (WM only)
+export WM_APPS="dmenu xterm"
+
+# archboot by grm34 under Apache License 2.0
+# ============================================================================
