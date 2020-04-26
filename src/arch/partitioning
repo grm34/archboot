@@ -72,8 +72,7 @@ _default_partitioning_scheme() {
 conv=notrunc status=progress
 
             # Create MBR or GPT partition table
-            # shellcheck disable=SC2059
-            printf "${PART_CODE}\nw" | fdisk --wipe=always "${DRIVE}"
+            printf "%s\nw" "${PART_CODE}" | fdisk --wipe=always "${DRIVE}"
             partprobe "${DRIVE}"; sleep 1
             ;;
         *)
@@ -167,12 +166,12 @@ conv=notrunc status=progress
         _info "Creating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
         if [[ ${PART} == "HOME_PARTITION" \
 && ${HOME_SIZE} == "free space" ]]; then
-            # shellcheck disable=SC2059
-            printf "n\n${PART_TYPE}\n\n\nw" | fdisk --wipe=always "${DRIVE}"
-        else
-            # shellcheck disable=SC2059
             printf \
-"n\n${PART_TYPE}\n\n+${SIZES[${INDEX}]}\nw" | fdisk --wipe=always "${DRIVE}"
+"n\n%s\n\n\nw" "${PART_TYPE}" | fdisk --wipe=always "${DRIVE}"
+        else
+            printf \
+"n\n%s\n\n+%s\nw" "${PART_TYPE}" "${SIZES[${INDEX}]}" | \
+fdisk --wipe=always "${DRIVE}"
         fi
 
         # Set EFI partition type for boot (UEFI firmware only)
