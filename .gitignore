@@ -23,3 +23,9 @@
 \!LICENSE
 \!README.md
 \!STATS.md
+*.png
+*.ttf
+*.tar.*
+*.css
+*.jpg
+*.jpeg
