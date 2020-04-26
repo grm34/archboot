@@ -1,4 +1,4 @@
-
+*
 \!conf/00-keyboard.conf
 \!conf/language
 \!conf/loader.conf
@@ -23,9 +23,3 @@
 \!LICENSE
 \!README.md
 \!STATS.md
-*.png
-*.ttf
-*.tar.*
-*.css
-*.jpg
-*.jpeg
