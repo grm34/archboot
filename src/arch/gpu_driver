@@ -69,6 +69,16 @@ _get_gpu_driver() {
             fi
         fi
     fi
+
+    # OpenGL & Hardware Video Acceleration?
+    if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" ]]; then
+    _confirm "Do you wish to install Hardware Video Acceleration?"
+        case ${CONFIRM} in
+            y|Y|yes|Yes|YES)
+                export HARD_VIDEO="True"
+                ;;
+        esac
+    fi
 }
 
 _install_gpu_driver() {
@@ -78,7 +88,7 @@ _install_gpu_driver() {
     _chroot "pacman --noconfirm --needed -S ${!GPU_DRIVER}"
 
     # OpenGL & Hardware Video Acceleration
-    if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" ]]; then
+    if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" && ${HARD_VIDEO} ]]; then
         _info "Installing OpenGL & Hardware Video Acceleration"
         _chroot "pacman --noconfirm --needed -S ${!OPENGL} ${!HARDVIDEO}"
     fi
