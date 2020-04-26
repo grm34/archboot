@@ -24,6 +24,7 @@
 #
 # We use <partprobe> to inform changes to system and to check if drive
 # exists. We also add a <sleep 1> to prevent unreconized system changes.
+# Last function is used to convert sizes to bytes for disk space check.
 #
 # All steps are described in the official documentation:
 #
