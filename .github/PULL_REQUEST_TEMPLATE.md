@@ -4,6 +4,7 @@
 
 - Please create an issue _before_ creating a Pull Request
 - Please ensure to use the `dev` branch as the base for all PRs
+- Please ensure the `dev` branch is up-to-date before requesting changes.
 - Please use the following Git commit message style
   - Use the future tense ("Adds feature" not "Added feature")
   - Limit the first line to 72 characters or less
