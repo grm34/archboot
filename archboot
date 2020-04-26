@@ -226,10 +226,11 @@ esac
 
 # Import base sources
 _info "Importing base sources"
-_check source ./base; _check source ./bootloader
-_check source ./firmware; _check source ./mirrorlist
-_check source ./mounting; _check source ./partitioning
-_check source ./user; _check source ./system_apps
+BASE_SOURCES=\
+(base bootloader firmware mirrorlist mounting partitioning user system_apps)
+for SOURCE in "${BASE_SOURCES[@]}"; do
+    _check source "./${SOURCE}"
+done
 echo "done"
 
 # Get required variables
@@ -250,9 +251,10 @@ if [[ ${DESKTOP} ]]; then
 
     # Import desktop sources
     _info "Importing desktop sources"
-    _check source ./desktop; _check source ./display
-    _check source ./gpu_driver; _check source ./desktop_apps
-    _check source ./display_apps; _check source ./gpu_apps
+    DE_SOURCES=(desktop display gpu_driver desktop_apps display_apps gpu_apps)
+    for SOURCE in "${DE_SOURCES[@]}"; do
+        _check source "./${SOURCE}"
+    done
     echo "done"
 
     # GPU Driver or kernel mode setting?
