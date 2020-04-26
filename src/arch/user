@@ -89,14 +89,6 @@ _get_user_variables() {
     export USERPASSWD
     echo
 
-    # Network time protocol
-    _confirm "Do you wish to use Network Time Protocol?"
-    case ${CONFIRM} in
-        y|Y|yes|Yes|YES)
-            export NTPD="True"
-            ;;
-    esac
-
     # Linux Firmware
     _note "RECOMMENDED: firmware blobs may be required by your system!"
     _confirm "Do you wish to install Linux Firmware?"

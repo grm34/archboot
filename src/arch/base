@@ -69,13 +69,6 @@ _install_base() {
     _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
 
-    # NTP
-    if [[ ${NTPD} ]]; then
-        _info "Installing network time protocol"
-        _chroot "pacman --noconfirm --needed -S ${NTP}"
-        _chroot "systemctl enable ntpd"
-    fi
-
     # Microcode
     if [[ ${MICROCODE} ]]; then
         _info "Installing ${MICROCODE/_/ } Microcode"
