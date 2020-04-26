@@ -1,8 +1,8 @@
 Language|files|blank|comment|code
 :-------|-------:|-------:|-------:|-------:
-Bourne Again Shell|15|282|440|1056
-Markdown|6|31|0|90
+Bourne Again Shell|15|279|437|1044
+Markdown|6|31|0|91
 Bourne Shell|1|8|8|24
 YAML|1|0|0|1
 --------|--------|--------|--------|--------
-SUM:|23|321|448|1171
+SUM:|23|318|445|1160
