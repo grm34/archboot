@@ -55,7 +55,7 @@ _ntfs() {
     CHECK_NTFS=$(lsblk -f | grep "ntfs")
     if [[ ${CHECK_NTFS} ]]; then
         _note "NTFS detected! NTFS support will be installed"
-        NTFS="True"
+        export NTFS="True"
     else
         _note "NTFS not detected! NTFS support will not be installed."
     fi
