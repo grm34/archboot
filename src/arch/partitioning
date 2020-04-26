@@ -170,7 +170,7 @@ conv=notrunc status=progress
 "n\n%s\n\n\nw" "${PART_TYPE}" | fdisk --wipe=always "${DRIVE}"
         else
             printf \
-"n\n%s\n\n+%s\nw" "${PART_TYPE}" "${SIZES[${INDEX}]}" | \
+"n\n%s\n\n+%b\nw" "${PART_TYPE}" "${SIZES[${INDEX}]}" | \
 fdisk --wipe=always "${DRIVE}"
         fi
 
