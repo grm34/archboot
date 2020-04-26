@@ -126,7 +126,7 @@ conv=notrunc status=progress
         fi
 
         # Return partitions sizes
-        export ${PART}="${PARTITION_SIZE}"
+        export "${PART}=${PARTITION_SIZE}"
         INDEX=${INDEX}+1
     done
 
@@ -195,7 +195,7 @@ _check mkfs."${BOOT_FILESYSTEM}" "${DRIVE}${ORDER[${INDEX}]}"
         fi
 
         # Return partitions drive ID
-        export ${PART}="${DRIVE}${ORDER[${INDEX}]}"
+        export "${PART}=${DRIVE}${ORDER[${INDEX}]}"
         INDEX=${INDEX}+1
     done
 }
@@ -228,7 +228,7 @@ _custom_partitioning_scheme() {
         done
 
         # Return partitions drive ID
-        export ${PART}="/dev/${DRIVE_ID}"
+        export "${PART}=/dev/${DRIVE_ID}"
     done
 
     # Set and return boot drive
