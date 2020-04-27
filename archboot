@@ -185,7 +185,7 @@ _archboot_banner
 ### Prevent running archboot from repository folder
 CHECK_GITHUB=(LICENSE README.md STATS.md src apps conf .github .git)
 for FILE in "${CHECK_GITHUB[@]}"; do
-    if [[ -f ${FILE} ]]; then
+    if [[ -f ${FILE} || -d ${FILE} ]]; then
         _note "please do not run ${APPNAME} from github repository folder!"
         rm -rfv old_vars.log; _exit_msg; sleep 1; kill -9 $$
     fi
