@@ -33,16 +33,16 @@
 
 _default_partitioning_scheme() {
 
-    # Select drive to use
+    ### Select drive to use
     _info "Listing availables drives"
     lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
     _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
     read -r DRIVE
 
-    # Check if valid drive
+    ### Check if valid drive
     CHECK=$(partprobe -d -s "/dev/${DRIVE}")
 
-    # Otherwise ask again
+    ### Otherwise ask again
     until [[ ${CHECK} ]]; do
         _info "Listing availables drives"
         lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
@@ -51,15 +51,15 @@ _default_partitioning_scheme() {
         CHECK=$(partprobe -d -s "/dev/${DRIVE}")
     done
 
-    # Check if drive is mounted
+    ### Check if drive is mounted
     if mount | grep "${DRIVE}"; then
         _error "${DRIVE} is mounted!"
     fi
 
-    # Return selected drive
+    ### Return selected drive
     export DRIVE="/dev/${DRIVE}"
 
-    # Prepare the drive
+    ### Prepare the drive
     _info "Arch Linux will be installed on ${DRIVE}"
     lsblk "${DRIVE}"
     _note "WARNING! all data will be lost!"
@@ -81,10 +81,10 @@ conv=notrunc status=progress
             ;;
     esac
 
-    # Get optional partitions and set partitions list
+    ### Get optional partitions and set partitions list
     _get_user_partitions
 
-    # Create list to store partitions sizes
+    ### Create list to store partitions sizes
     PART_SIZES=(BOOT_SIZE SYSTEM_SIZE)
     SIZES=("512M" "25G")
     if [[ ${PARTITION[*]} =~ "SWAP_PARTITION" ]]; then
@@ -97,11 +97,11 @@ conv=notrunc status=progress
     fi
     INDEX=0
 
-    # Get partitions sizes
+    ### Get partitions sizes
     for PART in "${PART_SIZES[@]}"; do
         PART_NAME=${PART//_SIZE/}
 
-        # Free space for home?
+        ## Free space for home?
         if [[ ${PART} == "HOME_SIZE" ]]; then
             _confirm "Do you wish to use free space for ${PART_NAME,,}?"
             case ${CONFIRM} in
@@ -111,7 +111,7 @@ conv=notrunc status=progress
             esac
         fi
 
-        # Otherwise ask partitions sizes
+        ## Otherwise ask partitions sizes
         if [[ ${PARTITION_SIZE} != "free space" ]]; then
             _note "partition size {M,G,T} (e.g., ${SIZES[${INDEX}]})"
             _prompt "Enter ${PART_NAME,,} partition size:"
@@ -126,12 +126,12 @@ conv=notrunc status=progress
             done
         fi
 
-        # Return partitions sizes
+        ## Return partitions sizes
         export "${PART}=${PARTITION_SIZE}"
         INDEX=${INDEX}+1
     done
 
-    # Create list to assign partitions sizes
+    ### Create list to assign partitions sizes
     SIZES=("${BOOT_SIZE}" "${SYSTEM_SIZE}")
     if [[ ${PARTITION[*]} =~ "SWAP_PARTITION" ]]; then
         SIZES+=("${SWAP_SIZE}")
@@ -140,7 +140,7 @@ conv=notrunc status=progress
         SIZES+=("${HOME_SIZE}")
     fi
 
-    # Check disk space
+    ### Check disk space
     CHECK_SIZE=0
     DISK_SPACE=$(lsblk -b --output SIZE -n -d "${DRIVE}")
     for SIZE in "${SIZES[@]}"; do
@@ -151,14 +151,14 @@ conv=notrunc status=progress
         _error "you did not have enought disk space!"
     fi
 
-    # Set partition order
+    ### Set partition order
     if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then
         ORDER=(p1 p2 p3 p4)
     else
         ORDER=(1 2 3 4)
     fi
 
-    # Create and format partitions
+    ### Create and format partitions
     INDEX=0
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART//_PARTITION/}
@@ -203,10 +203,10 @@ _check mkfs."${BOOT_FILESYSTEM}" "${DRIVE}${ORDER[${INDEX}]}"
 
 _custom_partitioning_scheme() {
 
-    # Get optional partitions and set partitions list
+    ### Get optional partitions and set partitions list
     _get_user_partitions
 
-    # Get partitions drive ID
+    ### Get partitions drive ID
     _info "Listing availables drives"
     for PART in "${PARTITION[@]}"; do
         lsblk | grep "NAME\|disk\|part"
@@ -232,7 +232,7 @@ _custom_partitioning_scheme() {
         export "${PART}=/dev/${DRIVE_ID}"
     done
 
-    # Set and return boot drive
+    ### Set and return boot drive
     if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
         export DRIVE=${BOOT_PARTITION%p*}
     else
@@ -242,11 +242,11 @@ _custom_partitioning_scheme() {
 
 _get_user_partitions() {
 
-    # Set required and optional partitions
+    ### Set required and optional partitions
     PARTITION=(BOOT_PARTITION SYSTEM_PARTITION)
     OPTIONAL=(SWAP_PARTITION HOME_PARTITION)
 
-    # Get optional partitions
+    ### Get optional partitions
     for PART in "${OPTIONAL[@]}"; do
         PART_NAME=${PART//_PARTITION/}
         _confirm "Do you wish to create ${PART_NAME,,} partition?"
@@ -257,13 +257,13 @@ _get_user_partitions() {
         esac
     done
 
-    # Return partitions list
+    ### Return partitions list
     export PARTITION
 }
 
 _dehumanise() {
 
-    # Convert human readable to bytes
+    ### Convert human readable to bytes
     BYTES=$(echo "${1}" | awk \
         'BEGIN{IGNORECASE = 1}
         function printpower(n,b,p) {printf "%u\n", n*b^p; next}

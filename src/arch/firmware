@@ -12,7 +12,7 @@ _firmware() {
 
     _info "Firmware detection"
 
-    # UEFI Firmware
+    ### UEFI
     if [ -d /sys/firmware/efi/efivars ]; then
         export FIRMWARE="UEFI"
         export PART_TABLE="GPT"
@@ -22,7 +22,7 @@ _firmware() {
         export BOOT_FILESYSTEM="fat -F32"
         _note "UEFI firmware detected!"
 
-    # BIOS Firmware
+    ### BIOS
     else
         export FIRMWARE="BIOS"
         export PART_TABLE="MBR"
@@ -35,6 +35,8 @@ _firmware() {
 }
 
 _cpu() {
+
+    ### Get CPU
     _info "Processor detection"
     CPU_LIST=(Intel AMD)
     for CPU in "${CPU_LIST[@]}"; do
@@ -51,6 +53,8 @@ _cpu() {
 }
 
 _ntfs() {
+
+    ### Get NTFS Partitions
     _info "NTFS filesystem detection"
     CHECK_NTFS=$(lsblk -f | grep "ntfs")
     if [[ ${CHECK_NTFS} ]]; then

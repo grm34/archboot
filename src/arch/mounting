@@ -13,21 +13,21 @@ _mount_partitions() {
 
     _info "Mounting partitions and activating swap"
 
-    # Mount system > /mnt
+    ### Mount system > /mnt
     _check mount -v "${SYSTEM_PARTITION}" /mnt
 
-    # Create boot and home folders
+    ### Create boot and home folders
     _check mkdir -v /mnt/{boot,home}
 
-    # Mount boot > /mnt/boot
+    ### Mount boot > /mnt/boot
     _check mount -v "${MOUNT_TYPE}${BOOT_PARTITION}" /mnt/boot
 
-    # Activate swap
+    ### Activate swap
     if [[ ${SWAP_PARTITION} ]]; then
         _check swapon -v "${SWAP_PARTITION}"
     fi
 
-    # Mount home > /mnt/home
+    ### Mount home > /mnt/home
     if [[ ${HOME_PARTITION} ]]; then
         _check mount -v "${HOME_PARTITION}" /mnt/home
     fi

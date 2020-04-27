@@ -19,7 +19,7 @@
 
 _install_display_manager() {
 
-    # Install Display Manager
+    ### Install Display Manager
     _info "Installing ${DISPLAY_MAN,,} display manager"
     _chroot "pacman --noconfirm --needed -S ${!DISPLAY_MAN}"
     if [[ ${DISPLAY_MAN} == "XDM" ]]; then
@@ -28,7 +28,7 @@ _install_display_manager() {
         _chroot "systemctl enable ${DISPLAY_MAN,,}"
     fi
 
-    # Start command of each DE or WM
+    ### Start command of each DE or WM
     case ${DESKTOP} in
         GNOME|MATE|CINNAMON) SESSION="/usr/bin/${DESKTOP,,}-session";;
         KDE|XFCE4|LXDE|LXQT) SESSION="/usr/bin/start${DESKTOP,,}";;
@@ -38,19 +38,19 @@ _install_display_manager() {
         *) SESSION="/home/${USER_NAME}/.xinitrc";;
     esac
 
-    # Configure display manager
+    ### Configure display manager
     if [[ ${DISPLAY_MAN} != "LIGHTDM" ]]; then
         _info "Setting ${DISPLAY_MAN,,} display manager"
     fi
 
-    # GDM
+    ### GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
         echo "downloading xprofile..."
         _wget "${URL}/conf/xprofile" && echo
         mv -v xprofile /mnt/etc/xprofile
         echo "done"
 
-    # LIGHTDM
+    ### LIGHTDM
     elif [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
 
         # Install Greeter
@@ -79,14 +79,14 @@ _install_display_manager() {
 "s|${NUMOFF}|${NUMON}|g" /mnt/etc/lightdm/lightdm.conf
         echo "done"
 
-    # SDDM
+    ### SDDM
     elif [[ ${DISPLAY_MAN} == "SDDM" ]]; then
         _chroot "sddm --example-config > /etc/sddm.conf"
         sed -i -e "s|Session=|Session=${SESSION}|g" /mnt/etc/sddm.conf
         sed -i -e "s/Numlock=none/Numlock=on/g" /mnt/etc/sddm.conf
         echo "done"
 
-    # LXDM
+    ### LXDM
     elif [[ ${DISPLAY_MAN} == "LXDM" ]]; then
         DEFAULT_SESSION="# session=/usr/bin/startlxde"
         sed -i -e \
@@ -97,7 +97,7 @@ _install_display_manager() {
         sed -i -e "s/black=/black=root/g" /mnt/etc/lxdm/lxdm.conf
         echo "done"
 
-    # XDM
+    ### XDM
     elif [[ ${DISPLAY_MAN} == "XDM" ]]; then
         echo "${SESSION}" > "/mnt/home/${USER_NAME}/.xsession"
         chmod 770 "/mnt/home/${USER_NAME}/.xsession"

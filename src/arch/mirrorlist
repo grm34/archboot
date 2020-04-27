@@ -10,13 +10,13 @@
 
 _mirrorlist() {
 
-    # Get user country code from ipinfo.io API
+    ### Get user country code from ipinfo.io API
     _info "Searching for fastest mirrors"
     COUNTRY=\
 $(curl -s ipinfo.io/ | grep "country" | \
 sed 's/  "country": "//' | sed 's/",//')
 
-    # Update mirrorlist if country code properly detected
+    ### Update mirrorlist if country code properly detected
     if [[ ${COUNTRY} =~ ^[A-Z]{2}$ ]]; then
         _check mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
         _note "${COUNTRY} mirrors priority detected!"
@@ -30,7 +30,7 @@ sed 's/  "country": "//' | sed 's/",//')
         # Sort detected mirrors first
         _check cat /etc/pacman.d/mirrorlist.backup >> /etc/pacman.d/mirrorlist
 
-    # Defaults mirrors if not detected
+    ### Defaults mirrors if not detected
     else
         _note "mirrors not detected, defaults will be used!"
     fi
@@ -38,17 +38,17 @@ sed 's/  "country": "//' | sed 's/",//')
 
 _timezone() {
 
-    # Get user timezone from ipinfo.io API
+    ### Get user timezone from ipinfo.io API
     _info "Searching for timezone"
     TIMEZONE=\
 $(curl -s ipinfo.io/ | grep "timezone" | \
 sed 's/  "timezone": "//' | sed 's/",//')
 
-    # Update timezone if properly detected
+    ### Update timezone if properly detected
     if grep -Fxq "${TIMEZONE}" ./timezone; then
         _note "${TIMEZONE} timezone detected!"
 
-    # Otherwise ask timezone to user
+    ### Otherwise ask timezone to user
     else
         until grep -Fxq "${TIMEZONE}" ./timezone; do
             _note "timezone not found! Full list is available in the wiki."

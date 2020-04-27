@@ -15,33 +15,33 @@
 
 _install_base() {
 
-    # Base System
+    ### Base System
     _info "Installing base system with ${KERNEL_NAME,,} kernel"
     yes '' | pacstrap /mnt "${ARCH}" "${!KERNEL}" "${SUDO}"
 
-    # Linux Firmware
+    ### Linux Firmware
     if [[ ${LINUX_FW} ]]; then
         _info "Installing linux firmware"
         yes '' | pacstrap /mnt "${FW}"
     fi
 
-    # Base devel
+    ### Base devel
     if [[ ${AUR_HELPER} ]]; then
         _info "Installing base devel"
         yes '' | pacstrap /mnt "${BASE_DEVEL}"
     fi
 
-    # Fstab
+    ### Fstab
     _info "Setting file systems table"
     genfstab -U -p /mnt >> /mnt/etc/fstab
     cat < /mnt/etc/fstab | grep -v "Static information\|See fstab("
 
-    # Timezone
+    ### Timezone
     _info "Setting timezone to ${TIMEZONE}"
     ln -sfv "/usr/share/zoneinfo/${TIMEZONE}" /mnt/etc/localtime
     echo "done"
 
-    # Locale
+    ### Locale
     _info "Setting locale to ${LANGUAGE}.UTF-8"
     echo "${LANGUAGE}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
     _chroot "locale-gen"
@@ -49,39 +49,39 @@ _install_base() {
     echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
     echo "done"
 
-    # Vconsole
+    ### Vconsole
     _info "Setting virtual console to ${KEYMAP^^}"
     echo "KEYMAP=${KEYMAP}" > /mnt/etc/vconsole.conf
     echo "done"
 
-    # Hostname
+    ### Hostname
     _info "Setting hostname ${HOST_NAME}"
     echo "${HOST_NAME}" > /mnt/etc/hostname
     echo "done"
 
-    # Root passwd
+    ### Root passwd
     _info "Setting root password"
     _chroot "echo 'root:${ROOTPASSWD}' | chpasswd"
     echo "done"
 
-    # Network
+    ### Network
     _info "Installing network manager"
     _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
 
-    # Microcode
+    ### Microcode
     if [[ ${MICROCODE} ]]; then
         _info "Installing ${MICROCODE/_/ } Microcode"
         _chroot "pacman --noconfirm --needed -S ${!MICROCODE}"
     fi
 
-    # NTFS
+    ### NTFS
     if [[ ${NTFS} ]]; then
         _info "Installing NTFS filesystem support"
         _chroot "pacman --noconfirm --needed -S ${NTFS_SUPPORT}"
     fi
 
-    # User
+    ### User
     _info "Setting user ${USER_NAME}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
     _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
@@ -91,38 +91,38 @@ _install_base() {
 _install_AUR_helper() {
     _info "Installing ${AUR_HELPER,,} AUR Helper"
 
-    # Allow user to run sudo without passwd
+    ### Allow user to run sudo without passwd
     sed -i -e \
 "s/${USER_NAME} ALL=(ALL) ALL/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/g" \
 /mnt/etc/sudoers
 
-    # Clone AUR Helper from aur.archlinux.org
+    ### Clone AUR Helper from aur.archlinux.org
     _chroot "cd /home/${USER_NAME} && sudo -u ${USER_NAME} git clone \
 https://aur.archlinux.org/${AUR_HELPER,,}.git"
 
-    # Install AUR Helper
+    ### Install AUR Helper
     _chroot "cd /home/${USER_NAME}/${AUR_HELPER,,} && sudo -u ${USER_NAME} \
 makepkg --noconfirm --needed -sic"
 
-    # Deny user to run sudo without passwd
+    ### Deny user to run sudo without passwd
     sed -i -e \
 "s/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/${USER_NAME} ALL=(ALL) ALL/g" \
 /mnt/etc/sudoers
 
-    # Clean AUR Helper sources
+    ### Clean AUR Helper sources
     rm -rf "/mnt/home/${USER_NAME}/${AUR_HELPER,,}"
 }
 
 _clean_dependencies() {
     _info "Cleaning cache and unused dependencies"
 
-    # Remove unused dependencies
+    ### Remove unused dependencies
     UNUSED_DEPENDENCIES=$(_chroot "pacman -Qdtq")
     if [[ ${UNUSED_DEPENDENCIES} ]]; then
         _chroot "pacman --noconfirm -Rcsn ${UNUSED_DEPENDENCIES}"
     fi
 
-    # Clean pacman cache
+    ### Clean pacman cache
     _chroot "pacman --noconfirm -Sc"
 }
 
