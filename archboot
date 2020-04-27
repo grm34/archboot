@@ -187,7 +187,7 @@ CHECK_GITHUB=(LICENSE README.md STATS.md src apps conf .github .git)
 for FILE in "${CHECK_GITHUB[@]}"; do
     if [[ -f ${FILE} ]]; then
         _note "please do not run ${APPNAME} from github repository folder!"
-        _exit_msg; sleep 1; kill -9 $$
+        rm -rfv old_vars.log; _exit_msg; sleep 1; kill -9 $$
     fi
 done
 
