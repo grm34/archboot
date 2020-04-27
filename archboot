@@ -257,8 +257,8 @@ if [[ ${DESKTOP} ]]; then
     # GPU Driver or kernel mode setting?
     _note "enter NO to use kernel mode setting."
     _confirm "Do you wish to install GPU Driver?"
-    case ${CONFIRM} in y|Y|yes|Yes|YES)
-        _get_gpu_driver;;
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES) _get_gpu_driver;;
     esac
 fi
 
