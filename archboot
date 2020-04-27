@@ -149,7 +149,8 @@ _select() {
     NUMBER=$((${#*} * 4))
     COUNT=$((${#LENTH} + NUMBER + 1))
     echo -ne "${YELLOW}\n==> "
-    _end
+    for ((CHAR=1; CHAR<=COUNT; CHAR++)); do echo -ne "-"; done
+    echo -ne "\n==> ${NC}"
 }
 
 ### Ask confirmation (Yes/No)
@@ -158,7 +159,8 @@ _confirm() {
     COUNT=$((${#1} + 6))
     until [[ ${CONFIRM} =~ ^(y|n|Y|N|yes|no|Yes|No|YES|NO)$ ]]; do
         echo -ne "${YELLOW}\n==> ${GREEN}${1} ${RED}[y/n]${YELLOW}\n==> "
-        _end
+        for ((CHAR=1; CHAR<=COUNT; CHAR++)); do echo -ne "-"; done
+        echo -ne "\n==> ${NC}"
         read -r CONFIRM
     done
 }
@@ -169,17 +171,9 @@ _prompt() {
     COUNT=${#LENTH}
     echo -ne "\n${YELLOW}==> ${GREEN}${1} ${RED}${2}"
     echo -ne "${YELLOW}\n==> "
-    _end
-}
-
-### Display the end of select, confirm and prompt functions
-_end() {
-    for ((CHAR=1; CHAR<=COUNT; CHAR++)); do
-        echo -ne "-"
-    done
+    for ((CHAR=1; CHAR<=COUNT; CHAR++)); do echo -ne "-"; done
     echo -ne "\n==> ${NC}"
 }
-
 
 #             START SCRIPT - IMPORT SOURCES - GET USER VARIABLES
 # ============================================================================
