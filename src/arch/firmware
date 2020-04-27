@@ -10,7 +10,7 @@
 
 _firmware() {
 
-    _info "Firmware detection"
+    _info "${MSG_GET_FW}"
 
     ### UEFI
     if [ -d /sys/firmware/efi/efivars ]; then
@@ -20,7 +20,7 @@ _firmware() {
         export PART_TYPE=""
         export MOUNT_TYPE="-t vfat "
         export BOOT_FILESYSTEM="fat -F32"
-        _note "UEFI firmware detected!"
+        _note "UEFI ${MSG_FW_TRUE}"
 
     ### BIOS
     else
@@ -30,38 +30,41 @@ _firmware() {
         export PART_TYPE="p\n"
         export MOUNT_TYPE=""
         export BOOT_FILESYSTEM="ext4"
-        _note "BIOS firmware detected!"
+        _note "BIOS ${MSG_FW_TRUE}"
     fi
 }
 
 _cpu() {
 
     ### Get CPU
-    _info "Processor detection"
+    _info "${MSG_GET_CPU}"
     CPU_LIST=(Intel AMD)
+
     for CPU in "${CPU_LIST[@]}"; do
         CHECK_CPU=$(lscpu | grep "${CPU}")
         if [[ ${CHECK_CPU} ]]; then
-            _note "${CPU} processor detected!"
+            _note "${CPU} ${MSG_CPU_TRUE}"
             export MICROCODE="${CPU^^}_CPU"
             export UCODE=${CPU,,}
         fi
     done
+
     if [[ ! ${MICROCODE} ]]; then
-        _note "unreconized CPU! Microcode updates will no be installed."
+        _note "${MSG_UCODE_FALSE}"
     fi
 }
 
 _ntfs() {
 
     ### Get NTFS Partitions
-    _info "NTFS filesystem detection"
+    _info "${MSG_GET_NTFS}"
     CHECK_NTFS=$(lsblk -f | grep "ntfs")
+
     if [[ ${CHECK_NTFS} ]]; then
-        _note "NTFS detected! NTFS support will be installed"
+        _note "${MSG_NTFS_TRUE}"
         export NTFS="True"
     else
-        _note "NTFS not detected! NTFS support will not be installed."
+        _note "${MSG_NTFS_FALSE}"
     fi
 }
 

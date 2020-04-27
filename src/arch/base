@@ -15,81 +15,81 @@
 
 _install_base() {
 
-    ### Base System
-    _info "Installing base system with ${KERNEL_NAME,,} kernel"
+    ### Install Base System
+    _info "${MSG_INSTALL_BASE} ${KERNEL_NAME,,} kernel"
     yes '' | pacstrap /mnt "${ARCH}" "${!KERNEL}" "${SUDO}"
 
-    ### Linux Firmware
+    ### Install Linux Firmware
     if [[ ${LINUX_FW} ]]; then
-        _info "Installing linux firmware"
+        _info "${MSG_INSTALL_FW}"
         yes '' | pacstrap /mnt "${FW}"
     fi
 
-    ### Base devel
+    ### Install Base devel
     if [[ ${AUR_HELPER} ]]; then
-        _info "Installing base devel"
+        _info "${MSG_INSTALL_DEVEL}"
         yes '' | pacstrap /mnt "${BASE_DEVEL}"
     fi
 
-    ### Fstab
-    _info "Setting file systems table"
+    ### Set Fstab
+    _info "${MSG_SET_FSTAB}"
     genfstab -U -p /mnt >> /mnt/etc/fstab
     cat < /mnt/etc/fstab | grep -v "Static information\|See fstab("
 
-    ### Timezone
-    _info "Setting timezone to ${TIMEZONE}"
+    ### Set Timezone
+    _info "${MSG_SET_TIMEZONE} ${TIMEZONE}"
     ln -sfv "/usr/share/zoneinfo/${TIMEZONE}" /mnt/etc/localtime
-    echo "done"
+    echo "${MSG_DONE}"
 
-    ### Locale
-    _info "Setting locale to ${LANGUAGE}.UTF-8"
+    ### Set Locale
+    _info "${MSG_SET_LOCALE} ${LANGUAGE}.UTF-8"
     echo "${LANGUAGE}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
     _chroot "locale-gen"
     _chroot "export LANG=${LANGUAGE}.UTF-8"
     echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
-    echo "done"
+    echo "${MSG_DONE}"
 
-    ### Vconsole
-    _info "Setting virtual console to ${KEYMAP^^}"
+    ### Set Vconsole
+    _info "${MSG_SET_VCONSOLE} ${KEYMAP^^}"
     echo "KEYMAP=${KEYMAP}" > /mnt/etc/vconsole.conf
-    echo "done"
+    echo "${MSG_DONE}"
 
-    ### Hostname
-    _info "Setting hostname ${HOST_NAME}"
+    ### Set Hostname
+    _info "${MSG_SET_HOSTNAME} ${HOST_NAME}"
     echo "${HOST_NAME}" > /mnt/etc/hostname
-    echo "done"
+    echo "${MSG_DONE}"
 
-    ### Root passwd
-    _info "Setting root password"
+    ### Set Root passwd
+    _info "${MSG_SET_ROOT}"
     _chroot "echo 'root:${ROOTPASSWD}' | chpasswd"
-    echo "done"
+    echo "${MSG_DONE}"
 
-    ### Network
-    _info "Installing network manager"
+    ### Install Network
+    _info "${MSG_INSTALL_NET}"
     _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
 
-    ### Microcode
+    ### Install Microcode
     if [[ ${MICROCODE} ]]; then
-        _info "Installing ${MICROCODE/_/ } Microcode"
+        _info "${MSG_INSTALL_UCODE} ${MICROCODE/_/ } CPU"
         _chroot "pacman --noconfirm --needed -S ${!MICROCODE}"
     fi
 
-    ### NTFS
+    ### Install NTFS support
     if [[ ${NTFS} ]]; then
-        _info "Installing NTFS filesystem support"
+        _info "${MSG_INSTALL_NTFS}"
         _chroot "pacman --noconfirm --needed -S ${NTFS_SUPPORT}"
     fi
 
-    ### User
-    _info "Setting user ${USER_NAME}"
+    ### Set User
+    _info "${MSG_SET_USER} ${USER_NAME}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
     _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
-    echo "done"
+    echo "${MSG_DONE}"
 }
 
 _install_AUR_helper() {
-    _info "Installing ${AUR_HELPER,,} AUR Helper"
+    _info "${MSG_INSTALL_AUR} (${AUR_HELPER,,})"
 
     ### Allow user to run sudo without passwd
     sed -i -e \
@@ -97,8 +97,8 @@ _install_AUR_helper() {
 /mnt/etc/sudoers
 
     ### Clone AUR Helper from aur.archlinux.org
-    _chroot "cd /home/${USER_NAME} && sudo -u ${USER_NAME} git clone \
-https://aur.archlinux.org/${AUR_HELPER,,}.git"
+    _chroot "cd /home/${USER_NAME} && sudo -u ${USER_NAME} \
+git clone https://aur.archlinux.org/${AUR_HELPER,,}.git"
 
     ### Install AUR Helper
     _chroot "cd /home/${USER_NAME}/${AUR_HELPER,,} && sudo -u ${USER_NAME} \
@@ -114,10 +114,11 @@ makepkg --noconfirm --needed -sic"
 }
 
 _clean_dependencies() {
-    _info "Cleaning cache and unused dependencies"
+    _info "${MSG_CLEAN_CACHE}"
 
     ### Remove unused dependencies
     UNUSED_DEPENDENCIES=$(_chroot "pacman -Qdtq")
+
     if [[ ${UNUSED_DEPENDENCIES} ]]; then
         _chroot "pacman --noconfirm -Rcsn ${UNUSED_DEPENDENCIES}"
     fi

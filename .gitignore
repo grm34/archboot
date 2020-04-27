@@ -1,10 +1,11 @@
-*
+
 \!conf/00-keyboard.conf
 \!conf/language
 \!conf/loader.conf
 \!conf/timezone
 \!conf/xinitrc
 \!conf/xprofile
+\!locale/*
 \!src/apps/desktop_apps
 \!src/apps/display_apps
 \!src/apps/gpu_apps

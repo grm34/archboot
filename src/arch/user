@@ -29,8 +29,8 @@ _get_user_variables() {
 
     ### Language
     until grep -Fxq "${LANGUAGE}" ./language; do
-        _note "full list is available in the wiki."
-        _prompt "Enter language code:" "(e.g., fr_FR, en_US, de_DE)"
+        _note "${MSG_WIKI_EXAMPLE}"
+        _prompt "${MSG_PROMPT_LANGUAGE}" "${MSG_LANGUAGE_EXAMPLE}"
         read -r LANGUAGE
     done
     export LANGUAGE
@@ -40,70 +40,72 @@ _get_user_variables() {
     export KEYMAP
 
     ### Hostname
-    until [[ ${#HOST_NAME} -ge 3 \
-&& ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
-        _prompt "Enter hostname:" "(e.g., my-favorite-computer)"
+    until [[ ${#HOST_NAME} -ge 3 && \
+${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
+        _prompt "${MSG_PROMPT_HOSTNAME}" "${MSG_HOSTNAME_EXAMPLE}"
         read -r HOST_NAME
     done
     export HOST_NAME
 
     ### Root Password
     until [[ ${#A} -ge 6 && ${A} == *[a-z]* && ${A} == *[0-9]* ]]; do
-        _note "should be at least 6 chars long with 1 letter & 1 digit"
-        _prompt "Enter root password:"
+        _note "${MSG_PASSWD_NOTE}"
+        _prompt "${MSG_PROMPT_ROOT_PASSWD}"
         read -rs A
     done
     echo
 
     ### Confirm Root Password
-    _prompt "Confirm root password:"
+    _prompt "${MSG_CONFIRM_ROOT_PASSWD}"
     read -rs ROOTPASSWD
+
     if [[ ${ROOTPASSWD} != "${A}" ]]; then
-        _error "passwords does not match!"
+        _error "${MSG_PASSWD_FALSE}"
     fi
     export ROOTPASSWD
     echo
 
     ### Username
-    until [[ ${#USER_NAME} -ge 2 && ${USER_NAME} \
-=~ ^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]]; do
-        _prompt "Enter username:" "(e.g., johnny)"
+    until [[ ${#USER_NAME} -ge 2 && ${USER_NAME} =~ \
+^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]]; do
+        _prompt "${MSG_PROMPT_USERNAME}" "${MSG_USERNAME_EXAMPLE}"
         read -r USER_NAME
     done
     export USER_NAME
 
     ### User Password
     until [[ ${#B} -ge 6 && ${B} == *[a-z]* && ${B} == *[0-9]* ]]; do
-        _note "should be at least 6 chars long with 1 letter & 1 digit"
-        _prompt "Enter password for user ${USER_NAME}:"
+        _note "${MSG_PASSWD_NOTE}"
+        _prompt "${MSG_PROMPT_USER_PASSWD} ${USER_NAME}:"
         read -rs B
     done
     echo
 
     ### Confirm User Password
-    _prompt "Confirm password for user ${USER_NAME}:"
+    _prompt "${MSG_CONFIRM_USER_PASSWD} ${USER_NAME}:"
     read -rs USERPASSWD
+
     if [[ ${USERPASSWD} != "${B}" ]]; then
-        _error "passwords does not match!"
+        _error "${MSG_PASSWD_FALSE}"
     fi
     export USERPASSWD
     echo
 
     ### Linux Firmware
-    _note "RECOMMENDED: firmware blobs may be required by your system!"
-    _confirm "Do you wish to install Linux Firmware?"
+    _note "${MSG_WARN_FW}"
+    _confirm "${MSG_CONFIRM_FW}"
+
     case ${CONFIRM} in
-        y|Y|yes|Yes|YES)
-            export LINUX_FW="True"
-            ;;
+        y|Y|yes|Yes|YES) export LINUX_FW="True";;
     esac
 
     ### Linux Kernel
-    _confirm "Do you wish to install default Linux Kernel?"
+    _confirm "${MSG_CONFIRM_KERNEL}"
     case ${CONFIRM} in
 
         # Custom kernel
         n|N|no|No|NO)
+
             until [[ ${KERNEL} =~ ^[1-4]$ ]]; do
                 _select "DEFAULT" "HARDENED" "LTS" "ZEN"
                 read -r KERNEL
@@ -112,13 +114,13 @@ _get_user_variables() {
             export KERNEL=${KERNEL_CHOICE[${KERNEL}]};;
 
         # Default kernel
-        *)
-            export KERNEL="LINUX";;
+        *) export KERNEL="LINUX";;
     esac
     export KERNEL_NAME=${KERNEL//_/-}
 
     ### DE / WM
-    _confirm "Do you wish to install a Desktop Environment?"
+    _confirm "${MSG_CONFIRM_DESKTOP}"
+
     case ${CONFIRM} in
 
         ## Desktop Environment
@@ -138,18 +140,19 @@ _get_user_variables() {
             # Additonals DE packages
             case ${DESKTOP} in
                 GNOME|KDE|MATE|XFCE4|DEEPIN|LXQT)
-                    _confirm \
-"Do you wish to install ${DESKTOP,,} additionals packages?"
-                case ${CONFIRM} in
-                    y|Y|yes|Yes|YES) export DE_EXTRAS="${DESKTOP}_EXTRAS";;
-                esac
+                    _confirm "${MSG_CONFIRM_DE_EXTRAS} ${DESKTOP,,}?"
+
+                    case ${CONFIRM} in
+                        y|Y|yes|Yes|YES)
+                            export DE_EXTRAS="${DESKTOP}_EXTRAS";;
+                    esac
                 ;;
             esac
             ;;
 
         ## Window Manager
-        *)
-            _confirm "Do you wish to install a Window Manager?"
+        *) _confirm "${MSG_CONFIRM_DISPLAY}"
+
             case ${CONFIRM} in
                 y|Y|yes|Yes|YES)
                     until [[ ${DESKTOP} =~ ^[1-3]$ ]]; do
@@ -164,8 +167,8 @@ _get_user_variables() {
 
     ### Display Manager
     if [[ ${DESKTOP} ]]; then
-        _confirm \
-"Do you wish to install ${DESKTOP,,} default Display Manager?"
+        _confirm "${MSG_CONFIRM_DEFAULT_DISPLAY} ${DESKTOP,,}?"
+
         case ${CONFIRM} in
 
             # Custom display manager
@@ -179,8 +182,7 @@ _get_user_variables() {
                 ;;
 
             # Default display manager
-            *)
-                case ${DESKTOP} in
+            *) case ${DESKTOP} in
                     GNOME) export DISPLAY_MAN="GDM";;
                     KDE) export DISPLAY_MAN="SDDM";;
                     DEEPIN|BUDGIE|CINNAMON|MATE)
@@ -194,7 +196,8 @@ _get_user_variables() {
 
         ## LightDM Greeter
         if [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
-            _confirm "Do you wish to install LightDM default greeter?"
+            _confirm "${MSG_CONFIRM_LIGHTDM_GREETER}"
+
             case ${CONFIRM} in
 
                 # Custom Greeter
@@ -209,8 +212,7 @@ _get_user_variables() {
                     ;;
 
                 # Default Greeter
-                *)
-                    case ${DESKTOP} in
+                *) case ${DESKTOP} in
                         DEEPIN) export GREETER="DEEPIN_GREETER";;
                         *) export GREETER="GTK_GREETER";;
                     esac
@@ -220,7 +222,8 @@ _get_user_variables() {
     fi
 
     ### AUR Helper
-    _confirm "Do you wish to install an AUR Helper?"
+    _confirm "${MSG_CONFIRM_AUR_HELPER}"
+
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
             until [[ ${AUR_HELPER} =~ ^[1-3]$ ]]; do
@@ -233,7 +236,8 @@ _get_user_variables() {
     esac
 
     ### User Rights
-    _confirm "Do you wish to add user ${USER_NAME} to all groups?"
+    _confirm "${MSG_CONFIRM_GROUP} ${USER_NAME}?"
+
     case ${CONFIRM} in
         y|Y|yes|Yes|YES) export POWER="True";;
     esac
@@ -242,17 +246,18 @@ _get_user_variables() {
 _enable_user_rights() {
 
     ### Enable user in sudoers
-    _info "Enabling user ${USER_NAME} in sudoers"
+    _info "${MSG_INFO_SUDOERS} ${USER_NAME}"
     printf "\n## %s privilege specification\n%s ALL=(ALL) ALL" \
 "${USER_NAME}" "${USER_NAME}" >> /mnt/etc/sudoers
-    echo "done"
+    echo "${MSG_DONE}"
 
     ### Add user to all groups
     if [[ ${POWER} ]]; then
-        _info "Adding user ${USER_NAME} to all groups"
+        _info "${MSG_INFO_ADD_GROUPS} ${USER_NAME}"
         _chroot "yes | pwck"
         _chroot "yes | grpck"
         GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
+
         for GROUP in ${GROUPLIST}; do
             _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
         done

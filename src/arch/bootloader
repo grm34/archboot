@@ -17,54 +17,57 @@ _install_bootloader() {
     if [[ ${FIRMWARE} == "UEFI" ]]; then
 
         # Install systemd-boot
-        _info "Installing systemd-boot on ${BOOT_PARTITION}"
+        _info "${MSG_INSTALL_SYSTEMDBOOT} ${BOOT_PARTITION}"
         _chroot "bootctl --path=/boot install"
 
         # Replace loader.conf
-        _info "Setting systemd-boot loader"
-        echo "downloading loader.conf..."
+        _info "${MSG_SYSTEMDBOOT_LOADER}"
+        echo "${MSG_DOWNLOADING} loader.conf..."
         _wget "${URL}/conf/loader.conf" && echo
         mv -v /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
         mv -v loader.conf /mnt/boot/loader/loader.conf
-        echo "done"
+        echo "${MSG_DONE}"
 
         # Get root partition UUID
         ROOT_UUID=$(blkid -o value -s UUID "${SYSTEM_PARTITION}")
 
         # Create new boot entry
-        _info "Setting systemd-boot entry"
+        _info "${MSG_SYSTEMDBOOT_ENTRY}"
         BOOTCONF="/mnt/boot/loader/entries/arch.conf"
         echo "title Arch Linux" > "${BOOTCONF}"
         echo "linux /vmlinuz-${KERNEL_NAME,,}" >> "${BOOTCONF}"
+
         case ${UCODE} in
             intel|amd) echo "initrd /${UCODE}-ucode.img" >> "${BOOTCONF}";;
         esac
+
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> "${BOOTCONF}"
         echo "options root=UUID=${ROOT_UUID} quiet splash rw" >> "${BOOTCONF}"
-        echo "done"
+        echo "${MSG_DONE}"
 
         # Update systemd-boot
-        _info "Updating systemd-boot config"
+        _info "${MSG_SYSTEMDBOOT_UPDATE}"
         _chroot "bootctl --path=/boot update"
 
     ### BIOS Firmware > Grub
     else
 
         # Install Grub
-        _info "Installing Grub bootloader"
+        _info "${MSG_INSTALL_GRUB}"
         _chroot "pacman --noconfirm --needed -S ${GRUB}"
+
         if [[ ${NTFS} ]]; then
             _chroot "pacman --noconfirm --needed -S ${GRUB_EXTRAS}"
         fi
         _chroot "grub-install --target=i386-pc ${DRIVE}"
 
         # Download Themes
-        _info "Downloading Grub Themes"
+        _info "${MSG_DL_GRUB_THEME}"
         _wget "${GHPAGES}/assets/images/background.png" && echo
         _chroot "git clone git://github.com/Generator/Grub2-themes.git"
 
         # Install Themes
-        _info "Installing Grub Themes"
+        _info "${MSG_INSTALL_GRUB_THEME}"
         _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
         sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
 /mnt/etc/default/grub
@@ -74,10 +77,10 @@ _install_bootloader() {
 >> /mnt/boot/grub/themes/Archlinux/theme.txt
         mv background.png /mnt/boot/grub/themes/Archlinux/background.png
         rm -rf /mnt/Grub2-themes
-        echo "done"
+        echo "${MSG_DONE}"
 
         # Configure Grub
-        _info "Setting Grub bootloader"
+        _info "${MSG_SET_GRUB}"
         _chroot "grub-mkconfig -o /boot/grub/grub.cfg"
     fi
 }
