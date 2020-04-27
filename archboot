@@ -52,14 +52,12 @@ _note() {
 
 ### Display install steps
 _info() {
-    echo -e "${YELLOW}\n==> ${CYAN}${1}...${NC}"
-    sleep 1
+    echo -e "${YELLOW}\n==> ${CYAN}${1}...${NC}"; sleep 1
 }
 
 ### Ask some information
 _prompt() {
-    LENTH=${*}
-    COUNT=${#LENTH}
+    LENTH=${*}; COUNT=${#LENTH}
     echo -ne "\n${YELLOW}==> ${GREEN}${1} ${RED}${2}"
     echo -ne "${YELLOW}\n==> "
     for ((CHAR=1; CHAR<=COUNT; CHAR++)); do echo -ne "-"; done
@@ -68,8 +66,7 @@ _prompt() {
 
 ### Ask confirmation (Yes/No)
 _confirm() {
-    unset CONFIRM
-    COUNT=$((${#1} + 6))
+    unset CONFIRM; COUNT=$((${#1} + 6))
     until [[ ${CONFIRM} =~ ^(y|n|Y|N|yes|no|Yes|No|YES|NO)$ ]]; do
         echo -ne "${YELLOW}\n==> ${GREEN}${1} ${RED}[y/n]${YELLOW}\n==> "
         for ((CHAR=1; CHAR<=COUNT; CHAR++)); do echo -ne "-"; done
@@ -85,8 +82,7 @@ _select() {
     for ENTRY in "${@}"; do
         echo -ne "${RED}[$((++COUNT))] ${GREEN}${ENTRY} ${NC}"
     done
-    LENTH=${*}
-    NUMBER=$((${#*} * 4))
+    LENTH=${*}; NUMBER=$((${#*} * 4))
     COUNT=$((${#LENTH} + NUMBER + 1))
     echo -ne "${YELLOW}\n==> "
     for ((CHAR=1; CHAR<=COUNT; CHAR++)); do echo -ne "-"; done
@@ -109,9 +105,7 @@ EOF
 _check() {
     "${@}"
     local STATUS=$?
-    if [[ ${STATUS} -ne 0 ]]; then
-        _error "${@}"
-    fi
+    if [[ ${STATUS} -ne 0 ]]; then _error "${@}"; fi
     return "${STATUS}"
 }
 
@@ -120,8 +114,7 @@ _error() {
     echo -e "\n${RED}Error: ${YELLOW}${*}${NC}"
     sleep 1; _cleanup
     _note "you must reboot to prevent unreconized system changes.\n"
-    _exit_msg
-    kill -9 $$
+    _exit_msg; kill -9 $$
 }
 
 ### Cleanup on keyboard interrupt
@@ -135,13 +128,9 @@ mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
 00-keyboard.conf language loader.conf timezone xinitrc xprofile \
 background.png Grub2-themes archboot* *_vars.log)
     for SOURCE in "${SRC[@]}"; do
-        if [[ -f "${SOURCE}" ]]; then
-            rm -rfv "${SOURCE}"
-        fi
+        if [[ -f "${SOURCE}" ]]; then rm -rfv "${SOURCE}"; fi
     done
-    if mount | grep /mnt; then
-        umount -Rfv /mnt
-    fi
+    if mount | grep /mnt; then umount -Rfv /mnt; fi
 }
 
 ### Reboot with 10s timeout
@@ -289,12 +278,8 @@ _firmware; _cpu; _ntfs; _mirrorlist; _timezone; _clock; _logs
 _note "enter NO to activate custom partitioning."
 _confirm "Do you wish to install Arch Linux on a dedicated drive?"
 case ${CONFIRM} in
-    y|Y|yes|Yes|YES)
-        _default_partitioning_scheme
-        ;;
-    *)
-        _custom_partitioning_scheme
-        ;;
+    y|Y|yes|Yes|YES) _default_partitioning_scheme;;
+    *) _custom_partitioning_scheme;;
 esac
 
 ### Mount
@@ -372,12 +357,8 @@ esac
 
 _confirm "Do you wish to reboot your computer now?"
 case ${CONFIRM} in
-    y|Y|yes|Yes|YES)
-        _cleanup; _exit_msg; _reboot
-        ;;
-    *)
-        _cleanup; _exit_msg; exit 0
-        ;;
+    y|Y|yes|Yes|YES) _cleanup; _exit_msg; _reboot;;
+    *) _cleanup; _exit_msg; exit 0;;
 esac
 
 # archboot by grm34 under Apache License 2.0

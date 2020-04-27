@@ -109,13 +109,11 @@ _get_user_variables() {
                 read -r KERNEL
             done
             KERNEL_CHOICE=(NONE LINUX LINUX_HARDENED LINUX_LTS LINUX_ZEN)
-            export KERNEL=${KERNEL_CHOICE[${KERNEL}]}
-            ;;
+            export KERNEL=${KERNEL_CHOICE[${KERNEL}]};;
 
         # Default kernel
         *)
-            export KERNEL="LINUX"
-            ;;
+            export KERNEL="LINUX";;
     esac
     export KERNEL_NAME=${KERNEL//_/-}
 
@@ -143,9 +141,7 @@ _get_user_variables() {
                     _confirm \
 "Do you wish to install ${DESKTOP,,} additionals packages?"
                 case ${CONFIRM} in
-                    y|Y|yes|Yes|YES)
-                        export DE_EXTRAS="${DESKTOP}_EXTRAS"
-                        ;;
+                    y|Y|yes|Yes|YES) export DE_EXTRAS="${DESKTOP}_EXTRAS";;
                 esac
                 ;;
             esac
@@ -161,8 +157,7 @@ _get_user_variables() {
                         read -r DESKTOP
                     done
                     DESKTOP_CHOICE=(NONE AWESOME I3 XMONAD)
-                    export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
-                    ;;
+                    export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]};;
             esac
             ;;
     esac
@@ -240,9 +235,7 @@ _get_user_variables() {
     ### User Rights
     _confirm "Do you wish to add user ${USER_NAME} to all groups?"
     case ${CONFIRM} in
-        y|Y|yes|Yes|YES)
-            export POWER="True"
-            ;;
+        y|Y|yes|Yes|YES) export POWER="True";;
     esac
 }
 

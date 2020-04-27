@@ -32,15 +32,13 @@ _get_gpu_driver() {
                     DEFAULT_KERNEL) export GPU_DRIVER="NVIDIA_DRIVER";;
                 esac
                 export OPENGL="OPENGL_NVIDIA"
-                export HARDVIDEO="HARVIDEO_NVIDIA"
-                ;;
+                export HARDVIDEO="HARVIDEO_NVIDIA";;
 
             # Opensource drivers
             *)
                 export GPU_DRIVER="NOUVEAU_DRIVER"
                 export OPENGL="OPENGL_NOUVEAU"
-                export HARDVIDEO="HARDVIDEO_NOUVEAU"
-                ;;
+                export HARDVIDEO="HARDVIDEO_NOUVEAU";;
         esac
     else
 
@@ -74,9 +72,7 @@ _get_gpu_driver() {
     if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" ]]; then
     _confirm "Do you wish to install Hardware Video Acceleration?"
         case ${CONFIRM} in
-            y|Y|yes|Yes|YES)
-                export HARD_VIDEO="True"
-                ;;
+            y|Y|yes|Yes|YES) export HARD_VIDEO="True";;
         esac
     fi
 }
