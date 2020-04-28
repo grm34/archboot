@@ -50,6 +50,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     ### Root Password
     _root_passwd
     until [[ ${A} == "${C}" ]]; do
+        _note "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}\n"
         _root_passwd
     done
     export ROOTPASSWD
@@ -65,7 +66,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     ### User Password
     _user_passwd
     until [[ ${B} == "${D}" ]]; do
-        echo -e "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}\n"
+        _note "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}\n"
         _root_passwd
     done
     export USERPASSWD="${B}"
@@ -244,6 +245,7 @@ _enable_user_rights() {
 }
 
 _root_passwd() {
+    unset A
 
     ### Root Password
     until [[ ${#A} -ge 6 && ${A} == *[a-z]* && ${A} == *[0-9]* ]]; do
@@ -260,6 +262,7 @@ _root_passwd() {
 }
 
 _user_passwd() {
+    unset B
 
     ### User Password
     until [[ ${#B} -ge 6 && ${B} == *[a-z]* && ${B} == *[0-9]* ]]; do
