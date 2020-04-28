@@ -69,7 +69,7 @@ _install_display_manager() {
         esac
 
         # Configure Greeter
-        _info "${MSG_SET_GREETER} (${DISPLAY_MAN,,})"
+        _info "${MSG_SET_GREETER}"
         DEFAULT_SESSION="#greeter-session=example-gtk-gnome"
         SESSION="greeter-session=${LIGHTDM_SESSION}"
         NUMON="greeter-setup-script=/usr/bin/numlockx on"
