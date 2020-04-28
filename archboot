@@ -196,7 +196,7 @@ for FILE in "${CHECK_GITHUB[@]}"; do
     if [[ -f ${FILE} || -d ${FILE} ]]; then
         echo -e \
 "${RED}Error: ${YELLOW}do not run ${APPNAME} from git repository folder!${NC}"
-        echo; rm -rfv old_vars.log; _exit_msg; sleep 1; kill -9 $$
+        rm -rf old_vars.log; echo; _exit_msg; sleep 1; kill -9 $$
     fi
 done
 
