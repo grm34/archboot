@@ -219,7 +219,7 @@ case ${CONFIRM} in
         ;;
 esac
 _info "Downloading ${ARCHBOOT_LANGUAGE,,} language pack"
-_wget "${URL}/src/locale/${ARCHBOOT_LANGUAGE,,}"
+_wget "${URL}/locale/${ARCHBOOT_LANGUAGE,,}"
 _check source "./${ARCHBOOT_LANGUAGE,,}"
 
 ### Download base sources
