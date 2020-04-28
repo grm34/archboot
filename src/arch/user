@@ -53,7 +53,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
         echo -e "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}"
         _root_passwd
     done
-    export ROOTPASSWD
+    export ROOTPASSWD="${A}"
 
     ### Username
     until [[ ${#USER_NAME} -ge 2 && ${USER_NAME} =~ \
@@ -61,7 +61,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
         _prompt "${MSG_PROMPT_USERNAME}" "${MSG_USERNAME_EXAMPLE}"
         read -r USER_NAME
     done
-    export USER_NAME="$A"
+    export USER_NAME
 
     ### User Password
     _user_passwd
