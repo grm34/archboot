@@ -48,22 +48,11 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     export HOST_NAME
 
     ### Root Password
-    until [[ ${#A} -ge 6 && ${A} == *[a-z]* && ${A} == *[0-9]* ]]; do
-        _note "${MSG_PASSWD_NOTE}"
-        _prompt "${MSG_PROMPT_ROOT_PASSWD}"
-        read -rs A
+    _root_passwd
+    until [[ ${A} == "${C}" ]]; do
+        _root_passwd
     done
-    echo
-
-    ### Confirm Root Password
-    _prompt "${MSG_CONFIRM_ROOT_PASSWD}"
-    read -rs ROOTPASSWD
-
-    if [[ ${ROOTPASSWD} != "${A}" ]]; then
-        _error "${MSG_PASSWD_FALSE}"
-    fi
     export ROOTPASSWD
-    echo
 
     ### Username
     until [[ ${#USER_NAME} -ge 2 && ${USER_NAME} =~ \
@@ -71,25 +60,15 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
         _prompt "${MSG_PROMPT_USERNAME}" "${MSG_USERNAME_EXAMPLE}"
         read -r USER_NAME
     done
-    export USER_NAME
+    export USER_NAME="$A"
 
     ### User Password
-    until [[ ${#B} -ge 6 && ${B} == *[a-z]* && ${B} == *[0-9]* ]]; do
-        _note "${MSG_PASSWD_NOTE}"
-        _prompt "${MSG_PROMPT_USER_PASSWD} ${USER_NAME}:"
-        read -rs B
+    _user_passwd
+    until [[ ${B} == "${D}" ]]; do
+        echo -e "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}\n"
+        _root_passwd
     done
-    echo
-
-    ### Confirm User Password
-    _prompt "${MSG_CONFIRM_USER_PASSWD} ${USER_NAME}:"
-    read -rs USERPASSWD
-
-    if [[ ${USERPASSWD} != "${B}" ]]; then
-        _error "${MSG_PASSWD_FALSE}"
-    fi
-    export USERPASSWD
-    echo
+    export USERPASSWD="${B}"
 
     ### Linux Firmware
     _note "${MSG_WARN_FW}"
@@ -262,6 +241,38 @@ _enable_user_rights() {
             _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
         done
     fi
+}
+
+_root_passwd() {
+
+    ### Root Password
+    until [[ ${#A} -ge 6 && ${A} == *[a-z]* && ${A} == *[0-9]* ]]; do
+        _note "${MSG_PASSWD_NOTE}"
+        _prompt "${MSG_PROMPT_ROOT_PASSWD}"
+        read -rs A
+    done
+    echo
+
+    ### Confirm Root Password
+    _prompt "${MSG_CONFIRM_ROOT_PASSWD}"
+    read -rs C
+    echo
+}
+
+_user_passwd() {
+
+    ### User Password
+    until [[ ${#B} -ge 6 && ${B} == *[a-z]* && ${B} == *[0-9]* ]]; do
+        _note "${MSG_PASSWD_NOTE}"
+        _prompt "${MSG_PROMPT_USER_PASSWD} ${USER_NAME}:"
+        read -rs B
+    done
+    echo
+
+    ### Confirm User Password
+    _prompt "${MSG_CONFIRM_USER_PASSWD} ${USER_NAME}:"
+    read -rs D
+    echo
 }
 
 # archboot by grm34 under Apache License 2.0
