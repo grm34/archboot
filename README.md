@@ -26,7 +26,7 @@ You can obviously try it in a virtual machine first...
 
 **1.** Reboot computer, open Boot Selection Menu and boot on the USB device
 
-**2.** On the install menu of Arch Linux, select **Boot Arch Linux (x86_64)**
+**2.** Select **Boot Arch Linux (x86_64)** on the install menu of Arch Linux
 
 > *For AZERTY keyboard use LOADKEYS by running `loqdkeys fr`*
 
