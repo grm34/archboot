@@ -131,7 +131,7 @@ _cleanup() {
     SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
 mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
 00-keyboard.conf language loader.conf timezone xinitrc xprofile \
-background.png Grub2-themes archboot* *_vars.log english french)
+background.png Grub2-themes archboot* *_vars.log english french spanish)
 
     for SOURCE in "${SRC[@]}"; do
         if [[ -f "${SOURCE}" ]]; then rm -rfv "${SOURCE}"; fi
