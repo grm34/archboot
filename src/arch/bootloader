@@ -22,11 +22,11 @@ _install_bootloader() {
 
         # Replace loader.conf
         _info "${MSG_SYSTEMDBOOT_LOADER}"
-        echo "--> ${MSG_DOWNLOADING} loader.conf..."
+        echo "-> ${MSG_DOWNLOADING} loader.conf..."
         _wget "${URL}/conf/loader.conf" && echo
         mv -v /mnt/boot/loader/loader.conf /mnt/boot/loader/loader.backup
         mv -v loader.conf /mnt/boot/loader/loader.conf
-        echo "--> ${MSG_DONE}"
+        echo "-> ${MSG_DONE}"
 
         # Get root partition UUID
         ROOT_UUID=$(blkid -o value -s UUID "${SYSTEM_PARTITION}")
@@ -43,7 +43,7 @@ _install_bootloader() {
 
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> "${BOOTCONF}"
         echo "options root=UUID=${ROOT_UUID} quiet splash rw" >> "${BOOTCONF}"
-        echo "--> ${MSG_DONE}"
+        echo "-> ${MSG_DONE}"
 
         # Update systemd-boot
         _info "${MSG_SYSTEMDBOOT_UPDATE}"
@@ -77,7 +77,7 @@ _install_bootloader() {
 >> /mnt/boot/grub/themes/Archlinux/theme.txt
         mv background.png /mnt/boot/grub/themes/Archlinux/background.png
         rm -rf /mnt/Grub2-themes
-        echo "--> ${MSG_DONE}"
+        echo "-> ${MSG_DONE}"
 
         # Configure Grub
         _info "${MSG_SET_GRUB}"
