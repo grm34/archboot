@@ -45,10 +45,10 @@ export GHPAGES=\
 RED="\e[1;31m"; GREEN="\e[1;32m"; YELLOW="\e[1;33m"
 BLUE="\e[1;34m"; CYAN="\e[1;36m"; BOLD="\e[1;37m"; NC="\e[0m"
 
-### Default error msg
+### Default error msg (required when locale not already sourced)
 MSG_ERROR="you must reboot to prevent unreconized system changes."
 MSG_KEYBOARD="keyboard interrupt!"
-MSG_CLEANUP="Cleaning up archboot..."
+MSG_CLEANUP="Cleaning up archboot"
 
 ### Display some notes
 _note() {
@@ -172,8 +172,8 @@ _clock() {
 
 ### Say goodbye
 _exit_msg() {
-    echo -e "${BLUE}${APPNAME}-${VERSION}${NC}${BOLD} \
-by ${AUTHOR}${NC} ${RED}under ${LICENSE}${NC}"
+    echo -e "\
+${BLUE}${APPNAME}-${VERSION}${BOLD} by ${AUTHOR} ${RED}under ${LICENSE}${NC}"
 }
 
 #             START SCRIPT - IMPORT SOURCES - GET USER VARIABLES

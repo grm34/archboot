@@ -7,7 +7,7 @@
 export MSG_DONE="done"
 export MSG_ERROR="you must reboot to prevent unreconized system changes."
 export MSG_KEYBOARD="keyboard interrupt!"
-export MSG_CLEANUP="Cleaning up archboot..."
+export MSG_CLEANUP="Cleaning up archboot"
 export MSG_REBOOT="System will reboot in"
 export MSG_SET_LOGS="Setting archboot logs"
 export MSG_CLOCK="Setting system clock"
