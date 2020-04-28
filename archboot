@@ -317,7 +317,7 @@ esac
 
 ### Mount
 _mount_partitions
-_note "${MSG_MOUNT_OK}"
+_note "${MSG_MOUNT}"
 
 #                         ARCH LINUX INSTALLATION
 # ============================================================================
@@ -361,8 +361,7 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
         ### Get user inputs logs
         _info "${MSG_INPUTS_LOGS}"
         set | grep -v "MSG_\|A=\|B=\|ROOTPASSWD=\|USERPASSWD=\|\
-RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" \
-> new_vars.log
+RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" > new_vars.log
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i -e "s/> _='Adding user inputs to logs'//g" "${INPUTS_LOG}"
         echo "${MSG_DONE}"

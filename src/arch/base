@@ -16,7 +16,7 @@
 _install_base() {
 
     ### Install Base System
-    _info "${MSG_INSTALL_BASE} ${KERNEL_NAME,,} kernel"
+    _info "${MSG_INSTALL_BASE} (${KERNEL_NAME,,})"
     yes '' | pacstrap /mnt "${ARCH}" "${!KERNEL}" "${SUDO}"
 
     ### Install Linux Firmware
