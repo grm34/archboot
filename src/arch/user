@@ -50,7 +50,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     ### Root Password
     _root_passwd
     until [[ ${A} == "${C}" ]]; do
-        _note "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}"
+        echo -e "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}"
         _root_passwd
     done
     export ROOTPASSWD
@@ -66,7 +66,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     ### User Password
     _user_passwd
     until [[ ${B} == "${D}" ]]; do
-        _note "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}"
+        echo -e "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}"
         _root_passwd
     done
     export USERPASSWD="${B}"
