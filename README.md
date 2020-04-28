@@ -28,7 +28,9 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 > *For AZERTY keyboard use LOADKEYS by running `loqdkeys fr`*
 
-**3.** Download and run **archboot** *`wget tiny.cc/archboot-dev; sh archboot-dev`*
+**3.** Download and run **archboot** script:
+
+*`wget tiny.cc/archboot-dev; sh archboot-dev`*
 
 ## Wiki
 
@@ -42,7 +44,9 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 ## Logs
 
-Take a look at **/var/log/archboot** *`cat /var/log/archboot/archboot*.log`*
+Take a look at **/var/log/archboot** for installation logs:
+
+*`cat /var/log/archboot/archboot*.log`*
 
 ## Official Documentation
 
