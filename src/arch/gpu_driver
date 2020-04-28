@@ -1,0 +1,94 @@
+#!/bin/bash
+
+#                        GPU CONTROLLER DRIVER
+# ============================================================================
+# Here we scan for 3D GPU Controller to install appropriate driver with
+# OpenGL and Hardware Acceleration (if currently supported). We don't use
+# FOR loop (wich can shorten the code) to prevent issues in case of dual
+# GPU and to ensure the integrated will not be installed as principal GPU.
+#
+# All steps are described in the official documentation:
+#
+#   https://wiki.archlinux.org/index.php/Xorg#Driver_installation
+# ============================================================================
+
+_get_gpu_driver() {
+
+    _info "Scanning 3D GPU Controller"
+
+    ### NVIDIA
+    NVIDIA_CARD=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
+    if [[ ${NVIDIA_CARD} ]]; then
+        _note "${NVIDIA_CARD##*: } detected!"
+        _confirm "Do you wish to install proprietary drivers?"
+        case ${CONFIRM} in
+
+            # Proprietary drivers
+            y|Y|yes|Yes|YES)
+                case ${KERNEL} in
+                    LTS_KERNEL) export GPU_DRIVER="NVIDIA_LTS";;
+                    HARDENED_KERNEL|ZEN_KERNEL)
+                        export GPU_DRIVER="NVIDIA_DKMS";;
+                    DEFAULT_KERNEL) export GPU_DRIVER="NVIDIA_DRIVER";;
+                esac
+                export OPENGL="OPENGL_NVIDIA"
+                export HARDVIDEO="HARVIDEO_NVIDIA";;
+
+            # Opensource drivers
+            *)
+                export GPU_DRIVER="NOUVEAU_DRIVER"
+                export OPENGL="OPENGL_NOUVEAU"
+                export HARDVIDEO="HARDVIDEO_NOUVEAU";;
+        esac
+    else
+
+        ### AMD / ATI
+        AMD_CARD=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
+        if [[ ${AMD_CARD} ]]; then
+            _note "${AMD_CARD##*: } detected!"
+            export GPU_DRIVER="AMD_DRIVER"
+            export OPENGL="OPENGL_AMD"
+            export HARDVIDEO="HARDVIDEO_AMD"
+
+        else
+
+            ### INTEL
+            INTEL_CARD=$(lspci | grep -e VGA -e 3D | grep -i intel)
+            if [[ ${INTEL_CARD} ]]; then
+                _note "${INTEL_CARD##*: } detected!"
+                export GPU_DRIVER="INTEL_DRIVER"
+                export OPENGL="OPENGL_INTEL"
+                export HARDVIDEO="HARDVIDEO_INTEL"
+
+            ### DEFAULT
+            else
+                _note "controller not found! Default driver will be used."
+                export GPU_DRIVER="DEFAULT_DRIVER"
+            fi
+        fi
+    fi
+
+    ### OpenGL & Hardware Video Acceleration?
+    if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" ]]; then
+    _confirm "Do you wish to install Hardware Video Acceleration?"
+        case ${CONFIRM} in
+            y|Y|yes|Yes|YES) export HARD_VIDEO="True";;
+        esac
+    fi
+}
+
+_install_gpu_driver() {
+
+    ### GPU Controller
+    _info "Installing 3D GPU Driver"
+    _chroot "pacman --noconfirm --needed -S ${!GPU_DRIVER}"
+
+    ### OpenGL & Hardware Video Acceleration
+    if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" && ${HARD_VIDEO} ]]; then
+        _info "Installing OpenGL & Hardware Video Acceleration"
+        _chroot "pacman --noconfirm --needed -S ${!OPENGL} ${!HARDVIDEO}"
+    fi
+}
+
+# archboot by grm34 under Apache License 2.0
+# ============================================================================

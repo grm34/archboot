@@ -1,0 +1,69 @@
+#!/bin/bash
+
+#                        FIRMWARE DETECTION
+# ============================================================================
+# Here we detect if system is running on UEFI or BIOS firmware to properly
+# set partition table, code, type, boot filesystem and to store them.
+# Then we detect processor to properly define CPU microcode updates, and
+# we detect ntfs partition(s) to properly install ntfs support <ntfs-3g>.
+# ============================================================================
+
+_firmware() {
+
+    _info "Firmware detection"
+
+    ### UEFI
+    if [ -d /sys/firmware/efi/efivars ]; then
+        export FIRMWARE="UEFI"
+        export PART_TABLE="GPT"
+        export PART_CODE="g"
+        export PART_TYPE=""
+        export MOUNT_TYPE="-t vfat "
+        export BOOT_FILESYSTEM="fat -F32"
+        _note "UEFI firmware detected!"
+
+    ### BIOS
+    else
+        export FIRMWARE="BIOS"
+        export PART_TABLE="MBR"
+        export PART_CODE="o"
+        export PART_TYPE="p\n"
+        export MOUNT_TYPE=""
+        export BOOT_FILESYSTEM="ext4"
+        _note "BIOS firmware detected!"
+    fi
+}
+
+_cpu() {
+
+    ### Get CPU
+    _info "Processor detection"
+    CPU_LIST=(Intel AMD)
+    for CPU in "${CPU_LIST[@]}"; do
+        CHECK_CPU=$(lscpu | grep "${CPU}")
+        if [[ ${CHECK_CPU} ]]; then
+            _note "${CPU} processor detected!"
+            export MICROCODE="${CPU^^}_CPU"
+            export UCODE=${CPU,,}
+        fi
+    done
+    if [[ ! ${MICROCODE} ]]; then
+        _note "unreconized CPU! Microcode updates will no be installed."
+    fi
+}
+
+_ntfs() {
+
+    ### Get NTFS Partitions
+    _info "NTFS filesystem detection"
+    CHECK_NTFS=$(lsblk -f | grep "ntfs")
+    if [[ ${CHECK_NTFS} ]]; then
+        _note "NTFS detected! NTFS support will be installed"
+        export NTFS="True"
+    else
+        _note "NTFS not detected! NTFS support will not be installed."
+    fi
+}
+
+# archboot by grm34 under Apache License 2.0
+# ============================================================================

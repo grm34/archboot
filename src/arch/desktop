@@ -1,0 +1,66 @@
+#!/bin/bash
+
+#                 DESKTOP ENVIRONMENT / WINDOW MANAGER
+# ============================================================================
+# Here we install desktop environment (or WM) with the required packages such
+# as display server, <xorg-xinit> and <numlockx> (to get numlock on bootup).
+# To prevent password issues on the login screen of the display manager
+# caused by wrong keyboard layout, we add <keyboard.conf> to xorg settings.
+#
+# All steps are described in the official documentation:
+#
+#   https://wiki.archlinux.org/index.php/Desktop_environment
+#   https://wiki.archlinux.org/index.php/Window_manager
+# ============================================================================
+
+_install_desktop_environment() {
+
+    ### Install Xorg
+    _info "Installing xorg server"
+    _chroot "pacman --noconfirm --needed -S ${XORG}"
+    case ${DESKTOP} in
+
+        # Install WM dependencies
+        AWESOME|I3|XMONAD)
+            _info "Installing WM dependencies"
+            _chroot "pacman --noconfirm --needed -S ${XORG_XINIT} ${WM_APPS}"
+            ;;
+    esac
+
+    ### Install Numlock
+    _info "Installing numlock"
+    _chroot "pacman --noconfirm --needed -S ${NUMLOCK}"
+
+    ### Install Desktop Environment / Window Manager
+    _info "Installing ${DESKTOP,,}"
+    _chroot "pacman --noconfirm --needed -S ${!DESKTOP}"
+    if [[ ${DE_EXTRAS} ]]; then
+        _info "Installing ${DESKTOP,,} additionals packages"
+        _chroot "pacman --noconfirm --needed -S ${!DE_EXTRAS}"
+    fi
+}
+
+_configure_desktop_environment() {
+
+    ### Xorg keyboard layout
+    _info "Setting keyboard layout to ${KEYMAP^^}"
+    sed -i -e "s/keymap_code/${KEYMAP}/g" 00-keyboard.conf
+    mv -v 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/00-keyboard.conf
+    echo "done"
+
+    ### Start WM with xinit
+    case ${DESKTOP} in
+        AWESOME|I3|XMONAD)
+            _info "Setting xinitrc for ${DESKTOP,,}"
+            echo "downloading xinitrc..."
+            _wget "${URL}/conf/xinitrc" && echo
+            mv -v xinitrc "/mnt/home/${USER_NAME}/.xinitrc"
+            echo "exec ${DESKTOP,,}" >> "/mnt/home/${USER_NAME}/.xinitrc"
+            chmod 770 "/mnt/home/${USER_NAME}/.xinitrc"
+            echo "done"
+            ;;
+    esac
+}
+
+# archboot by grm34 under Apache License 2.0
+# ============================================================================
