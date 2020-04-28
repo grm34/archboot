@@ -67,7 +67,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     _user_passwd
     until [[ ${B} == "${D}" ]]; do
         echo -e "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}"
-        _root_passwd
+        _user_passwd
     done
     export USERPASSWD="${B}"
 
