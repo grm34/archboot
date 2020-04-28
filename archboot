@@ -46,7 +46,8 @@ RED="\e[1;31m"; GREEN="\e[1;32m"; YELLOW="\e[1;33m"
 BLUE="\e[1;34m"; CYAN="\e[1;36m"; BOLD="\e[1;37m"; NC="\e[0m"
 
 ### Default error msg (required when locale not already sourced)
-MSG_ERROR="you must reboot to prevent unreconized system changes."
+MSG_ERROR="you must reboot to prevent unreconized system changes..."
+MSG_ERROR_GIT="please do not run archboot from github repository folder!"
 MSG_KEYBOARD="keyboard interrupt!"
 MSG_CLEANUP="Cleaning up archboot"
 
@@ -194,7 +195,7 @@ CHECK_GITHUB=(LICENSE README.md STATS.md src apps conf .github .git)
 
 for FILE in "${CHECK_GITHUB[@]}"; do
     if [[ -f ${FILE} || -d ${FILE} ]]; then
-        _note "please do not run archboot from github repository folder!"
+        _note "${MSG_ERROR_GIT}"
         rm -rfv old_vars.log; _exit_msg; sleep 1; kill -9 $$
     fi
 done
