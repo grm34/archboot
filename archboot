@@ -45,6 +45,11 @@ export GHPAGES=\
 RED="\e[1;31m"; GREEN="\e[1;32m"; YELLOW="\e[1;33m"
 BLUE="\e[1;34m"; CYAN="\e[1;36m"; BOLD="\e[1;37m"; NC="\e[0m"
 
+### Default error msg
+MSG_ERROR="you must reboot to prevent unreconized system changes."
+MSG_KEYBOARD="keyboard interrupt!"
+MSG_CLEANUP="Cleaning up archboot..."
+
 ### Display some notes
 _note() {
     echo -e "${RED}\nNote: ${BLUE}${1}${NC}"
@@ -118,15 +123,15 @@ _error() {
 }
 
 ### Cleanup on keyboard interrupt
-trap '_error "${MSG_KEYBOARD}"' 1 2 3 6
+trap '_error ${MSG_KEYBOARD}' 1 2 3 6
 
 ### Delete sources and umount partitions
 _cleanup() {
-    echo -e "\n${MSG_CLEANUP}"
+    _info "${MSG_CLEANUP}"
     SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
 mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
 00-keyboard.conf language loader.conf timezone xinitrc xprofile \
-background.png Grub2-themes archboot* *_vars.log)
+background.png Grub2-themes archboot* *_vars.log english french)
 
     for SOURCE in "${SRC[@]}"; do
         if [[ -f "${SOURCE}" ]]; then rm -rfv "${SOURCE}"; fi
@@ -167,7 +172,7 @@ _clock() {
 
 ### Say goodbye
 _exit_msg() {
-    echo -e "\n${BLUE}${APPNAME}-${VERSION}${NC}${BOLD} \
+    echo -e "${BLUE}${APPNAME}-${VERSION}${NC}${BOLD} \
 by ${AUTHOR}${NC} ${RED}under ${LICENSE}${NC}"
 }
 
@@ -355,8 +360,8 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
 
         ### Get user inputs logs
         _info "${MSG_INPUTS_LOGS}"
-        set | grep -v \
-"A=\|B=\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" \
+        set | grep -v "MSG_\|A=\|B=\|ROOTPASSWD=\|USERPASSWD=\|\
+RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" \
 > new_vars.log
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i -e "s/> _='Adding user inputs to logs'//g" "${INPUTS_LOG}"
