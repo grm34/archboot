@@ -228,7 +228,7 @@ _enable_user_rights() {
     _info "${MSG_INFO_SUDOERS} (${USER_NAME})"
     printf "\n## %s privilege specification\n%s ALL=(ALL) ALL" \
 "${USER_NAME}" "${USER_NAME}" >> /mnt/etc/sudoers
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 
     ### Add user to all groups
     if [[ ${POWER} ]]; then

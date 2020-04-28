@@ -39,7 +39,7 @@ _install_base() {
     ### Set Timezone
     _info "${MSG_SET_TIMEZONE} ${TIMEZONE}"
     ln -sfv "/usr/share/zoneinfo/${TIMEZONE}" /mnt/etc/localtime
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 
     ### Set Locale
     _info "${MSG_SET_LOCALE} ${LANGUAGE}.UTF-8"
@@ -47,22 +47,22 @@ _install_base() {
     _chroot "locale-gen"
     _chroot "export LANG=${LANGUAGE}.UTF-8"
     echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 
     ### Set Vconsole
     _info "${MSG_SET_VCONSOLE} ${KEYMAP^^}"
     echo "KEYMAP=${KEYMAP}" > /mnt/etc/vconsole.conf
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 
     ### Set Hostname
     _info "${MSG_SET_HOSTNAME} ${HOST_NAME}"
     echo "${HOST_NAME}" > /mnt/etc/hostname
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 
     ### Set Root passwd
     _info "${MSG_SET_ROOT}"
     _chroot "echo 'root:${ROOTPASSWD}' | chpasswd"
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 
     ### Install Network
     _info "${MSG_INSTALL_NET}"
@@ -85,7 +85,7 @@ _install_base() {
     _info "${MSG_SET_USER} ${USER_NAME}"
     _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
     _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 }
 
 _install_AUR_helper() {

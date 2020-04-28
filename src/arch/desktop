@@ -48,18 +48,18 @@ _configure_desktop_environment() {
     _info "${MSG_SET_KEYBOARD} ${KEYMAP^^}"
     sed -i -e "s/keymap_code/${KEYMAP}/g" 00-keyboard.conf
     mv -v 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/00-keyboard.conf
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 
     ### Start WM with xinit
     case ${DESKTOP} in
         AWESOME|I3|XMONAD)
             _info "${MSG_SET_XINIT} ${DESKTOP,,}"
-            echo "${MSG_DOWNLOADING} xinitrc..."
+            echo "--> ${MSG_DOWNLOADING} xinitrc..."
             _wget "${URL}/conf/xinitrc" && echo
             mv -v xinitrc "/mnt/home/${USER_NAME}/.xinitrc"
             echo "exec ${DESKTOP,,}" >> "/mnt/home/${USER_NAME}/.xinitrc"
             chmod 770 "/mnt/home/${USER_NAME}/.xinitrc"
-            echo "${MSG_DONE}"
+            echo "--> ${MSG_DONE}"
             ;;
     esac
 }

@@ -157,7 +157,7 @@ _logs() {
     INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
     _archboot_banner > "${INSTALL_LOG}"
     _archboot_banner > "${INPUTS_LOG}"
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 }
 
 ### Set system clock
@@ -250,7 +250,7 @@ BASE_SOURCES=\
 for SOURCE in "${BASE_SOURCES[@]}"; do
     _check source "./${SOURCE}"
 done
-echo "${MSG_DONE}"
+echo "--> ${MSG_DONE}"
 
 ### Get required variables
 _get_user_variables
@@ -275,7 +275,7 @@ if [[ ${DESKTOP} ]]; then
     for SOURCE in "${DE_SOURCES[@]}"; do
         _check source "./${SOURCE}"
     done
-    echo "${MSG_DONE}"
+    echo "--> ${MSG_DONE}"
 
     # GPU Driver or kernel mode setting?
     _note "${MSG_MODSETTING}"
@@ -356,7 +356,7 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
 RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" > new_vars.log
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i -e "s/> _='Adding user inputs to logs'//g" "${INPUTS_LOG}"
-        echo "${MSG_DONE}"
+        echo "--> ${MSG_DONE}"
 
         ### Move logs to system
         _info "${MSG_MOVE_LOGS}"
