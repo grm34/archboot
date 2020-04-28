@@ -311,11 +311,12 @@ esac
 ### Mount
 _mount_partitions
 _note "${MSG_MOUNT}"
-sleep 2; echo
+sleep 1
 
-### Display user INFOS
+### Display user entries
 USER_ENTRIES=(LANGUAGE TIMEZONE HOST_NAME USER_NAME LINUX_FW KERNEL \
 DESKTOP DISPLAY_MAN GREETER AUR_HELPER POWER GPU_DRIVER HARD_VIDEO)
+_info "${MSG_USER_ENTRIES}"
 
 for ENTRY in "${USER_ENTRIES[@]}"; do
     if [[ ${!ENTRY} ]]; then
