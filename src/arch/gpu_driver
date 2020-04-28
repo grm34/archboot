@@ -14,13 +14,15 @@
 
 _get_gpu_driver() {
 
-    _info "Scanning 3D GPU Controller"
+    _info "${MSG_GET_GPU}"
 
     ### NVIDIA
     NVIDIA_CARD=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
+
     if [[ ${NVIDIA_CARD} ]]; then
-        _note "${NVIDIA_CARD##*: } detected!"
-        _confirm "Do you wish to install proprietary drivers?"
+        _note "${NVIDIA_CARD##*: } ${MSG_DETECTED}"
+        _confirm "${MSG_CONFIRM_INSTALL_GPUPRO}"
+
         case ${CONFIRM} in
 
             # Proprietary drivers
@@ -44,8 +46,9 @@ _get_gpu_driver() {
 
         ### AMD / ATI
         AMD_CARD=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
+
         if [[ ${AMD_CARD} ]]; then
-            _note "${AMD_CARD##*: } detected!"
+            _note "${AMD_CARD##*: } ${MSG_DETECTED}"
             export GPU_DRIVER="AMD_DRIVER"
             export OPENGL="OPENGL_AMD"
             export HARDVIDEO="HARDVIDEO_AMD"
@@ -54,15 +57,16 @@ _get_gpu_driver() {
 
             ### INTEL
             INTEL_CARD=$(lspci | grep -e VGA -e 3D | grep -i intel)
+
             if [[ ${INTEL_CARD} ]]; then
-                _note "${INTEL_CARD##*: } detected!"
+                _note "${INTEL_CARD##*: } ${MSG_DETECTED}"
                 export GPU_DRIVER="INTEL_DRIVER"
                 export OPENGL="OPENGL_INTEL"
                 export HARDVIDEO="HARDVIDEO_INTEL"
 
             ### DEFAULT
             else
-                _note "controller not found! Default driver will be used."
+                _note "${MSG_GPU_FALSE}"
                 export GPU_DRIVER="DEFAULT_DRIVER"
             fi
         fi
@@ -70,7 +74,8 @@ _get_gpu_driver() {
 
     ### OpenGL & Hardware Video Acceleration?
     if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" ]]; then
-    _confirm "Do you wish to install Hardware Video Acceleration?"
+        _confirm "${MSG_CONFIRM_HARDVIDEO}"
+
         case ${CONFIRM} in
             y|Y|yes|Yes|YES) export HARD_VIDEO="True";;
         esac
@@ -80,12 +85,12 @@ _get_gpu_driver() {
 _install_gpu_driver() {
 
     ### GPU Controller
-    _info "Installing 3D GPU Driver"
+    _info "${MSG_INSTALL_GPU_DRIVER}"
     _chroot "pacman --noconfirm --needed -S ${!GPU_DRIVER}"
 
     ### OpenGL & Hardware Video Acceleration
     if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" && ${HARD_VIDEO} ]]; then
-        _info "Installing OpenGL & Hardware Video Acceleration"
+        _info "${MSG_INSTALL_HARDVIDEO}"
         _chroot "pacman --noconfirm --needed -S ${!OPENGL} ${!HARDVIDEO}"
     fi
 }

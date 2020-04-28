@@ -34,9 +34,9 @@
 _default_partitioning_scheme() {
 
     ### Select drive to use
-    _info "Listing availables drives"
+    _info "${MSG_LIST_DRIVES}"
     lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
-    _prompt "Enter drive to use:" "(e.g., sda, nvme0n1)"
+    _prompt "${MSG_PROMPT_DRIVE}" "${MSG_DRIVE_EXAMPLE}"
     read -r DRIVE
 
     ### Check if valid drive
@@ -44,26 +44,27 @@ _default_partitioning_scheme() {
 
     ### Otherwise ask again
     until [[ ${CHECK} ]]; do
-        _info "Listing availables drives"
+        _info "${MSG_LIST_DRIVES}"
         lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
-        _prompt "Enter valid drive:" "(e.g., sda, hda, nvme0n1)"
+        _prompt "${MSG_PROMPT_VALID_DRIVE}" "${MSG_DRIVE_EXAMPLE}"
         read -r DRIVE
         CHECK=$(partprobe -d -s "/dev/${DRIVE}")
     done
 
     ### Check if drive is mounted
     if mount | grep "${DRIVE}"; then
-        _error "${DRIVE} is mounted!"
+        _error "${DRIVE} ${MSG_IS_MOUNTED}"
     fi
 
     ### Return selected drive
     export DRIVE="/dev/${DRIVE}"
 
     ### Prepare the drive
-    _info "Arch Linux will be installed on ${DRIVE}"
+    _info "${MSG_ARCH_DRIVE} ${DRIVE}"
     lsblk "${DRIVE}"
-    _note "WARNING! all data will be lost!"
-    _confirm "Format ${DRIVE} and create ${PART_TABLE} partition table?"
+    _note "${MSG_WARN_LOST_DATA}"
+    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} (${PART_TABLE} ==> ${DRIVE})?"
+
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
 
@@ -76,7 +77,7 @@ conv=notrunc status=progress
             printf "%s\nw" "${PART_CODE}" | fdisk --wipe=always "${DRIVE}"
             partprobe "${DRIVE}"; sleep 1;;
         *)
-            _error "installation aborted by user!";;
+            _error "${MSG_ARCH_ABORTED}";;
     esac
 
     ### Get optional partitions and set partitions list
@@ -85,10 +86,12 @@ conv=notrunc status=progress
     ### Create list to store partitions sizes
     PART_SIZES=(BOOT_SIZE SYSTEM_SIZE)
     SIZES=("512M" "25G")
+
     if [[ ${PARTITION[*]} =~ "SWAP_PARTITION" ]]; then
         PART_SIZES+=(SWAP_SIZE)
         SIZES+=("2G")
     fi
+
     if [[ ${PARTITION[*]} =~ "HOME_PARTITION" ]]; then
         PART_SIZES+=(HOME_SIZE)
         SIZES+=("100G")
@@ -101,23 +104,23 @@ conv=notrunc status=progress
 
         ## Free space for home?
         if [[ ${PART} == "HOME_SIZE" ]]; then
-            _confirm "Do you wish to use free space for ${PART_NAME,,}?"
+            _confirm "${MSG_CONFIRM_FREESPACE} ${PART_NAME,,}?"
             case ${CONFIRM} in
-                y|Y|yes|Yes|YES) PARTITION_SIZE="free space";;
+                y|Y|yes|Yes|YES) PARTITION_SIZE="freespace";;
             esac
         fi
 
         ## Otherwise ask partitions sizes
-        if [[ ${PARTITION_SIZE} != "free space" ]]; then
-            _note "partition size {M,G,T} (e.g., ${SIZES[${INDEX}]})"
-            _prompt "Enter ${PART_NAME,,} partition size:"
+        if [[ ${PARTITION_SIZE} != "freespace" ]]; then
+            _note "${MSG_PART_SIZE} {M,G,T} (e.g., ${SIZES[${INDEX}]})"
+            _prompt "${MSG_PROMPT_PART_SIZE} ${PART_NAME}:"
             read -r PARTITION_SIZE
 
             # Check if valid size (otherwise ask again)
             until [[ ${PARTITION_SIZE} \
 =~ ^[1-9]{1}[[0-9]{0,2}(M|G|T){1}$ ]]; do
-                _note "partition size {M,G,T} (e.g., ${SIZES[${INDEX}]})"
-                _prompt "Enter valid ${PART_NAME,,} partition size:"
+                _note "${MSG_PART_SIZE} {M,G,T} (e.g., ${SIZES[${INDEX}]})"
+                _prompt "${MSG_PROMPT_VALID_PART_SIZE} ${PART_NAME}:"
                 read -r PARTITION_SIZE
             done
         fi
@@ -129,9 +132,11 @@ conv=notrunc status=progress
 
     ### Create list to assign partitions sizes
     SIZES=("${BOOT_SIZE}" "${SYSTEM_SIZE}")
+
     if [[ ${PARTITION[*]} =~ "SWAP_PARTITION" ]]; then
         SIZES+=("${SWAP_SIZE}")
     fi
+
     if [[ ${PARTITION[*]} =~ "HOME_PARTITION" ]]; then
         SIZES+=("${HOME_SIZE}")
     fi
@@ -139,12 +144,14 @@ conv=notrunc status=progress
     ### Check disk space
     CHECK_SIZE=0
     DISK_SPACE=$(lsblk -b --output SIZE -n -d "${DRIVE}")
+
     for SIZE in "${SIZES[@]}"; do
         _dehumanise "${SIZE}"
         CHECK_SIZE=$((CHECK_SIZE + BYTES))
     done
+
     if [[ ${CHECK_SIZE} > ${DISK_SPACE} ]]; then
-        _error "you did not have enought disk space!"
+        _error "${MSG_ERROR_DISK_SPACE}"
     fi
 
     ### Set partition order
@@ -156,13 +163,15 @@ conv=notrunc status=progress
 
     ### Create and format partitions
     INDEX=0
+
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART//_PARTITION/}
 
         # Create partitions
-        _info "Creating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
+        _info "${MSG_CREATE_PART} (${PART_NAME,,} ==> ${SIZES[${INDEX}]})"
+
         if [[ ${PART} == "HOME_PARTITION" \
-&& ${HOME_SIZE} == "free space" ]]; then
+&& ${HOME_SIZE} == "freespace" ]]; then
             printf \
 "n\n%s\n\n\nw" "${PART_TYPE}" | fdisk --wipe=always "${DRIVE}"
         else
@@ -173,7 +182,7 @@ fdisk --wipe=always "${DRIVE}"
 
         # Set EFI partition type for boot (UEFI firmware only)
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
-            _info "Setting EFI partiton type on ${DRIVE}${ORDER[${INDEX}]}"
+            _info "${MSG_SET_EFI_PART} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n1\nef00\nw" | gdisk "${DRIVE}"
         fi
 
@@ -181,7 +190,8 @@ fdisk --wipe=always "${DRIVE}"
         partprobe "${DRIVE}"; sleep 1
 
         # Format partitions
-        _info "Formating ${PART_NAME,,} partition (${SIZES[${INDEX}]})"
+        _info "${MSG_FORMAT_PARTITION} (${PART_NAME,,}: ${SIZES[${INDEX}]})"
+
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
             yes | \
 _check mkfs."${BOOT_FILESYSTEM}" "${DRIVE}${ORDER[${INDEX}]}"
@@ -203,13 +213,14 @@ _custom_partitioning_scheme() {
     _get_user_partitions
 
     ### Get partitions drive ID
-    _info "Listing availables drives"
+    _info "${MSG_LIST_DRIVES}"
+
     for PART in "${PARTITION[@]}"; do
         lsblk | grep "NAME\|disk\|part"
         PART_NAME=${PART//_PARTITION/}
 
         # Get drive ID
-        _prompt "Enter ${PART_NAME,,} drive id:" "(e.g., sda2, nvme0n1p12)"
+        _prompt "${MSG_PROMPT_ID} ${PART_NAME,,}:" "${MSG_ID_EXAMPLE}"
         read -r DRIVE_ID
 
         # Check if valid partition
@@ -217,9 +228,9 @@ _custom_partitioning_scheme() {
 
         # Otherwise ask again
         until [[ ${CHECK} ]]; do
-            _info "Listing availables drives"
+            _info "${MSG_LIST_DRIVES}"
             lsblk | grep "NAME\|disk\|part"
-            _prompt "Enter valid ${PART_NAME,,} drive id:" "(e.g., sda1)"
+           _prompt "${MSG_PROMPT_VALIDID} ${PART_NAME,,}:" "${MSG_ID_EXAMPLE}"
             read -r DRIVE_ID
             CHECK=$(partprobe -d -s "/dev/${DRIVE_ID}")
         done
@@ -245,7 +256,8 @@ _get_user_partitions() {
     ### Get optional partitions
     for PART in "${OPTIONAL[@]}"; do
         PART_NAME=${PART//_PARTITION/}
-        _confirm "Do you wish to create ${PART_NAME,,} partition?"
+        _confirm "${MSG_CONFIRM_OPT_PART} ${PART_NAME}?"
+
         case ${CONFIRM} in
             y|Y|yes|Yes|YES) PARTITION+=("${PART}");;
         esac

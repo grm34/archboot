@@ -1,4 +1,6 @@
-*
+
+\!.github/*
+\!locale/*
 \!conf/00-keyboard.conf
 \!conf/language
 \!conf/loader.conf

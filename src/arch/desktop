@@ -16,26 +16,28 @@
 _install_desktop_environment() {
 
     ### Install Xorg
-    _info "Installing xorg server"
+    _info "${MSG_INSTALL_XORG}"
     _chroot "pacman --noconfirm --needed -S ${XORG}"
+
     case ${DESKTOP} in
 
         # Install WM dependencies
         AWESOME|I3|XMONAD)
-            _info "Installing WM dependencies"
+            _info "${MSG_INSTALL_WM_DEP}"
             _chroot "pacman --noconfirm --needed -S ${XORG_XINIT} ${WM_APPS}"
             ;;
     esac
 
     ### Install Numlock
-    _info "Installing numlock"
+    _info "${MSG_INSTALL_NUMLOCK}"
     _chroot "pacman --noconfirm --needed -S ${NUMLOCK}"
 
     ### Install Desktop Environment / Window Manager
-    _info "Installing ${DESKTOP,,}"
+    _info "${MSG_INSTALL_DESKTOP} (${DESKTOP,,})"
     _chroot "pacman --noconfirm --needed -S ${!DESKTOP}"
+
     if [[ ${DE_EXTRAS} ]]; then
-        _info "Installing ${DESKTOP,,} additionals packages"
+        _info "${MSG_INSTALL_DE_EXTRAS} ${DESKTOP,,}"
         _chroot "pacman --noconfirm --needed -S ${!DE_EXTRAS}"
     fi
 }
@@ -43,21 +45,21 @@ _install_desktop_environment() {
 _configure_desktop_environment() {
 
     ### Xorg keyboard layout
-    _info "Setting keyboard layout to ${KEYMAP^^}"
+    _info "${MSG_SET_KEYBOARD} ${KEYMAP^^}"
     sed -i -e "s/keymap_code/${KEYMAP}/g" 00-keyboard.conf
     mv -v 00-keyboard.conf /mnt/etc/X11/xorg.conf.d/00-keyboard.conf
-    echo "done"
+    echo "-> ${MSG_DONE}"
 
     ### Start WM with xinit
     case ${DESKTOP} in
         AWESOME|I3|XMONAD)
-            _info "Setting xinitrc for ${DESKTOP,,}"
-            echo "downloading xinitrc..."
+            _info "${MSG_SET_XINIT} ${DESKTOP,,}"
+            echo "-> ${MSG_DOWNLOADING} xinitrc..."
             _wget "${URL}/conf/xinitrc" && echo
             mv -v xinitrc "/mnt/home/${USER_NAME}/.xinitrc"
             echo "exec ${DESKTOP,,}" >> "/mnt/home/${USER_NAME}/.xinitrc"
             chmod 770 "/mnt/home/${USER_NAME}/.xinitrc"
-            echo "done"
+            echo "-> ${MSG_DONE}"
             ;;
     esac
 }
