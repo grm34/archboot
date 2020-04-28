@@ -216,7 +216,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     esac
 
     ### User Rights
-    _confirm "${MSG_CONFIRM_GROUP} ${USER_NAME}?"
+    _confirm "${MSG_CONFIRM_GROUP}"
 
     case ${CONFIRM} in
         y|Y|yes|Yes|YES) export POWER="True";;
@@ -226,14 +226,14 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
 _enable_user_rights() {
 
     ### Enable user in sudoers
-    _info "${MSG_INFO_SUDOERS} (${USER_NAME})"
+    _info "${MSG_INFO_SUDOERS}"
     printf "\n## %s privilege specification\n%s ALL=(ALL) ALL" \
 "${USER_NAME}" "${USER_NAME}" >> /mnt/etc/sudoers
     echo "-> ${MSG_DONE}"
 
     ### Add user to all groups
     if [[ ${POWER} ]]; then
-        _info "${MSG_INFO_ADD_GROUPS} (${USER_NAME})"
+        _info "${MSG_INFO_ADD_GROUPS}"
         _chroot "yes | pwck"
         _chroot "yes | grpck"
         GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
