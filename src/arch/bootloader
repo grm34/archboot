@@ -53,7 +53,7 @@ _install_bootloader() {
     else
 
         # Install Grub
-        _info "${MSG_INSTALL_GRUB}"
+        _info "${MSG_INSTALL_GRUB} ${DRIVE}"
         _chroot "pacman --noconfirm --needed -S ${GRUB}"
 
         if [[ ${NTFS} ]]; then
