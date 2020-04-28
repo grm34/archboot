@@ -20,8 +20,9 @@
 _install_display_manager() {
 
     ### Install Display Manager
-    _info "Installing ${DISPLAY_MAN,,} display manager"
+    _info "${MSG_INSTALL_DISPLAY} (${DISPLAY_MAN,,})"
     _chroot "pacman --noconfirm --needed -S ${!DISPLAY_MAN}"
+
     if [[ ${DISPLAY_MAN} == "XDM" ]]; then
         _chroot "systemctl enable ${DISPLAY_MAN,,}-archlinux"
     else
@@ -40,22 +41,22 @@ _install_display_manager() {
 
     ### Configure display manager
     if [[ ${DISPLAY_MAN} != "LIGHTDM" ]]; then
-        _info "Setting ${DISPLAY_MAN,,} display manager"
+        _info "${MSG_SET_DISPLAY} (${DISPLAY_MAN,,})"
     fi
 
     ### GDM
     if [[ ${DISPLAY_MAN} == "GDM" ]]; then
-        echo "downloading xprofile..."
+        echo "-> ${MSG_DOWNLOADING} xprofile..."
         _wget "${URL}/conf/xprofile" && echo
         mv -v xprofile /mnt/etc/xprofile
-        echo "done"
+        echo "-> ${MSG_DONE}"
 
     ### LIGHTDM
     elif [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
 
         # Install Greeter
         if [[ ${GREETER} != "DEEPIN_GREETER" ]]; then
-            _info "Installing lightdm greeter"
+            _info "${MSG_INSTALL_GREETER}"
             _chroot "pacman --noconfirm --needed -S ${!GREETER}"
         fi
 
@@ -68,7 +69,7 @@ _install_display_manager() {
         esac
 
         # Configure Greeter
-        _info "Setting ${DISPLAY_MAN,,} greeter"
+        _info "${MSG_SET_GREETER} (${DISPLAY_MAN,,})"
         DEFAULT_SESSION="#greeter-session=example-gtk-gnome"
         SESSION="greeter-session=${LIGHTDM_SESSION}"
         NUMON="greeter-setup-script=/usr/bin/numlockx on"
@@ -77,14 +78,14 @@ _install_display_manager() {
 "s|${DEFAULT_SESSION}|${SESSION}|g" /mnt/etc/lightdm/lightdm.conf
         sed -i -e \
 "s|${NUMOFF}|${NUMON}|g" /mnt/etc/lightdm/lightdm.conf
-        echo "done"
+        echo "-> ${MSG_DONE}"
 
     ### SDDM
     elif [[ ${DISPLAY_MAN} == "SDDM" ]]; then
         _chroot "sddm --example-config > /etc/sddm.conf"
         sed -i -e "s|Session=|Session=${SESSION}|g" /mnt/etc/sddm.conf
         sed -i -e "s/Numlock=none/Numlock=on/g" /mnt/etc/sddm.conf
-        echo "done"
+        echo "-> ${MSG_DONE}"
 
     ### LXDM
     elif [[ ${DISPLAY_MAN} == "LXDM" ]]; then
@@ -95,13 +96,13 @@ _install_display_manager() {
         sed -i -e \
 "s/white=/white=${USER_NAME}/g" /mnt/etc/lxdm/lxdm.conf
         sed -i -e "s/black=/black=root/g" /mnt/etc/lxdm/lxdm.conf
-        echo "done"
+        echo "-> ${MSG_DONE}"
 
     ### XDM
     elif [[ ${DISPLAY_MAN} == "XDM" ]]; then
         echo "${SESSION}" > "/mnt/home/${USER_NAME}/.xsession"
         chmod 770 "/mnt/home/${USER_NAME}/.xsession"
-        echo "done"
+        echo "-> ${MSG_DONE}"
     fi
 }
 
