@@ -16,7 +16,7 @@ If you know another language and are willing to help translate archbboot, here a
 - Follow pull request guidelines as described below.
 - Edit `.gitignore` file and remove the first line.
 - Create a new file for your language in `locale` folder.
-- Copy all the content of 'locale/english` in to it.
+- Copy all the content of `locale/english` in to it.
 - Implement your translations.
 - Create a new pull request to submit your language.
 
