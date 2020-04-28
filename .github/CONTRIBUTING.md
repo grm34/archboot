@@ -33,8 +33,7 @@ If you know another language and are willing to help translate archbboot, here a
 - Squash your commits into a single commit with git's [interactive rebase](https://help.github.com/articles/interactive-rebase).
 - Push your branch to your fork on Github, the remote `origin`.
 - From your fork open a pull request in the correct branch. Target the project's `dev` branch!
-- …
-- If the maintainer requests further changes just push them to your branch. The PR will be updated automatically.
+- Further changes are requested so just push them to your branch. The PR will be updated automatically.
 - Once the pull request is approved and merged you can pull the changes from `upstream` to your local repo and delete your extra branch(es).
 
 And last but not least: Always write your commit messages in the present tense. Your commit message should describe what the commit, when applied, does to the code – not what you did to the code.
