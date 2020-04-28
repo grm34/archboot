@@ -1,0 +1,72 @@
+#!/bin/bash
+
+#                        FIRMWARE DETECTION
+# ============================================================================
+# Here we detect if system is running on UEFI or BIOS firmware to properly
+# set partition table, code, type, boot filesystem and to store them.
+# Then we detect processor to properly define CPU microcode updates, and
+# we detect ntfs partition(s) to properly install ntfs support <ntfs-3g>.
+# ============================================================================
+
+_firmware() {
+
+    _info "${MSG_GET_FW}"
+
+    ### UEFI
+    if [ -d /sys/firmware/efi/efivars ]; then
+        export FIRMWARE="UEFI"
+        export PART_TABLE="GPT"
+        export PART_CODE="g"
+        export PART_TYPE=""
+        export MOUNT_TYPE="-t vfat "
+        export BOOT_FILESYSTEM="fat -F32"
+        _note "UEFI ${MSG_FW_TRUE}"
+
+    ### BIOS
+    else
+        export FIRMWARE="BIOS"
+        export PART_TABLE="MBR"
+        export PART_CODE="o"
+        export PART_TYPE="p\n"
+        export MOUNT_TYPE=""
+        export BOOT_FILESYSTEM="ext4"
+        _note "BIOS ${MSG_FW_TRUE}"
+    fi
+}
+
+_cpu() {
+
+    ### Get CPU
+    _info "${MSG_GET_CPU}"
+    CPU_LIST=(Intel AMD)
+
+    for CPU in "${CPU_LIST[@]}"; do
+        CHECK_CPU=$(lscpu | grep "${CPU}")
+        if [[ ${CHECK_CPU} ]]; then
+            _note "${CPU} ${MSG_CPU_TRUE}"
+            export MICROCODE="${CPU^^}_CPU"
+            export UCODE=${CPU,,}
+        fi
+    done
+
+    if [[ ! ${MICROCODE} ]]; then
+        _note "${MSG_UCODE_FALSE}"
+    fi
+}
+
+_ntfs() {
+
+    ### Get NTFS Partitions
+    _info "${MSG_GET_NTFS}"
+    CHECK_NTFS=$(lsblk -f | grep "ntfs")
+
+    if [[ ${CHECK_NTFS} ]]; then
+        _note "${MSG_NTFS_TRUE}"
+        export NTFS="True"
+    else
+        _note "${MSG_NTFS_FALSE}"
+    fi
+}
+
+# archboot by grm34 under Apache License 2.0
+# ============================================================================

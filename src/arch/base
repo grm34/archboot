@@ -1,0 +1,131 @@
+#!/bin/bash
+
+#                        ARCH LINUX BASE SYSTEM
+# ============================================================================
+# Here we install Arch Linux base system, linux kernel (optional), firmware
+# (optional), base-devel (AUR only) and CPU microcode updates (matching CPU).
+# Then we create user account with the previously defined password and
+# we install an AUR Helper (optional) <yay> <pamac-aur> <trizen> supported.
+# Last function is used to remove unused packages and to clean pacman cache.
+#
+# All steps are described in the official documentation:
+#
+#   https://wiki.archlinux.org/index.php/Installation_guide
+# ============================================================================
+
+_install_base() {
+
+    ### Install Base System
+    _info "${MSG_INSTALL_BASE} (${KERNEL_NAME,,})"
+    yes '' | pacstrap /mnt "${ARCH}" "${!KERNEL}" "${SUDO}"
+
+    ### Install Linux Firmware
+    if [[ ${LINUX_FW} ]]; then
+        _info "${MSG_INSTALL_FW}"
+        yes '' | pacstrap /mnt "${FW}"
+    fi
+
+    ### Install Base devel
+    if [[ ${AUR_HELPER} ]]; then
+        _info "${MSG_INSTALL_DEVEL}"
+        yes '' | pacstrap /mnt "${BASE_DEVEL}"
+    fi
+
+    ### Set Fstab
+    _info "${MSG_SET_FSTAB}"
+    genfstab -U -p /mnt >> /mnt/etc/fstab
+    cat < /mnt/etc/fstab | grep -v "Static information\|See fstab("
+
+    ### Set Timezone
+    _info "${MSG_SET_TIMEZONE} ${TIMEZONE}"
+    ln -sfv "/usr/share/zoneinfo/${TIMEZONE}" /mnt/etc/localtime
+    echo "-> ${MSG_DONE}"
+
+    ### Set Locale
+    _info "${MSG_SET_LOCALE} ${LANGUAGE}.UTF-8"
+    echo "${LANGUAGE}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+    _chroot "locale-gen"
+    _chroot "export LANG=${LANGUAGE}.UTF-8"
+    echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
+    echo "-> ${MSG_DONE}"
+
+    ### Set Vconsole
+    _info "${MSG_SET_VCONSOLE} ${KEYMAP^^}"
+    echo "KEYMAP=${KEYMAP}" > /mnt/etc/vconsole.conf
+    echo "-> ${MSG_DONE}"
+
+    ### Set Hostname
+    _info "${MSG_SET_HOSTNAME} ${HOST_NAME}"
+    echo "${HOST_NAME}" > /mnt/etc/hostname
+    echo "-> ${MSG_DONE}"
+
+    ### Set Root passwd
+    _info "${MSG_SET_ROOT}"
+    _chroot "echo 'root:${ROOTPASSWD}' | chpasswd"
+    echo "-> ${MSG_DONE}"
+
+    ### Install Network
+    _info "${MSG_INSTALL_NET}"
+    _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
+    _chroot "systemctl enable NetworkManager"
+
+    ### Install Microcode
+    if [[ ${MICROCODE} ]]; then
+        _info "${MSG_INSTALL_UCODE} ${MICROCODE/_/ } CPU"
+        _chroot "pacman --noconfirm --needed -S ${!MICROCODE}"
+    fi
+
+    ### Install NTFS support
+    if [[ ${NTFS} ]]; then
+        _info "${MSG_INSTALL_NTFS}"
+        _chroot "pacman --noconfirm --needed -S ${NTFS_SUPPORT}"
+    fi
+
+    ### Set User
+    _info "${MSG_SET_USER} ${USER_NAME}"
+    _chroot "useradd -g users -m -s /bin/bash ${USER_NAME}"
+    _chroot "echo '${USER_NAME}:${USERPASSWD}' | chpasswd"
+    echo "-> ${MSG_DONE}"
+}
+
+_install_AUR_helper() {
+    _info "${MSG_INSTALL_AUR} (${AUR_HELPER,,})"
+
+    ### Allow user to run sudo without passwd
+    sed -i -e \
+"s/${USER_NAME} ALL=(ALL) ALL/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/g" \
+/mnt/etc/sudoers
+
+    ### Clone AUR Helper from aur.archlinux.org
+    _chroot "cd /home/${USER_NAME} && sudo -u ${USER_NAME} \
+git clone https://aur.archlinux.org/${AUR_HELPER,,}.git"
+
+    ### Install AUR Helper
+    _chroot "cd /home/${USER_NAME}/${AUR_HELPER,,} && sudo -u ${USER_NAME} \
+makepkg --noconfirm --needed -sic"
+
+    ### Deny user to run sudo without passwd
+    sed -i -e \
+"s/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/${USER_NAME} ALL=(ALL) ALL/g" \
+/mnt/etc/sudoers
+
+    ### Clean AUR Helper sources
+    rm -rf "/mnt/home/${USER_NAME}/${AUR_HELPER,,}"
+}
+
+_clean_dependencies() {
+    _info "${MSG_CLEAN_CACHE}"
+
+    ### Remove unused dependencies
+    UNUSED_DEPENDENCIES=$(_chroot "pacman -Qdtq")
+
+    if [[ ${UNUSED_DEPENDENCIES} ]]; then
+        _chroot "pacman --noconfirm -Rcsn ${UNUSED_DEPENDENCIES}"
+    fi
+
+    ### Clean pacman cache
+    _chroot "pacman --noconfirm -Sc"
+}
+
+# archboot by grm34 under Apache License 2.0
+# ============================================================================
