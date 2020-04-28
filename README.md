@@ -20,7 +20,7 @@ and in order to get complete support, additional packages may be required.
 
 The only thing you need is one USB bootable device of [Arch Linux](https://mir.archlinux.fr/iso/latest)
 
-> You can obviously try it in a virtual machine first...
+> *You can obviously try it in a virtual machine first...*
 
 ## Usage
 
