@@ -210,21 +210,13 @@ else
 fi
 
 ### archboot language
-_confirm "Do you wish to use ${APPNAME} default language?"
-ARCHBOOT_LANGUAGE="ENGLISH"
-
-case ${CONFIRM} in
-    n|N|no|No|NO)
-        until [[ ${USER_LANGUAGE} =~ ^[1-2]$ ]]; do
-            _select "ENGLISH" "FRENCH"
-            read -r USER_LANGUAGE
-        done
-        LANGUAGE_CHOICE=(NONE ENGLISH FRENCH)
-        ARCHBOOT_LANGUAGE=${LANGUAGE_CHOICE[${USER_LANGUAGE}]}
-        ;;
-esac
-_info "Downloading ${ARCHBOOT_LANGUAGE,,} language pack"
-_wget "${URL}/locale/${ARCHBOOT_LANGUAGE,,}"
+until [[ ${USER_LANGUAGE} =~ ^[1-3]$ ]]; do
+    _select "ENGLISH" "FRENCH" "SPANISH"
+    read -r USER_LANGUAGE
+done
+LANGUAGE_CHOICE=(NONE ENGLISH FRENCH SPANISH)
+ARCHBOOT_LANGUAGE=${LANGUAGE_CHOICE[${USER_LANGUAGE}]}
+wget -q "${URL}/locale/${ARCHBOOT_LANGUAGE,,}"
 _check source "./${ARCHBOOT_LANGUAGE,,}"
 
 ### Download base sources
