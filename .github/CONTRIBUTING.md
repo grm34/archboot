@@ -14,6 +14,7 @@ If don't, just open a [new clear and descriptive issue](https://github.com/grm34
 If you know another language and are willing to help translate archboot, your help is much welcome! Here are the steps to get started:
 
 - Follow pull request guidelines as described below.
+- Edit `.gitignore` file and remove the first line.
 - Create a new file for your language in `locale` folder.
 - Copy all the content of 'locale/english` in to it.
 - Implement your translations.
