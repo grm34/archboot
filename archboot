@@ -118,7 +118,7 @@ _error() {
 }
 
 ### Cleanup on keyboard interrupt
-trap '_error "${MSG_KEYBOARD_INT}"' 1 2 3 6
+trap '_error "${MSG_KEYBOARD}"' 1 2 3 6
 
 ### Delete sources and umount partitions
 _cleanup() {
