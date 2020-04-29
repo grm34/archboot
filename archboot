@@ -55,7 +55,7 @@ ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
     ${BOLD}Languages${NC}
         -l, --lang      english
                         french
-                        german
+                        german (by @At1768)
 
 For more information, see the wiki: <https://github.com/grm34/archboot/wiki>"
 
