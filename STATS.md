@@ -1,10 +1,10 @@
 Language|files|blank|comment|code
 :-------|-------:|-------:|-------:|-------:
 Bourne Again Shell|15|339|447|1037
-Markdown|2|21|0|76
+Markdown|2|21|0|64
 Bourne Shell|1|8|8|24
 --------|--------|--------|--------|--------
-SUM:|18|368|455|1137
+SUM:|18|368|455|1125
 
 File|blank|comment|code
 :-------|-------:|-------:|-------:
@@ -24,7 +24,7 @@ src/apps/system_apps|11|13|16
 src/arch/mounting|9|15|13
 src/apps/display_apps|8|10|10
 conf/xinitrc|8|8|24
-README.md|20|0|41
-STATS.md|1|0|35
+README.md|20|0|35
+STATS.md|1|0|29
 --------|--------|--------|--------
-SUM:|368|455|1137
+SUM:|368|455|1125
