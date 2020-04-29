@@ -14,17 +14,16 @@ ${BLUE}┌─┐┬─┐┌─┐┬ ┬┌┐ ┌─┐┌─┐┌┬┐  ┌
 ┴ ┴┴└─└─┘┴ ┴└─┘└─┘└─┘ ┴   ┴ ┴┴└─└─┘┴ ┴  ┴┘└┘└─┘ ┴ ┴ ┴┴─┘┴─┘└─┘┴└─
 ${RED} Arch Linux Installer ${VERSION} - A script made with love by ${AUTHOR}
 ${NC}
-   Arch Linux is a light and fast distribution whose concept
-   is to remain  as simple  as possible. In the same purpose
-   this  script  performs  minimalist  installation, it only
-   installs the  required  packages  in order  to  give free
-   choice  to the  user.  Pretty  simple, it  just  asks for
-   language, hostname, username, the drive  to use, required
-   partitions size  and  if  you wish  to install  a desktop
-   environment. According to the chosen one  and in order to
-   get complete support, additional packages may be required
-   For more  information, take a look  at the  ${APPNAME} wiki
-"""
+  Arch Linux is a light and fast distribution whose concept is
+  to remain as  simple as possible. In the same purpose and in
+  order to give  free choice to the user, this script performs
+  minimal installation and only the  required packages will be
+  installed. Pretty simple  and customizable, some options are
+  supported like  AUR Helper, linux kernel, GPU driver, window
+  manager or desktop environement. According to the chosen one
+  and in order to get complete support additional packages may
+  be required. For more information on archboot, see the wiki.
+  """
 }
 
 #                      SHARED VARIABLES & FUNCTIONS
