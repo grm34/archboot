@@ -48,6 +48,10 @@ Take a look at **/var/log/archboot** for installation logs:
 
 *`cat /var/log/archboot/archboot*.log`*
 
+## Awesome contributors
+
+@At1768 `german translation`
+
 ## Official Documentation
 
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
