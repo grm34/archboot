@@ -29,11 +29,14 @@ ${NC}
 #                      SHARED VARIABLES & FUNCTIONS
 # ============================================================================
 # Here we define all required variables and functions to manage archboot.
-# Variables are pretty simple such as define required urls and shell colors.
-# Functions are used to display install steps, notes, errors or to do some
-# actions like to cleanup after fatal error, execute cmd in chrooted env,
-# select an option, ask some information to the user or to get install logs.
+# Variables are pretty simple such as define usage, urls and shell colors.
+# Functions are used to display help, install steps, notes, errors or to do
+# some actions like cleanup after fatal error, execute cmd in chrooted env,
+# select an option, ask some information to the user or get install logs.
 # ============================================================================
+
+### Default language
+ARCHBOOT_LANGUAGE="ENGLISH"
 
 ### Shell colors
 RED="\e[1;31m"; GREEN="\e[1;32m"; YELLOW="\e[1;33m"
@@ -59,6 +62,7 @@ For more information, see the wiki: <https://github.com/grm34/archboot/wiki>"
 # Transform long options to short ones
 for OPTION in "${@}"; do
     shift
+
     case ${OPTION} in
         "--help"|"?") set -- "${@}" "-h";;
         "--lang") set -- "${@}" "-l${*}";;
@@ -67,8 +71,6 @@ for OPTION in "${@}"; do
 done
 
 ### Option processing
-ARCHBOOT_LANGUAGE="ENGLISH"
-
 while getopts ':hl:' OPTION; do
     case ${OPTION} in
         h) echo -e "${USAGE}"; exit;;
@@ -77,16 +79,16 @@ while getopts ':hl:' OPTION; do
             echo -e "${RED}Error:${NC} missing argument for -${OPTARG}"
             rm -f old_vars.log; exit 1;;
         \?) echo -e "${USAGE}\n"
-            echo -e "${RED}Error:${NC} illegal option -${OPTARG}"
+            echo -e "${RED}Error:${NC} invalid option -${OPTARG}"
             rm -f old_vars.log; exit 1
         break
    esac
 done
 
-### remove options from positional parameters
+### Remove options from positional parameters
 shift $((OPTIND - 1))
 
-## Prevent running without args
+## Prevent running script without args
 if [[ $# != 0 ]]; then
     case ${@} in
         "--lang"|"-l"|"--help"|"-h"|"?") ;;
@@ -96,12 +98,12 @@ if [[ $# != 0 ]]; then
     esac
 fi
 
-### Github urls (current branch and gh-pages)
+### Github urls (current branch and gh-pages branch)
 export URL="https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
 export GHPAGES=\
 "https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
 
-### Default error msg (required when locale not already sourced)
+### Default error msg (required when locale not sourced)
 MSG_ERROR="you must reboot to prevent unreconized system changes."
 MSG_KEYBOARD="keyboard interrupt!"
 MSG_CLEANUP="Cleaning up sources"
