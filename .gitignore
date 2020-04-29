@@ -1,17 +1,26 @@
 *
-\!.github/*
-\!locale/*
+
+### locale
+\!locale/english
+\!locale/french
+\!locale/spanish
+
+### conf
 \!conf/00-keyboard.conf
 \!conf/language
 \!conf/loader.conf
 \!conf/timezone
 \!conf/xinitrc
 \!conf/xprofile
+
+### src/apps
+\!src/arch/base
 \!src/apps/desktop_apps
 \!src/apps/display_apps
 \!src/apps/gpu_apps
 \!src/apps/system_apps
-\!src/arch/base
+
+### src/arch
 \!src/arch/bootloader
 \!src/arch/desktop
 \!src/arch/display
@@ -21,7 +30,10 @@
 \!src/arch/mounting
 \!src/arch/partitioning
 \!src/arch/user
+
+### origin
 \!archboot
 \!LICENSE
 \!README.md
 \!STATS.md
+\!.github
