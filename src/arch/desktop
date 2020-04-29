@@ -25,7 +25,6 @@ _install_desktop_environment() {
         AWESOME|I3|XMONAD)
             _info "${MSG_INSTALL_WM_DEP}"
             _chroot "pacman --noconfirm --needed -S ${XORG_XINIT} ${WM_APPS}"
-            ;;
     esac
 
     ### Install Numlock
@@ -60,7 +59,6 @@ _configure_desktop_environment() {
             echo "exec ${DESKTOP,,}" >> "/mnt/home/${USER_NAME}/.xinitrc"
             chmod 770 "/mnt/home/${USER_NAME}/.xinitrc"
             echo "-> ${MSG_DONE}"
-            ;;
     esac
 }
 

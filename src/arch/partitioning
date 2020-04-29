@@ -77,7 +77,7 @@ conv=notrunc status=progress
             printf "%s\nw" "${PART_CODE}" | fdisk --wipe=always "${DRIVE}"
             partprobe "${DRIVE}"; sleep 1;;
         *)
-            _error "${MSG_ARCH_ABORTED}";;
+            _error "${MSG_ARCH_ABORTED}"
     esac
 
     ### Get optional partitions and set partitions list
@@ -106,7 +106,7 @@ conv=notrunc status=progress
         if [[ ${PART} == "HOME_SIZE" ]]; then
             _confirm "${MSG_CONFIRM_FREESPACE} ${PART_NAME,,}?"
             case ${CONFIRM} in
-                y|Y|yes|Yes|YES) PARTITION_SIZE="freespace";;
+                y|Y|yes|Yes|YES) PARTITION_SIZE="freespace"
             esac
         fi
 
@@ -259,7 +259,7 @@ _get_user_partitions() {
         _confirm "${MSG_CONFIRM_OPT_PART} ${PART_NAME}?"
 
         case ${CONFIRM} in
-            y|Y|yes|Yes|YES) PARTITION+=("${PART}");;
+            y|Y|yes|Yes|YES) PARTITION+=("${PART}")
         esac
     done
 

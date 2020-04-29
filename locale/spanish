@@ -5,6 +5,8 @@
 
 ### archboot
 export MSG_DONE="done"
+export MSG_INTERNET="Checking Internet connection"
+export MSG_ERROR_GIT="do not run archboot from git repository folder!"
 export MSG_ERROR="you must reboot to prevent unreconized system changes."
 export MSG_KEYBOARD="keyboard interrupt!"
 export MSG_CLEANUP="Cleaning up sources"

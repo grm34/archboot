@@ -31,16 +31,17 @@ _get_gpu_driver() {
                     LTS_KERNEL) export GPU_DRIVER="NVIDIA_LTS";;
                     HARDENED_KERNEL|ZEN_KERNEL)
                         export GPU_DRIVER="NVIDIA_DKMS";;
-                    DEFAULT_KERNEL) export GPU_DRIVER="NVIDIA_DRIVER";;
+                    DEFAULT_KERNEL) export GPU_DRIVER="NVIDIA_DRIVER"
                 esac
                 export OPENGL="OPENGL_NVIDIA"
-                export HARDVIDEO="HARVIDEO_NVIDIA";;
+                export HARDVIDEO="HARVIDEO_NVIDIA"
+                ;;
 
             # Opensource drivers
             *)
                 export GPU_DRIVER="NOUVEAU_DRIVER"
                 export OPENGL="OPENGL_NOUVEAU"
-                export HARDVIDEO="HARDVIDEO_NOUVEAU";;
+                export HARDVIDEO="HARDVIDEO_NOUVEAU"
         esac
     else
 
@@ -77,7 +78,7 @@ _get_gpu_driver() {
         _confirm "${MSG_CONFIRM_HARDVIDEO}"
 
         case ${CONFIRM} in
-            y|Y|yes|Yes|YES) export HARD_VIDEO="True";;
+            y|Y|yes|Yes|YES) export HARD_VIDEO="True"
         esac
     fi
 }

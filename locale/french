@@ -5,6 +5,8 @@
 
 ### archboot
 export MSG_DONE="fait"
+export MSG_INTERNET="Vérification de la connexion internet"
+export MSG_ERROR_GIT="ne lancez pas archboot depuis le dossier github!"
 export MSG_ERROR="redémarrez pour prévenir les modifications système non prises en charge."
 export MSG_KEYBOARD="interruption clavier utilisateur!"
 export MSG_CLEANUP="Nettoyage des sources"

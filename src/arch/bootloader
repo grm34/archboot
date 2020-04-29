@@ -38,7 +38,7 @@ _install_bootloader() {
         echo "linux /vmlinuz-${KERNEL_NAME,,}" >> "${BOOTCONF}"
 
         case ${UCODE} in
-            intel|amd) echo "initrd /${UCODE}-ucode.img" >> "${BOOTCONF}";;
+            intel|amd) echo "initrd /${UCODE}-ucode.img" >> "${BOOTCONF}"
         esac
 
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> "${BOOTCONF}"

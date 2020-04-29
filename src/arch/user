@@ -76,7 +76,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     _confirm "${MSG_CONFIRM_FW}"
 
     case ${CONFIRM} in
-        y|Y|yes|Yes|YES) export LINUX_FW="True";;
+        y|Y|yes|Yes|YES) export LINUX_FW="True"
     esac
 
     ### Linux Kernel
@@ -94,7 +94,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
             export KERNEL=${KERNEL_CHOICE[${KERNEL}]};;
 
         # Default kernel
-        *) export KERNEL="LINUX";;
+        *) export KERNEL="LINUX"
     esac
     export KERNEL_NAME=${KERNEL//_/-}
 
@@ -124,9 +124,8 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
 
                     case ${CONFIRM} in
                         y|Y|yes|Yes|YES)
-                            export DE_EXTRAS="${DESKTOP}_EXTRAS";;
+                            export DE_EXTRAS="${DESKTOP}_EXTRAS"
                     esac
-                ;;
             esac
             ;;
 
@@ -140,9 +139,8 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                         read -r DESKTOP
                     done
                     DESKTOP_CHOICE=(NONE AWESOME I3 XMONAD)
-                    export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]};;
+                    export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
             esac
-            ;;
     esac
 
     ### Display Manager
@@ -169,9 +167,8 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                         export DISPLAY_MAN="LIGHTDM";;
                     XFCE4|LXDE|LXQT|ENLIGHTENMENT)
                         export DISPLAY_MAN="LXDM";;
-                    *) export DISPLAY_MAN="XDM";;
+                    *) export DISPLAY_MAN="XDM"
                 esac
-                ;;
         esac
 
         ## LightDM Greeter
@@ -196,7 +193,6 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                         DEEPIN) export GREETER="DEEPIN_GREETER";;
                         *) export GREETER="GTK_GREETER";;
                     esac
-                    ;;
             esac
         fi
     fi
@@ -212,14 +208,13 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
             done
             AUR_CHOICE=(NONE YAY PAMAC-AUR TRIZEN)
             export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
-            ;;
     esac
 
     ### User Rights
     _confirm "${MSG_CONFIRM_GROUP}"
 
     case ${CONFIRM} in
-        y|Y|yes|Yes|YES) export POWER="True";;
+        y|Y|yes|Yes|YES) export POWER="True"
     esac
 }
 
