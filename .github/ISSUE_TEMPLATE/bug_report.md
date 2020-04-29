@@ -1,8 +1,8 @@
 ---
-name: Bug report
-about: Create a report to help archboot improve
+name: 'Bug report'
+about: 'Create a report to help archboot improve'
 title: ''
-labels: potential bug
+labels: 'potential bug'
 assignees: ''
 ---
 

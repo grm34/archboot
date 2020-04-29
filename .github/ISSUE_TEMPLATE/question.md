@@ -1,8 +1,8 @@
 ---
-name: Question
-about: Ask a question about archboot
+name: 'Question'
+about: 'Ask a question about archboot'
 title: ''
-labels: question
+labels: 'question'
 assignees: ''
 ---
 

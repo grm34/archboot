@@ -1,8 +1,8 @@
 ---
-name: Feature request
-about: Suggest an idea for archboot
+name: 'Feature request'
+about: 'Suggest an idea for archboot'
 title: ''
-labels: feature request
+labels: 'feature request'
 assignees: ''
 ---
 
