@@ -218,27 +218,6 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     esac
 }
 
-_enable_user_rights() {
-
-    ### Enable user in sudoers
-    _info "${MSG_INFO_SUDOERS}"
-    printf "\n## %s privilege specification\n%s ALL=(ALL) ALL" \
-"${USER_NAME}" "${USER_NAME}" >> /mnt/etc/sudoers
-    echo "-> ${MSG_DONE}"
-
-    ### Add user to all groups
-    if [[ ${POWER} ]]; then
-        _info "${MSG_INFO_ADD_GROUPS}"
-        _chroot "yes | pwck"
-        _chroot "yes | grpck"
-        GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
-
-        for GROUP in ${GROUPLIST}; do
-            _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
-        done
-    fi
-}
-
 _root_passwd() {
     unset A
 
@@ -271,6 +250,28 @@ _user_passwd() {
     _prompt "${MSG_CONFIRM_USER_PASSWD} ${USER_NAME}:"
     read -rs D
     echo
+}
+
+_enable_user_rights() {
+
+    ### Enable user in sudoers
+    _info "${MSG_INFO_SUDOERS}"
+    printf "\n## %s privilege specification\n%s ALL=(ALL) ALL" \
+"${USER_NAME}" "${USER_NAME}" >> /mnt/etc/sudoers
+    echo "-> ${MSG_DONE}"
+
+    ### Add user to all groups
+    if [[ ${POWER} ]]; then
+        _info "${MSG_INFO_ADD_GROUPS}"
+        _chroot "yes | pwck"
+        _chroot "yes | grpck"
+        GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
+
+        for GROUP in ${GROUPLIST}; do
+            _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
+            echo "-> ${MSG_DONE}"
+        done
+    fi
 }
 
 # archboot by grm34 under Apache License 2.0

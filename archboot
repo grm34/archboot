@@ -224,6 +224,7 @@ _clock() {
     _check ntpd -qg
     _check hwclock --systohc
     timedatectl show
+    echo "-> ${MSG_DONE}"
 }
 
 ### Say goodbye
@@ -423,6 +424,7 @@ RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=\|OPTION\|USAGE" > new_vars.log
         mkdir -v /mnt/var/log/"${APPNAME}"
         mv -v "${INSTALL_LOG}" "/mnt/var/log/${APPNAME}/"
         mv -v "${INPUTS_LOG}" "/mnt/var/log/${APPNAME}/"
+        echo "-> ${MSG_DONE}"
 
         ### Success notes
         _note "${MSG_ARCH_SUCCESS}"

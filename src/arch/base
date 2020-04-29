@@ -18,17 +18,20 @@ _install_base() {
     ### Install Base System
     _info "${MSG_INSTALL_BASE} (${KERNEL_NAME,,})"
     yes '' | pacstrap /mnt "${ARCH}" "${!KERNEL}" "${SUDO}"
+    echo "-> ${MSG_DONE}"
 
     ### Install Linux Firmware
     if [[ ${LINUX_FW} ]]; then
         _info "${MSG_INSTALL_FW}"
         yes '' | pacstrap /mnt "${FW}"
+        echo "-> ${MSG_DONE}"
     fi
 
     ### Install Base devel
     if [[ ${AUR_HELPER} ]]; then
         _info "${MSG_INSTALL_DEVEL}"
         yes '' | pacstrap /mnt "${BASE_DEVEL}"
+        echo "-> ${MSG_DONE}"
     fi
 
     ### Set Fstab
@@ -68,17 +71,20 @@ _install_base() {
     _info "${MSG_INSTALL_NET}"
     _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
+    echo "-> ${MSG_DONE}"
 
     ### Install Microcode
     if [[ ${MICROCODE} ]]; then
         _info "${MSG_INSTALL_UCODE} ${MICROCODE/_/ } CPU"
         _chroot "pacman --noconfirm --needed -S ${!MICROCODE}"
+        echo "-> ${MSG_DONE}"
     fi
 
     ### Install NTFS support
     if [[ ${NTFS} ]]; then
         _info "${MSG_INSTALL_NTFS}"
         _chroot "pacman --noconfirm --needed -S ${NTFS_SUPPORT}"
+        echo "-> ${MSG_DONE}"
     fi
 
     ### Set User
@@ -111,6 +117,7 @@ makepkg --noconfirm --needed -sic"
 
     ### Clean AUR Helper sources
     rm -rf "/mnt/home/${USER_NAME}/${AUR_HELPER,,}"
+    echo "-> ${MSG_DONE}"
 }
 
 _clean_dependencies() {
@@ -125,6 +132,7 @@ _clean_dependencies() {
 
     ### Clean pacman cache
     _chroot "pacman --noconfirm -Sc"
+    echo "-> ${MSG_DONE}"
 }
 
 # archboot by grm34 under Apache License 2.0

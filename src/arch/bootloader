@@ -19,6 +19,7 @@ _install_bootloader() {
         # Install systemd-boot
         _info "${MSG_INSTALL_SYSTEMDBOOT} ${BOOT_PARTITION}"
         _chroot "bootctl --path=/boot install"
+        echo "-> ${MSG_DONE}"
 
         # Replace loader.conf
         _info "${MSG_SYSTEMDBOOT_LOADER}"
@@ -48,6 +49,7 @@ _install_bootloader() {
         # Update systemd-boot
         _info "${MSG_SYSTEMDBOOT_UPDATE}"
         _chroot "bootctl --path=/boot update"
+        echo "-> ${MSG_DONE}"
 
     ### BIOS Firmware > Grub
     else
@@ -60,11 +62,13 @@ _install_bootloader() {
             _chroot "pacman --noconfirm --needed -S ${GRUB_EXTRAS}"
         fi
         _chroot "grub-install --target=i386-pc ${DRIVE}"
+        echo "-> ${MSG_DONE}"
 
         # Download Themes
         _info "${MSG_DL_GRUB_THEME}"
         _wget "${GHPAGES}/assets/images/background.png" && echo
         _chroot "git clone git://github.com/Generator/Grub2-themes.git"
+        echo "-> ${MSG_DONE}"
 
         # Install Themes
         _info "${MSG_INSTALL_GRUB_THEME}"

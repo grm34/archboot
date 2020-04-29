@@ -28,6 +28,7 @@ _install_display_manager() {
     else
         _chroot "systemctl enable ${DISPLAY_MAN,,}"
     fi
+    echo "-> ${MSG_DONE}"
 
     ### Start command of each DE or WM
     case ${DESKTOP} in
@@ -58,6 +59,7 @@ _install_display_manager() {
         if [[ ${GREETER} != "DEEPIN_GREETER" ]]; then
             _info "${MSG_INSTALL_GREETER}"
             _chroot "pacman --noconfirm --needed -S ${!GREETER}"
+            echo "-> ${MSG_DONE}"
         fi
 
         # Define Greeter Session

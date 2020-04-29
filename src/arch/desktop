@@ -18,6 +18,7 @@ _install_desktop_environment() {
     ### Install Xorg
     _info "${MSG_INSTALL_XORG}"
     _chroot "pacman --noconfirm --needed -S ${XORG}"
+    echo "-> ${MSG_DONE}"
 
     case ${DESKTOP} in
 
@@ -25,19 +26,23 @@ _install_desktop_environment() {
         AWESOME|I3|XMONAD)
             _info "${MSG_INSTALL_WM_DEP}"
             _chroot "pacman --noconfirm --needed -S ${XORG_XINIT} ${WM_APPS}"
+            echo "-> ${MSG_DONE}"
     esac
 
     ### Install Numlock
     _info "${MSG_INSTALL_NUMLOCK}"
     _chroot "pacman --noconfirm --needed -S ${NUMLOCK}"
+    echo "-> ${MSG_DONE}"
 
     ### Install Desktop Environment / Window Manager
     _info "${MSG_INSTALL_DESKTOP} (${DESKTOP,,})"
     _chroot "pacman --noconfirm --needed -S ${!DESKTOP}"
+    echo "-> ${MSG_DONE}"
 
     if [[ ${DE_EXTRAS} ]]; then
         _info "${MSG_INSTALL_DE_EXTRAS} ${DESKTOP,,}"
         _chroot "pacman --noconfirm --needed -S ${!DE_EXTRAS}"
+        echo "-> ${MSG_DONE}"
     fi
 }
 
