@@ -75,10 +75,10 @@ while getopts ':hl:' OPTION; do
         l) ARCHBOOT_LANGUAGE=${OPTARG};;
         :) echo -e "${USAGE}\n"
             echo -e "${RED}Error:${NC} missing argument for -${OPTARG}"
-            rm -f old_vars.log;  exit 1;;
+            rm -f old_vars.log; exit 1;;
         \?) echo -e "${USAGE}\n"
             echo -e "${RED}Error:${NC} illegal option -${OPTARG}"
-            rm -f old_vars.log;  exit 1
+            rm -f old_vars.log; break; exit 1
    esac
 done
 
