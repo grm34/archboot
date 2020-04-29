@@ -5,8 +5,8 @@
 
 ### archboot
 export MSG_DONE="fertig"
-export MSG_INTERNET="Checking Internet connection"
-export MSG_ERROR_GIT="do not run archboot from git repository folder!"
+export MSG_INTERNET="Prüfe Internetverbindung"
+export MSG_ERROR_GIT="Starten Sie Archboot nicht aus dem Github-Ordner!"
 export MSG_ERROR="Neustart erforderlich, um nicht unterstützte Systemänderungen zu verhindern"
 export MSG_KEYBOARD="Unterbrechung durch Tastatureingabe des Benutzers!"
 export MSG_CLEANUP="Quellen werden bereinigt"
