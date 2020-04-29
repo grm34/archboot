@@ -9,7 +9,7 @@ If you want to contribute to archboot project and make it better, your help is v
 Found a problem? Want a new feature? Have a question? First of all see if your issue, question or idea has [already been reported](https://github.com/grm34/archboot/issues).
 If don't, just open a [new clear and descriptive issue](https://github.com/grm34/archboot/issues/new/choose).
 
-### Help translate archboot
+### Help translate archboot ♥
 
 If you know another language and are willing to help translate archboot, here are the steps to get started:
 
