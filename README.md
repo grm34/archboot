@@ -50,7 +50,7 @@ Take a look at **/var/log/archboot** for installation logs:
 
 ## Awesome contributors
 
-**@At1768** `german translation`
+* **@At1768** `german translation`
 
 ## Official Documentation
 
