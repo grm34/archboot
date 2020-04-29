@@ -44,11 +44,11 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 ## Logs
 
-Take a look at **/var/log/archboot** for installation logs:
+Take a look at **/var/log/archboot** for installation logfiles:
 
 *`cat /var/log/archboot/archboot*.log`*
 
-## Awesome contributors
+## Awesome Contributors
 
 * **@At1768** `german translation`
 
