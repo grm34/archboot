@@ -81,7 +81,6 @@ while getopts ':hl:' OPTION; do
         \?) echo -e "${USAGE}\n"
             echo -e "${RED}Error:${NC} invalid option -${OPTARG}"
             rm -f old_vars.log; exit 1
-        break
    esac
 done
 
@@ -414,7 +413,7 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
         ### Get user inputs logs
         _info "${MSG_INPUTS_LOGS}"
         set | grep -v "MSG_\|A=\|B=\|C=\|D=\|ROOTPASSWD=\|USERPASSWD=\|\
-RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=" > new_vars.log
+RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=\|OPTION\|USAGE" > new_vars.log
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i "$ d" "${INPUTS_LOG}"
         echo "-> ${MSG_DONE}"
