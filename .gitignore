@@ -1,9 +1,9 @@
-*
+
 
 ### locale
 \!locale/english
 \!locale/french
-\!locale/spanish
+\!locale/german
 
 ### conf
 \!conf/00-keyboard.conf
