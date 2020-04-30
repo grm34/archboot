@@ -27,7 +27,7 @@ ${NC}
   """
 }
 
-#                      SHARED VARIABLES & FUNCTIONS
+#                     SHARED VARIABLES AND FUNCTIONS
 # ============================================================================
 # Here we define all required variables and functions to manage archboot.
 # Guideline: functions always start with '_' and vars are always UPPERCASE.
@@ -164,7 +164,7 @@ _exit_msg() {
 ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 }
 
-#                         MANAGE HELP AND USAGE
+#                             HELP AND USAGE
 # ============================================================================
 # Here we manage help and usage to properly describe and run archboot.
 # The only options are to display help message and to select script language.
@@ -345,7 +345,7 @@ if [[ ${DESKTOP} ]]; then
     esac
 fi
 
-#               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
+#              PREPARE THE SYSTEM - FORMAT AND MOUNT PARTITIONS
 # ============================================================================
 # Here we detect firmware, processor and ntfs partition(s) to properly
 # define partition settings, cpu microcode updates and ntfs support (GRUB).
@@ -454,7 +454,7 @@ RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=\|OPTION\|USAGE" > new_vars.log
         _error "${MSG_ARCH_ABORTED}"
 esac
 
-#               CLEANUP SOURCES - UMOUNT PARTITIONS - REBOOT
+#                   CLEANUP SOURCES AND UMOUNT PARTITIONS
 # ============================================================================
 # And here we go! We can now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.
