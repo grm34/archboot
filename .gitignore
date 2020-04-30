@@ -1,17 +1,5 @@
 *
 
-### locale
-\!locale/english
-\!locale/french
-\!locale/german
-
-### src/apps
-\!src/arch/base
-\!src/apps/desktop_apps
-\!src/apps/display_apps
-\!src/apps/gpu_apps
-\!src/apps/system_apps
-
 ### src/arch
 \!src/arch/bootloader
 \!src/arch/desktop
