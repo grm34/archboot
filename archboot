@@ -311,7 +311,7 @@ for SOURCE in "${BASE_SOURCES[@]}"; do
 done
 echo "-> ${MSG_DONE}"
 
-### Get required variables
+### Get user variables (src/arch/user)
 _get_user_variables
 
 ### Desktop Environment
