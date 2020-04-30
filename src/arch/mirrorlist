@@ -12,9 +12,7 @@ _mirrorlist() {
 
     ### Get user country code from ipinfo.io API
     _info "${MSG_GET_MIRRORS}"
-    COUNTRY=\
-$(curl -s ipinfo.io/ | grep "country" | \
-sed 's/  "country": "//' | sed 's/",//')
+    COUNTRY=$(curl -s ipinfo.io/country)
 
     ### Update mirrorlist if country code properly detected
     if [[ ${COUNTRY} =~ ^[A-Z]{2}$ ]]; then
@@ -22,8 +20,7 @@ sed 's/  "country": "//' | sed 's/",//')
         _note "${COUNTRY} ${MSG_MIRRORS_TRUE}"
 
         # Get corresponding mirrors from archlinux.org
-        curl -s \
-"https://www.archlinux.org/mirrorlist/?country=${COUNTRY}\
+        curl -s "https://www.archlinux.org/mirrorlist/?country=${COUNTRY}\
 &use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' \
 > /etc/pacman.d/mirrorlist
 
@@ -40,9 +37,7 @@ _timezone() {
 
     ### Get user timezone from ipinfo.io API
     _info "${MSG_GET_TIMEZONE}"
-    TIMEZONE=\
-$(curl -s ipinfo.io/ | grep "timezone" | \
-sed 's/  "timezone": "//' | sed 's/",//')
+    TIMEZONE=$(curl -s ipinfo.io/timezone)
 
     ### Update timezone if properly detected
     if grep -Fxq "${TIMEZONE}" ./timezone; then
