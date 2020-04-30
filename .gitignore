@@ -1,27 +1,8 @@
-*
 
-### src/arch
-\!src/arch/bootloader
-\!src/arch/desktop
-\!src/arch/display
-\!src/arch/firmware
-\!src/arch/gpu_driver
-\!src/arch/mirrorlist
-\!src/arch/mounting
-\!src/arch/partitioning
-\!src/arch/user
-
-### src/conf
-\!src/conf/00-keyboard.conf
-\!src/conf/language
-\!src/conf/loader.conf
-\!src/conf/timezone
-\!src/conf/xinitrc
-\!src/conf/xprofile
-
-### origin
-\!archboot
-\!LICENSE
+\!_layouts/default.html
+\!assets/css/custom.css
+\!assets/css/style.scss
+\!assets/images/*.png
+\!_config.yml
+\!CNAME
 \!README.md
-\!STATS.md
-\!.github

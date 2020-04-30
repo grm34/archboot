@@ -1,0 +1,15 @@
+title: archboot
+description: Arch Linux Installer
+url: https://www.archboot.org
+image: /assets/images/logo.png
+logo: /assets/images/favicon.ico
+author: grm34
+lang: en-US
+theme: jekyll-theme-slate
+show_downloads: True
+google_analytics: UA-162039588-1
+plugins:
+  - jekyll-seo-tag
+github:
+  zip_url: https://github.com/grm34/archboot/archive/v2.9.9.zip
+  tar_url: https://github.com/grm34/archboot/archive/v2.9.9.tar.gz
