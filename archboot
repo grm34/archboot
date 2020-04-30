@@ -7,6 +7,7 @@ BRANCH="dev"
 AUTHOR="grm34"
 LICENSE="Apache License 2.0"
 
+### Display script banner
 _archboot_banner() {
     echo -e """
 ${BLUE}┌─┐┬─┐┌─┐┬ ┬┌┐ ┌─┐┌─┐┌┬┐  ┌─┐┬─┐┌─┐┬ ┬  ┬┌┐┌┌─┐┌┬┐┌─┐┬  ┬  ┌─┐┬─┐
@@ -30,16 +31,18 @@ ${NC}
 # ============================================================================
 # Here we define all required variables and functions to manage archboot.
 # Guideline: functions always start with '_' and vars are always UPPERCASE.
-# Variables are pretty simple such as define repository url and shell colors.
-# Functions are used to handle install steps, notes, errors or to do some
-# actions like cleanup after fatal error, execute cmd in chrooted env,
-# select an option, ask some information to the user or get install logs.
+#
+# - Variables are pretty simple such as define script language, shell colors,
+#   repository url or error messages (required when locale vars unsourced).
+# - Functions are used to handle install steps, notes, errors or to do some
+#   actions like cleanup after fatal error, execute command(s) in chrooted
+#   environment, select an option or to ask some information to the user.
 # ============================================================================
 
 ### Default language
 ARCHBOOT_LANGUAGE="english"
 
-### Default error msg (required when locale not sourced)
+### Default error msg (required when locale vars unsourced)
 MSG_ERROR="you must reboot to prevent unreconized system changes."
 MSG_ERROR_GIT="do not run archboot from git repository folder!"
 MSG_KEYBOARD="keyboard interrupt!"
@@ -163,9 +166,9 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 #                         MANAGE HELP AND USAGE
 # ============================================================================
 # Here we manage help and usage to properly describe archboot. Options are
-# pretty simple, only to show help message/usage and to select language.
+# also pretty simple, only to show help message/usage and to select language.
 # We first prevent user argument errors by simply matching options before
-# running process. Usage: sh archboot [options] (e.g., sh archboot -l french)
+# run processing. Usage: sh archboot [options] (e.g., sh archboot -l french)
 # ============================================================================
 
 ### Help/usage (--help or -h)
@@ -215,7 +218,7 @@ for OPTION in "${@}"; do
     esac
 done
 
-### Option processing (h=help, l=lang, :=missing)
+### Option processing (h: --help, l: --lang, : missing)
 while getopts ':hl:' OPTION; do
     case ${OPTION} in
         h) echo -e "${USAGE}"; rm -f old_vars.log; _exit_msg; exit 0;;
@@ -243,10 +246,12 @@ done
 #             START SCRIPT - IMPORT SOURCES - GET USER VARIABLES
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
-# Sources are sorted by type: applications <src/apps> & scripts <src/arch>
-# Then we can ask for user variables and we store them to run install.
-# In case of desktop environment, we import additional sources and we
-# scan for 3D GPU controller to properly define appropriate drivers.
+# Sources are sorted by type:
+#     - Arch Linux paquages <src/apps>
+#     - archboot scripts <src/arch>
+# Then we can ask user variables and we properly store them. In case of DE/WM
+# we import additional sources like display manager and we get GPU controller
+# to properly set appropriate drivers with hardware video acceleration.
 # Kernel mode setting support: in this case no GPU Driver will be installed.
 # ============================================================================
 
@@ -278,7 +283,7 @@ case ${CONFIRM} in
         _wget "${URL}/src/arch/firmware"       # to get firmware
         _wget "${URL}/src/arch/mirrorlist"     # to get mirrorlist & timezone
         _wget "${URL}/src/arch/mounting"       # to mount partitions & swap
-        _wget "${URL}/src/arch/partitioning"   # to define/create partitions
+        _wget "${URL}/src/arch/partitioning"   # to set/create partitions
         _wget "${URL}/src/arch/user"           # to get user variables
         _wget "${URL}/src/apps/system_apps"    # to get system apps
         _wget "${URL}/conf/language"           # to get language code
@@ -335,9 +340,9 @@ fi
 #               PREPARE THE SYSTEM - FORMAT - MOUNT PARTITIONS
 # ============================================================================
 # Here we detect firmware, processor and ntfs partition(s) to properly
-# define partitions settings, cpu microcode updates and ntfs support.
+# define partition settings, cpu microcode updates and ntfs support (GRUB).
 # Then we get fastest mirrors, user timezone and we properly define them.
-# We can configure live system clock (NTP) and create installation logfiles.
+# Then we configure live system clock (NTP) and we create installation logs.
 # Finally we run partitioning, we activate SWAP and we mount the partitions.
 # ============================================================================
 
@@ -362,12 +367,12 @@ case ${CONFIRM} in
     *) _custom_partitioning_scheme                     # custom
 esac
 
-### Mount (src/arch/mounting)
+### Mount <src/arch/mounting>
 _mount_partitions
 _note "${MSG_MOUNT}"
 sleep 1
 
-### Display user entries
+### Display user entries (so user can see them before running install)
 USER_ENTRIES=(LANGUAGE TIMEZONE HOST_NAME USER_NAME LINUX_FW KERNEL \
 DESKTOP DISPLAY_MAN GREETER AUR_HELPER POWER GPU_DRIVER HARD_VIDEO)
 _info "${MSG_USER_ENTRIES}"
@@ -381,13 +386,12 @@ done
 #                         ARCH LINUX INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted
-# and user variables stored so we can start Arch Linux installation.
+# and user variables stored, so we can start now Arch Linux installation.
 # First step is to install base system and second to install bootloader.
 # In case of desktop environment or window manager, we install GPU Drivers
-# and Display Manager. Then we install an AUR Helper (optional).
-# We use <tee> to get full installation logs of all those steps.
+# and Display Manager. We install an Arch User Repository Helper (optional).
+# We use <tee> to get installation logs of those steps </var/log/archboot>.
 # If system won't start DE/WM after reboot, check the logs and open an issue.
-# Take a look at /var/log/archboot for the full installation logs.
 # ============================================================================
 
 _confirm "${MSG_CONFIRM_ARCH}"
