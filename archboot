@@ -34,6 +34,7 @@ ${NC}
 #
 # - Variables are pretty simple such as define script language, shell colors,
 #   repository url or error messages (required when locale vars unsourced).
+#
 # - Functions are used to handle install steps, notes, errors or to do some
 #   actions like cleanup after fatal error, execute command(s) in chrooted
 #   environment, select an option or to ask some information to the user.
@@ -165,10 +166,11 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 
 #                         MANAGE HELP AND USAGE
 # ============================================================================
-# Here we manage help and usage to properly describe archboot. Options are
-# also pretty simple, only to show help message/usage and to select language.
-# We first prevent user argument errors by simply matching options before
-# run processing. Usage: sh archboot [options] (e.g., sh archboot -l french)
+# Here we manage help and usage to properly describe and run archboot.
+# The only options are to display help message and to select script language.
+# We prevent user argument errors by matching options before run processing.
+#
+# Usage: sh archboot [options] (e.g., sh archboot -l french)
 # ============================================================================
 
 ### Help/usage (--help or -h)
@@ -246,12 +248,16 @@ done
 #             START SCRIPT - IMPORT SOURCES - GET USER VARIABLES
 # ============================================================================
 # Here we check internet connection before downloading and importing sources.
+#
 # Sources are sorted by type:
+#
 #     - Arch Linux paquages <src/apps>
 #     - archboot scripts <src/arch>
+#
 # Then we can ask user variables and we properly store them. In case of DE/WM
 # we import additional sources like display manager and we get GPU controller
 # to properly set appropriate drivers with hardware video acceleration.
+#
 # Kernel mode setting support: in this case no GPU Driver will be installed.
 # ============================================================================
 
@@ -343,6 +349,7 @@ fi
 # define partition settings, cpu microcode updates and ntfs support (GRUB).
 # Then we get fastest mirrors, user timezone and we properly define them.
 # Then we configure live system clock (NTP) and we create installation logs.
+#
 # Finally we run partitioning, we activate SWAP and we mount the partitions.
 # ============================================================================
 
@@ -390,6 +397,7 @@ done
 # First step is to install base system and second to install bootloader.
 # In case of desktop environment or window manager, we install GPU Drivers
 # and Display Manager. We install an Arch User Repository Helper (optional).
+#
 # We use <tee> to get installation logs of those steps </var/log/archboot>.
 # If system won't start DE/WM after reboot, check the logs and open an issue.
 # ============================================================================
@@ -448,6 +456,7 @@ esac
 # ============================================================================
 # And here we go! We can now cleanup sources, umount all partitions and
 # reboot the computer to restart on our fresh Arch Linux installation.
+#
 # Telegram chat: t.me/archboot - Have fun, take care and give a star!
 # ============================================================================
 
