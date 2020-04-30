@@ -29,6 +29,7 @@ ${NC}
 #                      SHARED VARIABLES & FUNCTIONS
 # ============================================================================
 # Here we define all required variables and functions to manage archboot.
+# Guideline: functions always start with '_' and vars are always UPPERCASE.
 # Variables are pretty simple such as define repository url and shell colors.
 # Functions are used to handle install steps, notes, errors or to do some
 # actions like cleanup after fatal error, execute cmd in chrooted env,
@@ -48,7 +49,7 @@ MSG_CLEANUP="Cleaning up sources"
 RED="\e[1;31m"; GREEN="\e[1;32m"; YELLOW="\e[1;33m"; GREY="\e[3;93m"
 BLUE="\e[1;34m"; CYAN="\e[1;36m"; BOLD="\e[1;37m"; NC="\e[0m"
 
-### Github urls (current branch and gh-pages branch)
+### Github urls (current branch, gh-pages branch)
 export URL="https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
 export GHPAGES=\
 "https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
@@ -99,7 +100,7 @@ _select() {
 
 ### Download show progress bar only
 _wget() {
-    wget "${1}" -q --show-progress
+    wget "${1}" --quiet --show-progress
 }
 
 ### Execute action in chrooted environment
@@ -135,10 +136,12 @@ mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
 00-keyboard.conf language loader.conf timezone xinitrc xprofile \
 background.png Grub2-themes archboot* *_vars.log english french german)
 
+    # Sources (rm)
     for SOURCE in "${SRC[@]}"; do
         if [[ -f "${SOURCE}" ]]; then rm -rfv "${SOURCE}"; fi
     done
 
+    # Partitions (umount)
     if mount | grep /mnt; then umount -Rfv /mnt; fi
 }
 
@@ -198,7 +201,7 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 # running process. Usage: sh archboot [options] (e.g., sh archboot -l french)
 # ============================================================================
 
-### Usage
+### Help/usage (--help or -h)
 USAGE=\
 "${BLUE}Arch Linux Installer - A script made with love by ${AUTHOR}${NC}
 
@@ -223,7 +226,7 @@ if [[ ${#} -gt 2 ]]; then
     rm -f old_vars.log; _exit_msg; exit 1
 fi
 
-### Match legal option or exit
+### Prevent valid option (--lang, -l, --help, -h)
 read -ra ARGS <<< "${@}"
 
 if [[ ${#} == 0 || ${ARGS[0]} =~ ^(-l$|--lang$|-h$|--help$) ]]; then
@@ -245,7 +248,7 @@ for OPTION in "${@}"; do
     esac
 done
 
-### Option processing
+### Option processing (h=help, l=lang, :=missing)
 while getopts ':hl:' OPTION; do
     case ${OPTION} in
         h) echo -e "${USAGE}"; rm -f old_vars.log; _exit_msg; exit 0;;
@@ -280,14 +283,14 @@ done
 # Kernel mode setting support: in this case no GPU Driver will be installed.
 # ============================================================================
 
-### Set language
+### Set script language
 _check wget -q "${URL}/locale/${ARCHBOOT_LANGUAGE,,}"
 _check source "./${ARCHBOOT_LANGUAGE,,}"
 
-### Display archboot banner
+### Display banner
 _archboot_banner
 
-### Check Internet Connection
+### Check internet connection
 _info "${MSG_INTERNET}"
 INTERNET=$(ping -c 1 archlinux.org)
 
@@ -353,7 +356,7 @@ if [[ ${DESKTOP} ]]; then
     done
     echo "-> ${MSG_DONE}"
 
-    # GPU Driver or kernel mode setting?
+    # Kernel mode setting || GPU driver (src/arch/gpu_driver)
     _note "${MSG_MODSETTING}"
     _confirm "${MSG_CONFIRM_GPU}"
 
@@ -371,10 +374,10 @@ fi
 # Finally we run partitioning, we activate SWAP and we mount the partitions.
 # ============================================================================
 
-### Prepare the system
+### Prepare the system (src/arch/firmware, src/arch/mirrorlist, archboot)
 _firmware; _cpu; _ntfs; _mirrorlist; _timezone; _clock; _logs
 
-### Partitioning
+### Partitioning (src/arch/partitioning)
 _note "${MSG_CUSTOM_PART_NOTE}"
 _confirm "${MSG_CONFIRM_DRIVE}"
 
@@ -383,7 +386,7 @@ case ${CONFIRM} in
     *) _custom_partitioning_scheme
 esac
 
-### Mount
+### Mount (src/arch/mounting)
 _mount_partitions
 _note "${MSG_MOUNT}"
 sleep 1
@@ -416,26 +419,26 @@ _confirm "${MSG_CONFIRM_ARCH}"
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
 
-        ### Install Arch Linux base system
+        ### Arch Linux base system (src/arch/base, src/arch/bootloader)
         (_install_base; _install_bootloader) 2>&1 | tee -a "${INSTALL_LOG}"
 
-        ### Install GPU Driver
+        ### GPU Driver (src/arch/gpu_driver)
         if [[ ${GPU_DRIVER} ]]; then
             (_install_gpu_driver) 2>&1 | tee -a "${INSTALL_LOG}"
         fi
 
-        ### Install DE / WM / DM
+        ### DE / WM / DM (src/arch/desktop, src/arch/display, src/arch/user)
         if [[ ${DESKTOP} ]]; then
             (_install_desktop_environment; _configure_desktop_environment; \
 _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
         fi
 
-        ### Install AUR Helper
+        ### Install AUR Helper (src/arch/base)
         if [[ ${AUR_HELPER} ]]; then
             (_install_AUR_helper) 2>&1 | tee -a "${INSTALL_LOG}"
         fi
 
-        ### Clean cache and remove unused dependencies
+        ### Clean cache and unused dependencies (src/arch/base)
         (_clean_dependencies) 2>&1 | tee -a "${INSTALL_LOG}"
 
         ### Get user inputs logs
@@ -453,11 +456,11 @@ RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=\|OPTION\|USAGE" > new_vars.log
         mv -v "${INPUTS_LOG}" "/mnt/var/log/${APPNAME}/"
         echo "-> ${MSG_DONE}"
 
-        ### Success notes
+        ### Success note
         _note "${MSG_ARCH_SUCCESS}"
         ;;
     *)
-        ### Install aborted
+        ### Installation aborted
         _error "${MSG_ARCH_ABORTED}"
 esac
 
