@@ -166,8 +166,12 @@ _logs() {
 _clock() {
     _info "${MSG_CLOCK}"
     _check timedatectl set-timezone "${TIMEZONE}"
-    _check timedatectl set-ntp true
-    _check ntpd -qg
+    GET_IP=$(curl -s ipinfo.io/ip)
+    CHECK_UDP123=$(nmap -Pn -sU "${GET_IP}" -p 123 | grep "open")
+    if [[ ${CHECK_UDP123} ]]; then
+        _check timedatectl set-ntp true
+        _check ntpd -qg
+    fi
     _check hwclock --systohc
     timedatectl show
     echo "-> ${MSG_DONE}"
