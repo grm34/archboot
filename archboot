@@ -189,7 +189,7 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 
 ### Usage
 USAGE=\
-${BLUE}"Arch Linux Installer - A script made with love by ${AUTHOR}${NC}
+"${BLUE}Arch Linux Installer - A script made with love by ${AUTHOR}${NC}
 
 ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
 
