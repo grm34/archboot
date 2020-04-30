@@ -1,17 +1,9 @@
-*
+
 
 ### locale
 \!locale/english
 \!locale/french
 \!locale/german
-
-### conf
-\!conf/00-keyboard.conf
-\!conf/language
-\!conf/loader.conf
-\!conf/timezone
-\!conf/xinitrc
-\!conf/xprofile
 
 ### src/apps
 \!src/arch/base
@@ -30,6 +22,14 @@
 \!src/arch/mounting
 \!src/arch/partitioning
 \!src/arch/user
+
+### src/conf
+\!src/conf/00-keyboard.conf
+\!src/conf/language
+\!src/conf/loader.conf
+\!src/conf/timezone
+\!src/conf/xinitrc
+\!src/conf/xprofile
 
 ### origin
 \!archboot

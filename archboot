@@ -251,8 +251,9 @@ done
 #
 # Sources are sorted by type:
 #
-#     - Arch Linux paquages <src/apps>
-#     - archboot scripts <src/arch>
+#     - Arch Linux paquages    <src/apps>
+#     - archboot scripts       <src/arch>
+#     - config files           <src/conf>
 #
 # Then we can ask user variables and we properly store them. In case of DE/WM
 # we import additional sources like display manager and we get GPU controller
@@ -292,8 +293,8 @@ case ${CONFIRM} in
         _wget "${URL}/src/arch/partitioning"   # to set/create partitions
         _wget "${URL}/src/arch/user"           # to get user variables
         _wget "${URL}/src/apps/system_apps"    # to get system apps
-        _wget "${URL}/conf/language"           # to get language code
-        _wget "${URL}/conf/timezone"           # to get timezone code
+        _wget "${URL}/src/conf/language"       # to get language code
+        _wget "${URL}/src/conf/timezone"       # to get timezone code
         ;;
     *) _cleanup; _exit_msg; exit 0
 esac
@@ -323,7 +324,7 @@ if [[ ${DESKTOP} ]]; then
     _wget "${URL}/src/apps/desktop_apps"   # to get Desktop apps
     _wget "${URL}/src/apps/display_apps"   # to get Display Manager apps
     _wget "${URL}/src/apps/gpu_apps"       # to get GPU Driver apps
-    _wget "${URL}/conf/00-keyboard.conf"   # to set keyboard layout
+    _wget "${URL}/src/conf/00-keyboard.conf"   # to set keyboard layout
 
     # Import desktop sources
     _info "${MSG_IMPORT_SRC_DE}"
