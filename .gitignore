@@ -1,6 +1,26 @@
 *
 
+### docs
+\!docs/ISSUE_TEMPLATE/bug_report.md
+\!docs/ISSUE_TEMPLATE/config.yml
+\!docs/ISSUE_TEMPLATE/feature_request.md
+\!docs/ISSUE_TEMPLATE/question.md
+\!docs/CONTRIBUTING.md
+\!docs/PULL_REQUEST_TEMPLATE.md
+
+### locale
+\!locale/english
+\!locale/french
+\!locale/german
+
+### src/apps
+\!src/arch/desktop_apps
+\!src/arch/display_apps
+\!src/arch/gpu_apps
+\!src/arch/system_apps
+
 ### src/arch
+\!src/arch/base
 \!src/arch/bootloader
 \!src/arch/desktop
 \!src/arch/display
@@ -24,4 +44,3 @@
 \!LICENSE
 \!README.md
 \!STATS.md
-\!.github
