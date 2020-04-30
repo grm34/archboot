@@ -154,39 +154,6 @@ _reboot() {
     reboot; exit 0
 }
 
-### Set logfiles
-_logs() {
-    _info "${MSG_SET_LOGS}"
-    DATETIME=$(_check date '+%d-%m-%Y_%Hh%M')
-    INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
-    INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
-    _archboot_banner > "${INSTALL_LOG}"
-    _archboot_banner > "${INPUTS_LOG}"
-    echo "-> ${MSG_DONE}"
-}
-
-### Set system clock
-_clock() {
-    _info "${MSG_CLOCK}"
-    _check timedatectl set-timezone "${TIMEZONE}"
-
-    # Ensure UDP 123 is open
-    GET_IP=$(curl -s ipinfo.io/ip)
-    CHECK_IP=$(echo "${GET_IP}" | grep "error")
-    if [[ ! ${CHECK_IP} ]]; then
-        CHECK_UDP123=$(nmap -Pn -sU "${GET_IP}" -p 123 | grep "open")
-
-        # Update clock to NTP
-        if [[ ${CHECK_UDP123} ]]; then
-            _check timedatectl set-ntp true
-            _check ntpd -qg
-            _check hwclock --systohc
-        fi
-    fi
-    timedatectl show
-    echo "-> ${MSG_DONE}"
-}
-
 ### Say goodbye
 _exit_msg() {
     echo -e "\n${GREEN}<<< ${BLUE}${APPNAME} ${VERSION} ${BOLD}by \
@@ -370,20 +337,29 @@ fi
 # Here we detect firmware, processor and ntfs partition(s) to properly
 # define partitions settings, cpu microcode updates and ntfs support.
 # Then we get fastest mirrors, user timezone and we properly define them.
-# Now we can configure live system NTP and create installation logfiles.
+# We can configure live system clock (NTP) and create installation logfiles.
 # Finally we run partitioning, we activate SWAP and we mount the partitions.
 # ============================================================================
 
-### Prepare the system (src/arch/firmware, src/arch/mirrorlist, archboot)
-_firmware; _cpu; _ntfs; _mirrorlist; _timezone; _clock; _logs
+### Prepare the system (src/arch/firmware, src/arch/mirrorlist)
+_firmware; _cpu; _ntfs; _mirrorlist; _timezone; _clock
+
+### Set logfiles
+_info "${MSG_SET_LOGS}"
+DATETIME=$(_check date '+%d-%m-%Y_%Hh%M')
+INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
+INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
+_archboot_banner > "${INSTALL_LOG}"
+_archboot_banner > "${INPUTS_LOG}"
+echo "-> ${MSG_DONE}"
 
 ### Partitioning (src/arch/partitioning)
 _note "${MSG_CUSTOM_PART_NOTE}"
 _confirm "${MSG_CONFIRM_DRIVE}"
 
 case ${CONFIRM} in
-    y|Y|yes|Yes|YES) _default_partitioning_scheme;;
-    *) _custom_partitioning_scheme
+    y|Y|yes|Yes|YES) _default_partitioning_scheme;;    # default
+    *) _custom_partitioning_scheme                     # custom
 esac
 
 ### Mount (src/arch/mounting)
