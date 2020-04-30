@@ -254,6 +254,7 @@ done
 #     - Arch Linux paquages    <src/apps>
 #     - archboot scripts       <src/arch>
 #     - config files           <src/conf>
+#     - archboot language      <locale>
 #
 # Then we can ask user variables and we properly store them. In case of DE/WM
 # we import additional sources like display manager and we get GPU controller
