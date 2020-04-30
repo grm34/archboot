@@ -21,7 +21,7 @@ ${NC}
   minimal installation and only the  required packages will be
   installed. Pretty simple  and customizable, some options are
   supported like  AUR Helper, linux kernel, GPU driver, window
-  manager or desktop environement. According to the chosen one
+  manager or  desktop environment. According to the chosen one
   and in order to get complete support additional packages may
   be required. For more information on archboot, see the wiki.
   """
