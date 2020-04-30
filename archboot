@@ -167,10 +167,13 @@ _clock() {
     _info "${MSG_CLOCK}"
     _check timedatectl set-timezone "${TIMEZONE}"
     GET_IP=$(curl -s ipinfo.io/ip)
-    CHECK_UDP123=$(nmap -Pn -sU "${GET_IP}" -p 123 | grep "open")
-    if [[ ${CHECK_UDP123} ]]; then
-        _check timedatectl set-ntp true
-        _check ntpd -qg
+    CHECK_IP=$(echo "${ZONE}" | grep "error")
+    if [[ ! ${CHECK_IP} ]]; then
+        CHECK_UDP123=$(nmap -Pn -sU "${GET_IP}" -p 123 | grep "open")
+        if [[ ${CHECK_UDP123} ]]; then
+            _check timedatectl set-ntp true
+            _check ntpd -qg
+        fi
     fi
     _check hwclock --systohc
     timedatectl show
