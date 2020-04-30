@@ -28,8 +28,9 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 *`wget tiny.cc/archboot-dev && sh archboot-dev`*
 
-* To run archboot in your language append: *`--lang <language>`*
-* To list available languages run: *`sh archboot --help`*
+* Options:
+  * To run it in your language append *`--lang <language>`*
+  * To list available languages *`sh archboot --help`*
 
 ## Wiki
 
