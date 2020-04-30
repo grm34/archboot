@@ -348,7 +348,7 @@ fi
 #              PREPARE THE SYSTEM - FORMAT AND MOUNT PARTITIONS
 # ============================================================================
 # Here we detect firmware, processor and ntfs partition(s) to properly
-# define partition settings, cpu microcode updates and ntfs support (GRUB).
+# define partition settings, cpu microcode updates and ntfs support.
 # Then we get fastest mirrors, user timezone and we properly define them.
 # Then we configure live system clock (NTP) and we create installation logs.
 #
