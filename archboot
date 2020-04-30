@@ -355,8 +355,9 @@ fi
 # Finally we run partitioning, we activate SWAP and we mount the partitions.
 # ============================================================================
 
-### Prepare the system (src/arch/firmware, src/arch/mirrorlist)
-_firmware; _cpu; _ntfs; _mirrorlist; _timezone; _clock
+### Prepare the system
+_firmware; _cpu; _ntfs            # (src/arch/mirrorlist)
+_mirrorlist; _timezone; _clock    # (src/arch/firmware)
 
 ### Set logfiles
 _info "${MSG_SET_LOGS}"
@@ -372,11 +373,11 @@ _note "${MSG_CUSTOM_PART_NOTE}"
 _confirm "${MSG_CONFIRM_DRIVE}"
 
 case ${CONFIRM} in
-    y|Y|yes|Yes|YES) _default_partitioning_scheme;;    # default
-    *) _custom_partitioning_scheme                     # custom
+    y|Y|yes|Yes|YES) _default_partitioning_scheme;;    # (default)
+    *) _custom_partitioning_scheme                     # (custom)
 esac
 
-### Mount <src/arch/mounting>
+### Mount (src/arch/mounting)
 _mount_partitions
 _note "${MSG_MOUNT}"
 sleep 1
