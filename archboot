@@ -30,7 +30,7 @@ ${NC}
 # ============================================================================
 # Here we define all required variables and functions to manage archboot.
 # Variables are pretty simple such as define usage, urls and shell colors.
-# Functions are used to display help, install steps, notes, errors or to do
+# Functions are used to handle help, install steps, notes, errors or to do
 # some actions like cleanup after fatal error, execute cmd in chrooted env,
 # select an option, ask some information to the user or get install logs.
 # ============================================================================
