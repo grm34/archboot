@@ -319,12 +319,12 @@ if [[ ${DESKTOP} ]]; then
 
     # Download desktop sources
     _info "${MSG_DL_SRC_DE}"
-    _wget "${URL}/src/arch/desktop"        # to install Desktop Environment
-    _wget "${URL}/src/arch/display"        # to install Display Manager
-    _wget "${URL}/src/arch/gpu_driver"     # to scan/install GPU Driver
-    _wget "${URL}/src/apps/desktop_apps"   # to get Desktop apps
-    _wget "${URL}/src/apps/display_apps"   # to get Display Manager apps
-    _wget "${URL}/src/apps/gpu_apps"       # to get GPU Driver apps
+    _wget "${URL}/src/arch/desktop"            # to install DE/WM
+    _wget "${URL}/src/arch/display"            # to install Display Manager
+    _wget "${URL}/src/arch/gpu_driver"         # to get/install GPU Driver
+    _wget "${URL}/src/apps/desktop_apps"       # to get Desktop apps
+    _wget "${URL}/src/apps/display_apps"       # to get Display Manager apps
+    _wget "${URL}/src/apps/gpu_apps"           # to get GPU Driver apps
     _wget "${URL}/src/conf/00-keyboard.conf"   # to set keyboard layout
 
     # Import desktop sources
