@@ -5,4 +5,5 @@
 \!assets/images/*.png
 \!_config.yml
 \!CNAME
+\!LICENSE
 \!README.md
