@@ -208,6 +208,18 @@ else
     rm -f old_vars.log; _exit_msg; exit 1
 fi
 
+### Prevent valid language and load keyboard table
+if [[ ${#} == 2 ]]; then
+    case ${ARGS[1]} in
+        english) true;;
+        french) loadkeys fr;;
+        german) loadkeys de;;
+        *) echo -e "${RED}Error:${NC} invalid language ${ARGS[1]}"
+            echo -e "${USAGE}"
+        r   m -f old_vars.log; _exit_msg; exit 1
+    esac
+fi
+
 ### Transform long options to short ones
 for OPTION in "${@}"; do
     shift
