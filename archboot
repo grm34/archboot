@@ -191,6 +191,18 @@ ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
 ${BOLD}For more information, see the wiki: \
 ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 
+### Ensure valid option
+read -ra ARGS <<< "${@}"
+
+if [[ ${#} == 0 || ${ARGS[0]} =~ \
+^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then
+    true
+else
+    echo -e "${RED}Error:${NC} invalid option ${ARGS[0]}"
+    echo -e "${USAGE}"
+    rm -f old_vars.log; _exit_msg; exit 1
+fi
+
 ### Transform long options to short ones
 for OPTION in "${@}"; do
     shift
