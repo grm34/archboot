@@ -160,7 +160,7 @@ _reboot() {
 ### Say goodbye
 _exit_msg() {
     echo -e "\n${GREEN}<<< ${BLUE}${APPNAME} ${VERSION} ${BOLD}by \
-${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}\n"""
+${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 }
 
 #                             HELP AND USAGE
