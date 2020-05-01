@@ -186,12 +186,12 @@ ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
     ${BOLD}Language${NC}
         -l, --lang          english
                             french
-                            german (by @At1768)
+                            german      (by @At1768)
 
     ${BOLD}Keyboard${NC}
         -k, --keyboard      language code
-                            run loadkeys on start
-                            e.q., --keyboard fr
+                            (run loadkeys on start)
+                            (e.q., --keyboard fr)
 
 ${BOLD}For more information, see the wiki: \
 ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
