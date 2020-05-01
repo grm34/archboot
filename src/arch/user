@@ -6,7 +6,7 @@
 #
 #    Required variables:
 #
-#      LANGUAGE.......: full list is available in the wiki
+#      USER_LANG......: full list is available in the wiki
 #      KEYMAP.........: keymap language code for keyboard
 #      HOST_NAME......: computer name such as <my-favorite-computer>
 #      ROOTPASSWD.....: at least 6 chars long with 1 letter & 1 digit
@@ -28,15 +28,15 @@
 _get_user_variables() {
 
     ### Language
-    until grep -Fxq "${LANGUAGE}" ./language; do
+    until grep -Fxq "${USER_LANG}" ./language; do
         _note "${MSG_WIKI_EXAMPLE}"
         _prompt "${MSG_PROMPT_LANGUAGE}" "${MSG_LANGUAGE_EXAMPLE}"
-        read -r LANGUAGE
+        read -r USER_LANG
     done
-    export LANGUAGE
+    export USER_LANG
 
     ### Keymap
-    KEYMAP=$(echo "${LANGUAGE}" | cut -d'_' -f 1)
+    KEYMAP=$(echo "${USER_LANG}" | cut -d'_' -f 1)
     export KEYMAP
 
     ### Hostname
