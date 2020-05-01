@@ -24,16 +24,16 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 > *For AZERTY keyboard use LOADKEYS by running `loqdkeys fr`*
 
-**3.** Download and run **archboot** script:
+**3.** Download and run Arch Linux Installer:
 
 * *`wget tiny.cc/archboot`*
 * *`sh archboot`*
 
 * Options:
-  * To list available languages append *`--help`*
   * To run it in your language append *`--lang`* or *`-l <language>`*
+  * To list available languages or to view help run *`sh archboot --help`*
   * To run `loadkeys` on start append *`--keyboard`* or *`-k <language code>`*
-  * E.q., *`sh archboot --lang french`*
+  * E.q., *`sh archboot --lang french --keyboard fr`*
   * ⚠️ *`--lang`* set only installer language *(all [languages](https://github.com/grm34/archboot/wiki/Language-code) are supported for Arch Linux)*.
 
 ### Wiki
