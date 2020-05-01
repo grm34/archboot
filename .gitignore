@@ -1,12 +1,12 @@
 *
 
-### docs
-\!docs/ISSUE_TEMPLATE/bug_report.md
-\!docs/ISSUE_TEMPLATE/config.yml
-\!docs/ISSUE_TEMPLATE/feature_request.md
-\!docs/ISSUE_TEMPLATE/question.md
-\!docs/CONTRIBUTING.md
-\!docs/PULL_REQUEST_TEMPLATE.md
+### templates
+\!.github/ISSUE_TEMPLATE/bug_report.md
+\!.github/ISSUE_TEMPLATE/config.yml
+\!.github/ISSUE_TEMPLATE/feature_request.md
+\!.github/ISSUE_TEMPLATE/question.md
+\!.github/CONTRIBUTING.md
+\!.github/PULL_REQUEST_TEMPLATE.md
 
 ### locale
 \!locale/english
