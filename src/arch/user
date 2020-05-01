@@ -126,8 +126,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                         y|Y|yes|Yes|YES)
                             export DE_EXTRAS="${DESKTOP}_EXTRAS"
                     esac
-            esac
-            ;;
+            esac;;
 
         ## Window Manager
         *) _confirm "${MSG_CONFIRM_DISPLAY}"
@@ -156,8 +155,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                     read -r DISPLAY_MAN
                 done
                 DISPLAY_CHOICE=(NONE GDM LIGHTDM SDDM LXDM XDM)
-                export DISPLAY_MAN=${DISPLAY_CHOICE[${DISPLAY_MAN}]}
-                ;;
+                export DISPLAY_MAN=${DISPLAY_CHOICE[${DISPLAY_MAN}]};;
 
             # Default display manager
             *) case ${DESKTOP} in
@@ -185,8 +183,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                     done
                     GREETER_CHOICE=\
 (NONE GTK_GREETER PANTHEON_GREETER WEBKIT_GREETER LITARVAN_GREETER)
-                    export GREETER=${GREETER_CHOICE[${GREETER}]}
-                    ;;
+                    export GREETER=${GREETER_CHOICE[${GREETER}]};;
 
                 # Default Greeter
                 *) case ${DESKTOP} in

@@ -34,8 +34,7 @@ _get_gpu_driver() {
                     DEFAULT_KERNEL) export GPU_DRIVER="NVIDIA_DRIVER"
                 esac
                 export OPENGL="OPENGL_NVIDIA"
-                export HARDVIDEO="HARVIDEO_NVIDIA"
-                ;;
+                export HARDVIDEO="HARVIDEO_NVIDIA";;
 
             # Opensource drivers
             *)
