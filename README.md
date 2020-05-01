@@ -43,7 +43,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 * [Custom Partitioning](https://github.com/grm34/archboot/wiki/Custom-Partitioning)
 * [Custom Linux Kernel](https://github.com/grm34/archboot/wiki/Custom-Linux-Kernel)
 * [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
-* [Contributing](https://github.com/grm34/archboot/blob/master/docs/CONTRIBUTING.md)
+* [Contributing](https://github.com/grm34/archboot/blob/master/.github/CONTRIBUTING.md)
 
 ### Logs
 
