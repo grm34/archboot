@@ -191,9 +191,10 @@ ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
 ${BOLD}For more information, see the wiki: \
 ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 
-### Ensure valid option
+# Get arguments list
 read -ra ARGS <<< "${@}"
 
+### Ensure valid option
 if [[ ${#} == 0 || ${ARGS[0]} =~ \
 ^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then
     true
@@ -204,7 +205,7 @@ else
 fi
 
 ### Transform long options to short ones
-for OPTION in "${@}"; do
+for OPTION in "${ARGS[@]}"; do
     shift
     case ${OPTION} in
         "--help") set -- "${OPTION}" "-h";;
@@ -229,6 +230,7 @@ while getopts 'hl:k:' OPTION; do
                 echo -e "${USAGE}"
                 rm -f old_vars.log; _exit_msg; exit 1
             fi;;
+
         # Keyboard (-k, --keyboard)
         k)  LOADKEYS=$(loadkeys -q "${OPTARG}")
             if [[ ${LOADKEYS} -ne 1 ]]; then
