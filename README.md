@@ -20,9 +20,9 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 **1.** Reboot computer, open Boot Selection Menu and boot on the USB device
 
-**2.** Select *Boot Arch Linux (x86_64)* on the install menu of Arch Linux
+**2.** Select `Boot Arch Linux (x86_64)` on the install menu of Arch Linux
 
-> *For AZERTY keyboard use LOADKEYS by running: `loqdkeys fr`*
+> *For AZERTY keyboard use* `loadkeys` *by running: `loqdkeys fr`*
 
 **3.** Download and run Arch Linux Installer:
 
@@ -34,7 +34,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
   * To list available languages or to view help run *`sh archboot --help`*
   * To run `loadkeys` on start append *`--keyboard`* or *`-k <language code>`*
   * E.q., *`sh archboot --lang french --keyboard fr`*
-  * ⚠️ *`--lang`* set only installer language *(all [languages](https://github.com/grm34/archboot/wiki/Language-code) are supported for Arch Linux)*.
+  * ⚠️ `--lang` set only installer language *(all [languages](https://github.com/grm34/archboot/wiki/Language-code) are supported for Arch Linux)*.
 
 ## Wiki
 
@@ -49,9 +49,9 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 ## Logs
 
-Take a look at **/var/log/archboot** for installation logfiles:
+Take a look in `/var/log/archboot` folder for installation logfiles.
 
-*`cat /var/log/archboot/archboot*.log`*
+* E.q., *`cat /var/log/archboot/archboot*.log`*
 
 ## Awesome Contributors
 
@@ -61,6 +61,7 @@ Take a look at **/var/log/archboot** for installation logfiles:
 
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
 * [USB Flash Installation Media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
+* [Arch Linux Applications](https://wiki.archlinux.org/index.php/List_of_applications)
 
 [![footer](https://forthebadge.com/images/badges/built-with-love.svg)](https://github.com/grm34/archboot#official-documentation)
 [![footer](https://forthebadge.com/images/badges/for-you.svg)](https://github.com/grm34/archboot#official-documentation)
