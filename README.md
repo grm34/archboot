@@ -34,6 +34,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
   * To run it in your language append *`--lang`* or *`-l <language>`*
   * To run `loadkeys` on start append *`--keyboard`* or *`-k <language code>`*
   * E.q., *`sh archboot --lang french`*
+  * ⚠️ *`--lang`* set only installer language *(all [languages](https://github.com/grm34/archboot/wiki/Language-code) are supported for Arch Linux)*.
 
 ### Wiki
 
