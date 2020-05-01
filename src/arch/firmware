@@ -46,6 +46,7 @@ _cpu() {
             _note "${CPU} ${MSG_CPU_TRUE}"
             export MICROCODE="${CPU^^}_CPU"
             export UCODE=${CPU,,}
+            break
         fi
     done
 

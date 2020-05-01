@@ -213,7 +213,7 @@ fi
 for OPTION in "${ARGS[@]}"; do
     shift
     case ${OPTION} in
-        "--help") set -- "${@}" "-h";;
+        "--help") set -- "${@}" "-h"; break;;
         "--lang") set -- "${OPTION}" "-l";;
         "--keyboard") set -- "${OPTION}" "-k";;
         *) set -- "${@}" "${OPTION}"
