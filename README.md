@@ -26,8 +26,8 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 **3.** Download and run **archboot** script:
 
-* *`wget tiny.cc/archboot-dev`*
-* *`sh archboot-dev`*
+* *`wget tiny.cc/archboot`*
+* *`sh archboot`*
 
 * Options:
   * To list available languages append *`--help`*
