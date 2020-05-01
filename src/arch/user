@@ -269,8 +269,8 @@ _enable_user_rights() {
 
         for GROUP in ${GROUPLIST}; do
             _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
-            echo "-> ${MSG_DONE}"
         done
+        echo "-> ${MSG_DONE}"
     fi
 }
 
