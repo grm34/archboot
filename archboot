@@ -235,7 +235,7 @@ done
 shift $((OPTIND - 1))
 
 ### Prevent running script from repository folder
-CHECK_GITHUB=(.git .gitignore README.md STATS.md LICENSE)
+CHECK_GITHUB=(.git .github .gitignore README.md STATS.md LICENSE)
 
 for FILE in "${CHECK_GITHUB[@]}"; do
     if [[ -f ${FILE} || -d ${FILE} ]]; then
