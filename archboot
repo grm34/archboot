@@ -7,13 +7,13 @@ BRANCH="master"
 AUTHOR="grm34"
 LICENSE="Apache License 2.0"
 
-### Display script banner
+### Description
 _archboot_banner() {
-    echo -e """
-${BLUE}┌─┐┬─┐┌─┐┬ ┬┌┐ ┌─┐┌─┐┌┬┐  ┌─┐┬─┐┌─┐┬ ┬  ┬┌┐┌┌─┐┌┬┐┌─┐┬  ┬  ┌─┐┬─┐
+    echo -e "${BLUE}
+┌─┐┬─┐┌─┐┬ ┬┌┐ ┌─┐┌─┐┌┬┐  ┌─┐┬─┐┌─┐┬ ┬  ┬┌┐┌┌─┐┌┬┐┌─┐┬  ┬  ┌─┐┬─┐
 ├─┤├┬┘│  ├─┤├┴┐│ ││ │ │   ├─┤├┬┘│  ├─┤  ││││└─┐ │ ├─┤│  │  ├┤ ├┬┘
-┴ ┴┴└─└─┘┴ ┴└─┘└─┘└─┘ ┴   ┴ ┴┴└─└─┘┴ ┴  ┴┘└┘└─┘ ┴ ┴ ┴┴─┘┴─┘└─┘┴└─
-${RED} Arch Linux Installer ${VERSION} - A script made with love by ${AUTHOR}
+┴ ┴┴└─└─┘┴ ┴└─┘└─┘└─┘ ┴   ┴ ┴┴└─└─┘┴ ┴  ┴┘└┘└─┘ ┴ ┴ ┴┴─┘┴─┘└─┘┴└─${RED}
+ Arch Linux Installer ${VERSION} - A script made with love by ${AUTHOR}
 ${NC}
   Arch Linux is a light and fast distribution whose concept is
   to remain as  simple as possible. In the same purpose and in
@@ -23,8 +23,7 @@ ${NC}
   supported like  AUR Helper, linux kernel, GPU driver, window
   manager or  desktop environment. According to the chosen one
   and in order to get complete support additional packages may
-  be required. For more information on archboot, see the wiki.
-  """
+  be required. For more information on archboot, see the wiki.\n"
 }
 
 #                     SHARED VARIABLES AND FUNCTIONS
@@ -161,7 +160,7 @@ _reboot() {
 ### Say goodbye
 _exit_msg() {
     echo -e "\n${GREEN}<<< ${BLUE}${APPNAME} ${VERSION} ${BOLD}by \
-${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
+${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}\n"""
 }
 
 #                             HELP AND USAGE
@@ -174,8 +173,8 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 # ============================================================================
 
 ### Help/usage (--help or -h)
-USAGE=\
-"${BLUE}Arch Linux Installer - A script made with love by ${AUTHOR}${NC}
+USAGE="${BLUE}
+Arch Linux Installer - A script made with love by ${AUTHOR}
 
 ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
 
@@ -193,7 +192,7 @@ ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 
 ### Prevent too much arguments
 if [[ ${#} -gt 2 ]]; then
-    echo -e "${RED}Error:${NC} too much arguments ${*}\n"
+    echo -e "${RED}Error:${NC} too much arguments ${*}"
     echo -e "${USAGE}"
     rm -f old_vars.log; _exit_msg; exit 1
 fi
@@ -204,7 +203,7 @@ read -ra ARGS <<< "${@}"
 if [[ ${#} == 0 || ${ARGS[0]} =~ ^(-l$|--lang$|-h$|--help$) ]]; then
     true
 else
-    echo -e "${RED}Error:${NC} invalid option ${*}\n"
+    echo -e "${RED}Error:${NC} invalid option ${*}"
     echo -e "${USAGE}"
     rm -f old_vars.log; _exit_msg; exit 1
 fi
@@ -225,7 +224,7 @@ while getopts ':hl:' OPTION; do
     case ${OPTION} in
         h) echo -e "${USAGE}"; rm -f old_vars.log; _exit_msg; exit 0;;
         l) ARCHBOOT_LANGUAGE=${OPTARG};;
-        :) echo -e "${RED}Error:${NC} missing argument for -${OPTARG}\n"
+        :) echo -e "${RED}Error:${NC} missing argument for -${OPTARG}"
             echo -e "${USAGE}"
             rm -f old_vars.log; _exit_msg; exit 1;;
         *) true
