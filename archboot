@@ -216,7 +216,7 @@ if [[ ${#} == 2 ]]; then
         german) loadkeys de;;
         *) echo -e "${RED}Error:${NC} invalid language ${ARGS[1]}"
             echo -e "${USAGE}"
-        r   m -f old_vars.log; _exit_msg; exit 1
+            rm -f old_vars.log; _exit_msg; exit 1
     esac
 fi
 
