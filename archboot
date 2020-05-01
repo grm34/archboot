@@ -179,14 +179,19 @@ Arch Linux Installer - A script made with love by ${AUTHOR}
 ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
 
     ${BOLD}Options${NC}
-        -h, --help      show this help message
-        -l, --lang      set language
-        -k, --keyboard  set keyboard table
+        -h, --help          show this help message
+        -l, --lang          set language
+        -k, --keyboard      set keyboard table
 
-    ${BOLD}Languages${NC}
-        -l, --lang      english
-                        french
-                        german (by @At1768)
+    ${BOLD}Language${NC}
+        -l, --lang          english
+                            french
+                            german (by @At1768)
+
+    ${BOLD}Keyboard${NC}
+        -k, --keyboard      language code
+                            run loadkeys on start
+                            e.q., --keyboard fr
 
 ${BOLD}For more information, see the wiki: \
 ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
