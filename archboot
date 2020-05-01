@@ -213,7 +213,7 @@ fi
 for OPTION in "${ARGS[@]}"; do
     shift
     case ${OPTION} in
-        "--help") set -- "${OPTION}" "-h";;
+        "--help") set -- "${@}" "-h";;
         "--lang") set -- "${OPTION}" "-l";;
         "--keyboard") set -- "${OPTION}" "-k";;
         *) set -- "${@}" "${OPTION}"
@@ -221,7 +221,7 @@ for OPTION in "${ARGS[@]}"; do
 done
 
 ### Option processing
-while getopts 'hl:k:' OPTION; do
+while getopts 'hl:k' OPTION; do
     case ${OPTION} in
 
         # Help (-h, --help)
