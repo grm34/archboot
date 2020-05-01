@@ -169,7 +169,7 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 # The only options are to display help message and to select script language.
 # We prevent user argument errors by matching options before run processing.
 #
-# Usage: sh archboot [options] (e.g., sh archboot -l french)
+# Usage: sh archboot [options] (e.g., sh archboot -l french -k fr)
 # ============================================================================
 
 ### Help/usage (--help or -h)
@@ -179,68 +179,76 @@ Arch Linux Installer - A script made with love by ${AUTHOR}
 ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
 
     ${BOLD}Options${NC}
-        -h, --help      show this help message
-        -l, --lang      set language
+        -h, --help          show this help message
+        -l, --lang          set language
+        -k, --keyboard      set keyboard table
 
-    ${BOLD}Languages${NC}
-        -l, --lang      english
-                        french
-                        german (by @At1768)
+    ${BOLD}Language${NC}
+        -l, --lang          english
+                            french
+                            german (by @At1768)
+
+    ${BOLD}Keyboard${NC}
+        -k, --keyboard      language code
+                            run loadkeys on start
+                            e.q., --keyboard fr
 
 ${BOLD}For more information, see the wiki: \
 ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 
-### Prevent too much arguments
-if [[ ${#} -gt 2 ]]; then
-    echo -e "${RED}Error:${NC} too much arguments ${*}"
-    echo -e "${USAGE}"
-    rm -f old_vars.log; _exit_msg; exit 1
-fi
-
-### Prevent valid option (--lang, -l, --help, -h)
+# Get arguments list
 read -ra ARGS <<< "${@}"
 
-if [[ ${#} == 0 || ${ARGS[0]} =~ ^(-l$|--lang$|-h$|--help$) ]]; then
+### Ensure valid option
+if [[ ${#} == 0 || ${ARGS[0]} =~ \
+^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then
     true
 else
-    echo -e "${RED}Error:${NC} invalid option ${*}"
+    echo -e "${RED}Error:${NC} invalid option ${ARGS[0]}"
     echo -e "${USAGE}"
     rm -f old_vars.log; _exit_msg; exit 1
-fi
-
-### Prevent valid language and load keyboard table
-if [[ ${#} == 2 ]]; then
-    case ${ARGS[1]} in
-        english) true;;
-        french) loadkeys fr;;
-        german) loadkeys de;;
-        *) echo -e "${RED}Error:${NC} invalid language ${ARGS[1]}"
-            echo -e "${USAGE}"
-            rm -f old_vars.log; _exit_msg; exit 1
-    esac
 fi
 
 ### Transform long options to short ones
-for OPTION in "${@}"; do
+for OPTION in "${ARGS[@]}"; do
     shift
-
     case ${OPTION} in
-        "--help") set -- "${@}" "-h";;
-        "--lang") set -- "${@}" "-l${*}";;
+        "--help") set -- "${OPTION}" "-h";;
+        "--lang") set -- "${OPTION}" "-l";;
+        "--keyboard") set -- "${OPTION}" "-k";;
         *) set -- "${@}" "${OPTION}"
     esac
 done
 
-### Option processing (h: --help, l: --lang, : missing)
-while getopts ':hl:' OPTION; do
+### Option processing
+while getopts 'hl:k:' OPTION; do
     case ${OPTION} in
-        h) echo -e "${USAGE}"; rm -f old_vars.log; _exit_msg; exit 0;;
-        l) ARCHBOOT_LANGUAGE=${OPTARG};;
-        :) echo -e "${RED}Error:${NC} missing argument for -${OPTARG}"
+
+        # Help (-h, --help)
+        h)  echo -e "${USAGE}"; rm -f old_vars.log; _exit_msg; exit 0;;
+
+        # Language (-l, --lang)
+        l)  if [[ ${OPTARG} =~ ^(english$|french$|german$) ]]; then
+                ARCHBOOT_LANGUAGE="${OPTARG}"
+            else
+                echo -e "${RED}Error:${NC} invalid language ${OPTARG}"
+                echo -e "${USAGE}"
+                rm -f old_vars.log; _exit_msg; exit 1
+            fi;;
+
+        # Keyboard (-k, --keyboard)
+        k)  LOADKEYS=$(loadkeys -q "${OPTARG}")
+            if [[ ${LOADKEYS} -ne 1 ]]; then
+                echo -e "${RED}Error:${NC} invalid keyboard table ${OPTARG}"
+                echo -e "${USAGE}"
+                rm -f old_vars.log; _exit_msg; exit 1
+            fi;;
+
+        # Missing argument
+        *) echo -e "${RED}Error:${NC} missing argument for ${*}"
             echo -e "${USAGE}"
-            rm -f old_vars.log; _exit_msg; exit 1;;
-        *) true
-   esac
+            rm -f old_vars.log; _exit_msg; exit 1
+    esac
 done
 
 ### Remove options from positional parameters
