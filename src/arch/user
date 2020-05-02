@@ -28,13 +28,6 @@
 _get_user_variables() {
 
     ### Language
-    if [[ ${USER_LANG} ]]; then
-        _confirm "${MSG_CONFIRM_LANG} ${USER_LANG}?"
-        case ${CONFIRM} in
-            n|N|no|No|NO) unset USER_LANG
-        esac
-    fi
-
     until grep -Fxq "${USER_LANG}" ./language; do
         _note "${MSG_WIKI_EXAMPLE}"
         _prompt "${MSG_PROMPT_LANGUAGE}" "${MSG_LANGUAGE_EXAMPLE}"
