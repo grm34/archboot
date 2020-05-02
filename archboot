@@ -291,7 +291,7 @@ _check source "./${ARCHBOOT_LANG,,}"
 
 # Set global language if --keyboard specified
 if [[ ${KEYBOARD_LAYOUT} ]]; then
-    LANG_LIST=$(cat < ./language | grep "${KEYBOARD_LAYOUT}_"| tr "\n" " ")
+    LANG_LIST=$(cat < ./language | grep "${KEYBOARD_LAYOUT}_" | tr "\n" " ")
     if [[ ${LANG_LIST} ]]; then
         read -ra LANG_LIST <<< "${LANG_LIST}"
         for LNG in "${LANG_LIST[@]}"; do
