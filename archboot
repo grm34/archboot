@@ -243,7 +243,7 @@ while getopts 'hl:k:' OPTION; do
                 echo -e "${USAGE}"
                 rm -f old_vars.log; _exit_msg; exit 1
             else
-                export USER_LANG="${OPTARG}_${OPTARG^^}"
+                export KEYBOARD_LAYOUT="${OPTARG}"
             fi;;
 
         # Missing argument
@@ -288,6 +288,20 @@ done
 _check wget -q "${URL}/locale/${ARCHBOOT_LANG,,}"
 _check source "./${ARCHBOOT_LANG,,}"
 
+# Set keyboard layout and try to set global language
+_check wget -q "${URL}/src/conf/language"
+LANG_LIST=$(cat < ./language | grep "${KEYBOARD_LAYOUT}_"| tr "\n" " ")
+if [[ ${LANG_LIST} ]]; then
+    read -ra LANG_LIST <<< "${LANG_LIST}"
+    for LNG in "${LANG_LIST[@]}"; do
+        if [[ ${LNG} == "${KEYBOARD_LAYOUT}_${KEYBOARD_LAYOUT^^}" ]]; then
+            export USER_LANG=${LNG}; break
+        else
+            export USER_LANG=${LANG_LIST[0]}; break
+        fi
+    done
+fi
+
 ### Display banner
 _archboot_banner
 
@@ -315,7 +329,6 @@ case ${CONFIRM} in
         _wget "${URL}/src/arch/partitioning"   # to set/create partitions
         _wget "${URL}/src/arch/user"           # to get user variables
         _wget "${URL}/src/apps/system_apps"    # to get system apps
-        _wget "${URL}/src/conf/language"       # to get language code
         _wget "${URL}/src/conf/timezone"       # to get timezone code
         ;;
     *) _cleanup; _exit_msg; exit 0
