@@ -286,10 +286,10 @@ done
 
 ### Set script language
 _check wget -q "${URL}/locale/${ARCHBOOT_LANG,,}"
+_check wget -q "${URL}/src/conf/language"
 _check source "./${ARCHBOOT_LANG,,}"
 
-# Set keyboard layout and try to set global language
-_check wget -q "${URL}/src/conf/language"
+# Set global language if --keyboard specified
 if [[ ${KEYBOARD_LAYOUT} ]]; then
     LANG_LIST=$(cat < ./language | grep "${KEYBOARD_LAYOUT}_"| tr "\n" " ")
     if [[ ${LANG_LIST} ]]; then
