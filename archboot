@@ -28,8 +28,8 @@ ${NC}
 
 ### Help and usage (--help or -h)
 _help() {
-    echo -e \
-"${BLUE}Arch Linux Installer - A script made with love by ${AUTHOR}
+    echo -e "${BLUE}
+Arch Linux Installer - A script made with love by ${AUTHOR}
 
 ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
 
