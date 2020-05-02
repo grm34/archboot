@@ -8,7 +8,7 @@ AUTHOR="grm34"
 LICENSE="Apache License 2.0"
 
 ### Description
-_archboot_banner() {
+_banner() {
     echo -e "${BLUE}
 ┌─┐┬─┐┌─┐┬ ┬┌┐ ┌─┐┌─┐┌┬┐  ┌─┐┬─┐┌─┐┬ ┬  ┬┌┐┌┌─┐┌┬┐┌─┐┬  ┬  ┌─┐┬─┐
 ├─┤├┬┘│  ├─┤├┴┐│ ││ │ │   ├─┤├┬┘│  ├─┤  ││││└─┐ │ ├─┤│  │  ├┤ ├┬┘
@@ -24,6 +24,32 @@ ${NC}
   manager or  desktop environment. According to the chosen one
   and in order to get complete support additional packages may
   be required. For more information on archboot, see the wiki.\n"
+}
+
+### Help and usage (--help or -h)
+_help() {
+    echo -e \
+"${BLUE}Arch Linux Installer - A script made with love by ${AUTHOR}
+
+${BOLD}Usage: ${NC}sh $(basename "$0") [options]
+
+    ${BOLD}Options${NC}
+        -h, --help          show this help message
+        -l, --lang          set language
+        -k, --keyboard      set keyboard table
+
+    ${BOLD}Language${NC}
+        -l, --lang          english
+                            french
+                            german      (by @At1768)
+
+    ${BOLD}Keyboard${NC}
+        -k, --keyboard      language code
+                            (run loadkeys on start)
+                            (e.q., --keyboard fr)
+
+${BOLD}For more information, see the wiki: \
+${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 }
 
 #                     SHARED VARIABLES AND FUNCTIONS
@@ -172,30 +198,6 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 # Usage: sh archboot [options] (e.g., sh archboot -l french -k fr)
 # ============================================================================
 
-### Help/usage (--help or -h)
-USAGE="${BLUE}
-Arch Linux Installer - A script made with love by ${AUTHOR}
-
-${BOLD}Usage: ${NC}sh $(basename "$0") [options]
-
-    ${BOLD}Options${NC}
-        -h, --help          show this help message
-        -l, --lang          set language
-        -k, --keyboard      set keyboard table
-
-    ${BOLD}Language${NC}
-        -l, --lang          english
-                            french
-                            german      (by @At1768)
-
-    ${BOLD}Keyboard${NC}
-        -k, --keyboard      language code
-                            (run loadkeys on start)
-                            (e.q., --keyboard fr)
-
-${BOLD}For more information, see the wiki: \
-${GREY}<http://tiny.cc/archboot-wiki>${NC}"
-
 ### Get arguments list
 read -ra ARGS <<< "${@}"
 
@@ -205,8 +207,7 @@ if [[ ${#} == 0 || ${ARGS[0]} =~ \
     true
 else
     echo -e "${RED}Error:${NC} invalid option ${ARGS[0]}"
-    echo -e "${USAGE}"
-    rm -f old_vars.log; _exit_msg; exit 1
+    _help; rm -f old_vars.log; _exit_msg; exit 1
 fi
 
 ### Transform long options to short ones
@@ -225,31 +226,28 @@ while getopts 'hl:k:' OPTION; do
     case ${OPTION} in
 
         # Help (-h, --help)
-        h)  echo -e "${USAGE}"; rm -f old_vars.log; _exit_msg; exit 0;;
+        h)  _help; rm -f old_vars.log; _exit_msg; exit 0;;
 
         # Language (-l, --lang)
         l)  if [[ ${OPTARG} =~ ^(english$|french$|german$) ]]; then
                 ARCHBOOT_LANG="${OPTARG}"
             else
                 echo -e "${RED}Error:${NC} invalid language ${OPTARG}"
-                echo -e "${USAGE}"
-                rm -f old_vars.log; _exit_msg; exit 1
+                _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
         # Keyboard (-k, --keyboard)
-        k)  loadkeys -q "${OPTARG}"; STATUS=$?
+        k)  sudo loadkeys -q "${OPTARG}"; STATUS=$?
             if [[ ${STATUS} -ne 1 ]]; then
                 export KEYBOARD_LAYOUT="${OPTARG}"
             else
                 echo -e "${RED}Error:${NC} invalid keyboard table ${OPTARG}"
-                echo -e "${USAGE}"
-                rm -f old_vars.log; _exit_msg; exit 1
+                _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
         # Missing argument
-        *) echo -e "${RED}Error:${NC} missing argument for ${*}"
-            echo -e "${USAGE}"
-            rm -f old_vars.log; _exit_msg; exit 1
+        *)  echo -e "${RED}Error:${NC} missing argument for ${*}"
+            _help; rm -f old_vars.log; _exit_msg; exit 1
     esac
 done
 
@@ -475,7 +473,7 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
         ### Get user inputs logs
         _info "${MSG_INPUTS_LOGS}"
         set | grep -v "MSG_\|A=\|B=\|C=\|D=\|ROOTPASSWD=\|USERPASSWD=\|\
-RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=\|OPTION\|USAGE" > new_vars.log
+RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=\|OPTION" > new_vars.log
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i "$ d" "${INPUTS_LOG}"
         echo "-> ${MSG_DONE}"
@@ -510,5 +508,5 @@ case ${CONFIRM} in
     *) _cleanup; _exit_msg; exit 0
 esac
 
-# archboot by grm34 under Apache License 2.0
+# archboot - Arch Linux Installer by grm34 under Apache License 2.0
 # ============================================================================

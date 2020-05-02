@@ -278,5 +278,5 @@ _enable_user_rights() {
     fi
 }
 
-# archboot by grm34 under Apache License 2.0
+# archboot - Arch Linux Installer by grm34 under Apache License 2.0
 # ============================================================================

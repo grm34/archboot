@@ -36,5 +36,5 @@ export NTFS_SUPPORT="ntfs-3g"
 export NETAPPS="networkmanager wget git \
 net-tools dhcpcd iw wpa_supplicant wireless_tools"
 
-# archboot by grm34 under Apache License 2.0
+# archboot - Arch Linux Installer by grm34 under Apache License 2.0
 # ============================================================================
