@@ -35,9 +35,11 @@ _get_user_variables() {
     done
     export USER_LANG
 
-    ### Keymap
-    KEYMAP=$(echo "${USER_LANG}" | cut -d'_' -f 1)
-    export KEYMAP
+    ### Keymap (if not specified)
+    if [[ ! ${KEYMAP} ]]; then
+        KEYMAP=$(echo "${USER_LANG}" | cut -d'_' -f 1)
+        export KEYMAP
+    fi
 
     ### Hostname
     until [[ ${#HOST_NAME} -ge 3 && \

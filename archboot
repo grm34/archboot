@@ -238,7 +238,9 @@ while getopts 'hl:k:' OPTION; do
 
         # Keyboard layout (-k, --keyboard)
         k)  sudo loadkeys -q "${OPTARG}"; STATUS=$?
-            if [[ ${STATUS} -ne 0 ]]; then
+            if [[ ${STATUS} -ne 1 ]]; then
+                export KEYMAP="${OPTARG}"
+            else
                 echo -e "${RED}Error:${NC} invalid keyboard layout ${OPTARG}"
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
