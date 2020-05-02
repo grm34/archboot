@@ -8,7 +8,7 @@ AUTHOR="grm34"
 LICENSE="Apache License 2.0"
 
 ### Description
-_banner() {
+_archboot_banner() {
     echo -e "${BLUE}
 ┌─┐┬─┐┌─┐┬ ┬┌┐ ┌─┐┌─┐┌┬┐  ┌─┐┬─┐┌─┐┬ ┬  ┬┌┐┌┌─┐┌┬┐┌─┐┬  ┬  ┌─┐┬─┐
 ├─┤├┬┘│  ├─┤├┴┐│ ││ │ │   ├─┤├┬┘│  ├─┤  ││││└─┐ │ ├─┤│  │  ├┤ ├┬┘
@@ -35,8 +35,8 @@ ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
 
     ${BOLD}Options${NC}
         -h, --help          show this help message
-        -l, --lang          set language
-        -k, --keyboard      set keyboard table
+        -l, --lang          set installer language
+        -k, --keyboard      set keyboard layout
 
     ${BOLD}Language${NC}
         -l, --lang          english
@@ -44,7 +44,7 @@ ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
                             german      (by @At1768)
 
     ${BOLD}Keyboard${NC}
-        -k, --keyboard      language code
+        -k, --keyboard      keyboard layout
                             (run loadkeys on start)
                             (e.q., --keyboard fr)
 
@@ -65,7 +65,7 @@ ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 #   environment, select an option or to ask some information to the user.
 # ============================================================================
 
-### Default language
+### Installer default language
 ARCHBOOT_LANG="english"
 
 ### Default error msg (required when locale vars unsourced)
@@ -228,20 +228,18 @@ while getopts 'hl:k:' OPTION; do
         # Help (-h, --help)
         h)  _help; rm -f old_vars.log; _exit_msg; exit 0;;
 
-        # Language (-l, --lang)
+        # Installer language (-l, --lang)
         l)  if [[ ${OPTARG} =~ ^(english$|french$|german$) ]]; then
                 ARCHBOOT_LANG="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} invalid language -l ${OPTARG}"
+                echo -e "${RED}Error:${NC} invalid language ${OPTARG}"
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
-        # Keyboard (-k, --keyboard)
+        # Keyboard layout (-k, --keyboard)
         k)  sudo loadkeys -q "${OPTARG}"; STATUS=$?
-            if [[ ${STATUS} -ne 1 ]]; then
-                export KEYBOARD_LAYOUT="${OPTARG}"
-            else
-                echo -e "${RED}Error:${NC} invalid keyboard code -k ${OPTARG}"
+            if [[ ${STATUS} -ne 0 ]]; then
+                echo -e "${RED}Error:${NC} invalid keyboard layout ${OPTARG}"
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
@@ -284,28 +282,7 @@ done
 
 ### Set installer language
 _check wget -q "${URL}/locale/${ARCHBOOT_LANG,,}"
-_check wget -q "${URL}/src/conf/language"
 _check source "./${ARCHBOOT_LANG,,}"
-
-### Set global language (if --keyboard specified)
-if [[ ${KEYBOARD_LAYOUT} ]]; then
-    LANG_LIST=$(cat < ./language | grep "${KEYBOARD_LAYOUT}_" | tr "\n" " ")
-    if [[ ${LANG_LIST} ]]; then
-        read -ra LANG_LIST <<< "${LANG_LIST}"
-
-        # Check if <keyboard_KEYBOARD> exists (e.q., fr_FR)
-        for LNG in "${LANG_LIST[@]}"; do
-            if [[ ${LNG} == "${KEYBOARD_LAYOUT}_${KEYBOARD_LAYOUT^^}" ]]; then
-                export USER_LANG=${LNG}; break
-            fi
-        done
-
-        # Otherwise use the first founded
-        if [[ ! ${USER_LANG} ]]; then
-            export USER_LANG=${LANG_LIST[0]}
-        fi
-    fi
-fi
 
 ### Display banner
 _archboot_banner
@@ -334,7 +311,8 @@ case ${CONFIRM} in
         _wget "${URL}/src/arch/partitioning"   # to set/create partitions
         _wget "${URL}/src/arch/user"           # to get user variables
         _wget "${URL}/src/apps/system_apps"    # to get system apps
-        _wget "${URL}/src/conf/timezone"       # to get timezone code
+        _wget "${URL}/src/conf/language"       # to get language codes
+        _wget "${URL}/src/conf/timezone"       # to get timezone codes
         ;;
     *) _cleanup; _exit_msg; exit 0
 esac
