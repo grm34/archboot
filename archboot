@@ -196,7 +196,7 @@ ${BOLD}Usage: ${NC}sh $(basename "$0") [options]
 ${BOLD}For more information, see the wiki: \
 ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 
-# Get arguments list
+### Get arguments list
 read -ra ARGS <<< "${@}"
 
 ### Ensure valid option
@@ -289,16 +289,20 @@ _check wget -q "${URL}/locale/${ARCHBOOT_LANG,,}"
 _check wget -q "${URL}/src/conf/language"
 _check source "./${ARCHBOOT_LANG,,}"
 
-# Set global language if --keyboard specified
+### Set global language if --keyboard specified
 if [[ ${KEYBOARD_LAYOUT} ]]; then
     LANG_LIST=$(cat < ./language | grep "${KEYBOARD_LAYOUT}_" | tr "\n" " ")
     if [[ ${LANG_LIST} ]]; then
         read -ra LANG_LIST <<< "${LANG_LIST}"
+
+        # check if <keycode_KEYCODE> exists
         for LNG in "${LANG_LIST[@]}"; do
             if [[ ${LNG} == "${KEYBOARD_LAYOUT}_${KEYBOARD_LAYOUT^^}" ]]; then
                 export USER_LANG=${LNG}; break
             fi
         done
+
+        # otherwise use the first founded
         if [[ ! ${USER_LANG} ]]; then
             export USER_LANG=${LANG_LIST[0]}
         fi
@@ -339,7 +343,6 @@ esac
 
 ### Import base sources
 _info "${MSG_IMPORT_SRC_BASE}"
-
 BASE_SOURCES=\
 (base bootloader firmware mirrorlist mounting partitioning user system_apps)
 
