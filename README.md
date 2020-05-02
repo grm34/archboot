@@ -22,7 +22,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 **2.** Select `Boot Arch Linux (x86_64)` on the install menu of Arch Linux
 
-> *For AZERTY keyboard use* `loadkeys` *by running: `loqdkeys fr`*
+> *Use* `loadkeys` *to set keyboard layout if needed. E.q., for* `azerty` *run `loqdkeys fr`*
 
 **3.** Download and run Arch Linux Installer:
 
