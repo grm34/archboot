@@ -45,5 +45,5 @@ export HARDVIDEO_NOUVEAU="libva-vdpau-driver mesa-vdpau"
 export OPENGL_NVIDIA="nvidia-utils"
 export HARDVIDEO_NVIDIA="libva-vdpau-driver"
 
-# archboot by grm34 under Apache License 2.0
+# archboot - Arch Linux Installer by grm34 under Apache License 2.0
 # ============================================================================

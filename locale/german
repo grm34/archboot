@@ -155,3 +155,6 @@ export MSG_CONFIRM_AUR_HELPER="Möchten Sie AUR-Helfer installieren?"
 export MSG_CONFIRM_GROUP="Soll der neue Benutzer zu allen Gruppen hinzugefügt werden?"
 export MSG_INFO_SUDOERS="Benutzer wird in sudoers hinzugefügt"
 export MSG_INFO_ADD_GROUPS="Benutzer wird zu allen Gruppen hinzugefügt"
+
+# archboot - Arch Linux Installer by grm34 under Apache License 2.0
+# ============================================================================

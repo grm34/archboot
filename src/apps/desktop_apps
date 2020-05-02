@@ -64,5 +64,5 @@ export NUMLOCK="numlockx"
 # WM Dependencies (WM only)
 export WM_APPS="dmenu xterm"
 
-# archboot by grm34 under Apache License 2.0
+# archboot - Arch Linux Installer by grm34 under Apache License 2.0
 # ============================================================================
