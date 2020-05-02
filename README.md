@@ -30,6 +30,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 * *`sh archboot`*
 
 * Options:
+
   * To run it in your language append *`--lang`* or *`-l <language>`*
   * To list available languages or to view help run *`sh archboot --help`*
   * To run `loadkeys` on start append *`--keyboard`* or *`-k <language code>`*
