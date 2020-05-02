@@ -74,7 +74,7 @@ MSG_ERROR_GIT="do not run archboot from git repository folder!"
 MSG_KEYBOARD="keyboard interrupt!"
 MSG_CLEANUP="Cleaning up sources"
 
-### Shell colors
+### Shell color codes
 RED="\e[1;31m"; GREEN="\e[1;32m"; YELLOW="\e[1;33m"; GREY="\e[3;93m"
 BLUE="\e[1;34m"; CYAN="\e[1;36m"; BOLD="\e[1;37m"; NC="\e[0m"
 
@@ -139,7 +139,7 @@ _chroot() {
 EOF
 }
 
-### Check and return command status
+### Check command status and exit on error
 _check() {
     "${@}"
     local STATUS=$?
@@ -201,7 +201,7 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 ### Get arguments list
 read -ra ARGS <<< "${@}"
 
-### Ensure valid option
+### Ensure valid options
 if [[ ${#} == 0 || ${ARGS[0]} =~ \
 ^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then
     true
@@ -232,7 +232,7 @@ while getopts 'hl:k:' OPTION; do
         l)  if [[ ${OPTARG} =~ ^(english$|french$|german$) ]]; then
                 ARCHBOOT_LANG="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} invalid language ${OPTARG}"
+                echo -e "${RED}Error:${NC} invalid language -l ${OPTARG}"
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
@@ -241,7 +241,7 @@ while getopts 'hl:k:' OPTION; do
             if [[ ${STATUS} -ne 1 ]]; then
                 export KEYBOARD_LAYOUT="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} invalid keyboard table ${OPTARG}"
+                echo -e "${RED}Error:${NC} invalid keyboard code -k ${OPTARG}"
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
@@ -254,7 +254,7 @@ done
 ### Remove options from positional parameters
 shift $((OPTIND - 1))
 
-### Prevent running script from repository folder
+### Prevent running installer from repository folder
 CHECK_GITHUB=(.git .github .gitignore README.md STATS.md LICENSE)
 
 for FILE in "${CHECK_GITHUB[@]}"; do
@@ -282,25 +282,25 @@ done
 # Kernel mode setting support: in this case no GPU Driver will be installed.
 # ============================================================================
 
-### Set script language
+### Set installer language
 _check wget -q "${URL}/locale/${ARCHBOOT_LANG,,}"
 _check wget -q "${URL}/src/conf/language"
 _check source "./${ARCHBOOT_LANG,,}"
 
-### Set global language if --keyboard specified
+### Set global language (if --keyboard specified)
 if [[ ${KEYBOARD_LAYOUT} ]]; then
     LANG_LIST=$(cat < ./language | grep "${KEYBOARD_LAYOUT}_" | tr "\n" " ")
     if [[ ${LANG_LIST} ]]; then
         read -ra LANG_LIST <<< "${LANG_LIST}"
 
-        # check if <keycode_KEYCODE> exists
+        # Check if <keyboard_KEYBOARD> exists (e.q., fr_FR)
         for LNG in "${LANG_LIST[@]}"; do
             if [[ ${LNG} == "${KEYBOARD_LAYOUT}_${KEYBOARD_LAYOUT^^}" ]]; then
                 export USER_LANG=${LNG}; break
             fi
         done
 
-        # otherwise use the first founded
+        # Otherwise use the first founded
         if [[ ! ${USER_LANG} ]]; then
             export USER_LANG=${LANG_LIST[0]}
         fi
