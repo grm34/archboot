@@ -45,11 +45,11 @@ _install_base() {
     echo "-> ${MSG_DONE}"
 
     ### Set Locale
-    _info "${MSG_SET_LOCALE} ${LANGUAGE}.UTF-8"
-    echo "${LANGUAGE}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+    _info "${MSG_SET_LOCALE} ${USER_LANG}.UTF-8"
+    echo "${USER_LANG}.UTF-8 UTF-8" >> /mnt/etc/locale.gen
     _chroot "locale-gen"
-    _chroot "export LANG=${LANGUAGE}.UTF-8"
-    echo "LANG=${LANGUAGE}.UTF-8" > /mnt/etc/locale.conf
+    _chroot "export LANG=${USER_LANG}.UTF-8"
+    echo "LANG=${USER_LANG}.UTF-8" > /mnt/etc/locale.conf
     echo "-> ${MSG_DONE}"
 
     ### Set Vconsole

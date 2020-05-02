@@ -40,7 +40,7 @@ ${NC}
 # ============================================================================
 
 ### Default language
-ARCHBOOT_LANGUAGE="english"
+ARCHBOOT_LANG="english"
 
 ### Default error msg (required when locale vars unsourced)
 MSG_ERROR="you must reboot to prevent unreconized system changes."
@@ -221,7 +221,7 @@ for OPTION in "${ARGS[@]}"; do
 done
 
 ### Option processing
-while getopts 'hl:k' OPTION; do
+while getopts 'hl:k:' OPTION; do
     case ${OPTION} in
 
         # Help (-h, --help)
@@ -229,7 +229,7 @@ while getopts 'hl:k' OPTION; do
 
         # Language (-l, --lang)
         l)  if [[ ${OPTARG} =~ ^(english$|french$|german$) ]]; then
-                ARCHBOOT_LANGUAGE="${OPTARG}"
+                ARCHBOOT_LANG="${OPTARG}"
             else
                 echo -e "${RED}Error:${NC} invalid language ${OPTARG}"
                 echo -e "${USAGE}"
@@ -237,8 +237,10 @@ while getopts 'hl:k' OPTION; do
             fi;;
 
         # Keyboard (-k, --keyboard)
-        k)  LOADKEYS=$(loadkeys -q "${OPTARG}")
-            if [[ ${LOADKEYS} -ne 1 ]]; then
+        k)  loadkeys -q "${OPTARG}"; STATUS=$?
+            if [[ ${STATUS} -ne 1 ]]; then
+                export KEYBOARD_LAYOUT="${OPTARG}"
+            else
                 echo -e "${RED}Error:${NC} invalid keyboard table ${OPTARG}"
                 echo -e "${USAGE}"
                 rm -f old_vars.log; _exit_msg; exit 1
@@ -283,8 +285,25 @@ done
 # ============================================================================
 
 ### Set script language
-_check wget -q "${URL}/locale/${ARCHBOOT_LANGUAGE,,}"
-_check source "./${ARCHBOOT_LANGUAGE,,}"
+_check wget -q "${URL}/locale/${ARCHBOOT_LANG,,}"
+_check wget -q "${URL}/src/conf/language"
+_check source "./${ARCHBOOT_LANG,,}"
+
+# Set global language if --keyboard specified
+if [[ ${KEYBOARD_LAYOUT} ]]; then
+    LANG_LIST=$(cat < ./language | grep "${KEYBOARD_LAYOUT}_"| tr "\n" " ")
+    if [[ ${LANG_LIST} ]]; then
+        read -ra LANG_LIST <<< "${LANG_LIST}"
+        for LNG in "${LANG_LIST[@]}"; do
+            if [[ ${LNG} == "${KEYBOARD_LAYOUT}_${KEYBOARD_LAYOUT^^}" ]]; then
+                export USER_LANG=${LNG}; break
+            fi
+        done
+        if [[ ! ${USER_LANG} ]]; then
+            export USER_LANG=${LANG_LIST[0]}
+        fi
+    fi
+fi
 
 ### Display banner
 _archboot_banner
@@ -313,7 +332,6 @@ case ${CONFIRM} in
         _wget "${URL}/src/arch/partitioning"   # to set/create partitions
         _wget "${URL}/src/arch/user"           # to get user variables
         _wget "${URL}/src/apps/system_apps"    # to get system apps
-        _wget "${URL}/src/conf/language"       # to get language code
         _wget "${URL}/src/conf/timezone"       # to get timezone code
         ;;
     *) _cleanup; _exit_msg; exit 0
@@ -402,7 +420,7 @@ _note "${MSG_MOUNT}"
 sleep 1
 
 ### Display user entries (so user can see them before running install)
-USER_ENTRIES=(LANGUAGE TIMEZONE HOST_NAME USER_NAME LINUX_FW KERNEL \
+USER_ENTRIES=(USER_LANG TIMEZONE HOST_NAME USER_NAME LINUX_FW KERNEL \
 DESKTOP DISPLAY_MAN GREETER AUR_HELPER POWER GPU_DRIVER HARD_VIDEO)
 _info "${MSG_USER_ENTRIES}"
 
