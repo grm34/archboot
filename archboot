@@ -197,7 +197,7 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 #                             HELP AND USAGE
 # ============================================================================
 # Here we manage help and usage to properly describe and run archboot.
-# The only options are to display help message and to select script language.
+# The only options are to select script language and to load keyboard layout.
 # We prevent user argument errors by matching options before run processing.
 #
 # Usage: sh archboot [options] (e.g., sh archboot -l french -k fr)
