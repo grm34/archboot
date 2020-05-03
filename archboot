@@ -242,7 +242,7 @@ while getopts 'hl:k:' OPTION; do
             fi;;
 
         # Keyboard layout (-k, --keyboard)
-        k)  sudo loadkeys -q "${OPTARG}"; STATUS=$?
+        k)  loadkeys -q "${OPTARG}"; STATUS=$?
             if [[ ${STATUS} -ne 1 ]]; then
                 export KEYMAP="${OPTARG}"
             else
