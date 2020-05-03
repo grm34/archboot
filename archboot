@@ -359,7 +359,7 @@ if [[ ${DESKTOP} ]]; then
     done
     echo "-> ${MSG_DONE}"
 
-    # Kernel mode setting || GPU driver (src/arch/gpu_driver)
+    # GPU driver (src/arch/gpu_driver) || Kernel mode setting
     _note "${MSG_MODSETTING}"
     _confirm "${MSG_CONFIRM_GPU}"
 
@@ -419,10 +419,10 @@ done
 #                         ARCH LINUX INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted
-# and user variables stored, so we can start now Arch Linux installation.
+# and user variables stored, so now we can start Arch Linux installation.
 # First step is to install base system and second to install bootloader.
 # In case of desktop environment or window manager, we install GPU Drivers
-# and Display Manager. We install an Arch User Repository Helper (optional).
+# and Display Manager. We also install an AUR Helper (optional).
 #
 # We use <tee> to get installation logs of those steps </var/log/archboot>.
 # If system won't start DE/WM after reboot, check the logs and open an issue.
