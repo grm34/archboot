@@ -68,20 +68,8 @@ _get_gpu_driver() {
 
         case ${CONFIRM} in
             y|Y|yes|Yes|YES)
-                case ${GPU_DRIVER} in
-                    NVIDIA_LTS|NVIDIA_DKMS|NVIDIA_DRIVER)
-                        export OPENGL="OPENGL_NVIDIA"
-                        export HARDVIDEO="HARVIDEO_NVIDIA";;
-                    NOUVEAU_DRIVER)
-                        export OPENGL="OPENGL_NOUVEAU"
-                        export HARDVIDEO="HARDVIDEO_NOUVEAU";;
-                    AMD_DRIVER)
-                        export OPENGL="OPENGL_AMD"
-                        export HARDVIDEO="HARDVIDEO_AMD";;
-                    INTEL_DRIVER)
-                        export OPENGL="OPENGL_INTEL"
-                        export HARDVIDEO="HARDVIDEO_INTEL"
-                esac
+                export OPENGL="OPENGL_${GPU_DRIVER/_*/}"
+                export HARDVIDEO="HARDVIDEO_${GPU_DRIVER/_*/}"
         esac
     fi
 }
