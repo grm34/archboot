@@ -58,7 +58,7 @@ ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 # Guideline: functions always start with '_' and vars are always UPPERCASE.
 #
 # - Variables are pretty simple such as define script language, shell colors,
-#   repository url or error messages (required when locale vars unsourced).
+#   required urls or error messages (required when locale vars unsourced).
 #
 # - Functions are used to handle install steps, notes, errors or to do some
 #   actions like cleanup after fatal error, execute command(s) in chrooted
