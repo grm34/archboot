@@ -32,15 +32,10 @@ _get_gpu_driver() {
                     HARDENED_KERNEL|ZEN_KERNEL)
                         export GPU_DRIVER="NVIDIA_DKMS";;
                     DEFAULT_KERNEL) export GPU_DRIVER="NVIDIA_DRIVER"
-                esac
-                export OPENGL="OPENGL_NVIDIA"
-                export HARDVIDEO="HARVIDEO_NVIDIA";;
+                esac;;
 
             # Opensource drivers
-            *)
-                export GPU_DRIVER="NOUVEAU_DRIVER"
-                export OPENGL="OPENGL_NOUVEAU"
-                export HARDVIDEO="HARDVIDEO_NOUVEAU"
+            *) export GPU_DRIVER="NOUVEAU_DRIVER"
         esac
     else
 
@@ -50,9 +45,6 @@ _get_gpu_driver() {
         if [[ ${AMD_CARD} ]]; then
             _note "${AMD_CARD##*: } ${MSG_DETECTED}"
             export GPU_DRIVER="AMD_DRIVER"
-            export OPENGL="OPENGL_AMD"
-            export HARDVIDEO="HARDVIDEO_AMD"
-
         else
 
             ### INTEL
@@ -61,8 +53,6 @@ _get_gpu_driver() {
             if [[ ${INTEL_CARD} ]]; then
                 _note "${INTEL_CARD##*: } ${MSG_DETECTED}"
                 export GPU_DRIVER="INTEL_DRIVER"
-                export OPENGL="OPENGL_INTEL"
-                export HARDVIDEO="HARDVIDEO_INTEL"
 
             ### DEFAULT
             else
@@ -72,25 +62,39 @@ _get_gpu_driver() {
         fi
     fi
 
-    ### OpenGL & Hardware Video Acceleration?
+    ### OpenGL and Hardware Video Acceleration
     if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" ]]; then
         _confirm "${MSG_CONFIRM_HARDVIDEO}"
 
         case ${CONFIRM} in
-            y|Y|yes|Yes|YES) export HARD_VIDEO="True"
+            y|Y|yes|Yes|YES)
+                case ${GPU_DRIVER} in
+                    NVIDIA_LTS|NVIDIA_DKMS|NVIDIA_DRIVER)
+                        export OPENGL="OPENGL_NVIDIA"
+                        export HARDVIDEO="HARVIDEO_NVIDIA";;
+                    NOUVEAU_DRIVER)
+                        export OPENGL="OPENGL_NOUVEAU"
+                        export HARDVIDEO="HARDVIDEO_NOUVEAU";;
+                    AMD_DRIVER)
+                        export OPENGL="OPENGL_AMD"
+                        export HARDVIDEO="HARDVIDEO_AMD";;
+                    INTEL_DRIVER)
+                        export OPENGL="OPENGL_INTEL"
+                        export HARDVIDEO="HARDVIDEO_INTEL"
+                esac
         esac
     fi
 }
 
 _install_gpu_driver() {
 
-    ### GPU Controller
+    ### Install GPU driver
     _info "${MSG_INSTALL_GPU_DRIVER}"
     _chroot "pacman --noconfirm --needed -S ${!GPU_DRIVER}"
     echo "-> ${MSG_DONE}"
 
-    ### OpenGL & Hardware Video Acceleration
-    if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" && ${HARD_VIDEO} ]]; then
+    ### Install openGL and hardware video acceleration
+    if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" && ${HARDVIDEO} ]]; then
         _info "${MSG_INSTALL_HARDVIDEO}"
         _chroot "pacman --noconfirm --needed -S ${!OPENGL} ${!HARDVIDEO}"
         echo "-> ${MSG_DONE}"
