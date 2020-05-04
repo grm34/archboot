@@ -379,8 +379,8 @@ fi
 # ============================================================================
 
 ### Prepare the system
-_firmware; _cpu; _ntfs            # (src/arch/mirrorlist)
-_mirrorlist; _timezone; _clock    # (src/arch/firmware)
+_firmware; _cpu; _ntfs            # (src/arch/firmware)
+_mirrorlist; _timezone; _clock    # (src/arch/mirrorlist)
 
 ### Set logfiles
 _info "${MSG_SET_LOGS}"
