@@ -35,9 +35,11 @@ _get_user_variables() {
     done
     export USER_LANG
 
-    ### Keymap
-    KEYMAP=$(echo "${USER_LANG}" | cut -d'_' -f 1)
-    export KEYMAP
+    ### Keymap (if not specified)
+    if [[ ! ${KEYMAP} ]]; then
+        KEYMAP=$(echo "${USER_LANG}" | cut -d'_' -f 1)
+        export KEYMAP
+    fi
 
     ### Hostname
     until [[ ${#HOST_NAME} -ge 3 && \
@@ -223,13 +225,11 @@ _root_passwd() {
         _note "${MSG_PASSWD_NOTE}"
         _prompt "${MSG_PROMPT_ROOT_PASSWD}"
         read -rs A
-    done
-    echo
+    done; echo
 
     ### Confirm Root Password
     _prompt "${MSG_CONFIRM_ROOT_PASSWD}"
-    read -rs C
-    echo
+    read -rs C; echo
 }
 
 _user_passwd() {
@@ -240,13 +240,11 @@ _user_passwd() {
         _note "${MSG_PASSWD_NOTE}"
         _prompt "${MSG_PROMPT_USER_PASSWD} ${USER_NAME}:"
         read -rs B
-    done
-    echo
+    done; echo
 
     ### Confirm User Password
     _prompt "${MSG_CONFIRM_USER_PASSWD} ${USER_NAME}:"
-    read -rs D
-    echo
+    read -rs D; echo
 }
 
 _enable_user_rights() {
@@ -266,8 +264,7 @@ _enable_user_rights() {
 
         for GROUP in ${GROUPLIST}; do
             _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
-        done
-        echo "-> ${MSG_DONE}"
+        done; echo "-> ${MSG_DONE}"
     fi
 }
 

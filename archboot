@@ -2,8 +2,8 @@
 set > old_vars.log
 
 APPNAME="archboot"
-VERSION="v2.9.9"
-BRANCH="master"
+VERSION="v3.0.0"
+BRANCH="dev"
 AUTHOR="grm34"
 LICENSE="Apache License 2.0"
 
@@ -31,7 +31,7 @@ _help() {
     echo -e "${BLUE}
 Arch Linux Installer - A script made with love by ${AUTHOR}
 
-${BOLD}Usage: ${NC}sh $(basename "$0") [options]
+${BOLD}Usage: ${NC}sh ${APPNAME} [options]
 
     ${BOLD}Options${NC}
         -h, --help          show this help message
@@ -58,7 +58,7 @@ ${GREY}<http://tiny.cc/archboot-wiki>${NC}"
 # Guideline: functions always start with '_' and vars are always UPPERCASE.
 #
 # - Variables are pretty simple such as define script language, shell colors,
-#   repository url or error messages (required when locale vars unsourced).
+#   required urls or error messages (required when locale vars unsourced).
 #
 # - Functions are used to handle install steps, notes, errors or to do some
 #   actions like cleanup after fatal error, execute command(s) in chrooted
@@ -78,10 +78,15 @@ MSG_CLEANUP="Cleaning up sources"
 RED="\e[1;31m"; GREEN="\e[1;32m"; YELLOW="\e[1;33m"; GREY="\e[3;93m"
 BLUE="\e[1;34m"; CYAN="\e[1;36m"; BOLD="\e[1;37m"; NC="\e[0m"
 
-### Github urls (current branch, gh-pages branch)
+### Urls (current branch, gh-pages, AUR Helper, mirrors, grub theme, ipinfo)
 export URL="https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
 export GHPAGES=\
 "https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
+export AUR_HELPER_URL="https://aur.archlinux.org/${AUR_HELPER,,}.git"
+export MIRRORLIST_URL="https://www.archlinux.org/mirrorlist/?country=\
+${COUNTRY}&use_mirror_status=on"
+export GRUB_THEME_URL="git://github.com/Generator/Grub2-themes.git"
+export IP_INFO_URL="ipinfo.io"
 
 ### Display some notes
 _note() {
@@ -192,7 +197,7 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 #                             HELP AND USAGE
 # ============================================================================
 # Here we manage help and usage to properly describe and run archboot.
-# The only options are to display help message and to select script language.
+# The only options are to select script language and to load keyboard layout.
 # We prevent user argument errors by matching options before run processing.
 #
 # Usage: sh archboot [options] (e.g., sh archboot -l french -k fr)
@@ -237,8 +242,10 @@ while getopts 'hl:k:' OPTION; do
             fi;;
 
         # Keyboard layout (-k, --keyboard)
-        k)  sudo loadkeys -q "${OPTARG}"; STATUS=$?
-            if [[ ${STATUS} -ne 0 ]]; then
+        k)  loadkeys -q "${OPTARG}"; STATUS=$?
+            if [[ ${STATUS} -ne 1 ]]; then
+                export KEYMAP="${OPTARG}"
+            else
                 echo -e "${RED}Error:${NC} invalid keyboard layout ${OPTARG}"
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
@@ -352,7 +359,7 @@ if [[ ${DESKTOP} ]]; then
     done
     echo "-> ${MSG_DONE}"
 
-    # Kernel mode setting || GPU driver (src/arch/gpu_driver)
+    # GPU driver (src/arch/gpu_driver) || Kernel mode setting
     _note "${MSG_MODSETTING}"
     _confirm "${MSG_CONFIRM_GPU}"
 
@@ -412,10 +419,10 @@ done
 #                         ARCH LINUX INSTALLATION
 # ============================================================================
 # At this point system is ready, partitions are created, properly mounted
-# and user variables stored, so we can start now Arch Linux installation.
+# and user variables stored, so now we can start Arch Linux installation.
 # First step is to install base system and second to install bootloader.
 # In case of desktop environment or window manager, we install GPU Drivers
-# and Display Manager. We install an Arch User Repository Helper (optional).
+# and Display Manager. We also install an AUR Helper (optional).
 #
 # We use <tee> to get installation logs of those steps </var/log/archboot>.
 # If system won't start DE/WM after reboot, check the logs and open an issue.
