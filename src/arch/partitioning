@@ -83,10 +83,11 @@ _default_partitioning_scheme() {
 
     ### Logical Volume Manager
     _confirm "${MSG_CONFIRM_LVM}"
-    case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
-        _confirm "${MSG_CONFIRM_LUKS}"
-        case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
-    esac
+    case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"; esac
+
+    ### LUKS encrytion
+    _confirm "${MSG_CONFIRM_LUKS}"
+    case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
 
     ### Get optional partitions and set partitions list
     _get_user_partitions
@@ -110,7 +111,7 @@ _default_partitioning_scheme() {
     for PART in "${PART_SIZES[@]}"; do
         PART_NAME=${PART//_SIZE/}
 
-        ## Free space for home?
+        ## Free space for home
         if [[ ${PART} == "HOME_SIZE" ]]; then
             _confirm "${MSG_CONFIRM_FREESPACE} ${PART_NAME,,}?"
             case ${CONFIRM} in
@@ -181,10 +182,10 @@ _default_partitioning_scheme() {
         ## Create partitions
         _info "${MSG_CREATE_PART} (${PART_NAME,,} ==> ${SIZES[${INDEX}]})"
 
-        if [[ (${PART} == "HOME_PARTITION" && \
-${HOME_SIZE} == "freespace") || ${SET_LVM} ]]; then
+        if [[ ${SET_LVM} || (${PART} == "HOME_PARTITION" && \
+${HOME_SIZE} == "freespace") ]]; then
             printf "n\n%s\n\n\nw" "${PART_TYPE}" | fdisk "${DRIVE}"
-        elif [[ ${PART} == "BOOT_PARTITION" || ! ${SET_LVM} ]]; then
+        elif [[ ! ${SET_LVM} || ${PART} == "BOOT_PARTITION" ]]; then
             printf \
 "n\n%s\n\n\n+%s\nw" "${PART_TYPE}" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
         fi
@@ -193,26 +194,22 @@ ${HOME_SIZE} == "freespace") || ${SET_LVM} ]]; then
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
             _info "${MSG_SET_EFI_PART} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n1\nef00\nw" | gdisk "${DRIVE}"
-        elif [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
+        elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
             _info "${MSG_SET_LVM_PART} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n%s\n8e00\nw" ${INDEX} | fdisk "${DRIVE}"
         fi
 
-        ## Set Logical volume Manager
-        if [[ ${PART} == "ROOT_PARTITION" && ${SET_LVM} ]]; then
+        ## Set Logical Volume Manager
+        if [[ ${SET_LVM} ]]; then
 
-            # Create LVM volume with LUKS
-            if [[ ${SET_LUKS} ]]; then
-                _info "${MSG_SET_LUKS} ${DRIVE}${ORDER[${INDEX}]}"
-                modprobe dm-crypt
-                cryptsetup luksFormat "${DRIVE}${ORDER[${INDEX}]}"
-                cryptsetup open --type luks "${DRIVE}${ORDER[${INDEX}]}" lvm
-                pvcreate /dev/mapper/lvm
-                vgcreate vg1 /dev/mapper/lvm
-                export DRIVE="/dev/mapper/lvm"
+            # Set LVM on LUKS
+            if [[ ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
+                _setup_luks
+                pvcreate /dev/mapper/crypt
+                vgcreate vg1 /dev/mapper/crypt
 
-            # Create LVM volume without LUKS
-            else
+            # Set LVM without encryption
+            elif [[ ! ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
                 _info "${MSG_SET_LVM} ${DRIVE}${ORDER[${INDEX}]}"
                 pvcreate "${DRIVE}${ORDER[${INDEX}]}"
                 vgcreate vg1 "${DRIVE}${ORDER[${INDEX}]}"
@@ -230,8 +227,13 @@ ${HOME_SIZE} == "freespace" ]]; then
             fi
         fi
 
+        # Set LUKS on partition
+        if [[ ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
+            _setup_luks
+        fi
+
         ## Set partitions drive ID
-        if [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
+        if [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
             export "${DRIVE_ID}=${DRIVE}${PART_NAME,,}"
         else
             export "${DRIVE_ID}=${DRIVE}${ORDER[${INDEX}]}"
@@ -321,6 +323,13 @@ _get_user_partitions() {
 
     ### Return partitions list
     export PARTITION
+}
+
+_setup_luks() {
+    _info "${MSG_SET_LUKS} ${DRIVE}${ORDER[${INDEX}]}"
+    cryptsetup -y -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
+    cryptsetup open --type luks "${DRIVE}${ORDER[${INDEX}]}" crypt
+    export DRIVE="/dev/mapper/crypt"
 }
 
 _dehumanise() {

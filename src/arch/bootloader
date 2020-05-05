@@ -38,17 +38,18 @@ _install_bootloader() {
         echo "title Arch Linux" > "${BOOTCONF}"
         echo "linux /vmlinuz-${KERNEL_NAME,,}" >> "${BOOTCONF}"
 
+        # Add microcode
         case ${UCODE} in
             intel|amd) echo "initrd /${UCODE}-ucode.img" >> "${BOOTCONF}"
         esac
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> "${BOOTCONF}"
 
+        # Set options
         if [[ ${LUKS} ]]; then
-            echo "options cryptdevice=UUID=${ROOT_UUID}:vg1 \
+            echo "options cryptdevice=UUID=${ROOT_UUID}:crypt \
 root=/dev/mapper/root quiet rw" >> "${BOOTCONF}"
         else
-            echo "options root=UUID=${ROOT_UUID} quiet rw" >> \
-"${BOOTCONF}"
+            echo "options root=UUID=${ROOT_UUID} quiet rw" >> "${BOOTCONF}"
         fi
         echo "-> ${MSG_DONE}"
 
