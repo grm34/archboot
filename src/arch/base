@@ -80,7 +80,7 @@ _install_base() {
         echo "-> ${MSG_DONE}"
     fi
 
-    # Install LVM Support
+    # Install LVM support
     if [[ ${SET_LVM} ]]; then
         _info "${MSG_INSTALL_LVM}"
         _chroot "pacman --noconfirm --needed -S ${LVM_SUPPORT}"
