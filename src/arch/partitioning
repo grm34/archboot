@@ -211,8 +211,8 @@ ${HOME_SIZE} == "freespace") ]]; then
             # Set LVM on LUKS
             if [[ ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
                 _setup_luks
-                _check pvcreate /dev/mapper/crypt
-                _check vgcreate vg1 /dev/mapper/crypt
+                _check pvcreate /dev/mapper/cryptlvm
+                _check vgcreate vg1 /dev/mapper/cryptlvm
 
             # Set LVM without encryption
             elif [[ ! ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
@@ -334,10 +334,11 @@ _get_user_partitions() {
 }
 
 _setup_luks() {
+    if [[ ${LVM} ]]; then PART_NAME="lvm"; fi
     _info "${MSG_SET_LUKS} ${DRIVE}${ORDER[${INDEX}]}"
     yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
-    yes | _check cryptsetup -v luksOpen "${DRIVE}${ORDER[${INDEX}]}" crypt
-    export DRIVE="/dev/mapper/crypt"
+    yes | _check cryptsetup -v luksOpen "${DRIVE}${ORDER[${INDEX}]}" "crypt${PART_NAME,,}"
+    export DRIVE="/dev/mapper/crypt${PART_NAME,,}"
 }
 
 _dehumanise() {
