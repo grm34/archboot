@@ -83,8 +83,8 @@ export URL="https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
 export GHPAGES=\
 "https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
 export AUR_HELPER_URL="https://aur.archlinux.org/${AUR_HELPER,,}.git"
-export MIRRORLIST_URL="https://www.archlinux.org/mirrorlist/?country=\
-${COUNTRY}&use_mirror_status=on"
+export MIRRORLIST_URL=\
+"https://www.archlinux.org/mirrorlist/?country=\${COUNTRY}&use_mirror_status=on"
 export GRUB_THEME_URL="git://github.com/Generator/Grub2-themes.git"
 export IP_INFO_URL="ipinfo.io"
 
