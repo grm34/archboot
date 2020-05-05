@@ -13,7 +13,7 @@ _mirrorlist() {
 
     ### Get user country code from ipinfo.io API
     _info "${MSG_GET_MIRRORS}"
-    export COUNTRY=$(curl -s "${IP_INFO_URL}"/country)
+    COUNTRY=$(curl -s "${IP_INFO_URL}"/country)
     CHECK_COUNTRY=$(echo "${COUNTRY}" | grep "error")
 
     ### Update mirrorlist if country code properly detected
