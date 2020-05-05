@@ -86,7 +86,7 @@ _install_base() {
         _chroot "pacman --noconfirm --needed -S ${LVM_SUPPORT}"
         _info "${MSG_LVM_HOOKS}"
         if [[ ${SET_LUKS} ]]; then
-            sed -i -e "/^HOOKS=/s/keyboard//g" /mnt/etc/mkinitcpio.conf
+            sed -i -e "/^HOOKS=/s/ keyboard//g" /mnt/etc/mkinitcpio.conf
             sed -i -e \
 "/^HOOKS=/s/filesystems/keyboard encrypt lvm2 filesystems/g" \
 /mnt/etc/mkinitcpio.conf
