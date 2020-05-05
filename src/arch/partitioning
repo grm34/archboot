@@ -167,7 +167,7 @@ conv=notrunc status=progress
         fi
     done
 
-    if [[ ${CHECK_SIZE} > ${DISK_SPACE} ]]; then
+    if (( ${CHECK_SIZE} > ${DISK_SPACE} )); then
         _error "${MSG_ERROR_DISK_SPACE}"
     fi
 
