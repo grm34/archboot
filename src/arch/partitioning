@@ -71,8 +71,10 @@ _default_partitioning_scheme() {
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
 
-            # Shred the drive
-            _check shred -v -n1 "${DRIVE}"
+            # Format the drive
+            _check wipefs --force --all "${DRIVE}"
+            _check dd if=/dev/zero of="${DRIVE}" bs=512 count=1 \
+conv=notrunc status=progress
 
             # Create MBR or GPT partition table
             printf "%s\nw" "${PART_CODE}" | fdisk --wipe=auto "${DRIVE}"
