@@ -262,8 +262,9 @@ ${HOME_SIZE} == "freespace" ]]; then
         fi
 
         ## Return partitions drive ID
-        if [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
-            export "${PART}=${DRIVE}${PART_NAME,,}"
+        if [[ ${PART} != "BOOT_PARTITION" && \
+(${SET_LVM} || ${SET_LUKS}) ]]; then
+            export "${PART}=${DRIVE_ID}"
         else
             export "${PART}=${DRIVE}${ORDER[${INDEX}]}"
         fi
