@@ -241,7 +241,7 @@ ${HOME_SIZE} == "freespace" ]]; then
 
         ## Set partitions drive ID
         if [[ ${PART} != "BOOT_PARTITION" && \
-(${SET_LVM} || (${SET_LUKS}) ]]; then
+(${SET_LVM} || ${SET_LUKS}) ]]; then
             DRIVE_ID="${DRIVE}${PART_NAME,,}"
         else
             DRIVE_ID="${DRIVE}${ORDER[${INDEX}]}"
