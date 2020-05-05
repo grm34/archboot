@@ -161,8 +161,10 @@ conv=notrunc status=progress
     DISK_SPACE=$(lsblk -b --output SIZE -n -d "${DRIVE}")
 
     for SIZE in "${SIZES[@]}"; do
-        _dehumanise "${SIZE}"
-        CHECK_SIZE=$((CHECK_SIZE + BYTES))
+        if [[ ${SIZE} != "free space" ]]; then
+            _dehumanise "${SIZE}"
+            CHECK_SIZE=$((CHECK_SIZE + BYTES))
+        fi
     done
 
     if [[ ${CHECK_SIZE} > ${DISK_SPACE} ]]; then
