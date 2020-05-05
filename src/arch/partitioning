@@ -242,7 +242,7 @@ ${HOME_SIZE} == "freespace" ]]; then
         ## Set partitions drive ID
         if [[ ${PART} != "BOOT_PARTITION" && \
 (${SET_LVM} || ${SET_LUKS}) ]]; then
-            DRIVE_ID="${DRIVE}${PART_NAME,,}"
+            DRIVE_ID="/dev/mapper/crypt${PART_NAME,,}"
         else
             DRIVE_ID="${DRIVE}${ORDER[${INDEX}]}"
         fi
@@ -338,7 +338,7 @@ _setup_luks() {
     _info "${MSG_SET_LUKS} ${DRIVE}${ORDER[${INDEX}]}"
     yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
     yes | _check cryptsetup -v luksOpen "${DRIVE}${ORDER[${INDEX}]}" "crypt${PART_NAME,,}"
-    export DRIVE="/dev/mapper/crypt${PART_NAME,,}"
+
 }
 
 _dehumanise() {
