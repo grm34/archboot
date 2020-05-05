@@ -17,7 +17,7 @@
 #
 # PARTITIONING SCHEME:
 #
-#   ROOT_PARTITION......: /mnt            (required)
+#   ROOT_PARTITION........: /mnt            (required)
 #   BOOT_PARTITION........: /mnt/boot       (required)
 #   SWAP_PARTITION........: no mountpoint   (optional)
 #   HOME_PARTITION........: /mnt/home       (optional)
