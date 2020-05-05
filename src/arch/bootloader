@@ -30,7 +30,7 @@ _install_bootloader() {
         echo "-> ${MSG_DONE}"
 
         # Get root partition UUID
-        ROOT_UUID=$(blkid -o value -s UUID "${ROOT_PARTITION}")
+        ROOT_UUID=$(blkid -o value -s UUID "${ROOT_PART_UUID}")
 
         # Create new boot entry
         _info "${MSG_SYSTEMDBOOT_ENTRY}"
@@ -41,9 +41,15 @@ _install_bootloader() {
         case ${UCODE} in
             intel|amd) echo "initrd /${UCODE}-ucode.img" >> "${BOOTCONF}"
         esac
-
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> "${BOOTCONF}"
-        echo "options root=UUID=${ROOT_UUID} quiet splash rw" >> "${BOOTCONF}"
+
+        if [[ ${LUKS} ]]; then
+            echo "options cryptdevice=UUID=${ROOT_UUID}:vg1 \
+root=/dev/mapper/root quiet rw" >> "${BOOTCONF}"
+        else
+            echo "options root=UUID=${ROOT_UUID} quiet rw" >> \
+"${BOOTCONF}"
+        fi
         echo "-> ${MSG_DONE}"
 
         # Update systemd-boot

@@ -88,7 +88,7 @@ _install_base() {
         if [[ ${SET_LUKS} ]]; then
             sed -i -e "/^HOOKS=/s/ keyboard//g" /mnt/etc/mkinitcpio.conf
             sed -i -e \
-"/^HOOKS=/s/filesystems/keyboard encrypt lvm2 filesystems/g" \
+"/^HOOKS=/s/filesystems/keyboard keymap lvm2 encrypt filesystems/g" \
 /mnt/etc/mkinitcpio.conf
         else
             sed -i -e \

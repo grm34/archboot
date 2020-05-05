@@ -30,6 +30,8 @@
 # All steps are described in the official documentation:
 #
 #   https://wiki.archlinux.org/index.php/Partitioning
+#   https://wiki.archlinux.org/index.php/LVM
+#   https://wiki.archlinux.org/index.php/Dm-crypt/Encrypting_an_entire_system
 # ============================================================================
 
 _default_partitioning_scheme() {
@@ -166,6 +168,9 @@ _default_partitioning_scheme() {
     else
         ORDER=(1 2 3 4)
     fi
+
+    ### Set root partition
+    export ROOT_PART_UUID="${DRIVE}${ORDER[1]}"
 
     ### Create and format partitions
     INDEX=0
