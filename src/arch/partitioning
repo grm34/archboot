@@ -236,9 +236,9 @@ ${HOME_SIZE} == "freespace" ]]; then
 
         ## Set partitions drive ID
         if [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
-            DRIVE_ID=${DRIVE}${PART_NAME,,}"
+            DRIVE_ID="${DRIVE}${PART_NAME,,}"
         else
-            DRIVE_ID=${DRIVE}${ORDER[${INDEX}]}"
+            DRIVE_ID="${DRIVE}${ORDER[${INDEX}]}"
         fi
 
         ## Inform changes to system
