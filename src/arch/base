@@ -60,7 +60,7 @@ _install_base() {
     ### Set Hostname
     _info "${MSG_SET_HOSTNAME} ${HOST_NAME}"
     echo "${HOST_NAME}" > /mnt/etc/hostname
-    echo "127.0.0.1 localhost" >> /mnt/etc/hosts
+    echo "127.0.0.1 localhost" > /mnt/etc/hosts
     echo "::1 localhost" >> /mnt/etc/hosts
     echo "127.0.1.1	${HOST_NAME}.localdomain ${HOST_NAME}" >> /mnt/etc/hosts
     echo "-> ${MSG_DONE}"
