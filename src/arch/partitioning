@@ -84,8 +84,12 @@ conv=notrunc status=progress
     esac
 
     ### Logical Volume Manager
-    _confirm "${MSG_CONFIRM_LVM}"
-    case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"; esac
+    if [[ ${FIRMWARE} == "UEFI" ]]; then
+        _confirm "${MSG_CONFIRM_LVM}"
+        case ${CONFIRM} in
+            y|Y|yes|Yes|YES) export SET_LVM="True"
+        esac
+    fi
 
     ### LUKS encrytion
     _confirm "${MSG_CONFIRM_LUKS}"
@@ -207,14 +211,14 @@ ${HOME_SIZE} == "freespace") ]]; then
             # Set LVM on LUKS
             if [[ ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
                 _setup_luks
-                pvcreate /dev/mapper/crypt
-                vgcreate vg1 /dev/mapper/crypt
+                _check pvcreate /dev/mapper/crypt
+                _check vgcreate vg1 /dev/mapper/crypt
 
             # Set LVM without encryption
             elif [[ ! ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
                 _info "${MSG_SET_LVM} ${DRIVE}${ORDER[${INDEX}]}"
-                pvcreate "${DRIVE}${ORDER[${INDEX}]}"
-                vgcreate vg1 "${DRIVE}${ORDER[${INDEX}]}"
+                _check pvcreate "${DRIVE}${ORDER[${INDEX}]}"
+                _check vgcreate vg1 "${DRIVE}${ORDER[${INDEX}]}"
                 export DRIVE="/dev/vg1"
             fi
 
@@ -223,19 +227,21 @@ ${HOME_SIZE} == "freespace") ]]; then
 
             if [[ ${PART} == "HOME_PARTITION" && \
 ${HOME_SIZE} == "freespace" ]]; then
-                lvcreate -l 100%FREE vg1 -n "${PART_NAME,,}"
+                _check lvcreate -l 100%FREE vg1 -n "${PART_NAME,,}"
             else
-                lvcreate -L "${SIZES[${INDEX}]}" vg1 -n "${PART_NAME,,}"
+                _check lvcreate -L "${SIZES[${INDEX}]}" vg1 -n "${PART_NAME,,}"
             fi
         fi
 
         # Set LUKS on partition
-        if [[ ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
+        if [[ (${SET_LUKS} && ${PART} != "BOOT_PARTITION") && \
+! ${SET_LVM} ]]; then
             _setup_luks
         fi
 
         ## Set partitions drive ID
-        if [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
+        if [[ ${PART} != "BOOT_PARTITION" && \
+(${SET_LVM} || (${SET_LUKS}) ]]; then
             DRIVE_ID="${DRIVE}${PART_NAME,,}"
         else
             DRIVE_ID="${DRIVE}${ORDER[${INDEX}]}"
@@ -329,8 +335,8 @@ _get_user_partitions() {
 
 _setup_luks() {
     _info "${MSG_SET_LUKS} ${DRIVE}${ORDER[${INDEX}]}"
-    cryptsetup -y -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
-    cryptsetup open --type luks "${DRIVE}${ORDER[${INDEX}]}" crypt
+    yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
+    yes | _check cryptsetup -v luksOpen "${DRIVE}${ORDER[${INDEX}]}" crypt
     export DRIVE="/dev/mapper/crypt"
 }
 
