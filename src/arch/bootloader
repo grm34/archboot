@@ -30,7 +30,7 @@ _install_bootloader() {
         echo "-> ${MSG_DONE}"
 
         # Get root partition UUID
-        ROOT_UUID=$(blkid -o value -s UUID "${SYSTEM_PARTITION}")
+        ROOT_UUID=$(blkid -o value -s UUID "${ROOT_PARTITION}")
 
         # Create new boot entry
         _info "${MSG_SYSTEMDBOOT_ENTRY}"

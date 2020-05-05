@@ -60,6 +60,9 @@ _install_base() {
     ### Set Hostname
     _info "${MSG_SET_HOSTNAME} ${HOST_NAME}"
     echo "${HOST_NAME}" > /mnt/etc/hostname
+    echo "127.0.0.1 localhost" >> /mnt/etc/hosts
+    echo "::1 localhost" >> /mnt/etc/hosts
+    echo "127.0.1.1	${HOST_NAME}.localdomain ${HOST_NAME}" >> /mnt/etc/hosts
     echo "-> ${MSG_DONE}"
 
     ### Set Root passwd
@@ -77,6 +80,24 @@ _install_base() {
     if [[ ${MICROCODE} ]]; then
         _info "${MSG_INSTALL_UCODE} ${MICROCODE/_/ } CPU"
         _chroot "pacman --noconfirm --needed -S ${!MICROCODE}"
+        echo "-> ${MSG_DONE}"
+    fi
+
+    # Install LVM Support
+    if [[ ${SET_LVM} ]]; then
+        _info "${MSG_INSTALL_LVM}"
+        _chroot "pacman --noconfirm --needed -S ${LVM_SUPPORT}"
+        _info "${MSG_LVM_HOOKS}"
+        if [[ ${SET_LUKS} ]]; then
+            sed -i -e "/^HOOKS=/s/keyboard//g" /mnt/etc/mkinitcpio.conf
+            sed -i -e \
+"/^HOOKS=/s/filesystems/keyboard encrypt lvm2 filesystems/g" \
+/mnt/etc/mkinitcpio.conf
+        else
+            sed -i -e \
+"/^HOOKS=/s/filesystems/lvm2 filesystems/g" /mnt/etc/mkinitcpio.conf
+        fi
+        _chroot mkinitcpio -P
         echo "-> ${MSG_DONE}"
     fi
 

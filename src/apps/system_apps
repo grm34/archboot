@@ -22,6 +22,9 @@ export AMD_CPU="amd-ucode"
 # Base devel (AUR only)
 export BASE_DEVEL="base-devel"
 
+# LVM
+export LVM_SUPPORT="lvm2"
+
 # Sudo (grant user)
 export SUDO="sudo"
 

@@ -14,7 +14,7 @@ _mount_partitions() {
     _info "${MSG_MOUNT_PARTITIONS}"
 
     ### Mount system > /mnt
-    _check mount -v "${SYSTEM_PARTITION}" /mnt
+    _check mount -v "${ROOT_PARTITION}" /mnt
 
     ### Create boot and home folders
     _check mkdir -v /mnt/{boot,home}
