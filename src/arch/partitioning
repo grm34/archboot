@@ -197,10 +197,10 @@ conv=notrunc status=progress
         ## Set partition types ()
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
             _info "${MSG_PART_TYPE} ${FIRMWARE/U/} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n1\nef00\nw" | gdisk "${DRIVE}"
+            printf "t\nef00\nw" | gdisk "${DRIVE}"
         elif [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "BIOS" ]]; then
             _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n1\n4\nw" | fdisk "${DRIVE}"
+            printf "t\n4\nw" | fdisk "${DRIVE}"
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
             _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n%s\n8e00\nw" ${INDEX} | gdisk "${DRIVE}"
