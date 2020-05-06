@@ -204,7 +204,6 @@ conv=notrunc status=progress
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
             _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n%s\n8e00\nw" ${INDEX} | gdisk "${DRIVE}"
-
         fi
 
         ## Set Logical Volume Manager
