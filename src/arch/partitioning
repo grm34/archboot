@@ -204,7 +204,7 @@ ${HOME_SIZE} == "freespace") ]]; then
             printf "t\n1\nef00\nw" | gdisk "${DRIVE}"
         elif [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "BIOS" ]]; then
             _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n1\nef02\nw" | gdisk "${DRIVE}"
+            printf "t\n1\n4\nw" | fdisk "${DRIVE}"
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
             _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n%s\n8e00\nw" ${INDEX} | gdisk "${DRIVE}"
