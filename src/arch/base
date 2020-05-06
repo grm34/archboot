@@ -133,7 +133,7 @@ _install_AUR_helper() {
 
     ### Clone AUR Helper from aur.archlinux.org
     _chroot "cd /home/${USER_NAME} && \
-sudo -u ${USER_NAME} git clone ${AUR_HELPER_URL}"
+sudo -u ${USER_NAME} git clone https://aur.archlinux.org/${AUR_HELPER,,}.git"
 
     ### Install AUR Helper
     _chroot "cd /home/${USER_NAME}/${AUR_HELPER,,} && sudo -u ${USER_NAME} \
