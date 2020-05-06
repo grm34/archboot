@@ -37,7 +37,7 @@ _get_user_variables() {
 
     ### Keymap (if not specified)
     if [[ ! ${KEYMAP} ]]; then
-        KEYMAP=$(echo "${USER_LANG}" | cut -d'_' -f 1)
+        KEYMAP=$( echo "${USER_LANG}" | cut -d'_' -f 1 )
         export KEYMAP
     fi
 
@@ -260,7 +260,7 @@ _enable_user_rights() {
         _info "${MSG_INFO_ADD_GROUPS}"
         _chroot "yes | pwck"
         _chroot "yes | grpck"
-        GROUPLIST=$(cut -d: -f1 /mnt/etc/group)
+        GROUPLIST=$( cut -d: -f1 /mnt/etc/group )
 
         for GROUP in ${GROUPLIST}; do
             _chroot "gpasswd -a ${USER_NAME} ${GROUP}"
