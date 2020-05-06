@@ -43,7 +43,7 @@ _default_partitioning_scheme() {
     read -r DRIVE
 
     ### Check if valid drive
-    CHECK=$(partprobe -d -s "/dev/${DRIVE}")
+    CHECK=$( partprobe -d -s "/dev/${DRIVE}" )
 
     ### Otherwise ask again
     until [[ ${CHECK} ]]; do
@@ -51,7 +51,7 @@ _default_partitioning_scheme() {
         lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
         _prompt "${MSG_PROMPT_VALID_DRIVE}" "${MSG_DRIVE_EXAMPLE}"
         read -r DRIVE
-        CHECK=$(partprobe -d -s "/dev/${DRIVE}")
+        CHECK=$( partprobe -d -s "/dev/${DRIVE}" )
     done
 
     ### Check if drive is mounted
@@ -66,7 +66,7 @@ _default_partitioning_scheme() {
     _info "${MSG_ARCH_DRIVE} ${DRIVE}"
     lsblk "${DRIVE}"
     _note "${MSG_WARN_LOST_DATA}"
-    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} (${PART_TABLE} ==> ${DRIVE})?"
+    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${DRIVE}?"
 
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
@@ -76,8 +76,8 @@ _default_partitioning_scheme() {
             _check dd if=/dev/zero of="${DRIVE}" bs=512 count=1 \
 conv=notrunc status=progress
 
-            # Create MBR or GPT partition table
-            printf "%s\nw" "${PART_CODE}" | fdisk --wipe=auto "${DRIVE}"
+            # Create GPT partition table
+            printf "g\nw" | fdisk --wipe=auto "${DRIVE}"
             partprobe "${DRIVE}"; sleep 1;;
         *)
             _error "${MSG_ARCH_ABORTED}"
@@ -99,7 +99,7 @@ conv=notrunc status=progress
     _get_user_partitions
 
     ### Create list to store partitions sizes
-    PART_SIZES=(BOOT_SIZE SYSTEM_SIZE)
+    PART_SIZES=(BOOT_SIZE ROOT_SIZE)
     SIZES=("512M" "25G")
 
     if [[ ${PARTITION[*]} =~ "SWAP_PARTITION" ]]; then
@@ -146,7 +146,7 @@ conv=notrunc status=progress
     done
 
     ### Create list to assign partitions sizes
-    SIZES=("${BOOT_SIZE}" "${SYSTEM_SIZE}")
+    SIZES=("${BOOT_SIZE}" "${ROOT_SIZE}")
 
     if [[ ${PARTITION[*]} =~ "SWAP_PARTITION" ]]; then
         SIZES+=("${SWAP_SIZE}")
@@ -158,16 +158,16 @@ conv=notrunc status=progress
 
     ### Check disk space
     CHECK_SIZE=0
-    DISK_SPACE=$(lsblk -b --output SIZE -n -d "${DRIVE}")
+    DISK_SPACE=$( lsblk -b --output SIZE -n -d "${DRIVE}" )
 
     for SIZE in "${SIZES[@]}"; do
         if [[ ${SIZE} != "free space" ]]; then
             _dehumanise "${SIZE}"
-            CHECK_SIZE=$((CHECK_SIZE + BYTES))
+            CHECK_SIZE=$(( CHECK_SIZE + BYTES ))
         fi
     done
 
-    if (( ${CHECK_SIZE} > ${DISK_SPACE} )); then
+    if (( CHECK_SIZE > DISK_SPACE )); then
         _error "${MSG_ERROR_DISK_SPACE}"
     fi
 
@@ -188,23 +188,22 @@ conv=notrunc status=progress
         PART_NAME=${PART//_PARTITION/}
 
         ## Create partitions
-        _info "${MSG_CREATE_PART} (${PART_NAME,,} ==> ${SIZES[${INDEX}]})"
+        _info "${MSG_CREATE_PART} ${PART_NAME,,} ${SIZES[${INDEX}]}"
 
         if [[ ${SET_LVM} || (${PART} == "HOME_PARTITION" && \
 ${HOME_SIZE} == "freespace") ]]; then
-            printf "n\n%s\n\n\nw" "${PART_TYPE}" | fdisk "${DRIVE}"
+            printf "n\n\n\n\nw" | fdisk "${DRIVE}"
         elif [[ ! ${SET_LVM} || ${PART} == "BOOT_PARTITION" ]]; then
-            printf \
-"n\n%s\n\n\n+%s\nw" "${PART_TYPE}" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
+            printf "n\n\n\n\n+%s\nw" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
         fi
 
         ## Set partition types
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
-            _info "${MSG_SET_EFI_PART} ${DRIVE}${ORDER[${INDEX}]}"
+            _info "${MSG_SET_EFI} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n1\nef00\nw" | gdisk "${DRIVE}"
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
-            _info "${MSG_SET_LVM_PART} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n%s\n8e00\nw" ${INDEX} | fdisk "${DRIVE}"
+            _info "${MSG_LVM_PART} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
+            printf "t\n%s\n8e00\nw" ${INDEX} | gdisk "${DRIVE}"
         fi
 
         ## Set Logical Volume Manager
@@ -214,24 +213,24 @@ ${HOME_SIZE} == "freespace") ]]; then
             if [[ ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
                 _setup_luks
                 _check pvcreate /dev/mapper/cryptlvm
-                _check vgcreate vg1 /dev/mapper/cryptlvm
+                _check vgcreate vg /dev/mapper/cryptlvm
 
             # Set LVM without encryption
             elif [[ ! ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
                 _info "${MSG_SET_LVM} ${DRIVE}${ORDER[${INDEX}]}"
                 _check pvcreate "${DRIVE}${ORDER[${INDEX}]}"
-                _check vgcreate vg1 "${DRIVE}${ORDER[${INDEX}]}"
-                export DRIVE="/dev/vg1"
+                _check vgcreate vg "${DRIVE}${ORDER[${INDEX}]}"
+                export DRIVE="/dev/vg"
             fi
 
             # Create logical partitions
-            _info "${MSG_CREATE_LVM} (${PART_NAME,,}: ${SIZES[${INDEX}]})"
+            _info "${MSG_CREATE_LVM} ${PART_NAME,,} ${SIZES[${INDEX}]}"
 
             if [[ ${PART} == "HOME_PARTITION" && \
 ${HOME_SIZE} == "freespace" ]]; then
-                _check lvcreate -l 100%FREE vg1 -n "${PART_NAME,,}"
+                _check lvcreate -l 100%FREE vg -n "${PART_NAME,,}"
             else
-                _check lvcreate -L "${SIZES[${INDEX}]}" vg1 -n "${PART_NAME,,}"
+                _check lvcreate -L "${SIZES[${INDEX}]}" vg -n "${PART_NAME,,}"
             fi
         fi
 
@@ -253,7 +252,7 @@ ${HOME_SIZE} == "freespace" ]]; then
         partprobe "${DRIVE}"; sleep 1
 
         ## Format partitions
-        _info "${MSG_FORMAT_PARTITION} (${PART_NAME,,}: ${SIZES[${INDEX}]})"
+        _info "${MSG_FORMAT_PARTITION} ${PART_NAME,,} ${SIZES[${INDEX}]}"
 
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
             yes | _check mkfs."${BOOT_FILESYSTEM}" "${DRIVE_ID}"
@@ -293,7 +292,7 @@ _custom_partitioning_scheme() {
         read -r DRIVE_ID
 
         # Check if valid partition
-        CHECK=$(partprobe -d -s "/dev/${DRIVE_ID}")
+        CHECK=$( partprobe -d -s "/dev/${DRIVE_ID}" )
 
         # Otherwise ask again
         until [[ ${CHECK} ]]; do
@@ -301,7 +300,7 @@ _custom_partitioning_scheme() {
             lsblk | grep "NAME\|disk\|part"
            _prompt "${MSG_PROMPT_VALIDID} ${PART_NAME,,}:" "${MSG_ID_EXAMPLE}"
             read -r DRIVE_ID
-            CHECK=$(partprobe -d -s "/dev/${DRIVE_ID}")
+            CHECK=$( partprobe -d -s "/dev/${DRIVE_ID}" )
         done
 
         # Return partitions drive ID
@@ -325,7 +324,7 @@ _get_user_partitions() {
     ### Get optional partitions
     for PART in "${OPTIONAL[@]}"; do
         PART_NAME=${PART//_PARTITION/}
-        _confirm "${MSG_CONFIRM_OPT_PART} ${PART_NAME}?"
+        _confirm "${MSG_CONFIRM_OPT_PART} ${PART_NAME,,}?"
 
         case ${CONFIRM} in
             y|Y|yes|Yes|YES) PARTITION+=("${PART}")
@@ -338,16 +337,17 @@ _get_user_partitions() {
 
 _setup_luks() {
     if [[ ${LVM} ]]; then PART_NAME="lvm"; fi
-    _info "${MSG_SET_LUKS} ${DRIVE}${ORDER[${INDEX}]}"
+    _info "${MSG_SET_LUKS} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
     yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
-    yes | _check cryptsetup -v luksOpen "${DRIVE}${ORDER[${INDEX}]}" "crypt${PART_NAME,,}"
+    yes | _check cryptsetup -v luksOpen \
+"${DRIVE}${ORDER[${INDEX}]}" "crypt${PART_NAME,,}"
 
 }
 
 _dehumanise() {
 
     ### Convert human readable to bytes
-    BYTES=$(echo "${1}" | awk \
+    BYTES=$( echo "${1}" | awk \
         'BEGIN{IGNORECASE = 1}
         function printpower(n,b,p) {printf "%u\n", n*b^p; next}
         /[0-9]$/{print $1;next};
