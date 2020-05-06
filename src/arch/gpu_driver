@@ -17,7 +17,7 @@ _get_gpu_driver() {
     _info "${MSG_GET_GPU}"
 
     ### NVIDIA
-    NVIDIA_CARD=$(lspci | grep -e VGA -e 3D | grep -ie nvidia)
+    NVIDIA_CARD=$( lspci | grep -e VGA -e 3D | grep -ie nvidia )
 
     if [[ ${NVIDIA_CARD} ]]; then
         _note "${NVIDIA_CARD##*: } ${MSG_DETECTED}"
@@ -40,7 +40,7 @@ _get_gpu_driver() {
     else
 
         ### AMD / ATI
-        AMD_CARD=$(lspci | grep -e VGA -e 3D | grep -e ATI -e AMD)
+        AMD_CARD=$( lspci | grep -e VGA -e 3D | grep -e ATI -e AMD )
 
         if [[ ${AMD_CARD} ]]; then
             _note "${AMD_CARD##*: } ${MSG_DETECTED}"
@@ -48,7 +48,7 @@ _get_gpu_driver() {
         else
 
             ### INTEL
-            INTEL_CARD=$(lspci | grep -e VGA -e 3D | grep -i intel)
+            INTEL_CARD=$( lspci | grep -e VGA -e 3D | grep -i intel )
 
             if [[ ${INTEL_CARD} ]]; then
                 _note "${INTEL_CARD##*: } ${MSG_DETECTED}"
