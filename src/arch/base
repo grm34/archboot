@@ -30,7 +30,7 @@ _install_base() {
     ### Set Fstab
     _info "${MSG_SET_FSTAB}"
     genfstab -U -p /mnt >> /mnt/etc/fstab
-    cat < /mnt/etc/fstab | grep -v "Static information\|See fstab("
+    cat < /mnt/etc/fstab | grep -v "Static information"
 
     ### Set Timezone
     _info "${MSG_SET_TIMEZONE} ${TIMEZONE}"
