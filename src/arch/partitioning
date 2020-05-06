@@ -337,11 +337,9 @@ _setup_luks() {
     _info "${MSG_SET_LUKS} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
 
     # Encrypt partition
-    if [[ ${FIRMWARE} == "UEFI" ]]; then
-        yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
-    else
-        yes | \
-_check cryptsetup -v luksFormat --type luks1 "${DRIVE}${ORDER[${INDEX}]}"
+    yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
+    if [[ ${FIRMWARE} == "BIOS" ]]; then
+        yes | _check cryptsetup -v convert "${DRIVE}${ORDER[${INDEX}]}"
     fi
 
     # Open partition mapper
