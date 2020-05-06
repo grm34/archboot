@@ -74,7 +74,7 @@ root=/dev/mapper/root quiet rw" >> "${BOOTCONF}"
         # Download Themes
         _info "${MSG_DL_GRUB_THEME}"
         _wget "${GHPAGES}/assets/images/background.png" && echo
-        _chroot "git clone ${GRUB_THEME_URL}"
+        _chroot "git clone https://github.com/Generator/Grub2-themes.git"
         echo "-> ${MSG_DONE}"
 
         # Install Themes
