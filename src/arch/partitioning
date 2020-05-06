@@ -178,8 +178,9 @@ conv=notrunc status=progress
         ORDER=(1 2 3 4)
     fi
 
-    ### Set root partition
-    export ROOT_PART_UUID="${DRIVE}${ORDER[1]}"
+    ### Get root UUID
+    ROOT_UUID=$( blkid -o value -s UUID "${DRIVE}${ORDER[1]}" )
+    export ROOT_UUID
 
     ### Create and format partitions
     INDEX=0
@@ -227,7 +228,6 @@ ${HOME_SIZE} == "freespace") ]]; then
                 _info "${MSG_SET_LVM} ${DRIVE}${ORDER[${INDEX}]}"
                 _check pvcreate "${DRIVE}${ORDER[${INDEX}]}"
                 _check vgcreate vg "${DRIVE}${ORDER[${INDEX}]}"
-                export DRIVE="/dev/vg"
             fi
 
             # Create logical partitions
@@ -243,9 +243,7 @@ ${HOME_SIZE} == "freespace" ]]; then
 
         # Set LUKS on partition
         if [[ (${SET_LUKS} && ${PART} != "BOOT_PARTITION") && \
-! ${SET_LVM} ]]; then
-            _setup_luks
-        fi
+! ${SET_LVM} ]]; then _setup_luks; fi
 
         ## Set partitions drive ID
         if [[ ${PART} != "BOOT_PARTITION" && \

@@ -32,20 +32,14 @@ export MSG_ARCH_ABORTED="Installation durch Benutzer abgebrochen!"
 export MSG_CONFIRM_REBOOT="Möchten Sie Ihren Computer jetzt neu starten?"
 
 ### src/arch/base
-export MSG_INSTALL_BASE="Installiere Base System und Kernel"
-export MSG_INSTALL_FW="Installiere Linux Firmware"
-export MSG_INSTALL_DEVEL="Installiere Base-Devel"
+export MSG_INSTALL_BASE="Installiere Base System"
 export MSG_SET_FSTAB="Konfigurieren der Dateisystemtabelle"
 export MSG_SET_TIMEZONE="Zeitzone einstellen auf"
 export MSG_SET_LOCALE="Gebietsschema einstellen auf"
 export MSG_SET_VCONSOLE="Virtuelle Konsole einstellen auf"
 export MSG_SET_HOSTNAME="Erstelle Hostnamen"
 export MSG_SET_ROOT="Erstelle root-Passwort"
-export MSG_INSTALL_NET="Installiere Netzwerk-Manager"
-export MSG_INSTALL_UCODE="Installiere Microcode für"
-export MSG_INSTALL_LVM="Installing LVM support"
-export MSG_BOOT_HOOKS="Adding kernel parameters to systemd-boot"
-export MSG_INSTALL_NTFS="Installiere Unterstützung für NTFS Dateisystem"
+export MSG_BOOT_HOOKS="Adding kernel parameters for bootloader"
 export MSG_SET_USER="Erstelle Benutzer"
 export MSG_INSTALL_AUR="Installiere AUR-Helper"
 export MSG_CLEAN_CACHE="Bereinige Cache und nicht benötigte Abhängigkeiten"
@@ -62,18 +56,13 @@ export MSG_INSTALL_GRUB_THEME="Installiere Grub Arch Linux theme"
 export MSG_SET_GRUB="Erstelle Grub bootloader"
 
 ### src/arch/desktop
-export MSG_INSTALL_XORG="Installiere xorg-server"
-export MSG_INSTALL_WM_DEP="Installiere WM-Abhängigkeiten"
-export MSG_INSTALL_NUMLOCK="Installiere numlock"
 export MSG_INSTALL_DESKTOP="Installiere Desktop-Umgebung"
-export MSG_INSTALL_DE_EXTRAS="Installiere zusätzliche Pakete für"
 export MSG_SET_KEYBOARD="Erstelle Tastaturbelegung für"
 export MSG_SET_XINIT="Erstelle xinitrc für"
 
 ### src/arch/display
 export MSG_INSTALL_DISPLAY="Installiere display-manager"
 export MSG_SET_DISPLAY="Konfiguriere display-manager"
-export MSG_INSTALL_GREETER="Installiere lightdm-greeter"
 export MSG_SET_GREETER="Konfiguriere lightdm-greeter"
 
 ### src/arch/firmware

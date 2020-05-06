@@ -21,8 +21,12 @@ _install_display_manager() {
 
     ### Install Display Manager
     _info "${MSG_INSTALL_DISPLAY} (${DISPLAY_MAN,,})"
-    _chroot "pacman --noconfirm --needed -S ${!DISPLAY_MAN}"
+    DISPLAY_APPS=("${!DISPLAY_MAN}")
+    if [[ ${DISPLAY_MAN} == "LIGHTDM" && \
+${GREETER} != "DEEPIN_GREETER" ]]; then DISPLAY_APPS+=("${!GREETER}"); fi
+    _chroot "pacman --noconfirm --needed -S ${DISPLAY_APPS[*]}"
 
+    ### Enable Display Manager
     if [[ ${DISPLAY_MAN} == "XDM" ]]; then
         _chroot "systemctl enable ${DISPLAY_MAN,,}-archlinux"
     else
@@ -54,13 +58,6 @@ _install_display_manager() {
 
     ### LIGHTDM
     elif [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
-
-        # Install Greeter
-        if [[ ${GREETER} != "DEEPIN_GREETER" ]]; then
-            _info "${MSG_INSTALL_GREETER}"
-            _chroot "pacman --noconfirm --needed -S ${!GREETER}"
-            echo "-> ${MSG_DONE}"
-        fi
 
         # Define Greeter Session
         case ${GREETER} in

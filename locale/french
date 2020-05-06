@@ -32,20 +32,14 @@ export MSG_ARCH_ABORTED="installation avortée par l'utilisateur!"
 export MSG_CONFIRM_REBOOT="Voulez vous redémarrer l'ordinateur?"
 
 ### src/arch/base
-export MSG_INSTALL_BASE="Installation du système de base et du noyau"
-export MSG_INSTALL_FW="Installation du firmware linux"
-export MSG_INSTALL_DEVEL="Installation de base devel"
+export MSG_INSTALL_BASE="Installation du système de base"
 export MSG_SET_FSTAB="Configuration de la table des systèmes de fichiers"
 export MSG_SET_TIMEZONE="Configuration du fuseau horaire sur"
 export MSG_SET_LOCALE="Configuration des locales sur"
 export MSG_SET_VCONSOLE="Configuration de la console virtuelle sur"
 export MSG_SET_HOSTNAME="Création du nom d'hôte"
 export MSG_SET_ROOT="Création du mot de passe root"
-export MSG_INSTALL_NET="Installation du gestionnaire de réseau"
-export MSG_INSTALL_UCODE="Installation du support microcode pour"
-export MSG_INSTALL_LVM="Installation du support pour LVM"
-export MSG_BOOT_HOOKS="Ajout des paramètres kernel pour systemd-boot"
-export MSG_INSTALL_NTFS="Installation du support pour le système de fichiers NTFS"
+export MSG_BOOT_HOOKS="Ajout des paramètres kernel pour le bootloader"
 export MSG_SET_USER="Création de l'utilisateur"
 export MSG_INSTALL_AUR="Installation d'un AUR Helper"
 export MSG_CLEAN_CACHE="Nettoyage du cache et des dépendences inutiles"
@@ -62,19 +56,14 @@ export MSG_INSTALL_GRUB_THEME="Installation du theme Grub Arch Linux"
 export MSG_SET_GRUB="Configuration du chargeur de démarrage Grub"
 
 ### src/arch/desktop
-export MSG_INSTALL_XORG="Installation du serveur xorg"
-export MSG_INSTALL_WM_DEP="Installation des dépendences du gestionnaire de fenêtres"
-export MSG_INSTALL_NUMLOCK="Installation du verrouillage numérique"
 export MSG_INSTALL_DESKTOP="Installation de l'environnement de bureau"
-export MSG_INSTALL_DE_EXTRAS="Installation des paquets additionnels de"
 export MSG_SET_KEYBOARD="Configuration du clavier sur"
 export MSG_SET_XINIT="Configuration de xinitrc pour"
 
 ### src/arch/display
 export MSG_INSTALL_DISPLAY="Installation du gestionnaire de connexion"
 export MSG_SET_DISPLAY="Configuration du gestionnaire de connexion"
-export MSG_INSTALL_GREETER="Installation du gestionnaire d'accueil de LightDM"
-export MSG_SET_GREETER="Configuration du gestionnaire d'acceuil de LightDM"
+export MSG_SET_GREETER="Configuration du gestionnaire d'acceuil"
 
 ### src/arch/firmware
 export MSG_GET_FW="Identification du firmware"
