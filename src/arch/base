@@ -16,9 +16,8 @@
 _install_base() {
 
     ### Install Base System
-    _info "${MSG_INSTALL_BASE}
-    yes | _check pacstrap /mnt "${ARCH}" "${!KERNEL}"
-    PACSTRAP_APPS=("${SUDO}" "${NETAPPS}")
+    _info "${MSG_INSTALL_BASE}"
+    PACSTRAP_APPS=("${ARCH}" "${!KERNEL}" "${SUDO}" "${NETAPPS}")
     if [[ ${LINUX_FW} ]]; then PACSTRAP_APPS+=("${FW}"); fi
     if [[ ${AUR_HELPER} ]]; then PACSTRAP_APPS+=("${BASE_DEVEL}"); fi
     if [[ ${MICROCODE} ]]; then PACSTRAP_APPS+=("${!MICROCODE}"); fi
