@@ -84,12 +84,8 @@ conv=notrunc status=progress
     esac
 
     ### Logical Volume Manager
-    if [[ ${FIRMWARE} == "UEFI" ]]; then
-        _confirm "${MSG_CONFIRM_LVM}"
-        case ${CONFIRM} in
-            y|Y|yes|Yes|YES) export SET_LVM="True"
-        esac
-    fi
+    _confirm "${MSG_CONFIRM_LVM}"
+    case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"; esac
 
     ### LUKS encrytion
     _confirm "${MSG_CONFIRM_LUKS}"
