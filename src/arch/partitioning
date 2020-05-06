@@ -128,14 +128,14 @@ conv=notrunc status=progress
         ## Otherwise ask partitions sizes
         if [[ ${PARTITION_SIZE} != "freespace" ]]; then
             _note "${MSG_PART_SIZE} {M,G,T} (e.g., ${SIZES[${INDEX}]})"
-            _prompt "${MSG_PROMPT_PART_SIZE} ${PART_NAME}:"
+            _prompt "${MSG_PROMPT_PART_SIZE} ${PART_NAME,,}:"
             read -r PARTITION_SIZE
 
             # Check if valid size (otherwise ask again)
             until [[ ${PARTITION_SIZE} =~ \
 ^[1-9]{1}[[0-9]{0,2}(M|G|T){1}$ ]]; do
                 _note "${MSG_PART_SIZE} {M,G,T} (e.g., ${SIZES[${INDEX}]})"
-                _prompt "${MSG_PROMPT_VALID_PART_SIZE} ${PART_NAME}:"
+                _prompt "${MSG_PROMPT_VALID_PART_SIZE} ${PART_NAME,,}:"
                 read -r PARTITION_SIZE
             done
         fi
@@ -345,10 +345,18 @@ _get_user_partitions() {
 _setup_luks() {
     if [[ ${LVM} ]]; then PART_NAME="lvm"; fi
     _info "${MSG_SET_LUKS} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
-    yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
+
+    # Encrypt partition
+    if [[ ${FIRMWARE} == "BIOS" ]]; then
+        yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
+    else
+        yes | \
+_check cryptsetup -v luksFormat --type luks1 "${DRIVE}${ORDER[${INDEX}]}"
+    fi
+
+    # Open partition mapper
     yes | _check cryptsetup -v luksOpen \
 "${DRIVE}${ORDER[${INDEX}]}" "crypt${PART_NAME,,}"
-
 }
 
 _dehumanise() {
