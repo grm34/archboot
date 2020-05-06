@@ -337,13 +337,15 @@ _setup_luks() {
     _info "${MSG_SET_LUKS} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
 
     # Encrypt partition
-    yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
     if [[ ${FIRMWARE} == "BIOS" ]]; then
-        yes | _check cryptsetup -v convert "${DRIVE}${ORDER[${INDEX}]}"
+        _check cryptsetup -y -v luksFormat --type luks1 \
+"${DRIVE}${ORDER[${INDEX}]}"
+    else
+        _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
     fi
 
     # Open partition mapper
-    yes | _check cryptsetup -v luksOpen \
+    yes | _check cryptsetup -v open \
 "${DRIVE}${ORDER[${INDEX}]}" "crypt${PART_NAME,,}"
 }
 
