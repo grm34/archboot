@@ -153,7 +153,7 @@ _clean_dependencies() {
     _info "${MSG_CLEAN_CACHE}"
 
     ### Remove unused dependencies
-    UNUSED_DEPENDENCIES=$(_chroot "pacman -Qdtq")
+    UNUSED_DEPENDENCIES=$( _chroot "pacman -Qdtq" )
 
     if [[ ${UNUSED_DEPENDENCIES} ]]; then
         _chroot "pacman --noconfirm -Rcsn ${UNUSED_DEPENDENCIES}"
