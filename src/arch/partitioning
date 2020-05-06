@@ -229,7 +229,7 @@ conv=notrunc status=progress
             if [[ ${PART} == "HOME_PARTITION" && \
 ${HOME_SIZE} == "freespace" ]]; then
                 _check lvcreate -l 100%FREE vg -n "${PART_NAME,,}"
-            else
+            elif [[ ${PART} != "ROOT_PARTITION" ]]; then
                 _check lvcreate -L "${SIZES[${INDEX}]}" vg -n "${PART_NAME,,}"
             fi
         fi
