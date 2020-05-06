@@ -77,7 +77,7 @@ _default_partitioning_scheme() {
 conv=notrunc status=progress
 
             # Create GPT partition table
-            printf "g\nw" | fdisk --wipe=auto "${DRIVE}"
+            printf "g\nw\n" | fdisk --wipe=auto "${DRIVE}"
             partprobe "${DRIVE}"; sleep 1;;
         *)
             _error "${MSG_ARCH_ABORTED}"
@@ -192,18 +192,18 @@ conv=notrunc status=progress
 
         if [[ ${SET_LVM} || (${PART} == "HOME_PARTITION" && \
 ${HOME_SIZE} == "freespace") ]]; then
-            printf "n\n\n\n\nw" | fdisk "${DRIVE}"
+            printf "n\n\n\n\nw\n" | fdisk "${DRIVE}"
         elif [[ ! ${SET_LVM} || ${PART} == "BOOT_PARTITION" ]]; then
-            printf "n\n\n\n\n+%s\nw" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
+            printf "n\n\n\n+%s\nw\n" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
         fi
 
         ## Set partition types
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
             _info "${MSG_SET_EFI} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n1\nef00\nw" | gdisk "${DRIVE}"
+            printf "t\n1\nef00\nw\n" | gdisk "${DRIVE}"
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
             _info "${MSG_LVM_PART} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n%s\n8e00\nw" ${INDEX} | gdisk "${DRIVE}"
+            printf "t\n%s\n8e00\nw\n" ${INDEX} | gdisk "${DRIVE}"
         fi
 
         ## Set Logical Volume Manager
