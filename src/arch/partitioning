@@ -198,9 +198,6 @@ ${HOME_SIZE} == "freespace") ]]; then
             printf "n\n\n\n+%s\nw\n" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
         fi
 
-        ## Inform changes to system
-        partprobe "${DRIVE}"; sleep 1
-
         ## Set partition types ()
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
             _info "${MSG_PART_TYPE} ${FIRMWARE/U/} ${DRIVE}${ORDER[${INDEX}]}"
@@ -208,17 +205,11 @@ ${HOME_SIZE} == "freespace") ]]; then
         elif [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "BIOS" ]]; then
             _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n1\nef02\nw\n" | gdisk "${DRIVE}"
-        elif [[ ${PART} == "SWAP_PARTITION" && ! ${SET_LVM} ]]; then
-            _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n%s\n8200\nw\n" ${INDEX} | gdisk "${DRIVE}"
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
             _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n%s\n8e00\nw\n" ${INDEX} | gdisk "${DRIVE}"
 
         fi
-        
-        ## Inform changes to system
-        partprobe "${DRIVE}"; sleep 1
 
         ## Set Logical Volume Manager
         if [[ ${SET_LVM} ]]; then
