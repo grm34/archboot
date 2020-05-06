@@ -194,7 +194,7 @@ conv=notrunc status=progress
         if [[ ${SET_LVM} || (${PART} == "HOME_PARTITION" && \
 ${HOME_SIZE} == "freespace") ]]; then
             printf "n\n\n\n\nw\n" | fdisk "${DRIVE}"
-        elif [[ ! ${SET_LVM} || ${PART} == "BOOT_PARTITION" ]]; then
+        elif [[ ! ${SET_LVM} ]]; then
             printf "n\n\n\n+%s\nw\n" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
         fi
 
@@ -203,13 +203,13 @@ ${HOME_SIZE} == "freespace") ]]; then
             _info "${MSG_PART_TYPE} ${FIRMWARE/U/} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n1\nef00\nw\n" | gdisk "${DRIVE}"
         elif [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "BIOS" ]]; then
-            _info "${MSG_PART_TYPE} ${PART_NAME} ${DRIVE}${ORDER[${INDEX}]}"
+            _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n1\nef02\nw\n" | gdisk "${DRIVE}"
         elif [[ ${PART} == "SWAP_PARTITION" && ! ${SET_LVM} ]]; then
-            _info "${MSG_PART_TYPE} ${PART_NAME} ${DRIVE}${ORDER[${INDEX}]}"
+            _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n%s\n8200\nw\n" ${INDEX} | gdisk "${DRIVE}"
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
-            _info "${MSG_PART_TYPE} ${PART_NAME} ${DRIVE}${ORDER[${INDEX}]}"
+            _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n%s\n8e00\nw\n" ${INDEX} | gdisk "${DRIVE}"
 
         fi
@@ -345,7 +345,7 @@ _setup_luks() {
     _info "${MSG_SET_LUKS} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
 
     # Encrypt partition
-    if [[ ${FIRMWARE} == "BIOS" ]]; then
+    if [[ ${FIRMWARE} == "UEFI" ]]; then
         yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
     else
         yes | \
