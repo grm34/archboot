@@ -197,13 +197,20 @@ ${HOME_SIZE} == "freespace") ]]; then
             printf "n\n\n\n+%s\nw\n" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
         fi
 
-        ## Set partition types
+        ## Set partition types ()
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
-            _info "${MSG_SET_EFI} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
+            _info "${MSG_PART_TYPE} ${FIRMWARE/U/} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n1\nef00\nw\n" | gdisk "${DRIVE}"
+        elif [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "BIOS" ]]; then
+            _info "${MSG_PART_TYPE} ${PART_NAME} ${DRIVE}${ORDER[${INDEX}]}"
+            printf "t\n1\nef02\nw\n" | gdisk "${DRIVE}"
+        elif [[ ${PART} == "SWAP_PARTITION" && ! ${SET_LVM} ]]; then
+            _info "${MSG_PART_TYPE} ${PART_NAME} ${DRIVE}${ORDER[${INDEX}]}"
+            printf "t\n%s\n8200\nw\n" ${INDEX} | gdisk "${DRIVE}"
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
-            _info "${MSG_LVM_PART} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
+            _info "${MSG_PART_TYPE} ${PART_NAME} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n%s\n8e00\nw\n" ${INDEX} | gdisk "${DRIVE}"
+
         fi
 
         ## Set Logical Volume Manager
