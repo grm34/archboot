@@ -187,8 +187,8 @@ conv=notrunc status=progress
         ## Create partitions
         _info "${MSG_CREATE_PART} ${PART_NAME,,} ${SIZES[${INDEX}]}"
 
-        if [[ ${SET_LVM} || (${PART} == "HOME_PARTITION" && \
-${HOME_SIZE} == "freespace") ]]; then
+        if [[ (${SET_LVM} && ${PART} != "ROOT_PARTITION") || \
+(${PART} == "HOME_PARTITION" && ${HOME_SIZE} == "freespace") ]]; then
             printf "n\n\n\n\nw" | fdisk "${DRIVE}"
         elif [[ ! ${SET_LVM} ]]; then
             printf "n\n\n\n+%s\nw" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
