@@ -65,6 +65,7 @@ root=/dev/mapper/cryptroot quiet rw" >> "${BOOTCONF}"
         INSTALL_GRUB=("${GRUB}")
         if [[ ${NTFS} ]]; then INSTALL_GRUB+=("${GRUB_EXTRAS}"); fi
         _chroot "pacman --noconfirm --needed -S ${INSTALL_GRUB[*]}"
+        _chroot "grub-install --target=i386-pc ${DRIVE}"
         echo "-> ${MSG_DONE}"
 
         # Add LUKS entry
