@@ -64,7 +64,7 @@ _install_base() {
 
     ### Install Microcode
     if [[ ${MICROCODE} ]]; then
-        _info "${MSG_INSTALL_UCODE} ${MICROCODE/_/ } CPU"
+        _info "${MSG_INSTALL_UCODE} ${MICROCODE/_/ }"
         _chroot "pacman --noconfirm --needed -S ${!MICROCODE}"
         echo "-> ${MSG_DONE}"
     fi
