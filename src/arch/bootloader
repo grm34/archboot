@@ -29,9 +29,6 @@ _install_bootloader() {
         mv -v loader.conf /mnt/boot/loader/loader.conf
         echo "-> ${MSG_DONE}"
 
-        # Get root partition UUID
-        ROOT_UUID=$( blkid -o value -s UUID "${ROOT_PART_UUID}" )
-
         # Create new boot entry
         _info "${MSG_SYSTEMDBOOT_ENTRY}"
         BOOTCONF="/mnt/boot/loader/entries/arch.conf"
@@ -42,12 +39,14 @@ _install_bootloader() {
         case ${UCODE} in
             intel|amd) echo "initrd /${UCODE}-ucode.img" >> "${BOOTCONF}"
         esac
+
+        # Set kernel
         echo "initrd /initramfs-${KERNEL_NAME,,}.img" >> "${BOOTCONF}"
 
         # Set options
         if [[ ${LUKS} ]]; then
-            echo "options cryptdevice=UUID=${ROOT_UUID}:crypt \
-root=/dev/mapper/root quiet rw" >> "${BOOTCONF}"
+            echo "options cryptdevice=UUID=${ROOT_UUID}:cryptlvm \
+root=/dev/mapper/cryptroot quiet rw" >> "${BOOTCONF}"
         else
             echo "options root=UUID=${ROOT_UUID} quiet rw" >> "${BOOTCONF}"
         fi
@@ -63,11 +62,9 @@ root=/dev/mapper/root quiet rw" >> "${BOOTCONF}"
 
         # Install Grub
         _info "${MSG_INSTALL_GRUB} ${DRIVE}"
-        _chroot "pacman --noconfirm --needed -S ${GRUB}"
-
-        if [[ ${NTFS} ]]; then
-            _chroot "pacman --noconfirm --needed -S ${GRUB_EXTRAS}"
-        fi
+        INSTALL_GRUB=("${GRUB}")
+        if [[ ${NTFS} ]]; then INSTALL_GRUB+=("${GRUB_EXTRAS}"); fi
+        _chroot "pacman --noconfirm --needed -S ${INSTALL_GRUB[*]}"
         _chroot "grub-install --target=i386-pc ${DRIVE}"
         echo "-> ${MSG_DONE}"
 
@@ -82,10 +79,11 @@ root=/dev/mapper/root quiet rw" >> "${BOOTCONF}"
         _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
         sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
 /mnt/etc/default/grub
-        echo "GRUB_THEME=/boot/grub/themes/Archlinux/theme.txt" \
->> /mnt/etc/default/grub
-        echo "desktop-image: \"background.png\"" \
->> /mnt/boot/grub/themes/Archlinux/theme.txt
+        sed -i -e "s/#GRUB_THEME/GRUB_THEME/g" /mnt/etc/default/grub
+sed -i -e "s|/path/to/gfxtheme|/boot/grub/themes/Archlinux/theme.txt|g" \
+/mnt/etc/default/grub
+        echo "desktop-image: \"background.png\"" >> \
+/mnt/boot/grub/themes/Archlinux/theme.txt
         mv background.png /mnt/boot/grub/themes/Archlinux/background.png
         rm -rf /mnt/Grub2-themes
         echo "-> ${MSG_DONE}"

@@ -16,28 +16,17 @@
 _install_base() {
 
     ### Install Base System
-    _info "${MSG_INSTALL_BASE} (${KERNEL_NAME,,})"
-    yes '' | pacstrap /mnt "${ARCH}" "${!KERNEL}" "${SUDO}"
+    _info "${MSG_INSTALL_BASE}"
+    PACSTRAP_APPS=("${ARCH}" "${!KERNEL}" "${SUDO}")
+    if [[ ${LINUX_FW} ]]; then PACSTRAP_APPS+=("${FW}"); fi
+    if [[ ${AUR_HELPER} ]]; then PACSTRAP_APPS+=("${BASE_DEVEL}"); fi
+    yes | _check pacstrap /mnt "${PACSTRAP_APPS[@]}"
     echo "-> ${MSG_DONE}"
-
-    ### Install Linux Firmware
-    if [[ ${LINUX_FW} ]]; then
-        _info "${MSG_INSTALL_FW}"
-        yes '' | pacstrap /mnt "${FW}"
-        echo "-> ${MSG_DONE}"
-    fi
-
-    ### Install Base devel
-    if [[ ${AUR_HELPER} ]]; then
-        _info "${MSG_INSTALL_DEVEL}"
-        yes '' | pacstrap /mnt "${BASE_DEVEL}"
-        echo "-> ${MSG_DONE}"
-    fi
 
     ### Set Fstab
     _info "${MSG_SET_FSTAB}"
     genfstab -U -p /mnt >> /mnt/etc/fstab
-    cat < /mnt/etc/fstab | grep -v "Static information\|See fstab("
+    cat < /mnt/etc/fstab | grep -v "Static information"
 
     ### Set Timezone
     _info "${MSG_SET_TIMEZONE} ${TIMEZONE}"
@@ -87,8 +76,15 @@ _install_base() {
         echo "-> ${MSG_DONE}"
     fi
 
+    ### Install NTFS support
+    if [[ ${NTFS} ]]; then
+        _info "${MSG_INSTALL_NTFS}"
+        _chroot "pacman --noconfirm --needed -S ${NTFS_SUPPORT}"
+        echo "-> ${MSG_DONE}"
+    fi
+
     ### Add kernel parameters to systemd-boot
-    if [[ ${FIRMWARE} == "UEFI" && (${SET_LVM} || ${SET_LUKS}) ]]; then
+    if [[ ${SET_LVM} ]]; then
         _info "${MSG_BOOT_HOOKS}"
         sed -i -e "/^HOOKS=/s/ keyboard//g" /mnt/etc/mkinitcpio.conf
         sed -i -e "/^HOOKS=/s/filesystems/keyboard keymap filesystems/g" \
@@ -106,13 +102,6 @@ _install_base() {
 "/^HOOKS=/s/filesystems/lvm2 filesystems/g" /mnt/etc/mkinitcpio.conf
         fi
         _chroot mkinitcpio -P
-        echo "-> ${MSG_DONE}"
-    fi
-
-    ### Install NTFS support
-    if [[ ${NTFS} ]]; then
-        _info "${MSG_INSTALL_NTFS}"
-        _chroot "pacman --noconfirm --needed -S ${NTFS_SUPPORT}"
         echo "-> ${MSG_DONE}"
     fi
 
