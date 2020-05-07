@@ -38,7 +38,7 @@ _default_partitioning_scheme() {
 
     ### Select drive to use
     _info "${MSG_LIST_DRIVES}"
-    lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
+    lsblk -lo "NAME,SIZE,TYPE" | grep "NAME\|disk"
     _prompt "${MSG_PROMPT_DRIVE}" "${MSG_DRIVE_EXAMPLE}"
     read -r DRIVE
 
@@ -48,7 +48,7 @@ _default_partitioning_scheme() {
     ### Otherwise ask again
     until [[ ${CHECK} ]]; do
         _info "${MSG_LIST_DRIVES}"
-        lsblk | grep "NAME\|disk" | sed "s/MOUNTPOINT//g"
+        lsblk -lo "NAME,SIZE,TYPE" | grep "NAME\|disk"
         _prompt "${MSG_PROMPT_VALID_DRIVE}" "${MSG_DRIVE_EXAMPLE}"
         read -r DRIVE
         CHECK=$( partprobe -d -s "/dev/${DRIVE}" )
@@ -64,7 +64,7 @@ _default_partitioning_scheme() {
 
     ### Prepare the drive
     _info "${MSG_ARCH_DRIVE} ${DRIVE}"
-    lsblk "${DRIVE}"
+    lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT"  "${DRIVE}"
     _note "${MSG_WARN_LOST_DATA}"
     _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE}?"
 
@@ -284,7 +284,7 @@ _custom_partitioning_scheme() {
     _info "${MSG_LIST_DRIVES}"
 
     for PART in "${PARTITION[@]}"; do
-        lsblk | grep "NAME\|disk\|part"
+        lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT" | grep "NAME\|disk\|part"
         PART_NAME=${PART//_PARTITION/}
 
         # Get drive ID
