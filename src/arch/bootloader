@@ -68,15 +68,6 @@ root=/dev/mapper/cryptroot quiet rw" >> "${BOOTCONF}"
         _chroot "grub-install --target=i386-pc ${DRIVE}"
         echo "-> ${MSG_DONE}"
 
-        # Add LUKS entry
-        if [[ ${LUKS} ]]; then
-            BOOT_ENTRY="options cryptdevice=UUID=${ROOT_UUID}:cryptroot \
-root=/dev/mapper/cryptroot quiet rw"
-            sed -i -e \
-"s|GRUB_CMDLINE_LINUX=\"\"|GRUB_CMDLINE_LINUX=\"${BOOT_ENTRY}\"|g" \
-/mnt/etc/default/grub
-        fi
-
         # Download Themes
         _info "${MSG_DL_GRUB_THEME}"
         _wget "${GHPAGES}/assets/images/background.png" && echo

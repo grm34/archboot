@@ -15,6 +15,9 @@ _firmware() {
     ### UEFI
     if [ -d /sys/firmware/efi/efivars ]; then
         export FIRMWARE="UEFI"
+        export PART_TABLE="GPT"
+        export PART_CODE="g"
+        export PART_TYPE=""
         export MOUNT_TYPE="-t vfat "
         export BOOT_FILESYSTEM="fat -F32"
         _note "UEFI ${MSG_FW_TRUE}"
@@ -22,6 +25,10 @@ _firmware() {
     ### BIOS
     else
         export FIRMWARE="BIOS"
+        export PART_TABLE="MBR"
+        export PART_CODE="o"
+        export PART_TYPE="p\n"
+        export MOUNT_TYPE=""
         export MOUNT_TYPE=""
         export BOOT_FILESYSTEM="ext4"
         _note "BIOS ${MSG_FW_TRUE}"

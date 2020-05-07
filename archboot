@@ -134,8 +134,7 @@ _wget() {
 
 ### Execute action in chrooted environment
 _chroot() {
-    arch-chroot /mnt /bin/bash <<EOF
-    ${1}
+    arch-chroot /mnt <<EOF "${1}"
 EOF
 }
 

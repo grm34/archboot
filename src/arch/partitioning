@@ -66,30 +66,32 @@ _default_partitioning_scheme() {
     _info "${MSG_ARCH_DRIVE} ${DRIVE}"
     lsblk "${DRIVE}"
     _note "${MSG_WARN_LOST_DATA}"
-    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${DRIVE}?"
+    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE}?"
 
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
 
             # Format the drive
-            _check wipefs --force --all "${DRIVE}"
-            _check dd if=/dev/zero of="${DRIVE}" bs=512 count=1 \
-conv=notrunc status=progress
+            _check dd \
+if=/dev/zero of="${DRIVE}" bs=512 count=1 conv=notrunc status=progress
+            _check wipefs -fa "${DRIVE}"
+            partprobe "${DRIVE}"; sleep 1
 
-            # Create GPT partition table
-            printf "g\nw" | fdisk --wipe=auto "${DRIVE}"
+            # Create new partition table
+            printf "%s\nw" "${PART_CODE}" | fdisk --wipe=always "${DRIVE}"
             partprobe "${DRIVE}"; sleep 1;;
         *)
             _error "${MSG_ARCH_ABORTED}"
     esac
 
     ### Logical Volume Manager
-    _confirm "${MSG_CONFIRM_LVM}"
-    case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"; esac
+    # _confirm "${MSG_CONFIRM_LVM}"
+    # case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
 
-    ### LUKS encrytion
-    _confirm "${MSG_CONFIRM_LUKS}"
-    case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
+        # LUKS encrytion
+    #     _confirm "${MSG_CONFIRM_LUKS}"
+    #     case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
+    # esac
 
     ### Get optional partitions and set partitions list
     _get_user_partitions
@@ -115,7 +117,7 @@ conv=notrunc status=progress
 
         ## Free space for home
         if [[ ${PART} == "HOME_SIZE" ]]; then
-            _confirm "${MSG_CONFIRM_FREESPACE} ${PART_NAME,,}?"
+            _confirm "${MSG_CONFIRM_FREESPACE} ${PART_NAME}?"
             case ${CONFIRM} in
                 y|Y|yes|Yes|YES) PARTITION_SIZE="freespace"
             esac
@@ -124,14 +126,14 @@ conv=notrunc status=progress
         ## Otherwise ask partitions sizes
         if [[ ${PARTITION_SIZE} != "freespace" ]]; then
             _note "${MSG_PART_SIZE} {M,G,T} (e.g., ${SIZES[${INDEX}]})"
-            _prompt "${MSG_PROMPT_PART_SIZE} ${PART_NAME,,}:"
+            _prompt "${MSG_PROMPT_PART_SIZE} ${PART_NAME}:"
             read -r PARTITION_SIZE
 
             # Check if valid size (otherwise ask again)
             until [[ ${PARTITION_SIZE} =~ \
 ^[1-9]{1}[[0-9]{0,2}(M|G|T){1}$ ]]; do
                 _note "${MSG_PART_SIZE} {M,G,T} (e.g., ${SIZES[${INDEX}]})"
-                _prompt "${MSG_PROMPT_VALID_PART_SIZE} ${PART_NAME,,}:"
+                _prompt "${MSG_PROMPT_VALID_PART_SIZE} ${PART_NAME}:"
                 read -r PARTITION_SIZE
             done
         fi
@@ -185,24 +187,22 @@ conv=notrunc status=progress
         PART_NAME=${PART//_PARTITION/}
 
         ## Create partitions
-        _info "${MSG_CREATE_PART} ${PART_NAME,,} ${SIZES[${INDEX}]}"
+        _info "${MSG_CREATE_PART} ${PART_NAME} ${SIZES[${INDEX}]}"
 
         if [[ (${SET_LVM} && ${PART} == "ROOT_PARTITION") || \
 (${PART} == "HOME_PARTITION" && ${HOME_SIZE} == "freespace") ]]; then
-            printf "n\n\n\n\nw" | fdisk "${DRIVE}"
+            printf "n\n%s\n\n\nw" "${PART_TYPE}" | fdisk "${DRIVE}"
         elif [[ ! ${SET_LVM} || ${PART} == "BOOT_PARTITION" ]]; then
-            printf "n\n\n\n+%s\nw" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
+            printf "n\n%s\n\n\n+%s\nw" "${PART_TYPE}" "${SIZES[${INDEX}]}" | \
+fdisk "${DRIVE}"
         fi
 
-        ## Set partition types ()
+        ## Set partition types
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
             _info "${MSG_PART_TYPE} ${FIRMWARE/U/} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\nef00\nw" | gdisk "${DRIVE}"
-        elif [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "BIOS" ]]; then
-            _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n4\nw" | fdisk "${DRIVE}"
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
-            _info "${MSG_PART_TYPE} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
+            _info "${MSG_PART_TYPE} ${PART_NAME} ${DRIVE}${ORDER[${INDEX}]}"
             printf "t\n%s\n8e00\nw" ${INDEX} | gdisk "${DRIVE}"
         fi
 
@@ -211,36 +211,39 @@ conv=notrunc status=progress
 
             # Set LVM on LUKS
             if [[ ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
-                _setup_luks
-                _check pvcreate /dev/mapper/cryptlvm
-                _check vgcreate vg /dev/mapper/cryptlvm
+                _info "${MSG_SET_LUKS} ${DRIVE}${ORDER[${INDEX}]}"
+
+                # Encrypt partition
+                cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
+                cryptsetup -v open "${DRIVE}${ORDER[${INDEX}]}" "cryptlvm"
+
+                # Create LVM volume
+                pvcreate /dev/mapper/cryptlvm
+                vgcreate lvm /dev/mapper/cryptlvm
 
             # Set LVM without encryption
             elif [[ ! ${SET_LUKS} && ${PART} == "ROOT_PARTITION" ]]; then
                 _info "${MSG_SET_LVM} ${DRIVE}${ORDER[${INDEX}]}"
-                _check pvcreate "${DRIVE}${ORDER[${INDEX}]}"
-                _check vgcreate vg "${DRIVE}${ORDER[${INDEX}]}"
+                pvcreate "${DRIVE}${ORDER[${INDEX}]}"
+                vgcreate lvm "${DRIVE}${ORDER[${INDEX}]}"
             fi
 
             # Create logical partitions
-            _info "${MSG_CREATE_LVM} ${PART_NAME,,} ${SIZES[${INDEX}]}"
+            _info "${MSG_CREATE_LVM} ${PART_NAME} ${SIZES[${INDEX}]}"
 
             if [[ ${PART} == "HOME_PARTITION" && \
 ${HOME_SIZE} == "freespace" ]]; then
-                _check lvcreate -l 100%FREE vg -n "${PART_NAME,,}"
+                lvcreate -l 100%FREE lvm -n "${PART_NAME,,}"
             elif [[ ${PART} != "BOOT_PARTITION" ]]; then
-                _check lvcreate -L "${SIZES[${INDEX}]}" vg -n "${PART_NAME,,}"
+                lvcreate -L "${SIZES[${INDEX}]}" lvm -n "${PART_NAME,,}"
             fi
         fi
 
-        # Set LUKS on partition
-        if [[ (${SET_LUKS} && ${PART} != "BOOT_PARTITION") && \
-! ${SET_LVM} ]]; then _setup_luks; fi
-
         ## Set partitions drive ID
-        if [[ ${PART} != "BOOT_PARTITION" && \
-(${SET_LVM} || ${SET_LUKS}) ]]; then
+        if [[ ${PART} != "BOOT_PARTITION" && ${SET_LUKS} ]]; then
             DRIVE_ID="/dev/mapper/crypt${PART_NAME,,}"
+        elif [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
+            DRIVE_ID="/dev/lvm/${PART_NAME,,}"
         else
             DRIVE_ID="${DRIVE}${ORDER[${INDEX}]}"
         fi
@@ -249,7 +252,7 @@ ${HOME_SIZE} == "freespace" ]]; then
         partprobe "${DRIVE}"; sleep 1
 
         ## Format partitions
-        _info "${MSG_FORMAT_PARTITION} ${PART_NAME,,} ${SIZES[${INDEX}]}"
+        _info "${MSG_FORMAT_PARTITION} ${PART_NAME} ${SIZES[${INDEX}]}"
 
         if [[ ${PART} == "BOOT_PARTITION" ]]; then
             yes | _check mkfs."${BOOT_FILESYSTEM}" "${DRIVE_ID}"
@@ -268,7 +271,7 @@ ${HOME_SIZE} == "freespace" ]]; then
         fi
 
         ## Increase index
-        INDEX=${INDEX}+1
+        INDEX=$(( INDEX + 1 ))
     done
 }
 
@@ -285,7 +288,7 @@ _custom_partitioning_scheme() {
         PART_NAME=${PART//_PARTITION/}
 
         # Get drive ID
-        _prompt "${MSG_PROMPT_ID} ${PART_NAME,,}:" "${MSG_ID_EXAMPLE}"
+        _prompt "${MSG_PROMPT_ID} ${PART_NAME}:" "${MSG_ID_EXAMPLE}"
         read -r DRIVE_ID
 
         # Check if valid partition
@@ -295,7 +298,7 @@ _custom_partitioning_scheme() {
         until [[ ${CHECK} ]]; do
             _info "${MSG_LIST_DRIVES}"
             lsblk | grep "NAME\|disk\|part"
-           _prompt "${MSG_PROMPT_VALIDID} ${PART_NAME,,}:" "${MSG_ID_EXAMPLE}"
+           _prompt "${MSG_PROMPT_VALIDID} ${PART_NAME}:" "${MSG_ID_EXAMPLE}"
             read -r DRIVE_ID
             CHECK=$( partprobe -d -s "/dev/${DRIVE_ID}" )
         done
@@ -321,7 +324,7 @@ _get_user_partitions() {
     ### Get optional partitions
     for PART in "${OPTIONAL[@]}"; do
         PART_NAME=${PART//_PARTITION/}
-        _confirm "${MSG_CONFIRM_OPT_PART} ${PART_NAME,,}?"
+        _confirm "${MSG_CONFIRM_OPT_PART} ${PART_NAME}?"
 
         case ${CONFIRM} in
             y|Y|yes|Yes|YES) PARTITION+=("${PART}")
@@ -330,23 +333,6 @@ _get_user_partitions() {
 
     ### Return partitions list
     export PARTITION
-}
-
-_setup_luks() {
-    if [[ ${LVM} ]]; then PART_NAME="lvm"; fi
-    _info "${MSG_SET_LUKS} ${PART_NAME,,} ${DRIVE}${ORDER[${INDEX}]}"
-
-    # Encrypt partition
-    if [[ ${FIRMWARE} == "BIOS" ]]; then
-        yes | _check cryptsetup -y -v luksFormat --type luks1 \
-"${DRIVE}${ORDER[${INDEX}]}"
-    else
-        yes | _check cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
-    fi
-
-    # Open partition mapper
-    yes | _check cryptsetup -v open \
-"${DRIVE}${ORDER[${INDEX}]}" "crypt${PART_NAME,,}"
 }
 
 _dehumanise() {

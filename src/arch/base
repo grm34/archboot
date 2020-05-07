@@ -68,13 +68,12 @@ _install_base() {
         _chroot "pacman --noconfirm --needed -S ${!MICROCODE}"
         echo "-> ${MSG_DONE}"
     fi
-    
-    
-    ### Install LVM support	
-    if [[ ${SET_LVM} ]]; then	
-        _info "${MSG_INSTALL_LVM}"	
-        _chroot "pacman --noconfirm --needed -S ${LVM_SUPPORT}"	
-        echo "-> ${MSG_DONE}"	
+
+    ### Install LVM support
+    if [[ ${SET_LVM} ]]; then
+        _info "${MSG_INSTALL_LVM}"
+        _chroot "pacman --noconfirm --needed -S ${LVM_SUPPORT}"
+        echo "-> ${MSG_DONE}"
     fi
 
     ### Install NTFS support
@@ -85,7 +84,7 @@ _install_base() {
     fi
 
     ### Add kernel parameters to systemd-boot
-    if [[ ${SET_LVM} || ${SET_LUKS} ]]; then
+    if [[ ${SET_LVM} ]]; then
         _info "${MSG_BOOT_HOOKS}"
         sed -i -e "/^HOOKS=/s/ keyboard//g" /mnt/etc/mkinitcpio.conf
         sed -i -e "/^HOOKS=/s/filesystems/keyboard keymap filesystems/g" \
