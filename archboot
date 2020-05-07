@@ -82,11 +82,6 @@ BLUE="\e[1;34m"; CYAN="\e[1;36m"; BOLD="\e[1;37m"; NC="\e[0m"
 export URL="https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/${BRANCH}"
 export GHPAGES=\
 "https://raw.githubusercontent.com/${AUTHOR}/${APPNAME}/gh-pages"
-export AUR_HELPER_URL="https://aur.archlinux.org/${AUR_HELPER,,}.git"
-export MIRRORLIST_URL="https://www.archlinux.org/mirrorlist/?country=\
-${COUNTRY}&use_mirror_status=on"
-export GRUB_THEME_URL="git://github.com/Generator/Grub2-themes.git"
-export IP_INFO_URL="ipinfo.io"
 
 ### Display some notes
 _note() {
@@ -103,16 +98,16 @@ _prompt() {
     LENTH=${*}; COUNT=${#LENTH}
     echo -ne "\n${YELLOW}==> ${GREEN}${1} ${RED}${2}"
     echo -ne "${YELLOW}\n==> "
-    for ((CHAR=1; CHAR<=COUNT; CHAR++)); do echo -ne "-"; done
+    for (( CHAR=1; CHAR<=COUNT; CHAR++ )); do echo -ne "-"; done
     echo -ne "\n==> ${NC}"
 }
 
 ### Ask confirmation (Yes/No)
 _confirm() {
-    unset CONFIRM; COUNT=$((${#1} + 6))
+    unset CONFIRM; COUNT=$(( ${#1} + 6 ))
     until [[ ${CONFIRM} =~ ^(y|n|Y|N|yes|no|Yes|No|YES|NO)$ ]]; do
         echo -ne "${YELLOW}\n==> ${GREEN}${1} ${RED}[y/n]${YELLOW}\n==> "
-        for ((CHAR=1; CHAR<=COUNT; CHAR++)); do echo -ne "-"; done
+        for (( CHAR=1; CHAR<=COUNT; CHAR++ )); do echo -ne "-"; done
         echo -ne "\n==> ${NC}"
         read -r CONFIRM
     done
@@ -123,12 +118,12 @@ _select() {
     COUNT=0
     echo -ne "${YELLOW}\n==> "
     for ENTRY in "${@}"; do
-        echo -ne "${RED}[$((++COUNT))] ${GREEN}${ENTRY} ${NC}"
+        echo -ne "${RED}[$(( ++COUNT ))] ${GREEN}${ENTRY} ${NC}"
     done
-    LENTH=${*}; NUMBER=$((${#*} * 4))
-    COUNT=$((${#LENTH} + NUMBER + 1))
+    LENTH=${*}; NUMBER=$(( ${#*} * 4 ))
+    COUNT=$(( ${#LENTH} + NUMBER + 1 ))
     echo -ne "${YELLOW}\n==> "
-    for ((CHAR=1; CHAR<=COUNT; CHAR++)); do echo -ne "-"; done
+    for (( CHAR=1; CHAR<=COUNT; CHAR++ )); do echo -ne "-"; done
     echo -ne "\n==> ${NC}"
 }
 
@@ -139,8 +134,7 @@ _wget() {
 
 ### Execute action in chrooted environment
 _chroot() {
-    arch-chroot /mnt /bin/bash <<EOF
-    ${1}
+    arch-chroot /mnt <<EOF "${1}"
 EOF
 }
 
@@ -168,12 +162,15 @@ _cleanup() {
     SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
 mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
 00-keyboard.conf language loader.conf timezone xinitrc xprofile \
-background.png Grub2-themes archboot* *_vars.log english french german)
+background.png Grub2-themes archboot* *.log english french german)
 
     # Sources (rm)
     for SOURCE in "${SRC[@]}"; do
         if [[ -f "${SOURCE}" ]]; then rm -rfv "${SOURCE}"; fi
     done
+
+    # Swap (swapoff)
+    CHECK_SWAP=$( swapon -s ); if [[ ${CHECK_SWAP} ]]; then swapoff -av; fi
 
     # Partitions (umount)
     if mount | grep /mnt; then umount -Rfv /mnt; fi
@@ -181,7 +178,7 @@ background.png Grub2-themes archboot* *_vars.log english french german)
 
 ### Reboot with 10s timeout
 _reboot() {
-    for ((SECOND=10; SECOND>=1; SECOND--)); do
+    for (( SECOND=10; SECOND>=1; SECOND-- )); do
         echo -ne "\r\033[K${GREEN}${MSG_REBOOT} ${SECOND}s...${NC}"
         sleep 1
     done
@@ -257,7 +254,7 @@ while getopts 'hl:k:' OPTION; do
 done
 
 ### Remove options from positional parameters
-shift $((OPTIND - 1))
+shift $(( OPTIND - 1 ))
 
 ### Prevent running installer from repository folder
 CHECK_GITHUB=(.git .github .gitignore README.md STATS.md LICENSE)
@@ -296,7 +293,7 @@ _archboot_banner
 
 ### Check internet connection
 _info "${MSG_INTERNET}"
-INTERNET=$(ping -c 1 archlinux.org)
+INTERNET=$( ping -c 1 archlinux.org )
 
 if [[ ${INTERNET} ]]; then
     _note "congratulations, you are connected to Internet!"
@@ -384,7 +381,7 @@ _mirrorlist; _timezone; _clock    # (src/arch/mirrorlist)
 
 ### Set logfiles
 _info "${MSG_SET_LOGS}"
-DATETIME=$(_check date '+%d-%m-%Y_%Hh%M')
+DATETIME=$( _check date '+%d-%m-%Y_%Hh%M' )
 INSTALL_LOG="${APPNAME}-${VERSION}_${DATETIME}.log"
 INPUTS_LOG="${USER_NAME}_${DATETIME}.log"
 _archboot_banner > "${INSTALL_LOG}"
