@@ -85,13 +85,13 @@ if=/dev/zero of="${DRIVE}" bs=512 count=1 conv=notrunc status=progress
     esac
 
     ### Logical Volume Manager
-    # _confirm "${MSG_CONFIRM_LVM}"
-    # case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
+    _confirm "${MSG_CONFIRM_LVM}"
+    case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
 
         # LUKS encrytion
-    #     _confirm "${MSG_CONFIRM_LUKS}"
-    #     case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
-    # esac
+        _confirm "${MSG_CONFIRM_LUKS}"
+        case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
+    esac
 
     ### Get optional partitions and set partitions list
     _get_user_partitions
