@@ -24,7 +24,7 @@
 #
 # We use <partprobe> to inform changes to system and to check if drive
 # exists. We also add a <sleep 1> to prevent unreconized system changes.
-# Logical Volume Manager (LVM) with encryption (LUKS) are supported.
+# Logical Volume Manager (LVM) on encrypted drive (LUKS) is supported.
 # Last function is used to convert sizes to bytes for disk space check.
 #
 # All steps are described in the official documentation:
@@ -38,48 +38,67 @@ _default_partitioning_scheme() {
 
     ### Select drive to use
     _info "${MSG_LIST_DRIVES}"
-    lsblk -lo "NAME,SIZE,TYPE" | grep "NAME\|disk"
+    lsblk -lo "NAME,SIZE,TYPE,MODEL" | grep "NAME\|disk"
     _prompt "${MSG_PROMPT_DRIVE}" "${MSG_DRIVE_EXAMPLE}"
-    read -r DRIVE
+    read -r ID
 
     ### Check if valid drive
-    CHECK=$( partprobe -d -s "/dev/${DRIVE}" )
+    CHECK=$( partprobe -d -s "/dev/${ID}" )
 
     ### Otherwise ask again
     until [[ ${CHECK} ]]; do
         _info "${MSG_LIST_DRIVES}"
-        lsblk -lo "NAME,SIZE,TYPE" | grep "NAME\|disk"
+        lsblk -lo "NAME,SIZE,TYPE,MODEL" | grep "NAME\|disk"
         _prompt "${MSG_PROMPT_VALID_DRIVE}" "${MSG_DRIVE_EXAMPLE}"
-        read -r DRIVE
-        CHECK=$( partprobe -d -s "/dev/${DRIVE}" )
+        read -r ID
+        CHECK=$( partprobe -d -s "/dev/${ID}" )
     done
 
+    ### Return selected drive
+    export DRIVE="/dev/${ID}"
+
     ### Check if drive is mounted
-    if mount | grep "${DRIVE}"; then
+    if mount | grep "${ID}"; then
         _error "${DRIVE} ${MSG_IS_MOUNTED}"
     fi
 
-    ### Return selected drive
-    export DRIVE="/dev/${DRIVE}"
-
     ### Prepare the drive
     _info "${MSG_ARCH_DRIVE} ${DRIVE}"
-    lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT"  "${DRIVE}"
+    lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "${DRIVE}"
     _note "${MSG_WARN_LOST_DATA}"
-    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE}?"
+    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE} ?"
 
     case ${CONFIRM} in
         y|Y|yes|Yes|YES)
 
+            # Remove DOS partitions
+            mapfile -t CHECK_DOS_PART \
+<<< "$( lsblk -lo "NAME" "${DRIVE}" | grep -E "^${ID}[a-z]{0,1}[0-9]{1,2}$" )"
+
+            if [[ ${CHECK_DOS_PART[0]} ]]; then
+                for PART in "${CHECK_DOS_PART[@]}"; do
+                    printf "d\n\nw" | fdisk "${DRIVE}"
+                    wipefs -fa "/dev/${PART}"
+                done
+                partprobe "${DRIVE}"; sleep 1
+            fi
+
+            # Remove LVM partitions
+            mapfile -t VOL_GROUP <<< "$( lvs --noheadings -o vg_name )"
+            mapfile -t CHECK_LVM_PART <<< "$( lvs --noheadings -o lv_name )"
+            if [[ ${VOL_GROUP[0]} ]]; then
+                for PART in "${CHECK_LVM_PART[@]}"; do
+                    lvremove -fv "/dev/${VOL_GROUP[0]}/${PART}"
+                done
+                partprobe "${DRIVE}"; sleep 1
+            fi
+
             # Format the drive
-            _check dd \
-if=/dev/zero of="${DRIVE}" bs=512 count=1 conv=notrunc status=progress
-            _check wipefs -fa "${DRIVE}"
-            partprobe "${DRIVE}"; sleep 1
+            _check dd if=/dev/zero of="${DRIVE}" bs=512 count=1 conv=notrunc
+            wipefs -fa "${DRIVE}"; partprobe "${DRIVE}"; sleep 1
 
             # Create new partition table
-            printf "%s\nw" "${PART_CODE}" | fdisk --wipe=always "${DRIVE}"
-            partprobe "${DRIVE}"; sleep 1;;
+            printf "%s\nw" "${PART_CODE}" | fdisk --wipe=always "${DRIVE}";;
         *)
             _error "${MSG_ARCH_ABORTED}"
     esac
@@ -117,7 +136,7 @@ if=/dev/zero of="${DRIVE}" bs=512 count=1 conv=notrunc status=progress
 
         ## Free space for home
         if [[ ${PART} == "HOME_SIZE" ]]; then
-            _confirm "${MSG_CONFIRM_FREESPACE} ${PART_NAME}?"
+            _confirm "${MSG_CONFIRM_FREESPACE} ${PART_NAME} ?"
             case ${CONFIRM} in
                 y|Y|yes|Yes|YES) PARTITION_SIZE="freespace"
             esac
@@ -249,7 +268,7 @@ ${HOME_SIZE} == "freespace" ]]; then
         fi
 
         ## Inform changes to system
-        partprobe "${DRIVE}"; sleep 1
+        partprobe "${DRIVE_ID}"; sleep 1
 
         ## Format partitions
         _info "${MSG_FORMAT_PARTITION} ${PART_NAME} ${SIZES[${INDEX}]}"
@@ -284,7 +303,7 @@ _custom_partitioning_scheme() {
     _info "${MSG_LIST_DRIVES}"
 
     for PART in "${PARTITION[@]}"; do
-        lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT" | grep "NAME\|disk\|part"
+        lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" | grep "NAME\|disk\|part"
         PART_NAME=${PART//_PARTITION/}
 
         # Get drive ID
@@ -297,7 +316,8 @@ _custom_partitioning_scheme() {
         # Otherwise ask again
         until [[ ${CHECK} ]]; do
             _info "${MSG_LIST_DRIVES}"
-            lsblk | grep "NAME\|disk\|part"
+            lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" | \
+grep "NAME\|disk\|part"
            _prompt "${MSG_PROMPT_VALIDID} ${PART_NAME}:" "${MSG_ID_EXAMPLE}"
             read -r DRIVE_ID
             CHECK=$( partprobe -d -s "/dev/${DRIVE_ID}" )
@@ -324,7 +344,7 @@ _get_user_partitions() {
     ### Get optional partitions
     for PART in "${OPTIONAL[@]}"; do
         PART_NAME=${PART//_PARTITION/}
-        _confirm "${MSG_CONFIRM_OPT_PART} ${PART_NAME}?"
+        _confirm "${MSG_CONFIRM_OPT_PART} ${PART_NAME} ?"
 
         case ${CONFIRM} in
             y|Y|yes|Yes|YES) PARTITION+=("${PART}")

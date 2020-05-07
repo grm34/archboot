@@ -201,7 +201,7 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 # ============================================================================
 
 ### Get arguments list
-read -ra ARGS <<< "${@}"
+mapfile -t ARGS <<< "${@}"
 
 ### Ensure valid options
 if [[ ${#} == 0 || ${ARGS[0]} =~ \
