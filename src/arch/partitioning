@@ -112,15 +112,7 @@ _default_partitioning_scheme() {
     partprobe "${DRIVE}" && sleep 1
 
     ### Logical Volume Manager (UEFI only)
-    if [[ ${FIRMWARE} == "UEFI" ]]; then
-        _confirm "${MSG_CONFIRM_LVM}"
-        case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
-
-            # LUKS encrytion
-            _confirm "${MSG_CONFIRM_LUKS}"
-            case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
-        esac
-    fi
+    _get_lvm_and_luks
 
     ### Get optional partitions
     _get_user_partitions
@@ -297,6 +289,9 @@ ${SIZES[${INDEX}]} == "freespace" ]]; then
 
 _custom_partitioning_scheme() {
 
+    ### Logical Volume Manager (UEFI only)
+    _get_lvm_and_luks
+
     ### Get optional partitions and set partitions list
     _get_user_partitions
 
@@ -358,6 +353,18 @@ _get_user_partitions() {
 
     ### Return partitions list
     export PARTITION
+}
+
+_get_lvm_and_luks() {
+    if [[ ${FIRMWARE} == "UEFI" ]]; then
+        _confirm "${MSG_CONFIRM_LVM}"
+        case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
+
+            # LUKS encrytion
+            _confirm "${MSG_CONFIRM_LUKS}"
+            case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
+        esac
+    fi
 }
 
 _dehumanise() {
