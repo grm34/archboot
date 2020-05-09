@@ -115,15 +115,15 @@ _default_partitioning_scheme() {
     partprobe "${DRIVE}" && sleep 1
 
     ### Logical Volume Manager (UEFI only)
-    # if [[ ${FIRMWARE} == "UEFI" ]]; then
-    #     _confirm "${MSG_CONFIRM_LVM}"
-    #     case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
+    if [[ ${FIRMWARE} == "UEFI" ]]; then
+        _confirm "${MSG_CONFIRM_LVM}"
+        case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
 
-    #         # LUKS encrytion
-    #         _confirm "${MSG_CONFIRM_LUKS}"
-    #         case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
-    #     esac
-    # fi
+            # LUKS encrytion
+            _confirm "${MSG_CONFIRM_LUKS}"
+            case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
+        esac
+    fi
 
     ### Get optional partitions
     _get_user_partitions
