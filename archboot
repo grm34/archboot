@@ -454,7 +454,7 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
 "A=\|B=\|C=\|D=\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|\GREY=\|\
 BLUE=\|CYAN=\|BOLD=\|NC=\|ARGS=\|BASH_REMATCH=\|BYTES=\|CHAR=\|COLUMNS=\|\
 CONFIRM=\|COUNT=\|INDEX=\|LENTH=\|LINES=\|NUMBER=\|ORDER=\|PART=\|MSG_\|\
-PIPESTATUS=\|PARTITION_SIZE=\|PART_NAME=" > new_vars.log
+PIPESTATUS=\|PARTITION_SIZE=\|PART_NAME=\|_CHOICE=" > new_vars.log
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i "$ d" "${INPUTS_LOG}"
         echo "-> ${MSG_DONE}"

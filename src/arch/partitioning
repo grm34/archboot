@@ -125,7 +125,6 @@ _default_partitioning_scheme() {
     ### Get partition sizes
     INDEX=0
     SIZES_EQ=(512M 25G)
-    SIZES=()
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART/_PARTITION/}
 
@@ -314,7 +313,7 @@ _custom_partitioning_scheme() {
             _info "${MSG_LIST_DRIVES}"
             lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" | \
 grep "NAME\|disk\|part"
-           _prompt "${MSG_PROMPT_VALIDID} ${PART_NAME}:" "${MSG_ID_EXAMPLE}"
+           _prompt "${MSG_PROMPT_VALID_ID} ${PART_NAME}:" "${MSG_ID_EXAMPLE}"
             read -r DRIVE_ID
             CHECK_DRIVE=$( partprobe -d -s "/dev/${DRIVE_ID}" )
         done

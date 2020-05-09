@@ -126,7 +126,7 @@ export MSG_CREATE_LVM="Creation de la partition LVM"
 export MSG_FORMAT_PARTITION="Formatage de la partition"
 export MSG_PROMPT_ID="Entrez l'ID de la partition pour"
 export MSG_ID_EXAMPLE="(ex: sda2, nvme0n1p12)"
-export MSG_PROMPT_VALIDID="Entrez une ID de partition valide pour"
+export MSG_PROMPT_VALID_ID="Entrez une ID de partition valide pour"
 export MSG_CONFIRM_OPT_PART="Voulez vous créer une partition"
 
 ### src/arch/user
