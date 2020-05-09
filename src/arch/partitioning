@@ -22,8 +22,8 @@
 #   SWAP_PARTITION........: no mountpoint   (optional)
 #   HOME_PARTITION........: /mnt/home       (optional)
 #
-# We use <partprobe> to inform changes to system and to check if drive
-# exists. We also add a <sleep 1> to prevent unreconized system changes.
+# We use <partprobe> with <sleep 1> to inform system changes and to
+# prevent unreconized ones. <partprobe> also used to check if drive exists.
 # Logical Volume Manager (LVM) on encrypted drive (LUKS) is supported.
 # Last function is used to convert sizes to bytes for disk space check.
 #
@@ -64,7 +64,7 @@ _default_partitioning_scheme() {
     _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE} ?"
     case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
 
-    ## Remove LVM partitions
+    ### Remove LVM partitions
     readarray -t CHECK_LVM_PART \
 <<< "$( lvs --aligned --noheadings --separator / -o vg_name,lv_name )"
     readarray -t CHECK_VOLUME_GROUP \
@@ -89,24 +89,23 @@ _default_partitioning_scheme() {
         done
     fi
 
-    ## Remove DOS partitions
+    ### Remove DOS partitions
     readarray -t CHECK_DOS_PART \
 <<< "$( lsblk -lo "NAME" "${DRIVE}" | grep -E "^${ID}[a-z]{0,1}[0-9]{1,3}$" )"
 
     if [[ ${CHECK_DOS_PART[*]} ]]; then
         for PART in "${CHECK_DOS_PART[@]}"; do
             if mount | grep "${PART}"; then
-                _info "Unmounting partition /dev/${PART}"
                 umount -fv "/dev/${PART}"; sleep 1
             fi
-            _info "Deleting partition /dev/${PART}"
+            _info "${MSG_DELETE_PART} /dev/${PART}"
             printf "d\n\nw\n" | fdisk --wipe=always "${DRIVE}"
             partprobe "${DRIVE}" && sleep 1
         done
     fi
 
-    ## Format the drive
-    _info "Formating drive ${DRIVE}"
+    ### Format the drive
+    _info "${MSG_FORMAT_DRIVE} ${DRIVE}"
     dd if=/dev/zero of="${DRIVE}" bs=512 count=1 conv=notrunc status=progress
     wipefs --force --all "${DRIVE}"; sleep 1
     printf "%s\nw\n" "${PART_CODE}" | fdisk "${DRIVE}"
@@ -324,6 +323,12 @@ grep "NAME\|disk\|part"
             read -r DRIVE_ID
             CHECK_DRIVE=$( partprobe -d -s "/dev/${DRIVE_ID}" )
         done
+
+        # Get root UUID
+        if [[ ${PART} == "ROOT_PARTITION" ]]; then
+            ROOT_UUID=$( blkid -o value -s UUID /dev/"${PART}" )
+            export ROOT_UUID
+        fi
 
         # Return partitions drive ID
         export "${PART}=/dev/${DRIVE_ID}"

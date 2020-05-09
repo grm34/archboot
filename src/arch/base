@@ -101,7 +101,8 @@ _install_base() {
             sed -i -e \
 "/^HOOKS=/s/filesystems/lvm2 filesystems/g" /mnt/etc/mkinitcpio.conf
         fi
-        _chroot mkinitcpio -P
+        arch-chroot /mnt <<EOF mkinitcpio -P
+EOF
         echo "-> ${MSG_DONE}"
     fi
 
