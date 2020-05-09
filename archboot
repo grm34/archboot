@@ -134,7 +134,9 @@ _wget() {
 
 ### Execute action in chrooted environment
 _chroot() {
-    arch-chroot /mnt <<EOF "${1}"
+    arch-chroot /mnt /bin/bash <<EOF
+    ${1}
+    trap '_error ${MSG_KEYBOARD}' 1 2 3 6
 EOF
 }
 
@@ -188,7 +190,7 @@ _reboot() {
 ### Say goodbye
 _exit_msg() {
     echo -e "\n${GREEN}<<< ${BLUE}${APPNAME} ${VERSION} ${BOLD}by \
-${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
+${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"
 }
 
 #                             HELP AND USAGE
@@ -201,7 +203,7 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"""
 # ============================================================================
 
 ### Get arguments list
-mapfile -t ARGS <<< "${@}"
+read -ra ARGS <<< "${@}"
 
 ### Ensure valid options
 if [[ ${#} == 0 || ${ARGS[0]} =~ \
@@ -290,16 +292,6 @@ _check source "./${ARCHBOOT_LANG,,}"
 
 ### Display banner
 _archboot_banner
-
-### Check internet connection
-_info "${MSG_INTERNET}"
-INTERNET=$( ping -c 1 archlinux.org )
-
-if [[ ${INTERNET} ]]; then
-    _note "congratulations, you are connected to Internet!"
-else
-    _error "you are not connected to Internet!"
-fi
 
 ### Download base sources
 _confirm "${MSG_CONFIRM_DL_SOURCES}"
