@@ -42,10 +42,9 @@ _default_partitioning_scheme() {
     _prompt "${MSG_PROMPT_DRIVE}" "${MSG_DRIVE_EXAMPLE}"
     read -r ID
 
-    ### Check if valid drive
+    ### Ensure valid drive and otherwise ask again
     CHECK_DRIVE=$( partprobe -d -s "/dev/${ID}" )
 
-    ### Otherwise ask again
     until [[ ${CHECK_DRIVE} ]]; do
         _info "${MSG_LIST_DRIVES}"
         lsblk -lo "NAME,SIZE,TYPE,MODEL" | grep "NAME\|disk"
@@ -54,17 +53,15 @@ _default_partitioning_scheme() {
         CHECK_DRIVE=$( partprobe -d -s "/dev/${ID}" )
     done
 
-    ### Return selected drive
+    ### Confirm selected drive (FORMAT)
+    _info "${MSG_ARCH_DRIVE} /dev/${ID}"
+    lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "/dev/${ID}"
+    _note "${MSG_WARN_LOST_DATA}"
+    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} /dev/${ID} ?"
+    case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
     export DRIVE="/dev/${ID}"
 
-    ### Confirm selected drive
-    _info "${MSG_ARCH_DRIVE} ${DRIVE}"
-    lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "${DRIVE}"
-    _note "${MSG_WARN_LOST_DATA}"
-    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE} ?"
-    case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
-
-    ### Remove LVM partitions
+    ### Wipe previous LVM partitions
     readarray -t CHECK_LVM_PART \
 <<< "$( lvs --aligned --noheadings --separator / -o vg_name,lv_name )"
     readarray -t CHECK_VOLUME_GROUP \
@@ -73,6 +70,8 @@ _default_partitioning_scheme() {
 <<< "$( pvs --noheadings -o pv_name )"
 
     if [[ ${CHECK_LVM_PART[*]} ]]; then
+
+        # Remove LVM partitions
         for LVM_PART in "${CHECK_LVM_PART[@]}"; do
             if mount | grep "${LVM_PART}"; then
                 umount -fv "/dev/${LVM_PART}"; sleep 1
@@ -80,16 +79,18 @@ _default_partitioning_scheme() {
             lvremove -f -y "${LVM_PART}"; sleep 1
         done
 
+        # Remove volume groups
         for VOLUME_GROUP in "${CHECK_VOLUME_GROUP[@]}"; do
             vgremove -f -y "${VOLUME_GROUP}"; sleep 1
         done
 
+        # Remove physical groups
         for PHYSICAL_GROUP in "${CHECK_PHYSICAL_GROUP[@]}"; do
             pvremove -f -y "${PHYSICAL_GROUP}"; sleep 1
         done
     fi
 
-    ### Remove DOS partitions
+    ### Wipe previous DOS partitions
     readarray -t CHECK_DOS_PART \
 <<< "$( lsblk -lo "NAME" "${DRIVE}" | grep -E "^${ID}[a-z]{0,1}[0-9]{1,3}$" )"
 
@@ -114,7 +115,7 @@ _default_partitioning_scheme() {
     ### Logical Volume Manager (UEFI only)
     _get_lvm_and_luks
 
-    ### Get optional partitions
+    ### Get optional partitions (swap, home)
     _get_user_partitions
 
     ### Get partition sizes
@@ -128,7 +129,7 @@ _default_partitioning_scheme() {
         if [[ ${PART} == "SWAP_PARTITION" ]]; then SIZES_EQ+=(4G)
         elif [[ ${PART} == "HOME_PARTITION" ]]; then SIZES_EQ+=(100G); fi
 
-        ## Free space for home
+        ## Free space for home ?
         if [[ ${PART} == "HOME_PARTITION" ]]; then
             if [[ ${FIRMWARE} == "BIOS" && ${#PARTITION[@]} == "4" ]]; then
                 PARTITION_SIZE="freespace"
@@ -137,7 +138,7 @@ _default_partitioning_scheme() {
                 case ${CONFIRM} in
                     y|Y|yes|Yes|YES) PARTITION_SIZE="freespace"
                 esac
-	    fi
+	        fi
         fi
 
         ## Ask partitions sizes
@@ -164,7 +165,7 @@ _default_partitioning_scheme() {
         INDEX=$(( INDEX + 1 ))
     done
 
-    ### Check disk space
+    ### Ensure enought disk space
     CHECK_SIZE=0
     DISK_SPACE=$( lsblk -b --output SIZE -n -d "${DRIVE}" )
 
@@ -183,7 +184,7 @@ _default_partitioning_scheme() {
     if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then ORDER=(p1 p2 p3 p4)
     else ORDER=(1 2 3 4); fi
 
-    ### Manage drive partitions
+    ### Partition processing
     INDEX=0
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART/_PARTITION/}
