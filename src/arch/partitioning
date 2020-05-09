@@ -57,55 +57,55 @@ _default_partitioning_scheme() {
     ### Return selected drive
     export DRIVE="/dev/${ID}"
 
-    ### Confirm selected drive
-    _info "${MSG_ARCH_DRIVE} ${DRIVE}"
-    lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "${DRIVE}"
-    _note "${MSG_WARN_LOST_DATA}"
-    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE} ?"
-    case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
+#     ### Confirm selected drive
+#     _info "${MSG_ARCH_DRIVE} ${DRIVE}"
+#     lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "${DRIVE}"
+#     _note "${MSG_WARN_LOST_DATA}"
+#     _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE} ?"
+#     case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
 
-    ## Remove LVM partitions
-    IFS=$'\n' read -r -d '' -a CHECK_LVM_PART < \
-<( lvs --aligned --noheadings --separator / -o vg_name,lv_name \
-&& printf '\0' )
-    IFS=$'\n' read -r -d '' -a CHECK_VOLUME_GROUP < \
-<( vgs --noheadings -o vg_name && printf '\0' )
-    IFS=$'\n' read -r -d '' -a CHECK_PHYSICAL_GROUP < \
-<( pvs --noheadings -o pv_name && printf '\0' )
+#     ## Remove LVM partitions
+#     IFS=$'\n' read -r -d '' -a CHECK_LVM_PART < \
+# <( lvs --aligned --noheadings --separator / -o vg_name,lv_name \
+# && printf '\0' )
+#     IFS=$'\n' read -r -d '' -a CHECK_VOLUME_GROUP < \
+# <( vgs --noheadings -o vg_name && printf '\0' )
+#     IFS=$'\n' read -r -d '' -a CHECK_PHYSICAL_GROUP < \
+# <( pvs --noheadings -o pv_name && printf '\0' )
 
-    if [[ ${CHECK_LVM_PART[*]} ]]; then
-        for LVM_PART in "${CHECK_LVM_PART[@]}"; do
-            if mount | grep "${LVM_PART}"; then
-                umount -fv "/dev/${LVM_PART}"; sleep 1
-            fi
-            lvremove -f -y "${LVM_PART}"; sleep 1
-        done
+#     if [[ ${CHECK_LVM_PART[*]} ]]; then
+#         for LVM_PART in "${CHECK_LVM_PART[@]}"; do
+#             if mount | grep "${LVM_PART}"; then
+#                 umount -fv "/dev/${LVM_PART}"; sleep 1
+#             fi
+#             lvremove -f -y "${LVM_PART}"; sleep 1
+#         done
 
-        for VOLUME_GROUP in "${CHECK_VOLUME_GROUP[@]}"; do
-            vgremove -f -y "${VOLUME_GROUP}"; sleep 1
-        done
+#         for VOLUME_GROUP in "${CHECK_VOLUME_GROUP[@]}"; do
+#             vgremove -f -y "${VOLUME_GROUP}"; sleep 1
+#         done
 
-        for PHYSICAL_GROUP in "${CHECK_PHYSICAL_GROUP[@]}"; do
-            pvremove -f -y "${PHYSICAL_GROUP}"; sleep 1
-        done
-    fi
+#         for PHYSICAL_GROUP in "${CHECK_PHYSICAL_GROUP[@]}"; do
+#             pvremove -f -y "${PHYSICAL_GROUP}"; sleep 1
+#         done
+#     fi
 
-    ## Remove DOS partitions
-    IFS=$'\n' read -r -d '' -a CHECK_DOS_PART < \
-<( lsblk -lo "NAME" "${DRIVE}" | grep -E "^${ID}[a-z]{0,1}[0-9]{1,3}$" \
-&& printf '\0' )
+#     ## Remove DOS partitions
+#     IFS=$'\n' read -r -d '' -a CHECK_DOS_PART < \
+# <( lsblk -lo "NAME" "${DRIVE}" | grep -E "^${ID}[a-z]{0,1}[0-9]{1,3}$" \
+# && printf '\0' )
 
-    if [[ ${CHECK_DOS_PART[*]} ]]; then
-        for PART in "${CHECK_DOS_PART[@]}"; do
-            if mount | grep "${PART}"; then
-                _info "Unmounting partition /dev/${PART}"
-                umount -fv "/dev/${PART}"; sleep 1
-            fi
-            _info "Deleting partition /dev/${PART}"
-            printf "d\n\nw\n" | fdisk --wipe=always "${DRIVE}"
-            partprobe "${DRIVE}" && sleep 1
-        done
-    fi
+#     if [[ ${CHECK_DOS_PART[*]} ]]; then
+#         for PART in "${CHECK_DOS_PART[@]}"; do
+#             if mount | grep "${PART}"; then
+#                 _info "Unmounting partition /dev/${PART}"
+#                 umount -fv "/dev/${PART}"; sleep 1
+#             fi
+#             _info "Deleting partition /dev/${PART}"
+#             printf "d\n\nw\n" | fdisk --wipe=always "${DRIVE}"
+#             partprobe "${DRIVE}" && sleep 1
+#         done
+#     fi
 
     ## Format the drive
     _info "Formating drive ${DRIVE}"
