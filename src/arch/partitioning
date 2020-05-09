@@ -183,10 +183,6 @@ _default_partitioning_scheme() {
     if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then ORDER=(p1 p2 p3 p4)
     else ORDER=(1 2 3 4); fi
 
-    ### Get root UUID
-    ROOT_UUID=$( blkid -o value -s UUID "${DRIVE}${ORDER[1]}" )
-    export ROOT_UUID
-
     ### Manage drive partitions
     INDEX=0
     for PART in "${PARTITION[@]}"; do
@@ -205,7 +201,6 @@ _default_partitioning_scheme() {
 "${PART_TYPE}" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
             partprobe "${DRIVE}" && sleep 1
         fi
-
 
         ## Set required partition types
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
@@ -255,9 +250,7 @@ ${SIZES[${INDEX}]} == "freespace" ]]; then
         fi
 
         ## Set partitions drive ID
-        if [[ ${PART} != "BOOT_PARTITION" && ${SET_LUKS} ]]; then
-            DRIVE_ID="/dev/mapper/crypt${PART_NAME,,}"
-        elif [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
+        if [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
             DRIVE_ID="/dev/lvm/${PART_NAME,,}"
         else
             DRIVE_ID="${DRIVE}${ORDER[${INDEX}]}"
@@ -274,9 +267,11 @@ ${SIZES[${INDEX}]} == "freespace" ]]; then
             yes | _check mkfs.ext4 "${DRIVE_ID}"; sleep 1
         fi
 
+        ### Get root UUID
+        _get_root_uuid
+
         ## Return partitions drive ID
-        if [[ ${PART} != "BOOT_PARTITION" && \
-(${SET_LVM} || ${SET_LUKS}) ]]; then
+        if [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
             export "${PART}=${DRIVE_ID}"
         else
             export "${PART}=${DRIVE}${ORDER[${INDEX}]}"
@@ -320,10 +315,7 @@ grep "NAME\|disk\|part"
         done
 
         # Get root UUID
-        if [[ ${PART} == "ROOT_PARTITION" ]]; then
-            ROOT_UUID=$( blkid -o value -s UUID /dev/"${PART}" )
-            export ROOT_UUID
-        fi
+        _get_root_uuid
 
         # Return partitions drive ID
         export "${PART}=/dev/${DRIVE_ID}"
@@ -364,6 +356,13 @@ _get_lvm_and_luks() {
             _confirm "${MSG_CONFIRM_LUKS}"
             case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
         esac
+    fi
+}
+
+_get_root_uuid() {
+    if [[ ${PART} == "ROOT_PARTITION" ]]; then
+        ROOT_UUID=$( blkid -o value -s UUID "${DRIVE_ID}" )
+        export ROOT_UUID
     fi
 }
 
