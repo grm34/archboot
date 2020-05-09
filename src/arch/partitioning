@@ -65,13 +65,20 @@ _default_partitioning_scheme() {
     case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
 
     ## Remove LVM partitions
-    IFS=$'\n' read -r -d '' -a CHECK_LVM_PART < \
-<( lvs --aligned --noheadings --separator / -o vg_name,lv_name \
-&& printf '\0' )
-    IFS=$'\n' read -r -d '' -a CHECK_VOLUME_GROUP < \
-<( vgs --noheadings -o vg_name && printf '\0' )
-    IFS=$'\n' read -r -d '' -a CHECK_PHYSICAL_GROUP < \
-<( pvs --noheadings -o pv_name && printf '\0' )
+    CHECK_LVM_PART=()
+    while IFS= read -r LV_ID; do
+        CHECK_DOS_PART+=( "$LV_ID" )
+    done < <( lvs --aligned --noheadings --separator / -o vg_name,lv_name )
+
+    CHECK_VOLUME_GROUP=()
+    while IFS= read -r VG_ID; do
+        CHECK_VOLUME_GROUP+=( "$VG_ID" )
+    done < <( vgs --noheadings -o vg_name )
+
+    CHECK_PHYSICAL_GROUP=()
+    while IFS= read -r PV_ID; do
+        CHECK_PHYSICAL_GROUP+=( "$PV_ID" )
+    done < <( pvs --noheadings -o pv_name )
 
     if [[ ${CHECK_LVM_PART[*]} ]]; then
         for LVM_PART in "${CHECK_LVM_PART[@]}"; do
@@ -91,9 +98,10 @@ _default_partitioning_scheme() {
     fi
 
     ## Remove DOS partitions
-    IFS=$'\n' read -r -d '' -a CHECK_DOS_PART < \
-<( lsblk -lo "NAME" "${DRIVE}" | grep -E "^${ID}[a-z]{0,1}[0-9]{1,3}$" \
-&& printf '\0' )
+    CHECK_DOS_PART=()
+    while IFS= read -r DOS_ID; do
+        CHECK_DOS_PART+=( "$DOS_ID" )
+    done < <( lsblk -lo "NAME" "${DRIVE}" | grep -E "^${ID}[a-z]{0,1}[0-9]{1,3}$" )
 
     if [[ ${CHECK_DOS_PART[*]} ]]; then
         for PART in "${CHECK_DOS_PART[@]}"; do

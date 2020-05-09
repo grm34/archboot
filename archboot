@@ -162,7 +162,7 @@ trap '_error ${MSG_KEYBOARD}' 1 2 3 6
 _cleanup() {
     _info "${MSG_CLEANUP}"
     SRC=(base bootloader desktop display firmware gpu_driver mirrorlist \
-mounting partitioning user desktop_apps display_apps gpu_apps system_apps \
+mounting user desktop_apps display_apps gpu_apps system_apps \
 00-keyboard.conf language loader.conf timezone xinitrc xprofile \
 background.png Grub2-themes archboot* *.log english french german)
 
