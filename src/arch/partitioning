@@ -5,15 +5,19 @@
 #
 # DEFAULT PARTITIONING:
 #   In this mode a dedicated drive is required. We format it and create the
-#   right partition table according to firmware (BIOS: gpt |UEFI: mbr).
-#   Then we ask for partitions sizes to sort, create and format them.
+#   right partition table according to firmware ( BIOS: gpt | UEFI: mbr ).
+#   Then we ask for partitions sizes to properly create and format them.
 #
 # CUSTOM PARTITIONING:
 #   In this mode we just ask for partitions drive ID. Partitions could
 #   be on differents drives but requires you to properly create and
 #   format them before running archboot.
 #
-#   < UEFI boot requires EFI partition type (ef00) with FAT32 filesystem >
+#   - Requirements:
+#
+#       * UEFI boot requires EFI partition type (ef00) with FAT32 filesystem
+#       * LVM partition requires Volume Group Name (VG): lvm
+#       * LUKS encryption requires Physical Group Name (PV): cryptlvm
 #
 # PARTITIONING SCHEME:
 #
@@ -53,7 +57,7 @@ _default_partitioning_scheme() {
         CHECK_DRIVE=$( partprobe -d -s "/dev/${ID}" )
     done
 
-    ### Confirm selected drive (FORMAT)
+    ### Confirm selected drive (all data will be lost)
     _info "${MSG_ARCH_DRIVE} /dev/${ID}"
     lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "/dev/${ID}"
     _note "${MSG_WARN_LOST_DATA}"
@@ -112,7 +116,7 @@ _default_partitioning_scheme() {
     printf "%s\nw\n" "${PART_CODE}" | fdisk "${DRIVE}"
     partprobe "${DRIVE}" && sleep 1
 
-    ### Logical Volume Manager (UEFI only)
+    ### Logical Volume Manager ? (UEFI only)
     _get_lvm_and_luks
 
     ### Get optional partitions (swap, home)
@@ -129,7 +133,7 @@ _default_partitioning_scheme() {
         if [[ ${PART} == "SWAP_PARTITION" ]]; then SIZES_EQ+=(4G)
         elif [[ ${PART} == "HOME_PARTITION" ]]; then SIZES_EQ+=(100G); fi
 
-        ## Free space for home ?
+        ## Free space for home ? (auto if MBR type with 4 partitions)
         if [[ ${PART} == "HOME_PARTITION" ]]; then
             if [[ ${FIRMWARE} == "BIOS" && ${#PARTITION[@]} == "4" ]]; then
                 PARTITION_SIZE="freespace"
@@ -141,7 +145,7 @@ _default_partitioning_scheme() {
 	        fi
         fi
 
-        ## Ask partitions sizes
+        ## Ask partition sizes
         if [[ ${PARTITION_SIZE} != "freespace" ]]; then
 
             _note "${MSG_PART_SIZE} {M,G,T} (e.g., ${SIZES_EQ[${INDEX}]})"
@@ -158,7 +162,7 @@ _default_partitioning_scheme() {
             done
         fi
 
-        ## Return partitions sizes
+        ## Return partition sizes
         SIZES+=( "${PARTITION_SIZE}" )
 
         ## Increase index
