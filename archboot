@@ -348,7 +348,7 @@ if [[ ${DESKTOP} ]]; then
     done
     echo "-> ${MSG_DONE}"
 
-    # GPU driver (src/arch/gpu_driver) || Kernel mode setting
+    # GPU driver (src/arch/gpu_driver) or Kernel mode setting
     _note "${MSG_MODSETTING}"
     _confirm "${MSG_CONFIRM_GPU}"
 
