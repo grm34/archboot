@@ -57,12 +57,12 @@ _default_partitioning_scheme() {
     ### Return selected drive
     export DRIVE="/dev/${ID}"
 
-#     ### Confirm selected drive
-#     _info "${MSG_ARCH_DRIVE} ${DRIVE}"
-#     lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "${DRIVE}"
-#     _note "${MSG_WARN_LOST_DATA}"
-#     _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE} ?"
-#     case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
+    ### Confirm selected drive
+    _info "${MSG_ARCH_DRIVE} ${DRIVE}"
+    lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "${DRIVE}"
+    _note "${MSG_WARN_LOST_DATA}"
+    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE} ?"
+    case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
 
 #     ## Remove LVM partitions
 #     IFS=$'\n' read -r -d '' -a CHECK_LVM_PART < \
