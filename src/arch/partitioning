@@ -5,15 +5,19 @@
 #
 # DEFAULT PARTITIONING:
 #   In this mode a dedicated drive is required. We format it and create the
-#   right partition table according to firmware (BIOS: gpt |UEFI: mbr).
-#   Then we ask for partitions sizes to sort, create and format them.
+#   right partition table according to firmware ( BIOS: gpt | UEFI: mbr ).
+#   Then we ask for partitions sizes to properly create and format them.
 #
 # CUSTOM PARTITIONING:
 #   In this mode we just ask for partitions drive ID. Partitions could
 #   be on differents drives but requires you to properly create and
 #   format them before running archboot.
 #
-#   < UEFI boot requires EFI partition type (ef00) with FAT32 filesystem >
+#   - Requirements:
+#
+#       * UEFI boot requires EFI partition type (ef00) with FAT32 filesystem
+#       * LVM partition requires Volume Group Name (VG): lvm
+#       * LUKS encryption requires Physical Group Name (PV): cryptlvm
 #
 # PARTITIONING SCHEME:
 #
@@ -22,8 +26,8 @@
 #   SWAP_PARTITION........: no mountpoint   (optional)
 #   HOME_PARTITION........: /mnt/home       (optional)
 #
-# We use <partprobe> to inform changes to system and to check if drive
-# exists. We also add a <sleep 1> to prevent unreconized system changes.
+# We use <partprobe> with <sleep 1> to inform system changes and to
+# prevent unreconized ones. <partprobe> also used to check if drive exists.
 # Logical Volume Manager (LVM) on encrypted drive (LUKS) is supported.
 # Last function is used to convert sizes to bytes for disk space check.
 #
@@ -42,10 +46,9 @@ _default_partitioning_scheme() {
     _prompt "${MSG_PROMPT_DRIVE}" "${MSG_DRIVE_EXAMPLE}"
     read -r ID
 
-    ### Check if valid drive
+    ### Ensure valid drive and otherwise ask again
     CHECK_DRIVE=$( partprobe -d -s "/dev/${ID}" )
 
-    ### Otherwise ask again
     until [[ ${CHECK_DRIVE} ]]; do
         _info "${MSG_LIST_DRIVES}"
         lsblk -lo "NAME,SIZE,TYPE,MODEL" | grep "NAME\|disk"
@@ -54,84 +57,74 @@ _default_partitioning_scheme() {
         CHECK_DRIVE=$( partprobe -d -s "/dev/${ID}" )
     done
 
-    ### Return selected drive
+    ### Confirm selected drive (all data will be lost)
+    _info "${MSG_ARCH_DRIVE} /dev/${ID}"
+    lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "/dev/${ID}"
+    _note "${MSG_WARN_LOST_DATA}"
+    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} /dev/${ID} ?"
+    case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
     export DRIVE="/dev/${ID}"
 
-    ### Confirm selected drive
-    _info "${MSG_ARCH_DRIVE} ${DRIVE}"
-    lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" "${DRIVE}"
-    _note "${MSG_WARN_LOST_DATA}"
-    _confirm "${MSG_CONFIRM_FORMAT_DRIVE} ${PART_TABLE} ${DRIVE} ?"
-    case ${CONFIRM} in n|N|no|No|NO) _error "${MSG_ARCH_ABORTED}"; esac
+    ### Wipe previous LVM partitions
+    readarray -t CHECK_LVM_PART \
+<<< "$( lvs --aligned --noheadings --separator / -o vg_name,lv_name )"
+    readarray -t CHECK_VOLUME_GROUP \
+<<< "$( vgs --noheadings -o vg_name )"
+    readarray -t CHECK_PHYSICAL_GROUP \
+<<< "$( pvs --noheadings -o pv_name )"
 
-#     ## Remove LVM partitions
-#     IFS=$'\n' read -r -d '' -a CHECK_LVM_PART < \
-# <( lvs --aligned --noheadings --separator / -o vg_name,lv_name \
-# && printf '\0' )
-#     IFS=$'\n' read -r -d '' -a CHECK_VOLUME_GROUP < \
-# <( vgs --noheadings -o vg_name && printf '\0' )
-#     IFS=$'\n' read -r -d '' -a CHECK_PHYSICAL_GROUP < \
-# <( pvs --noheadings -o pv_name && printf '\0' )
+    if [[ ${CHECK_LVM_PART[*]} ]]; then
 
-#     if [[ ${CHECK_LVM_PART[*]} ]]; then
-#         for LVM_PART in "${CHECK_LVM_PART[@]}"; do
-#             if mount | grep "${LVM_PART}"; then
-#                 umount -fv "/dev/${LVM_PART}"; sleep 1
-#             fi
-#             lvremove -f -y "${LVM_PART}"; sleep 1
-#         done
+        # Remove LVM partitions
+        for LVM_PART in "${CHECK_LVM_PART[@]}"; do
+            if mount | grep "${LVM_PART}"; then
+                umount -fv "/dev/${LVM_PART}"; sleep 1
+            fi
+            lvremove -f -y "${LVM_PART}"; sleep 1
+        done
 
-#         for VOLUME_GROUP in "${CHECK_VOLUME_GROUP[@]}"; do
-#             vgremove -f -y "${VOLUME_GROUP}"; sleep 1
-#         done
+        # Remove volume groups
+        for VOLUME_GROUP in "${CHECK_VOLUME_GROUP[@]}"; do
+            vgremove -f -y "${VOLUME_GROUP}"; sleep 1
+        done
 
-#         for PHYSICAL_GROUP in "${CHECK_PHYSICAL_GROUP[@]}"; do
-#             pvremove -f -y "${PHYSICAL_GROUP}"; sleep 1
-#         done
-#     fi
+        # Remove physical groups
+        for PHYSICAL_GROUP in "${CHECK_PHYSICAL_GROUP[@]}"; do
+            pvremove -f -y "${PHYSICAL_GROUP}"; sleep 1
+        done
+    fi
 
-#     ## Remove DOS partitions
-#     IFS=$'\n' read -r -d '' -a CHECK_DOS_PART < \
-# <( lsblk -lo "NAME" "${DRIVE}" | grep -E "^${ID}[a-z]{0,1}[0-9]{1,3}$" \
-# && printf '\0' )
+    ### Wipe previous DOS partitions
+    readarray -t CHECK_DOS_PART \
+<<< "$( lsblk -lo "NAME" "${DRIVE}" | grep -E "^${ID}[a-z]{0,1}[0-9]{1,3}$" )"
 
-#     if [[ ${CHECK_DOS_PART[*]} ]]; then
-#         for PART in "${CHECK_DOS_PART[@]}"; do
-#             if mount | grep "${PART}"; then
-#                 _info "Unmounting partition /dev/${PART}"
-#                 umount -fv "/dev/${PART}"; sleep 1
-#             fi
-#             _info "Deleting partition /dev/${PART}"
-#             printf "d\n\nw\n" | fdisk --wipe=always "${DRIVE}"
-#             partprobe "${DRIVE}" && sleep 1
-#         done
-#     fi
+    if [[ ${CHECK_DOS_PART[*]} ]]; then
+        for PART in "${CHECK_DOS_PART[@]}"; do
+            if mount | grep "${PART}"; then
+                umount -fv "/dev/${PART}"; sleep 1
+            fi
+            _info "${MSG_DELETE_PART} /dev/${PART}"
+            printf "d\n\nw\n" | fdisk --wipe=always "${DRIVE}"
+            partprobe "${DRIVE}" && sleep 1
+        done
+    fi
 
-    ## Format the drive
-    _info "Formating drive ${DRIVE}"
+    ### Format the drive
+    _info "${MSG_FORMAT_DRIVE} ${DRIVE}"
     dd if=/dev/zero of="${DRIVE}" bs=512 count=1 conv=notrunc status=progress
     wipefs --force --all "${DRIVE}"; sleep 1
     printf "%s\nw\n" "${PART_CODE}" | fdisk "${DRIVE}"
     partprobe "${DRIVE}" && sleep 1
 
-    ### Logical Volume Manager (UEFI only)
-    # if [[ ${FIRMWARE} == "UEFI" ]]; then
-    #     _confirm "${MSG_CONFIRM_LVM}"
-    #     case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
+    ### Logical Volume Manager ? (UEFI only)
+    #_get_lvm_and_luks
 
-    #         # LUKS encrytion
-    #         _confirm "${MSG_CONFIRM_LUKS}"
-    #         case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
-    #     esac
-    # fi
-
-    ### Get optional partitions
+    ### Get optional partitions (swap, home)
     _get_user_partitions
 
     ### Get partition sizes
     INDEX=0
     SIZES_EQ=(512M 25G)
-    SIZES=()
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART/_PARTITION/}
 
@@ -139,7 +132,7 @@ _default_partitioning_scheme() {
         if [[ ${PART} == "SWAP_PARTITION" ]]; then SIZES_EQ+=(4G)
         elif [[ ${PART} == "HOME_PARTITION" ]]; then SIZES_EQ+=(100G); fi
 
-        ## Free space for home
+        ## Free space for home ? (auto if MBR type with 4 partitions)
         if [[ ${PART} == "HOME_PARTITION" ]]; then
             if [[ ${FIRMWARE} == "BIOS" && ${#PARTITION[@]} == "4" ]]; then
                 PARTITION_SIZE="freespace"
@@ -148,10 +141,10 @@ _default_partitioning_scheme() {
                 case ${CONFIRM} in
                     y|Y|yes|Yes|YES) PARTITION_SIZE="freespace"
                 esac
-	    fi
+	        fi
         fi
 
-        ## Ask partitions sizes
+        ## Ask partition sizes
         if [[ ${PARTITION_SIZE} != "freespace" ]]; then
 
             _note "${MSG_PART_SIZE} {M,G,T} (e.g., ${SIZES_EQ[${INDEX}]})"
@@ -168,14 +161,14 @@ _default_partitioning_scheme() {
             done
         fi
 
-        ## Return partitions sizes
+        ## Return partition sizes
         SIZES+=( "${PARTITION_SIZE}" )
 
         ## Increase index
         INDEX=$(( INDEX + 1 ))
     done
 
-    ### Check disk space
+    ### Ensure enought disk space
     CHECK_SIZE=0
     DISK_SPACE=$( lsblk -b --output SIZE -n -d "${DRIVE}" )
 
@@ -194,11 +187,7 @@ _default_partitioning_scheme() {
     if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then ORDER=(p1 p2 p3 p4)
     else ORDER=(1 2 3 4); fi
 
-    ### Get root UUID
-    ROOT_UUID=$( blkid -o value -s UUID "${DRIVE}${ORDER[1]}" )
-    export ROOT_UUID
-
-    ### Manage drive partitions
+    ### Partition processing
     INDEX=0
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART/_PARTITION/}
@@ -216,7 +205,6 @@ _default_partitioning_scheme() {
 "${PART_TYPE}" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
             partprobe "${DRIVE}" && sleep 1
         fi
-
 
         ## Set required partition types
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
@@ -266,9 +254,7 @@ ${SIZES[${INDEX}]} == "freespace" ]]; then
         fi
 
         ## Set partitions drive ID
-        if [[ ${PART} != "BOOT_PARTITION" && ${SET_LUKS} ]]; then
-            DRIVE_ID="/dev/mapper/crypt${PART_NAME,,}"
-        elif [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
+        if [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
             DRIVE_ID="/dev/lvm/${PART_NAME,,}"
         else
             DRIVE_ID="${DRIVE}${ORDER[${INDEX}]}"
@@ -285,9 +271,11 @@ ${SIZES[${INDEX}]} == "freespace" ]]; then
             yes | _check mkfs.ext4 "${DRIVE_ID}"; sleep 1
         fi
 
+        ### Get root UUID
+        _get_root_uuid
+
         ## Return partitions drive ID
-        if [[ ${PART} != "BOOT_PARTITION" && \
-(${SET_LVM} || ${SET_LUKS}) ]]; then
+        if [[ ${PART} != "BOOT_PARTITION" && ${SET_LVM} ]]; then
             export "${PART}=${DRIVE_ID}"
         else
             export "${PART}=${DRIVE}${ORDER[${INDEX}]}"
@@ -299,6 +287,9 @@ ${SIZES[${INDEX}]} == "freespace" ]]; then
 }
 
 _custom_partitioning_scheme() {
+
+    ### Logical Volume Manager (UEFI only)
+    _get_lvm_and_luks
 
     ### Get optional partitions and set partitions list
     _get_user_partitions
@@ -322,10 +313,13 @@ _custom_partitioning_scheme() {
             _info "${MSG_LIST_DRIVES}"
             lsblk -o "NAME,SIZE,TYPE,MOUNTPOINT,MODEL" | \
 grep "NAME\|disk\|part"
-           _prompt "${MSG_PROMPT_VALIDID} ${PART_NAME}:" "${MSG_ID_EXAMPLE}"
+           _prompt "${MSG_PROMPT_VALID_ID} ${PART_NAME}:" "${MSG_ID_EXAMPLE}"
             read -r DRIVE_ID
             CHECK_DRIVE=$( partprobe -d -s "/dev/${DRIVE_ID}" )
         done
+
+        # Get root UUID
+        _get_root_uuid
 
         # Return partitions drive ID
         export "${PART}=/dev/${DRIVE_ID}"
@@ -355,6 +349,29 @@ _get_user_partitions() {
 
     ### Return partitions list
     export PARTITION
+}
+
+_get_lvm_and_luks() {
+
+    # LVM Support (UEFI only)
+    if [[ ${FIRMWARE} == "UEFI" ]]; then
+        _confirm "${MSG_CONFIRM_LVM}"
+        case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LVM="True"
+
+            # LUKS encrytion
+            _confirm "${MSG_CONFIRM_LUKS}"
+            case ${CONFIRM} in y|Y|yes|Yes|YES) export SET_LUKS="True"; esac
+        esac
+    fi
+}
+
+_get_root_uuid() {
+
+    # Required by systemd-boot
+    if [[ ${PART} == "ROOT_PARTITION" ]]; then
+        ROOT_UUID=$( blkid -o value -s UUID "${DRIVE_ID}" )
+        export ROOT_UUID
+    fi
 }
 
 _dehumanise() {

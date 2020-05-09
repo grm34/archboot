@@ -206,11 +206,15 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"
 read -ra ARGS <<< "${@}"
 
 ### Ensure valid options
-if [[ ${#} == 0 || ${ARGS[0]} =~ \
-^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then
-    true
-else
-    echo -e "${RED}Error:${NC} invalid option ${ARGS[0]}"
+if ! [[ ${#} == 0 || ${ARGS[0]} =~ \
+^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then INVALID="${ARGS[0]}"
+elif ! [[ ${ARGS[2]} && ${ARGS[2]} =~ \
+^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then INVALID="${ARGS[2]}"
+fi
+
+### Otherwise display error and exit
+if [[ ${INVALID} ]]; then
+    echo -e "${RED}Error:${NC} invalid option ${INVALID}"
     _help; rm -f old_vars.log; _exit_msg; exit 1
 fi
 
@@ -270,7 +274,7 @@ done
 
 #             START SCRIPT - IMPORT SOURCES - GET USER VARIABLES
 # ============================================================================
-# Here we check internet connection before downloading and importing sources.
+# Here we set installer language before downloading and importing sources.
 #
 # Sources are sorted by type:
 #
@@ -348,7 +352,7 @@ if [[ ${DESKTOP} ]]; then
     done
     echo "-> ${MSG_DONE}"
 
-    # GPU driver (src/arch/gpu_driver) || Kernel mode setting
+    # GPU driver (src/arch/gpu_driver) or Kernel mode setting
     _note "${MSG_MODSETTING}"
     _confirm "${MSG_CONFIRM_GPU}"
 
@@ -446,8 +450,11 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
 
         ### Get user inputs logs
         _info "${MSG_INPUTS_LOGS}"
-        set | grep -v "MSG_\|A=\|B=\|C=\|D=\|ROOTPASSWD=\|USERPASSWD=\|\
-RED=\|GREEN=\|YELLOW=\|BLUE=\|CYAN=\|NC=\|OPTION" > new_vars.log
+        set | grep -v \
+"A=\|B=\|C=\|D=\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|\GREY=\|\
+BLUE=\|CYAN=\|BOLD=\|NC=\|ARGS=\|BASH_REMATCH=\|BYTES=\|CHAR=\|COLUMNS=\|\
+CONFIRM=\|COUNT=\|INDEX=\|LENTH=\|LINES=\|NUMBER=\|ORDER=\|PART=\|MSG_\|\
+PIPESTATUS=\|PARTITION_SIZE=\|PART_NAME=\|_CHOICE=" > new_vars.log
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i "$ d" "${INPUTS_LOG}"
         echo "-> ${MSG_DONE}"

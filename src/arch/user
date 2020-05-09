@@ -12,8 +12,8 @@
 #      ROOTPASSWD.....: at least 6 chars long with 1 letter & 1 digit
 #      USER_NAME......: such as <bobby_is_not_a_loser>
 #      USERPASSWD.....: at least 6 chars long with 1 letter & 1 digit
-#      LINUX_FW.......: firmware blobs for use with the Linux kernel
 #      KERNEL.........: DEFAULT - HARDENED - LTS - ZEN (optional)
+#      LINUX_FW.......: firmware blobs for use with the Linux kernel
 #      DESKTOP........: GNOME - KDE - DEEPIN - XFCE - LXDE - CINNAMON
 #                       BUDGIE - ENLIGHTENMENT - MATE - LXQT
 #                       AWESOME - i3 - XMONAD (optional)
@@ -73,14 +73,6 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     done
     export USERPASSWD="${B}"
 
-    ### Linux Firmware
-    _note "${MSG_WARN_FW}"
-    _confirm "${MSG_CONFIRM_FW}"
-
-    case ${CONFIRM} in
-        y|Y|yes|Yes|YES) export LINUX_FW="True"
-    esac
-
     ### Linux Kernel
     _confirm "${MSG_CONFIRM_KERNEL}"
     case ${CONFIRM} in
@@ -99,6 +91,14 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
         *) export KERNEL="LINUX"
     esac
     export KERNEL_NAME=${KERNEL//_/-}
+
+    ### Linux Firmware
+    _note "${MSG_WARN_FW}"
+    _confirm "${MSG_CONFIRM_FW}"
+
+    case ${CONFIRM} in
+        y|Y|yes|Yes|YES) export LINUX_FW="True"
+    esac
 
     ### DE / WM
     _confirm "${MSG_CONFIRM_DESKTOP}"
@@ -131,7 +131,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
             esac;;
 
         ## Window Manager
-        *) _confirm "${MSG_CONFIRM_DISPLAY}"
+        *) _confirm "${MSG_CONFIRM_WM}"
 
             case ${CONFIRM} in
                 y|Y|yes|Yes|YES)
@@ -146,7 +146,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
 
     ### Display Manager
     if [[ ${DESKTOP} ]]; then
-        _confirm "${MSG_CONFIRM_DEFAULT_DISPLAY} ${DESKTOP} ?"
+        _confirm "${MSG_CONFIRM_DISPLAY} ${DESKTOP} ?"
 
         case ${CONFIRM} in
 
@@ -173,7 +173,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
 
         ## LightDM Greeter
         if [[ ${DISPLAY_MAN} == "LIGHTDM" ]]; then
-            _confirm "${MSG_CONFIRM_LIGHTDM_GREETER}"
+            _confirm "${MSG_CONFIRM_GREETER}"
 
             case ${CONFIRM} in
 

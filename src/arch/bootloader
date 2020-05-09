@@ -46,7 +46,7 @@ _install_bootloader() {
         # Set options
         if [[ ${LUKS} ]]; then
             echo "options cryptdevice=UUID=${ROOT_UUID}:cryptlvm \
-root=/dev/mapper/cryptroot quiet rw" >> "${BOOTCONF}"
+root=/dev/lvm/root quiet rw" >> "${BOOTCONF}"
         else
             echo "options root=UUID=${ROOT_UUID} quiet rw" >> "${BOOTCONF}"
         fi

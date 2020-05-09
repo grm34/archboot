@@ -21,17 +21,19 @@ _mirrorlist() {
         _note "${CODE} ${MSG_MIRRORS_TRUE}"
 
         # Get corresponding mirrors from archlinux.org
-        M="/etc/pacman.d/mirrorlist"
-        M_URL=\
+        MIRRORLIST="/etc/pacman.d/mirrorlist"
+        MIRRORS_URL=\
 "https://www.archlinux.org/mirrorlist/?country=${CODE}&use_mirror_status=on"
-        MIRS=$( curl -s "${M_URL}" | sed -e 's/^#Server/Server/' -e '/^#/d' )
-        CHECK_MIRRORS=$( echo "${MIRS}" | grep "DOCTYPE html" )
+        USER_MIRRORS=\
+$( curl -s "${MIRRORS_URL}" | sed -e 's/^#Server/Server/' -e '/^#/d' )
+        CHECK_MIRRORS=$( echo "${USER_MIRRORS}" | grep "DOCTYPE html" )
 
         # Update mirrorlist if mirrors properly detected
         if [[ ! ${CHECK_MIRRORS} ]]; then
-            _check mv ${M} ${M}.backup
-            curl -s "${M_URL}" | sed -e 's/^#Server/Server/' -e '/^#/d' > ${M}
-            _check cat ${M}.backup >> ${M}
+            _check mv ${MIRRORLIST} ${MIRRORLIST}.backup
+            curl -s \
+"${MIRRORS_URL}" | sed -e 's/^#Server/Server/' -e '/^#/d' > ${MIRRORLIST}
+            _check cat ${MIRRORLIST}.backup >> ${MIRRORLIST}
         fi
 
     ### Defaults mirrors if not detected
