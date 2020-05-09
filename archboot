@@ -206,11 +206,15 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"
 read -ra ARGS <<< "${@}"
 
 ### Ensure valid options
-if [[ ${#} == 0 || ${ARGS[0]} =~ \
-^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then
-    true
-else
-    echo -e "${RED}Error:${NC} invalid option ${ARGS[0]}"
+if ! [[ ${#} == 0 || ${ARGS[0]} =~ \
+^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then INVALID="${ARGS[0]}"
+elif ! [[ ${ARGS[2]} && ${ARGS[2]} =~ \
+^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then INVALID="${ARGS[2]}"
+fi
+
+### Otherwise display error and exit
+if [[ ${INVALID} ]]; then
+    echo -e "${RED}Error:${NC} invalid option ${INVALID}"
     _help; rm -f old_vars.log; _exit_msg; exit 1
 fi
 
