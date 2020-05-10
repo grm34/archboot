@@ -47,6 +47,7 @@ _install_bootloader() {
         if [[ ${LUKS} ]]; then
             echo "options cryptdevice=UUID=${ROOT_UUID}:cryptlvm \
 root=/dev/lvm/root quiet rw" >> "${BOOTCONF}"
+
         else
             echo "options root=UUID=${ROOT_UUID} quiet rw" >> "${BOOTCONF}"
         fi
@@ -77,13 +78,17 @@ root=/dev/lvm/root quiet rw" >> "${BOOTCONF}"
         # Install Themes
         _info "${MSG_INSTALL_GRUB_THEME}"
         _chroot "cp -r Grub2-themes/{Archlinux,Archxion} /boot/grub/themes/"
+
         sed -i -e "s/GRUB_GFXMODE=auto/GRUB_GFXMODE=1024x768/g" \
 /mnt/etc/default/grub
+
         sed -i -e "s/#GRUB_THEME/GRUB_THEME/g" /mnt/etc/default/grub
 sed -i -e "s|/path/to/gfxtheme|/boot/grub/themes/Archlinux/theme.txt|g" \
 /mnt/etc/default/grub
+
         echo "desktop-image: \"background.png\"" >> \
 /mnt/boot/grub/themes/Archlinux/theme.txt
+
         mv background.png /mnt/boot/grub/themes/Archlinux/background.png
         rm -rf /mnt/Grub2-themes
         echo "-> ${MSG_DONE}"

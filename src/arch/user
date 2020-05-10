@@ -44,34 +44,38 @@ _get_user_variables() {
     ### Hostname
     until [[ ${#HOST_NAME} -ge 3 && \
 ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
+
         _prompt "${MSG_PROMPT_HOSTNAME}" "${MSG_HOSTNAME_EXAMPLE}"
         read -r HOST_NAME
     done
     export HOST_NAME
 
     ### Root Password
-    _root_passwd
-    until [[ ${A} == "${C}" ]]; do
+    PASSWD="root"; _secure_passwd
+
+    until [[ ${A} == "${B}" ]]; do
         echo -e "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}"
-        _root_passwd
+        _secure_passwd
     done
     export ROOTPASSWD="${A}"
 
     ### Username
     until [[ ${#USER_NAME} -ge 2 && ${USER_NAME} =~ \
 ^[a-z_]([a-z0-9_-]{0,31}|[a-z0-9_-]{0,30}\$)$ ]]; do
+
         _prompt "${MSG_PROMPT_USERNAME}" "${MSG_USERNAME_EXAMPLE}"
         read -r USER_NAME
     done
     export USER_NAME
 
     ### User Password
-    _user_passwd
-    until [[ ${B} == "${D}" ]]; do
+    PASSWD="${USER_NAME}"; _secure_passwd
+
+    until [[ ${A} == "${B}" ]]; do
         echo -e "${RED}Error:${YELLOW} ${MSG_PASSWD_FALSE}${NC}"
-        _user_passwd
+        _secure_passwd
     done
-    export USERPASSWD="${B}"
+    export USERPASSWD="${A}"; unset A B PASSWD
 
     ### Linux Kernel
     _confirm "${MSG_CONFIRM_KERNEL}"
@@ -84,6 +88,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                 _select "DEFAULT" "HARDENED" "LTS" "ZEN"
                 read -r KERNEL
             done
+
             KERNEL_CHOICE=(NONE LINUX LINUX_HARDENED LINUX_LTS LINUX_ZEN)
             export KERNEL=${KERNEL_CHOICE[${KERNEL}]};;
 
@@ -110,11 +115,13 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
 
             # Select DE
             until [[ ${DESKTOP} =~ ^[1-9][0]?$ ]]; do
-                _select \
-"GNOME" "KDE" "MATE" "XFCE" "LXDE" "LXQT" \
+
+                _select "GNOME" "KDE" "MATE" "XFCE" "LXDE" "LXQT" \
 "DEEPIN" "BUDGIE" "CINNAMON" "ENLIGHTENMENT"
+
                 read -r DESKTOP
             done
+
             DESKTOP_CHOICE=\
 (NONE GNOME KDE MATE XFCE4 LXDE LXQT DEEPIN BUDGIE CINNAMON ENLIGHTENMENT)
             export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
@@ -139,6 +146,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                         _select "AWESOME" "I3" "XMONAD"
                         read -r DESKTOP
                     done
+
                     DESKTOP_CHOICE=(NONE AWESOME I3 XMONAD)
                     export DESKTOP=${DESKTOP_CHOICE[${DESKTOP}]}
             esac
@@ -156,6 +164,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                     _select "GDM" "LIGHTDM" "SDDM" "LXDM" "XDM"
                     read -r DISPLAY_MAN
                 done
+
                 DISPLAY_CHOICE=(NONE GDM LIGHTDM SDDM LXDM XDM)
                 export DISPLAY_MAN=${DISPLAY_CHOICE[${DISPLAY_MAN}]};;
 
@@ -183,6 +192,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                         _select "GTK" "PANTHEON" "WEBKIT" "LITARVAN"
                         read -r GREETER
                     done
+
                     GREETER_CHOICE=\
 (NONE GTK_GREETER PANTHEON_GREETER WEBKIT_GREETER LITARVAN_GREETER)
                     export GREETER=${GREETER_CHOICE[${GREETER}]};;
@@ -205,6 +215,7 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
                 _select "YAY" "PAMAC-AUR" "TRIZEN"
                 read -r AUR_HELPER
             done
+
             AUR_CHOICE=(NONE YAY PAMAC-AUR TRIZEN)
             export AUR_HELPER=${AUR_CHOICE[${AUR_HELPER}]}
     esac
@@ -217,34 +228,19 @@ ${HOST_NAME} =~ ^[a-zA-Z0-9][-a-zA-Z0-9_]{1,31}$ ]]; do
     esac
 }
 
-_root_passwd() {
-    unset A
+_secure_passwd() {
+    unset A B
 
-    ### Root Password
+    ### Get password
     until [[ ${#A} -ge 6 && ${A} == *[a-z]* && ${A} == *[0-9]* ]]; do
         _note "${MSG_PASSWD_NOTE}"
-        _prompt "${MSG_PROMPT_ROOT_PASSWD}"
+        _prompt "${MSG_PROMPT_PASSWD} ${PASSWD}"
         read -rs A
     done; echo
 
-    ### Confirm Root Password
-    _prompt "${MSG_CONFIRM_ROOT_PASSWD}"
-    read -rs C; echo
-}
-
-_user_passwd() {
-    unset B
-
-    ### User Password
-    until [[ ${#B} -ge 6 && ${B} == *[a-z]* && ${B} == *[0-9]* ]]; do
-        _note "${MSG_PASSWD_NOTE}"
-        _prompt "${MSG_PROMPT_USER_PASSWD} ${USER_NAME}:"
-        read -rs B
-    done; echo
-
-    ### Confirm User Password
-    _prompt "${MSG_CONFIRM_USER_PASSWD} ${USER_NAME}:"
-    read -rs D; echo
+    ### Confirm password
+    _prompt "${MSG_CONFIRM_PASSWD} ${PASSWD}"
+    read -rs B; echo
 }
 
 _enable_user_rights() {

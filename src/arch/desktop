@@ -18,9 +18,13 @@ _install_desktop_environment() {
     ### Install Desktop Environment / Window Manager and required packages
     _info "${MSG_INSTALL_DESKTOP} (${DESKTOP,,})"
     DESKTOP_APPS=("${XORG}" "${NUMLOCK}" "${!DESKTOP}")
+
     case ${DESKTOP} in
-        AWESOME|I3|XMONAD) DESKTOP_APPS+=("${XORG_XINIT}" "${WM_APPS}"); esac
+        AWESOME|I3|XMONAD) DESKTOP_APPS+=("${XORG_XINIT}" "${WM_APPS}")
+    esac
+
     if [[ ${DE_EXTRAS} ]]; then DESKTOP_APPS+=("${!DE_EXTRAS}"); fi
+
     _chroot "pacman --noconfirm --needed -S ${DESKTOP_APPS[*]}"
 }
 
