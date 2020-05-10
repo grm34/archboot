@@ -22,17 +22,22 @@ _mirrorlist() {
 
         # Get corresponding mirrors from archlinux.org
         MIRRORLIST="/etc/pacman.d/mirrorlist"
+
         MIRRORS_URL=\
 "https://www.archlinux.org/mirrorlist/?country=${CODE}&use_mirror_status=on"
+
         USER_MIRRORS=\
 $( curl -s "${MIRRORS_URL}" | sed -e 's/^#Server/Server/' -e '/^#/d' )
+
         CHECK_MIRRORS=$( echo "${USER_MIRRORS}" | grep "DOCTYPE html" )
 
         # Update mirrorlist if mirrors properly detected
         if [[ ! ${CHECK_MIRRORS} ]]; then
             _check mv ${MIRRORLIST} ${MIRRORLIST}.backup
+
             curl -s \
 "${MIRRORS_URL}" | sed -e 's/^#Server/Server/' -e '/^#/d' > ${MIRRORLIST}
+
             _check cat ${MIRRORLIST}.backup >> ${MIRRORLIST}
         fi
 
@@ -71,13 +76,12 @@ _clock() {
     # Ensure UDP 123 is open
     GET_IP=$( curl -s ipinfo.io/ip )
     CHECK_IP=$( echo "${GET_IP}" | grep "error" )
+
     if [[ ! ${CHECK_IP} ]]; then
         CHECK_UDP123=$( nmap -Pn -sU "${GET_IP}" -p 123 | grep "open" )
 
         # Set ntp true
-        if [[ ${CHECK_UDP123} ]]; then
-            _check timedatectl set-ntp true
-        fi
+        if [[ ${CHECK_UDP123} ]]; then _check timedatectl set-ntp true; fi
     fi
 
     # Update time

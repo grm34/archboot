@@ -58,7 +58,7 @@ _install_base() {
 
     ### Install Network
     _info "${MSG_INSTALL_NET}"
-    _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
+    _chroot "pacman --noconfirm --needed -S ${NET_MANAGER} ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
     echo "-> ${MSG_DONE}"
 
@@ -86,6 +86,7 @@ _install_base() {
     ### Add kernel parameters to systemd-boot
     if [[ ${SET_LVM} ]]; then
         _info "${MSG_BOOT_HOOKS}"
+
         sed -i -e "/^HOOKS=/s/ keyboard//g" /mnt/etc/mkinitcpio.conf
         sed -i -e "/^HOOKS=/s/filesystems/keyboard keymap filesystems/g" \
 /mnt/etc/mkinitcpio.conf
@@ -101,6 +102,8 @@ _install_base() {
             sed -i -e \
 "/^HOOKS=/s/filesystems/lvm2 filesystems/g" /mnt/etc/mkinitcpio.conf
         fi
+
+        # Create new initramfs
         arch-chroot /mnt <<EOF mkinitcpio -P
 EOF
         echo "-> ${MSG_DONE}"

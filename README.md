@@ -22,20 +22,19 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 **2.** Select `Boot Arch Linux (x86_64)` on the install menu of Arch Linux
 
+**3.** Download Arch Linux installer *`wget tiny.cc/archboot`*
+
 > *Use* `loadkeys` *to set keyboard layout if needed. E.q., for* `azerty` *run `loqdkeys fr`*
 
-**3.** Download and run Arch Linux Installer:
+**4.** Run Arch Linux installer *`sh archboot`*
 
-* *`wget tiny.cc/archboot`*
-* *`sh archboot`*
+| option | argument | description | example |
+|:--------------:|:---------------:|:----------------------:|:---------------------:|
+|*`-l`*, *`--lang`*|`language`|set installer language|*`sh archboot -l french`*|
+|*`-k`*, *`--keyboard`*|`keyboard layout`|run loadkeys on start|*`sh archboot -k azerty`*|
+|*`-h`*, *`--help`*||show help and usage|*`sh archboot --help`*|
 
-* Options:
-
-  * To run it in your language append *`--lang`* or *`-l <language>`*
-  * To list available languages or to view help run *`sh archboot --help`*
-  * To run `loadkeys` on start append *`--keyboard`* or *`-k <keyboard layout>`*
-  * E.q., *`sh archboot --lang english --keyboard atari-us`*
-  * ⚠️ `--lang` sets only installer language *(all [languages](https://github.com/grm34/archboot/wiki/Language-code) are supported for Arch Linux)*.
+> *`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code) available in Arch Linux )*
 
 ## Wiki
 
@@ -52,8 +51,6 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 ## Logs
 
 Take a look in `/var/log/archboot` folder for installation logfiles.
-
-* E.q., *`cat /var/log/archboot/archboot*.log`*
 
 ## Awesome Contributors
 
