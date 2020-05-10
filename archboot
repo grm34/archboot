@@ -2,7 +2,7 @@
 set > old_vars.log
 
 APPNAME="archboot"
-VERSION="v3.0.0"
+VERSION="v3.0.1"
 BRANCH="master"
 AUTHOR="grm34"
 LICENSE="Apache License 2.0"
