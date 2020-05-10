@@ -25,6 +25,7 @@ _install_display_manager() {
 
     if [[ ${DISPLAY_MAN} == "LIGHTDM" && \
 ${GREETER} != "DEEPIN_GREETER" ]]; then DISPLAY_APPS+=("${!GREETER}"); fi
+
     _chroot "pacman --noconfirm --needed -S ${DISPLAY_APPS[*]}"
 
     ### Enable Display Manager

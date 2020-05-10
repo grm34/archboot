@@ -81,9 +81,7 @@ _clock() {
         CHECK_UDP123=$( nmap -Pn -sU "${GET_IP}" -p 123 | grep "open" )
 
         # Set ntp true
-        if [[ ${CHECK_UDP123} ]]; then
-            _check timedatectl set-ntp true
-        fi
+        if [[ ${CHECK_UDP123} ]]; then _check timedatectl set-ntp true; fi
     fi
 
     # Update time

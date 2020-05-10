@@ -137,15 +137,13 @@ _wget() {
 ### Execute action in chrooted environment
 _chroot() {
     arch-chroot /mnt /bin/bash <<EOF
-    ${1}
-    trap '_error ${MSG_KEYBOARD}' 1 2 3 6
+${1}; trap '_error ${MSG_KEYBOARD}' 1 2 3 6
 EOF
 }
 
 ### Check command status and exit on error
 _check() {
-    "${@}"
-    local STATUS=$?
+    "${@}"; local STATUS=$?
     if [[ ${STATUS} -ne 0 ]]; then _error "${@}"; fi
     return "${STATUS}"
 }
@@ -271,6 +269,7 @@ CHECK_GITHUB=(.git .github .gitignore README.md STATS.md LICENSE)
 
 for FILE in "${CHECK_GITHUB[@]}"; do
     if [[ -f ${FILE} || -d ${FILE} ]]; then
+
         echo -e "${RED}Error: ${YELLOW}${MSG_ERROR_GIT}${NC}"
         rm -f old_vars.log; _exit_msg; exit 1
     fi
@@ -303,8 +302,8 @@ _archboot_banner
 
 ### Download base sources
 _confirm "${MSG_CONFIRM_DL_SOURCES}"
-
 case ${CONFIRM} in
+
     y|Y|yes|Yes|YES)
         _info "${MSG_DL_SRC_BASE}"
         _wget "${URL}/src/arch/base"           # to install base system
@@ -426,7 +425,6 @@ done
 # ============================================================================
 
 _confirm "${MSG_CONFIRM_ARCH}"
-
 case ${CONFIRM} in
     y|Y|yes|Yes|YES)
 
@@ -454,12 +452,14 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
 
         ### Get user inputs logs
         _info "${MSG_INPUTS_LOGS}"
+
         set | grep -v \
 "A=\|B=\|PASSWD\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|BLUE=\|\
 CYAN=\|BOLD=\|NC=\|ARGS=\|BASH_REMATCH=\|BYTES=\|CHAR=\|COLUMNS=\|CONFIRM=\|\
 COUNT=\|INDEX=\|LENTH=\|LINES=\|NUMBER=\|ORDER=\|PART=\|MSG_\|PIPESTATUS=\|\
 PARTITION_SIZE=\|PART_NAME=\|_CHOICE=\|BASE_SOURCES=|DE_SOURCES=\|OPTION=\|\
 OPTIONAL=\|CHECK_COUNTRY_CODE=\|CHECK_IP=\|CHECK_MIRRORS=" > new_vars.log
+
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i "$ d" "${INPUTS_LOG}"
         echo "-> ${MSG_DONE}"
@@ -488,8 +488,8 @@ esac
 # ============================================================================
 
 _confirm "${MSG_CONFIRM_REBOOT}"
-
 case ${CONFIRM} in
+
     y|Y|yes|Yes|YES) _cleanup; _exit_msg; _reboot;;
     *) _cleanup; _exit_msg; exit 0
 esac

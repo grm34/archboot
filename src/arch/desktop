@@ -19,8 +19,8 @@ _install_desktop_environment() {
     _info "${MSG_INSTALL_DESKTOP} (${DESKTOP,,})"
     DESKTOP_APPS=("${XORG}" "${NUMLOCK}" "${!DESKTOP}")
 
-    case ${DESKTOP} in
-        AWESOME|I3|XMONAD) DESKTOP_APPS+=("${XORG_XINIT}" "${WM_APPS}")
+    case ${DESKTOP} in AWESOME|I3|XMONAD)
+        DESKTOP_APPS+=("${XORG_XINIT}" "${WM_APPS}")
     esac
 
     if [[ ${DE_EXTRAS} ]]; then DESKTOP_APPS+=("${!DE_EXTRAS}"); fi
@@ -37,15 +37,15 @@ _configure_desktop_environment() {
     echo "-> ${MSG_DONE}"
 
     ### Start WM with xinit
-    case ${DESKTOP} in
-        AWESOME|I3|XMONAD)
-            _info "${MSG_SET_XINIT} ${DESKTOP,,}"
-            echo "-> ${MSG_DOWNLOADING} xinitrc..."
-            _wget "${URL}/src/conf/xinitrc" && echo
-            mv -v xinitrc "/mnt/home/${USER_NAME}/.xinitrc"
-            echo "exec ${DESKTOP,,}" >> "/mnt/home/${USER_NAME}/.xinitrc"
-            chmod 770 "/mnt/home/${USER_NAME}/.xinitrc"
-            echo "-> ${MSG_DONE}"
+    case ${DESKTOP} in AWESOME|I3|XMONAD)
+
+        _info "${MSG_SET_XINIT} ${DESKTOP,,}"
+        echo "-> ${MSG_DOWNLOADING} xinitrc..."
+        _wget "${URL}/src/conf/xinitrc" && echo
+        mv -v xinitrc "/mnt/home/${USER_NAME}/.xinitrc"
+        echo "exec ${DESKTOP,,}" >> "/mnt/home/${USER_NAME}/.xinitrc"
+        chmod 770 "/mnt/home/${USER_NAME}/.xinitrc"
+        echo "-> ${MSG_DONE}"
     esac
 }
 

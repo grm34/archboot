@@ -22,7 +22,6 @@ _get_gpu_driver() {
     if [[ ${NVIDIA_CARD} ]]; then
         _note "${NVIDIA_CARD##*: } ${MSG_DETECTED}"
         _confirm "${MSG_CONFIRM_INSTALL_GPUPRO}"
-
         case ${CONFIRM} in
 
             # Proprietary drivers
@@ -66,10 +65,9 @@ _get_gpu_driver() {
     if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" ]]; then
         _confirm "${MSG_CONFIRM_HARDVIDEO}"
 
-        case ${CONFIRM} in
-            y|Y|yes|Yes|YES)
-                export OPENGL="OPENGL_${GPU_DRIVER/_*/}"
-                export HARDVIDEO="HARDVIDEO_${GPU_DRIVER/_*/}"
+        case ${CONFIRM} in y|Y|yes|Yes|YES)
+            export OPENGL="OPENGL_${GPU_DRIVER/_*/}"
+            export HARDVIDEO="HARDVIDEO_${GPU_DRIVER/_*/}"
         esac
     fi
 }
