@@ -122,10 +122,10 @@ _default_partitioning_scheme() {
     partprobe "${DRIVE}" && sleep 1
 
     ### Logical Volume Manager ? (UEFI only)
-    _get_lvm_and_luks
+    #_get_lvm_and_luks
 
     ### Get optional partitions (swap, home)
-    #_get_user_partitions
+    _get_user_partitions
 
     ### Get partition sizes
     INDEX=0
