@@ -125,7 +125,7 @@ _default_partitioning_scheme() {
     _get_lvm_and_luks
 
     ### Get optional partitions (swap, home)
-    _get_user_partitions
+    #_get_user_partitions
 
     ### Get partition sizes
     INDEX=0
