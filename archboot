@@ -198,41 +198,24 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"
 # ============================================================================
 # Here we manage help and usage to properly describe and run archboot.
 # The only options are to select script language and to load keyboard layout.
-# We prevent user argument errors by matching options before run processing.
+# Then we ensure not running script from repository folder to avoid deletes.
 #
 # Usage: sh archboot [options] (e.g., sh archboot -l french -k fr)
 # ============================================================================
 
-### Get arguments list
-read -ra ARGS <<< "${@}"
-
-### Ensure valid options
-if ! [[ ${#} == 0 || ${ARGS[0]} =~ \
-^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then INVALID="${ARGS[0]}"
-
-elif ! [[ ${ARGS[2]} && ${ARGS[2]} =~ \
-^(-l$|--lang$|-h$|--help$|-k$|--keyboard$) ]]; then INVALID="${ARGS[2]}"
-fi
-
-### Otherwise display error and exit
-if [[ ${INVALID} ]]; then
-    echo -e "${RED}Error:${NC} invalid option ${INVALID}"
-    _help; rm -f old_vars.log; _exit_msg; exit 1
-fi
-
 ### Transform long options to short ones
-for OPTION in "${ARGS[@]}"; do
+for OPT in "${@}"; do
     shift
-    case ${OPTION} in
+    case ${OPT} in
         "--help") set -- "${@}" "-h"; break;;
-        "--lang") set -- "${OPTION}" "-l";;
-        "--keyboard") set -- "${OPTION}" "-k";;
-        *) set -- "${@}" "${OPTION}"
+        "--lang") set -- "${@}" "-l";;
+        "--keyboard") set -- "${@}" "-k";;
+        *) set -- "${@}" "${OPT}"
     esac
 done
 
 ### Option processing
-while getopts 'hl:k:' OPTION; do
+while getopts ':hl:k:' OPTION; do
     case ${OPTION} in
 
         # Help (-h, --help)
@@ -242,7 +225,7 @@ while getopts 'hl:k:' OPTION; do
         l)  if [[ ${OPTARG} =~ ^(english$|french$|german$) ]]; then
                 ARCHBOOT_LANG="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} invalid language ${OPTARG}"
+                echo -e "${RED}Error:${NC} invalid language '${OPTARG}'"
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
@@ -251,12 +234,16 @@ while getopts 'hl:k:' OPTION; do
             if [[ ${STATUS} -ne 1 ]]; then
                 export KEYMAP="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} invalid keyboard layout ${OPTARG}"
+                echo -e "${RED}Error:${NC} invalid keyboard '${OPTARG}'"
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
         # Missing argument
-        *)  echo -e "${RED}Error:${NC} missing argument for ${*}"
+        :)  echo -e "${RED}Error:${NC} missing argument for -${OPTARG}"
+            _help; rm -f old_vars.log; _exit_msg; exit 1;;
+
+        # Invalid option
+        \?) echo -e "${RED}Error:${NC} invalid option -${OPTARG}"
             _help; rm -f old_vars.log; _exit_msg; exit 1
     esac
 done
@@ -458,7 +445,7 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
 CYAN=\|BOLD=\|NC=\|ARGS=\|BASH_REMATCH=\|BYTES=\|CHAR=\|COLUMNS=\|CONFIRM=\|\
 COUNT=\|INDEX=\|LENTH=\|LINES=\|NUMBER=\|ORDER=\|PART=\|MSG_\|PIPESTATUS=\|\
 PARTITION_SIZE=\|PART_NAME=\|_CHOICE=\|BASE_SOURCES=|DE_SOURCES=\|OPTION=\|\
-OPTIONAL=\|CHECK_COUNTRY_CODE=\|CHECK_IP=\|CHECK_MIRRORS=" > new_vars.log
+OPT\|OPTIONAL=\|CHECK_COUNTRY_CODE=\|CHECK_IP=\|CHECK_MIRRORS=" > new_vars.log
 
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i "$ d" "${INPUTS_LOG}"
