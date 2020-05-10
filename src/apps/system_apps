@@ -36,8 +36,8 @@ export GRUB_EXTRAS="os-prober"
 export NTFS_SUPPORT="ntfs-3g"
 
 # Network
-export NETAPPS="networkmanager wget git \
-net-tools dhcpcd iw wpa_supplicant wireless_tools"
+export NET_MANAGER="networkmanager"
+export NETAPPS="net-tools dhcpcd iw wpa_supplicant wireless_tools wget git"
 
 # archboot - Arch Linux Installer by grm34 under Apache License 2.0
 # ============================================================================

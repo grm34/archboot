@@ -58,7 +58,7 @@ _install_base() {
 
     ### Install Network
     _info "${MSG_INSTALL_NET}"
-    _chroot "pacman --noconfirm --needed -S ${NETAPPS}"
+    _chroot "pacman --noconfirm --needed -S ${NET_MANAGER} ${NETAPPS}"
     _chroot "systemctl enable NetworkManager"
     echo "-> ${MSG_DONE}"
 
