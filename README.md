@@ -16,7 +16,7 @@ Arch Linux is a light and fast distribution whose concept is to remain as simple
 
 The only thing you need is one USB bootable device of [Arch Linux](https://mir.archlinux.fr/iso/latest).
 
-> *You can obviously try it in a virtual machine first...*
+> _You can obviously try it in a virtual machine first..._
 
 ---
 
@@ -26,17 +26,17 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 **2.** Select _**Boot Arch Linux (x86_64)**_ on the install menu of Arch Linux
 
-**3.** Download Arch Linux installer *`wget tiny.cc/archboot`*
+**3.** Download Arch Linux installer _`wget tiny.cc/archboot`_
 
 > _Use **loadkeys** to set keyboard layout if needed. E.q., for **azerty** run `loqdkeys fr`_
 
-**4.** Run Arch Linux installer *`sh archboot`*
+**4.** Run Arch Linux installer _`sh archboot`_
 
 | option | argument | description | example |
 |:------ |:-------- |:----------- |:------- |
-|*`-l`*, *`--lang`*|`language`|set installer language|*`sh archboot -l french`*|
-|*`-k`*, *`--keyboard`*|`keyboard`|run loadkeys on start|*`sh archboot -k azerty`*|
-|*`-h`*, *`--help`*||show help and usage|*`sh archboot --help`*|
+|_`-l`_, _`--lang`_|`language`|set installer language|_`sh archboot -l french`_|
+|_`-k`_, _`--keyboard`_|`keyboard`|run loadkeys on start|_`sh archboot -k azerty`_|
+|_`-h`_, _`--help`_||show help and usage|_`sh archboot --help`_|
 
 ---
 > _`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code)  available in Arch Linux)._
