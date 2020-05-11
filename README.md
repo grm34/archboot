@@ -26,7 +26,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 **3.** Download Arch Linux installer _`wget tiny.cc/archboot`_
 
-> _Use **loadkeys** to set keyboard layout if needed. E.q., for azerty run `loqdkeys fr`_
+* > _Use **loadkeys** to set keyboard layout if needed. E.q., for azerty run `loqdkeys fr`_
 
 **4.** Run Arch Linux installer _`sh archboot`_
 
