@@ -18,8 +18,6 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 > _You can obviously try it in a virtual machine first..._
 
----
-
 ## Usage
 
 **1.** Reboot computer, open Boot Selection Menu and boot on the USB device
@@ -38,11 +36,8 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 |_`-k`_, _`--keyboard`_|`keyboard`|run loadkeys on start|_`sh archboot -k azerty`_|
 |_`-h`_, _`--help`_||show help and usage|_`sh archboot --help`_|
 
----
-> _`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code)  available in Arch Linux)._
----
-> _`--keyboard` supports as well country codes, language codes and keyboard layouts._
----
+* > _`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code)  and [timezones](https://github.com/grm34/archboot/wiki/Timezone-code)available in Arch Linux)._
+* > _`--keyboard` supports as well country codes, language codes and keyboard layouts._
 
 ## Wiki
 
@@ -56,19 +51,13 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 * [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
 * [Contributing](https://github.com/grm34/archboot/blob/master/.github/CONTRIBUTING.md)
 
----
-
 ## Logs
 
 Take a look in `/var/log/archboot` folder for installation logfiles.
 
----
-
 ## Awesome Contributors
 
 * **@At1768** `german translation`
-
----
 
 ## Official Documentation
 
