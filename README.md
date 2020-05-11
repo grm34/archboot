@@ -46,6 +46,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 * [Custom Linux Kernel](https://github.com/grm34/archboot/wiki/Custom-Linux-Kernel)
 * [Desktop Environment](https://github.com/grm34/archboot/wiki/Desktop-Environment)
 * [Display Manager](https://github.com/grm34/archboot/wiki/Display-Manager)
+* [AUR Helper](https://github.com/grm34/archboot/wiki/AUR-Helper)
 * [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
 * [Contributing](https://github.com/grm34/archboot/blob/master/.github/CONTRIBUTING.md)
 
