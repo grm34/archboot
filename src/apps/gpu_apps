@@ -26,7 +26,7 @@ export HARDVIDEO_AMD="mesa-vdpau libva-mesa-driver"
 # open source
 export NOUVEAU_DRIVER="xf86-video-nouveau"
 export OPENGL_NOUVEAU="mesa"
-export HARDVIDEO_NOUVEAU="libva-vdpau-driver mesa-vdpau"
+export HARDVIDEO_NOUVEAU="libva-mesa-driver mesa-vdpau"
 
 # proprietary
 export NVIDIA_DRIVER="nvidia nvidia-settings"
@@ -34,6 +34,11 @@ export NVIDIA_LTS="nvidia-lts nvidia-settings"
 export NVIDIA_DKMS="nvidia-dkms nvidia-settings"
 export OPENGL_NVIDIA="nvidia-utils"
 export HARDVIDEO_NVIDIA="libva-vdpau-driver"
+
+#                         HARDWARE VIDEO UTILS
+# ============================================================================
+
+export HARDVIDEO_UTILS="libva-utils vdpauinfo"
 
 # archboot - Arch Linux Installer by grm34 under Apache License 2.0
 # ============================================================================
