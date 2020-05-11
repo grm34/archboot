@@ -10,31 +10,39 @@ Arch Linux is a light and fast distribution whose concept is to remain as simple
 
 [![screenshot](https://www.archboot.org/assets/images/screenshot.png)](https://github.com/grm34/archboot#screenshot)
 
+---
+
 ## Requirements
 
-The only thing you need is one USB bootable device of [Arch Linux](https://mir.archlinux.fr/iso/latest)
+The only thing you need is one USB bootable device of [Arch Linux](https://mir.archlinux.fr/iso/latest).
 
 > *You can obviously try it in a virtual machine first...*
+
+---
 
 ## Usage
 
 **1.** Reboot computer, open Boot Selection Menu and boot on the USB device
 
-**2.** Select `Boot Arch Linux (x86_64)` on the install menu of Arch Linux
+**2.** Select _**Boot Arch Linux (x86_64)**_ on the install menu of Arch Linux
 
 **3.** Download Arch Linux installer *`wget tiny.cc/archboot`*
 
-> *Use* `loadkeys` *to set keyboard layout if needed. E.q., for* `azerty` *run `loqdkeys fr`*
+> _Use **loadkeys** to set keyboard layout if needed. E.q., for **azerty** run `loqdkeys fr`_
 
 **4.** Run Arch Linux installer *`sh archboot`*
 
 | option | argument | description | example |
-|:--------------:|:---------------:|:----------------------:|:---------------------:|
+|:------ |:-------- |:----------- |:------- |
 |*`-l`*, *`--lang`*|`language`|set installer language|*`sh archboot -l french`*|
-|*`-k`*, *`--keyboard`*|`keyboard layout`|run loadkeys on start|*`sh archboot -k azerty`*|
+|*`-k`*, *`--keyboard`*|`keyboard`|run loadkeys on start|*`sh archboot -k azerty`*|
 |*`-h`*, *`--help`*||show help and usage|*`sh archboot --help`*|
 
-> *`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code) available in Arch Linux )*
+---
+> _`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code)  available in Arch Linux)._
+---
+> _`--keyboard` supports as well country codes, language codes and keyboard layouts._
+---
 
 ## Wiki
 
@@ -48,19 +56,27 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 * [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
 * [Contributing](https://github.com/grm34/archboot/blob/master/.github/CONTRIBUTING.md)
 
+---
+
 ## Logs
 
 Take a look in `/var/log/archboot` folder for installation logfiles.
 
+---
+
 ## Awesome Contributors
 
 * **@At1768** `german translation`
+
+---
 
 ## Official Documentation
 
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
 * [USB Flash Installation Media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 * [Arch Linux Applications](https://wiki.archlinux.org/index.php/List_of_applications)
+
+---
 
 [![footer](https://forthebadge.com/images/badges/built-with-love.svg)](https://github.com/grm34/archboot#official-documentation)
 [![footer](https://forthebadge.com/images/badges/for-you.svg)](https://github.com/grm34/archboot#official-documentation)
