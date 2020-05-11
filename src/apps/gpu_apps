@@ -33,7 +33,7 @@ export NVIDIA_DRIVER="nvidia nvidia-settings"
 export NVIDIA_LTS="nvidia-lts nvidia-settings"
 export NVIDIA_DKMS="nvidia-dkms nvidia-settings"
 export OPENGL_NVIDIA="nvidia-utils"
-export HARDVIDEO_NVIDIA="libva-vdpau-driver"
+export HARDVIDEO_NVIDIA="nvidia-utils"
 
 #                         HARDWARE VIDEO UTILS
 # ============================================================================
