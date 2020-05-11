@@ -11,5 +11,5 @@ google_analytics: UA-162039588-1
 plugins:
   - jekyll-seo-tag
 github:
-  zip_url: https://github.com/grm34/archboot/archive/v3.0.0.zip
-  tar_url: https://github.com/grm34/archboot/archive/v3.0.0.tar.gz
+  zip_url: https://github.com/grm34/archboot/archive/v3.0.1.zip
+  tar_url: https://github.com/grm34/archboot/archive/v3.0.1.tar.gz
