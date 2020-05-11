@@ -41,15 +41,15 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 ## Wiki
 
-* [Home](https://github.com/grm34/archboot/wiki)
 * [Language code](https://github.com/grm34/archboot/wiki/Language-code)
 * [Timezone code](https://github.com/grm34/archboot/wiki/Timezone-code)
 * [Custom Partitioning](https://github.com/grm34/archboot/wiki/Custom-Partitioning)
 * [Custom Linux Kernel](https://github.com/grm34/archboot/wiki/Custom-Linux-Kernel)
 * [Desktop Environment](https://github.com/grm34/archboot/wiki/Desktop-Environment)
 * [Display Manager](https://github.com/grm34/archboot/wiki/Display-Manager)
-* [AUR Helper](https://github.com/grm34/archboot/wiki/AUR-Helper)
+* [Hardware Video Acceleration](https://github.com/grm34/archboot/wiki/Hardware-Video-Acceleration)
 * [List of installed Packages](https://github.com/grm34/archboot/wiki/List-of-installed-Packages)
+* [AUR Helper](https://github.com/grm34/archboot/wiki/AUR-Helper)
 * [Contributing](https://github.com/grm34/archboot/blob/master/.github/CONTRIBUTING.md)
 
 ## Logs
