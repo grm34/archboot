@@ -82,7 +82,10 @@ _install_gpu_driver() {
     ### Install openGL and hardware video acceleration
     if [[ ${GPU_DRIVER} != "DEFAULT_DRIVER" && ${HARDVIDEO} ]]; then
         _info "${MSG_INSTALL_HARDVIDEO}"
-        _chroot "pacman --noconfirm --needed -S ${!OPENGL} ${!HARDVIDEO}"
+
+        _chroot "pacman --noconfirm --needed -S \
+${!OPENGL} ${!HARDVIDEO} ${HARDVIDEO_UTILS}"
+
         echo "-> ${MSG_DONE}"
     fi
 }
