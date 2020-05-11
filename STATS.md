@@ -1,11 +1,3 @@
-Language|files|blank|comment|code
-:-------|-------:|-------:|-------:|-------:
-Bourne Again Shell|15|416|505|1134
-Markdown|2|24|0|73
-Bourne Shell|1|8|8|24
---------|--------|--------|--------|--------
-SUM:|18|448|513|1231
-
 File|blank|comment|code
 :-------|-------:|-------:|-------:
 archboot|82|121|282
@@ -17,14 +9,29 @@ src/arch/bootloader|23|25|57
 src/arch/gpu_driver|18|22|51
 src/arch/mirrorlist|22|22|50
 src/arch/firmware|14|13|47
-README.md|23|0|44
-STATS.md|1|0|29
 src/arch/desktop|11|17|25
 src/apps/desktop_apps|20|24|24
-src/conf/xinitrc|8|8|24
 src/apps/system_apps|12|14|17
 src/apps/gpu_apps|10|13|16
 src/arch/mounting|9|15|13
 src/apps/display_apps|8|10|10
 --------|--------|--------|--------
-SUM:|448|513|1231
+SUM:|416|505|1134
+
+File|blank|comment|code
+:-------|-------:|-------:|-------:
+locale/english|13|15|130
+locale/french|13|15|130
+locale/german|13|15|130
+.github/CODE_OF_CONDUCT.md|35|0|49
+README.md|23|0|44
+.github/CONTRIBUTING.md|10|0|29
+STATS.md|1|0|29
+.github/PULL_REQUEST_TEMPLATE.md|9|0|20
+.github/ISSUE_TEMPLATE/feature_request.md|2|0|9
+.github/ISSUE_TEMPLATE/bug_report.md|1|0|8
+.github/ISSUE_TEMPLATE/question.md|1|0|8
+.github/ISSUE_TEMPLATE/update.md|1|0|8
+.github/ISSUE_TEMPLATE/config.yml|0|0|1
+--------|--------|--------|--------
+SUM:|122|45|595
