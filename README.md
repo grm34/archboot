@@ -26,7 +26,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 
 **3.** Download Arch Linux installer _`wget tiny.cc/archboot`_
 
-> _Use **loadkeys** to set keyboard layout if needed. E.q., for **azerty** run `loqdkeys fr`_
+> _Use **loadkeys** to set keyboard layout if needed. E.q., for azerty run `loqdkeys fr`_
 
 **4.** Run Arch Linux installer _`sh archboot`_
 
@@ -36,7 +36,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 |_`-k`_, _`--keyboard`_|`keyboard`|run loadkeys on start|_`sh archboot -k azerty`_|
 |_`-h`_, _`--help`_||show help and usage|_`sh archboot --help`_|
 
-* > _`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code)  and [timezones](https://github.com/grm34/archboot/wiki/Timezone-code)available in Arch Linux)._
+* > _`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code) available in Arch Linux)._
 * > _`--keyboard` supports as well country codes, language codes and keyboard layouts._
 
 ## Wiki
