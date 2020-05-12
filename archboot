@@ -40,8 +40,8 @@ ${BOLD}Usage: ${NC}sh ${APPNAME} [option] [argument]
         -f, --file          install packages from file
 
     ${BOLD}Installer language${NC}
-        -l, --lang          english
-                            french
+        -l, --lang          english     (by @grm34)
+                            french      (by @grm34)
                             german      (by @At1768)
 
     ${BOLD}Keyboard layout${NC}
