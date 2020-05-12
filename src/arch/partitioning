@@ -134,7 +134,8 @@ _default_partitioning_scheme() {
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART/_PARTITION/}
 
-        if [[ ${PART} == "SWAP_PARTITION" ]]; then SIZES_EQ+=(4G)
+        if [[ ${PART} == "SWAP_PARTITION" ]]; then
+            SIZES_EQ+=(4G)
 
         ## Free space for home ? (auto if MBR type with 4 partitions)
         elif [[ ${PART} == "HOME_PARTITION" ]]; then
