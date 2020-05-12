@@ -14,7 +14,7 @@ _mirrorlist() {
 
     ### Get user country code from ipinfo.io API
     _info "${MSG_GET_MIRRORS}"
-    CODE=$( curl -s ipinfo.io/country?token=${TOKEN} )
+    CODE=$( curl -s https://ipinfo.io/country?token=${TOKEN} )
     CHECK_COUNTRY_CODE=$( echo "${COUNTRY}" | grep "error" )
 
     ### Update mirrorlist if country code properly detected
@@ -52,7 +52,7 @@ _timezone() {
 
     ### Get user timezone from ipinfo.io API
     _info "${MSG_GET_TIMEZONE}"
-    TIMEZONE=$( curl -s ipinfo.io/timezone?token=${TOKEN} )
+    TIMEZONE=$( curl -s https://ipinfo.io/timezone?token=${TOKEN} )
 
     ### Update timezone if properly detected
     if grep -Fxq "${TIMEZONE}" ./timezone; then
@@ -75,7 +75,7 @@ _clock() {
     _check timedatectl set-timezone "${TIMEZONE}"
 
     # Ensure UDP 123 is open
-    GET_IP=$( curl -s ipinfo.io/ip?token=${TOKEN} )
+    GET_IP=$( curl -s https://ipinfo.io/ip?token=${TOKEN} )
     CHECK_IP=$( echo "${GET_IP}" | grep "error" )
 
     if [[ ! ${CHECK_IP} ]]; then
