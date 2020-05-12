@@ -229,18 +229,15 @@ _default_partitioning_scheme() {
             partprobe "${DRIVE}" && sleep 1
         fi
 
-        ## LVM - Set PV (physical volume) and VG (volume group)
+        ## [LVM] Set PV (physical volume) and VG (volume group)
         if [[ ${SET_LVM} && ${PART} == "ROOT_PARTITION" ]]; then
 
             # Set LVM on LUKS
             if [[ ${SET_LUKS} ]]; then
                 _info "${MSG_SET_LUKS} ${DRIVE}${ORDER[${INDEX}]}"
 
-                # Encrypt partition
                 cryptsetup -v luksFormat "${DRIVE}${ORDER[${INDEX}]}"
                 cryptsetup -v open "${DRIVE}${ORDER[${INDEX}]}" "cryptlvm"
-
-                # Create LVM volume
                 pvcreate -y /dev/mapper/cryptlvm; sleep 1
                 vgcreate -y lvm /dev/mapper/cryptlvm; sleep 1
 
@@ -252,14 +249,14 @@ _default_partitioning_scheme() {
             fi
         fi
 
-        ## LVM - Create logical partitions
+        ## [LVM] Create logical partitions
         if [[ ${SET_LVM} ]]; then
             _info "${MSG_CREATE_LVM} ${PART_NAME} ${SIZES[${INDEX}]}"
 
             if [[ ${PART} == "HOME_PARTITION" && \
 ${SIZES[${INDEX}]} == "freespace" ]]; then
-
                 lvcreate -y -l 100%FREE lvm -n "${PART_NAME,,}"; sleep 1
+
             elif [[ ${PART} != "BOOT_PARTITION" ]]; then
                 lvcreate -y -L "${SIZES[${INDEX}]}" lvm -n "${PART_NAME,,}"
             fi
@@ -280,6 +277,7 @@ ${SIZES[${INDEX}]} == "freespace" ]]; then
 
         elif [[ ${PART} == "SWAP_PARTITION" ]]; then
             yes | _check mkswap "${DRIVE_ID}"; sleep 1
+
         else
             yes | _check mkfs.ext4 "${DRIVE_ID}"; sleep 1
         fi
