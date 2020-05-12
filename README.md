@@ -10,13 +10,13 @@ Arch Linux is a light and fast distribution whose concept is to remain as simple
 
 ---
 
-## Requirements
+### Requirements
 
 The only thing you need is one USB bootable device of [Arch Linux](https://mir.archlinux.fr/iso/latest).
 
 > _You can obviously try it in a virtual machine first..._
 
-## Usage
+### Usage
 
 **1.** Reboot computer, open Boot Selection Menu and boot on the USB device
 
@@ -37,7 +37,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 * > _`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code) available in Arch Linux)._
 * > _`--keyboard` supports as well country codes, language codes and keyboard layouts._
 
-## Wiki
+### Wiki
 
 * [Home](https://github.com/grm34/archboot/wiki)
 * [Language code](https://github.com/grm34/archboot/wiki/Language-code)
@@ -51,15 +51,15 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 * [AUR Helper](https://github.com/grm34/archboot/wiki/AUR-Helper)
 * [Contributing](https://github.com/grm34/archboot/blob/master/.github/CONTRIBUTING.md)
 
-## Logs
+### Logs
 
 Take a look in `/var/log/archboot` folder for installation logfiles.
 
-## Awesome Contributors
+### Awesome Contributors
 
 * **@At1768** `german translation`
 
-## Official Documentation
+### Official Documentation
 
 * [Arch Linux Installation Guide](https://wiki.archlinux.org/index.php/Installation_guide)
 * [USB Flash Installation Media](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
