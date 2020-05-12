@@ -233,7 +233,7 @@ while getopts ':hl:k:f:' OPTION; do
         l)  if [[ ${OPTARG} =~ ^(english$|french$|german$) ]]; then
                 ARCHBOOT_LANG="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} invalid language '${OPTARG}' !"
+                echo -e "${RED}Error:${NC} invalid language \"${OPTARG}\""
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
@@ -242,7 +242,7 @@ while getopts ':hl:k:f:' OPTION; do
             if [[ ${STATUS} -ne 1 ]]; then
                 export KEYMAP="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} invalid keyboard '${OPTARG}' !"
+                echo -e "${RED}Error:${NC} invalid keyboard \"${OPTARG}\""
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
@@ -250,16 +250,16 @@ while getopts ':hl:k:f:' OPTION; do
         f)  if [[ -f ${OPTARG} ]]; then
                 export PACKAGES_FILE="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} '${OPTARG}' is not a file !"
+                echo -e "${RED}Error:${NC} invalid file \"${OPTARG}\""
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
         # Missing argument
-        :)  echo -e "${RED}Error:${NC} missing argument for -${OPTARG} !"
+        :)  echo -e "${RED}Error:${NC} missing argument for \"-${OPTARG}\""
             _help; rm -f old_vars.log; _exit_msg; exit 1;;
 
         # Invalid option
-        \?) echo -e "${RED}Error:${NC} invalid option -${OPTARG} !"
+        \?) echo -e "${RED}Error:${NC} invalid option \"-${OPTARG}\""
             _help; rm -f old_vars.log; _exit_msg; exit 1
     esac
 done
