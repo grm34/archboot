@@ -134,12 +134,11 @@ _default_partitioning_scheme() {
     for PART in "${PARTITION[@]}"; do
         PART_NAME=${PART/_PARTITION/}
 
-        ## Set partition sizes example
         if [[ ${PART} == "SWAP_PARTITION" ]]; then SIZES_EQ+=(4G)
-        elif [[ ${PART} == "HOME_PARTITION" ]]; then SIZES_EQ+=(100G); fi
 
         ## Free space for home ? (auto if MBR type with 4 partitions)
-        if [[ ${PART} == "HOME_PARTITION" ]]; then
+        elif [[ ${PART} == "HOME_PARTITION" ]]; then
+            SIZES_EQ+=(100G)
 
             if [[ ${FIRMWARE} == "BIOS" && ${#PARTITION[@]} == "4" ]]; then
                 PARTITION_SIZE="freespace"
