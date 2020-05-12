@@ -137,7 +137,8 @@ _wget() {
 ### Execute action in chrooted environment
 _chroot() {
     arch-chroot /mnt /bin/bash <<EOF
-${1}; trap '_error ${MSG_KEYBOARD}' 1 2 3 6
+    ${1}
+    trap '_error ${MSG_KEYBOARD}' 1 2 3 6
 EOF
 }
 
