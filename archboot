@@ -442,12 +442,12 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
         _info "${MSG_INPUTS_LOGS}"
 
         set | grep -v \
-"A=\|B=\|PASSWD\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|BLUE=\|\
+"A=\|B=\|PASSWD=\|ROOTPASSWD=\|USERPASSWD=\|RED=\|GREEN=\|YELLOW=\|BLUE=\|\
 CYAN=\|BOLD=\|NC=\|ARGS=\|BASH_REMATCH=\|BYTES=\|CHAR=\|COLUMNS=\|CONFIRM=\|\
 COUNT=\|INDEX=\|LENTH=\|LINES=\|NUMBER=\|ORDER=\|PART=\|MSG_\|PIPESTATUS=\|\
-PARTITION_SIZE=\|PART_NAME=\|_CHOICE=\|BASE_SOURCES=|DE_SOURCES=\|OPTION=\|\
+PARTITION_SIZE=\|PART_NAME=\|_CHOICE=\|BASE_SOURCES=\|DE_SOURCES=\|OPTION=\|\
 OPT\|OPTIONAL=\|CHECK_COUNTRY_CODE=\|CHECK_IP=\|CHECK_MIRRORS=\|TOKEN=\|\
-SIZES_EQ" > new_vars.log
+SIZES_EQ\|CPU_LIST=\|PARTITION=" > new_vars.log
 
         diff old_vars.log new_vars.log | grep "^>" >> "${INPUTS_LOG}"
         sed -i "$ d" "${INPUTS_LOG}"
