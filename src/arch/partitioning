@@ -161,7 +161,7 @@ _default_partitioning_scheme() {
 
             # Check if valid size (otherwise ask again)
             until [[ ${PARTITION_SIZE} =~ \
-^[1-9]{1}[[0-9]{0,2}(M|G|T){1}$ ]]; do
+^[1-9]{1}[0-9]{0,2}(,[0-9]{1,3}){0,1}(M|G|T){1}$ ]]; do
 
                 _note "${MSG_PART_SIZE} {M,G,T} (e.g., ${SIZES_EQ[${INDEX}]})"
                 _prompt "${MSG_PROMPT_VALID_PART_SIZE} ${PART_NAME}:"
