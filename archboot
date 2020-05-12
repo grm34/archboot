@@ -47,7 +47,7 @@ ${BOLD}Usage: ${NC}sh ${APPNAME} [option] [argument]
     ${BOLD}Keyboard layout${NC}
         -k, --keyboard      keyboard code
                             language code
-                            country code
+                            country  code
 
     ${BOLD}Additional packages${NC}
         -f, --file          packages_file_list
