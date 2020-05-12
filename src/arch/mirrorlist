@@ -8,12 +8,13 @@
 # timezone is in available list, otherwise we prompt user to set it manualy.
 # Last function is used to simply set live system clock according to NTP.
 # ============================================================================
+TOKEN="26d03faada92e8"
 
 _mirrorlist() {
 
     ### Get user country code from ipinfo.io API
     _info "${MSG_GET_MIRRORS}"
-    CODE=$( curl -s ipinfo.io/country )
+    CODE=$( curl -s ipinfo.io/country?token=${TOKEN} )
     CHECK_COUNTRY_CODE=$( echo "${COUNTRY}" | grep "error" )
 
     ### Update mirrorlist if country code properly detected
@@ -51,7 +52,7 @@ _timezone() {
 
     ### Get user timezone from ipinfo.io API
     _info "${MSG_GET_TIMEZONE}"
-    TIMEZONE=$( curl -s ipinfo.io/timezone )
+    TIMEZONE=$( curl -s ipinfo.io/timezone?token=${TOKEN} )
 
     ### Update timezone if properly detected
     if grep -Fxq "${TIMEZONE}" ./timezone; then
@@ -74,7 +75,7 @@ _clock() {
     _check timedatectl set-timezone "${TIMEZONE}"
 
     # Ensure UDP 123 is open
-    GET_IP=$( curl -s ipinfo.io/ip )
+    GET_IP=$( curl -s ipinfo.io/ip?token=${TOKEN} )
     CHECK_IP=$( echo "${GET_IP}" | grep "error" )
 
     if [[ ! ${CHECK_IP} ]]; then
