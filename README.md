@@ -34,6 +34,7 @@ The only thing you need is one USB bootable device of [Arch Linux](https://mir.a
 |:------ |:-------- |:----------- |:------- |
 |_`-l`_, _`--lang`_|`language`|set installer language|_`sh archboot -l french`_|
 |_`-k`_, _`--keyboard`_|`keyboard`|run loadkeys on start|_`sh archboot -k azerty`_|
+|_`-f`_, _`--file`_|`file.txt`|install packages from file|_`sh archboot -f file.txt`_|
 |_`-h`_, _`--help`_||show help and usage|_`sh archboot --help`_|
 
 * > _`--lang` sets only installer language (archboot supports all [languages](https://github.com/grm34/archboot/wiki/Language-code) available in Arch Linux)._
