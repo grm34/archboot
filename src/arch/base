@@ -122,9 +122,9 @@ _install_AUR_helper() {
     _info "${MSG_INSTALL_AUR} (${AUR_HELPER,,})"
 
     ### Clone and install AUR Helper
-    _allow_user_sudoers _chroot "cd /home/${USER_NAME} && sudo -u \
+    _allow_user_sudoers "_chroot 'cd /home/${USER_NAME} && sudo -u \
 ${USER_NAME} git clone https://aur.archlinux.org/${AUR_HELPER,,}.git && cd \
-${AUR_HELPER,,} && sudo -u ${USER_NAME} makepkg --noconfirm --needed -sic"
+${AUR_HELPER,,} && sudo -u ${USER_NAME} makepkg --noconfirm --needed -sic'"
 
     ### Clean AUR Helper sources
     rm -rf "/mnt/home/${USER_NAME}/${AUR_HELPER,,}"
@@ -135,8 +135,8 @@ _install_personal_packages() {
     _info "${MSG_INSTALL_ADDONS}"
 
     if [[ ${AUR_HELPER} ]]; then
-        _allow_user_sudoers _chroot \
-"${AUR_HELPER,,} --noconfirm --needed -S - < ${PACKAGES_FILE}"
+        _allow_user_sudoers \
+"_chroot '${AUR_HELPER,,} --noconfirm --needed -S - < ${PACKAGES_FILE}'"
 
     else
         _chroot "pacman --noconfirm --needed -S - < ${PACKAGES_FILE}"
