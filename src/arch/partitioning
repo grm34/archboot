@@ -192,8 +192,11 @@ _default_partitioning_scheme() {
     fi
 
     ### Set partition order
-    if [[ ${DRIVE} =~ "/dev/nvme0n" ]]; then ORDER=(p1 p2 p3 p4)
-    else ORDER=(1 2 3 4); fi
+    if [[ ${DRIVE} =~ "/dev/nvme" || ${DRIVE} =~ "/dev/mmcblk" ]]; then
+        ORDER=(p1 p2 p3 p4)
+    else
+        ORDER=(1 2 3 4)
+    fi
 
     ### Partition processing
     INDEX=0
