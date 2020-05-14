@@ -109,7 +109,7 @@ _default_partitioning_scheme() {
                 umount -fv "/dev/${PART}"; sleep 1
             fi
             _info "${MSG_DELETE_PART} /dev/${PART}"
-            printf "d\n\nw\n" | fdisk --wipe=always "${DRIVE}"
+            printf "d\n\nw" | fdisk --wipe=always "${DRIVE}"
             partprobe "${DRIVE}" && sleep 1
         done
     fi
@@ -118,7 +118,7 @@ _default_partitioning_scheme() {
     _info "${MSG_FORMAT_DRIVE} ${DRIVE}"
     dd if=/dev/zero of="${DRIVE}" bs=512 count=1 conv=notrunc status=progress
     wipefs --force --all "${DRIVE}"; sleep 1
-    printf "%s\nw\n" "${PART_CODE}" | fdisk "${DRIVE}"
+    printf "%s\nw" "${PART_CODE}" | fdisk "${DRIVE}"
     partprobe "${DRIVE}" && sleep 1
 
     ### Logical Volume Manager ? (UEFI only)
@@ -209,26 +209,32 @@ _default_partitioning_scheme() {
         if [[ (${SET_LVM} && ${PART} == "ROOT_PARTITION") || \
 (${PART} == "HOME_PARTITION" && ${SIZES[${INDEX}]} == "freespace") ]]; then
 
-            printf "n\n%s\n\n\nw\n" "${PART_TYPE}" | fdisk "${DRIVE}"
-            partprobe "${DRIVE}" && sleep 1
+            if [[ ${FIRMWARE} == "BIOS" ]]; then
+                printf "n\np\n\n\nw" | fdisk "${DRIVE}"
+            else
+                printf "n\n\n\n\nw" | fdisk "${DRIVE}"
+            fi
 
         elif [[ ! ${SET_LVM} || ${PART} == "BOOT_PARTITION" ]]; then
 
-            printf "n\n%s\n\n\n+%s\nw\n" \
-"${PART_TYPE}" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
-
-            partprobe "${DRIVE}" && sleep 1
+            if [[ ${FIRMWARE} == "BIOS" ]]; then
+                printf \
+"n\np\n\n\n+%s\nw" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
+            else
+                printf "n\n\n\n+%s\nw" "${SIZES[${INDEX}]}" | fdisk "${DRIVE}"
+            fi
         fi
+        partprobe "${DRIVE}" && sleep 1
 
         ## Set required partition types
         if [[ ${PART} == "BOOT_PARTITION" && ${FIRMWARE} == "UEFI" ]]; then
             _info "${MSG_PART_TYPE} ${FIRMWARE/U/} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\nef00\nw\n" | gdisk "${DRIVE}"
+            printf "t\nef00\nw" | gdisk "${DRIVE}"
             partprobe "${DRIVE}" && sleep 1
 
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
             _info "${MSG_PART_TYPE} ${PART_NAME} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n1\n8e00\nw\n" | gdisk "${DRIVE}"
+            printf "t\n1\n8e00\nw" | gdisk "${DRIVE}"
             partprobe "${DRIVE}" && sleep 1
         fi
 
