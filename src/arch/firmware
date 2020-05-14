@@ -17,7 +17,7 @@ _firmware() {
         export FIRMWARE="UEFI"
         export PART_TABLE="GPT"
         export PART_CODE="g"
-        export PART_TYPE="\n"
+        export PART_TYPE=""
         export MOUNT_TYPE="-t vfat "
         export BOOT_FILESYSTEM="fat -F32"
         _note "UEFI ${MSG_FW_TRUE}"
