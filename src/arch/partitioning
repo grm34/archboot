@@ -348,7 +348,8 @@ grep "NAME\|disk\|part"
     done
 
     ### Set and return boot drive
-    if [[ ${BOOT_PARTITION} =~ "/dev/nvme0n" ]]; then
+    if [[ ${BOOT_PARTITION} =~ "/dev/nvme" || \
+${BOOT_PARTITION =~ "/dev/mmcblk"} ]]; then
         export DRIVE=${BOOT_PARTITION%p*}
     else
         export DRIVE=${BOOT_PARTITION//[0-9]}
