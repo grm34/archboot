@@ -225,7 +225,7 @@ _default_partitioning_scheme() {
 
         elif [[ ${SET_LVM} && ${PART} != "BOOT_PARTITION" ]]; then
             _info "${MSG_PART_TYPE} ${PART_NAME} ${DRIVE}${ORDER[${INDEX}]}"
-            printf "t\n%s\n8e00\nw\n" "${INDEX}" | gdisk "${DRIVE}"
+            printf "t\n1\n8e00\nw\n" | gdisk "${DRIVE}"
             partprobe "${DRIVE}" && sleep 1
         fi
 
