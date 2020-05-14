@@ -13,7 +13,8 @@ _firmware() {
     _info "${MSG_GET_FW}"
 
     ### UEFI
-    if [ -d /sys/firmware/efi/efivars ]; then
+    EFI_TYPE=$( cat /sys/firmware/efi/fw_platform_size )
+    if [[ -d /sys/firmware/efi/efivars && ${EFI_TYPE} == "64" ]]; then
         export FIRMWARE="UEFI"
         export PART_TABLE="GPT"
         export PART_CODE="g"
