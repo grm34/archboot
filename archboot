@@ -31,22 +31,27 @@ _help() {
     echo -e "${BLUE}
 Arch Linux Installer - A script made with love by ${AUTHOR}
 
-${BOLD}Usage: ${NC}sh ${APPNAME} [options]
+${BOLD}Usage: ${NC}sh ${APPNAME} [option] [argument]
 
     ${BOLD}Options${NC}
         -h, --help          show this help message
         -l, --lang          set installer language
         -k, --keyboard      set keyboard layout
+        -f, --file          install packages from file
 
-    ${BOLD}Language${NC}
-        -l, --lang          english
-                            french
+    ${BOLD}Installer language${NC}
+        -l, --lang          english     (by @${AUTHOR})
+                            french      (by @${AUTHOR})
                             german      (by @At1768)
 
-    ${BOLD}Keyboard${NC}
-        -k, --keyboard      keyboard layout
-                            (run loadkeys on start)
-                            (e.q., --keyboard fr)
+    ${BOLD}Keyboard layout${NC}
+        -k, --keyboard      keyboard code
+                            language code
+                            country  code
+
+    ${BOLD}Additional packages${NC}
+        -f, --file          packages_file_list
+                            (AUR packages available)
 
 ${BOLD}For more information, see the wiki: \
 ${CYAN}<http://tiny.cc/archboot-wiki>${NC}"
@@ -198,7 +203,8 @@ ${AUTHOR} ${RED}under ${LICENSE} ${GREEN}>>>${NC}"
 #                             HELP AND USAGE
 # ============================================================================
 # Here we manage help and usage to properly describe and run archboot.
-# The only options are to select script language and to load keyboard layout.
+# The only options are to select script language, to load keyboard layout
+# and to allow installation of additional packages from a file.
 # Then we ensure not running script from repository folder to avoid deletes.
 #
 # Usage: sh archboot [options] (e.g., sh archboot -l french -k fr)
@@ -211,12 +217,13 @@ for OPT in "${@}"; do
         "--help") set -- "${@}" "-h"; break;;
         "--lang") set -- "${@}" "-l";;
         "--keyboard") set -- "${@}" "-k";;
+        "--file") set -- "${@}" "-f";;
         *) set -- "${@}" "${OPT}"
     esac
 done
 
 ### Option processing
-while getopts ':hl:k:' OPTION; do
+while getopts ':hl:k:f:' OPTION; do
     case ${OPTION} in
 
         # Help (-h, --help)
@@ -226,7 +233,7 @@ while getopts ':hl:k:' OPTION; do
         l)  if [[ ${OPTARG} =~ ^(english$|french$|german$) ]]; then
                 ARCHBOOT_LANG="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} invalid language '${OPTARG}'"
+                echo -e "${RED}Error:${NC} invalid language \"${OPTARG}\""
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
@@ -235,16 +242,24 @@ while getopts ':hl:k:' OPTION; do
             if [[ ${STATUS} -ne 1 ]]; then
                 export KEYMAP="${OPTARG}"
             else
-                echo -e "${RED}Error:${NC} invalid keyboard '${OPTARG}'"
+                echo -e "${RED}Error:${NC} invalid keyboard \"${OPTARG}\""
+                _help; rm -f old_vars.log; _exit_msg; exit 1
+            fi;;
+
+        # Packages file list (-f, --file)
+        f)  if [[ -f ${OPTARG} ]]; then
+                export PACKAGES_FILE="${OPTARG}"
+            else
+                echo -e "${RED}Error:${NC} invalid file \"${OPTARG}\""
                 _help; rm -f old_vars.log; _exit_msg; exit 1
             fi;;
 
         # Missing argument
-        :)  echo -e "${RED}Error:${NC} missing argument for -${OPTARG}"
+        :)  echo -e "${RED}Error:${NC} missing argument for \"-${OPTARG}\""
             _help; rm -f old_vars.log; _exit_msg; exit 1;;
 
         # Invalid option
-        \?) echo -e "${RED}Error:${NC} invalid option -${OPTARG}"
+        \?) echo -e "${RED}Error:${NC} invalid option \"-${OPTARG}\""
             _help; rm -f old_vars.log; _exit_msg; exit 1
     esac
 done
@@ -433,6 +448,11 @@ _install_display_manager; _enable_user_rights) 2>&1 | tee -a "${INSTALL_LOG}"
         ### Install AUR Helper (src/arch/base)
         if [[ ${AUR_HELPER} ]]; then
             (_install_AUR_helper) 2>&1 | tee -a "${INSTALL_LOG}"
+        fi
+
+        ### Install user personal packages
+        if [[ ${PACKAGES_FILE} ]]; then
+            (_install_personal_packages) 2>&1 | tee -a "${INSTALL_LOG}"
         fi
 
         ### Clean cache and unused dependencies (src/arch/base)

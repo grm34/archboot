@@ -44,6 +44,7 @@ export MSG_INSTALL_NTFS="Installiere Unterstützung für NTFS Dateisystem"
 export MSG_BOOT_HOOKS="Füge Kernelparameter für systemd-boot hinzu"
 export MSG_SET_USER="Erstelle Benutzer"
 export MSG_INSTALL_AUR="Installiere AUR-Helper"
+export MSG_INSTALL_ADDONS="Installing user personal packages"
 export MSG_CLEAN_CACHE="Bereinige Cache und nicht benötigte Abhängigkeiten"
 
 ### src/arch/bootloader

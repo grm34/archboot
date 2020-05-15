@@ -44,6 +44,7 @@ export MSG_INSTALL_NTFS="Installation du support pour le système de fichiers NT
 export MSG_BOOT_HOOKS="Ajout des paramètres kernel pour le bootloader"
 export MSG_SET_USER="Création de l'utilisateur"
 export MSG_INSTALL_AUR="Installation d'un AUR Helper"
+export MSG_INSTALL_ADDONS="Installation des paquets personnels de l'utilisateur"
 export MSG_CLEAN_CACHE="Nettoyage du cache et des dépendences inutiles"
 
 ### src/arch/bootloader

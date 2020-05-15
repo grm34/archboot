@@ -7,7 +7,7 @@
 # Then we create user account and we allow him to run commands with sudo.
 #
 # AUR Helpers (optional) <yay> <pamac-aur> <trizen> <pacaur> <pakku> <pikaur>
-#
+# Installation of additional packages from a file is available as an option.
 # Last function is used to remove unused packages and to clean pacman cache.
 #
 # All steps are described in the official documentation:
@@ -121,27 +121,35 @@ EOF
 _install_AUR_helper() {
     _info "${MSG_INSTALL_AUR} (${AUR_HELPER,,})"
 
-    ### Allow user to run sudo without passwd
-    sed -i -e \
-"s/${USER_NAME} ALL=(ALL) ALL/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/g" \
-/mnt/etc/sudoers
-
-    ### Clone AUR Helper from aur.archlinux.org
-    _chroot "cd /home/${USER_NAME} && \
-sudo -u ${USER_NAME} git clone https://aur.archlinux.org/${AUR_HELPER,,}.git"
-
-    ### Install AUR Helper
-    _chroot "cd /home/${USER_NAME}/${AUR_HELPER,,} && sudo -u ${USER_NAME} \
-makepkg --noconfirm --needed -sic"
-
-    ### Deny user to run sudo without passwd
-    sed -i -e \
-"s/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/${USER_NAME} ALL=(ALL) ALL/g" \
-/mnt/etc/sudoers
+    ### Clone and install AUR Helper
+    _allow_user_sudoers "_chroot 'cd /home/${USER_NAME} && sudo -u \
+${USER_NAME} git clone https://aur.archlinux.org/${AUR_HELPER,,}.git && cd \
+${AUR_HELPER,,} && sudo -u ${USER_NAME} makepkg --noconfirm --needed -sic'"
 
     ### Clean AUR Helper sources
     rm -rf "/mnt/home/${USER_NAME}/${AUR_HELPER,,}"
     echo "-> ${MSG_DONE}"
+}
+
+_install_personal_packages() {
+    _info "${MSG_INSTALL_ADDONS}"
+
+    if [[ ${AUR_HELPER} ]]; then
+        _allow_user_sudoers \
+"_chroot '${AUR_HELPER,,} --noconfirm --needed -S - < ${PACKAGES_FILE}'"
+
+    else
+        _chroot "pacman --noconfirm --needed -S - < ${PACKAGES_FILE}"
+    fi
+    echo "-> ${MSG_DONE}"
+}
+
+_allow_user_sudoers() {
+    sed -i -e \
+"s/${USER_NAME} ALL=(ALL) ALL/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/g" \
+/mnt/etc/sudoers; ${1}; sed -i -e \
+"s/${USER_NAME} ALL=(ALL) NOPASSWD: ALL/${USER_NAME} ALL=(ALL) ALL/g" \
+/mnt/etc/sudoers
 }
 
 _clean_dependencies() {
